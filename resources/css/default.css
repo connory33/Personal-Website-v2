@@ -1,0 +1,254 @@
+﻿body {
+    height: 100%;
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	width: 100%;
+}
+
+html {
+	height: 100%;
+}
+
+html , body {
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+
+hr {
+	border-color: black;
+}
+
+a {
+	color: #e5f4e3;
+}
+
+.parallaxBanner {
+	background-image: url(../images/enchantedlake.jpg);
+	height: 85%;
+	width: 100%;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+@media only screen and (max-device-width: 1366px) {
+	.parallaxBanner {
+	  background-attachment: scroll;
+	}
+  }
+
+@media (max-width: 767px) {
+	.navbar {
+		padding: 0 20px;
+	}
+}
+
+#fullPageDiv {
+	background-color: #f4f2f3;
+}
+
+/* Landing Page */
+.welcomeBanner {
+	/* styling */
+	color: #e5f4e3;
+	font-size: 3em;
+	font-weight: bold;
+}
+
+/* About Me Page */
+.sectionHeading {
+	color: #18314F;
+	padding: .6em;
+	font-size: 2.4em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.underline {
+	border-bottom-style: solid;
+	border-color: #18314F;
+	padding-bottom: .8em;
+}
+
+.dashedBorder {
+    border-style: dashed;
+}
+
+.aboutMeContent {
+	color: #e5e5e5;
+	font-size: 1.1em;
+	line-height: 1.5em;
+	text-indent: 2em;
+	opacity: 100%;
+}
+
+.about-background {
+	background-image: url(../images/cal_club2.jpg);
+	width: 100%;
+	background-attachment: fixed;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-size: cover;
+	font-weight: bold;
+}
+
+.boxedContent {
+    border-style: dashed;
+    background: white;
+	padding: .5em;
+	border-radius: .5em;
+}
+
+/* Projects Page */
+
+.personalProjects {
+	padding: 1.7em;
+}
+
+.card-title {
+	font-size: 1.8em;
+	font-weight: bold;
+	padding-left: .2em;
+	padding-right: .2em;
+}
+
+.card-body {
+	padding-left: .5em;
+	padding-right: .5em;
+	font-size: 1.1em;
+	line-height: 1.7em;
+}
+
+.projectSplashTitle {
+	color: #f4f2f3;
+}
+
+.projectPhotoOverlay {
+	opacity: .3;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+}
+
+/* Skills and Experience Page */
+
+.employment {
+	padding: 1.2em;
+}
+
+.textOutline {
+	color: #E5F4E3;
+	text-shadow:
+	-1px -1px 0 #000,  
+	 1px -1px 0 #000,
+	 -1px 1px 0 #000,
+	  1px 1px 0 #000;
+}
+
+.jobDescription {
+	color: #18314f;
+	font-size: 1.3em;
+	line-height: 1.2em;
+}
+
+.resumeContent {
+	font-size: 1.2em;
+	color: #e5f4e3;
+}
+
+.resumeHeading {
+	color: #18314F;
+	font-size: 1.5em;
+	font-weight: bold;
+	padding-left: .5em;
+	padding-right: .5em;
+	padding-top: .5em;
+}
+
+.resumeEmployer {
+    color: #18314F;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-left: .5em;
+}
+
+.technical {
+	margin: 1em;
+	padding: 1.2em;
+}
+
+.skills {
+	color: #18314f;
+	font-size: 1.3em;
+	line-height: 1.2em;
+}
+
+.strengths {
+	padding: 1.7em;
+}
+
+.weaknesses {
+	padding: 1.7em;
+}
+
+.footer {
+	/* position: sticky;
+	bottom: 0;
+	left: 0;
+	width: 100%; */
+	flex-shrink: 0;
+	padding-top: .5em;
+	z-index: 1000;
+	text-align: center;
+}
+
+.footerHeading {
+	color: #e5f4e3;
+	/* padding: .5em; */
+	font-size: 1.5em;
+	/* font-weight: bold; */
+	text-align: center;
+}
+
+.footerContent {
+	font-size: 1em;
+	text-align: center;
+}
+
+.containedImage {
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+}
+
+.containedImage img {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+/* General classes */
+
+.bordered {
+	border-style: solid;
+	margin: auto;
+	width: 250px;
+}
+
+.headingContent {
+	color: #18314F;
+	font-size: 1.2em;
+	text-align: center;
+}
+
+.bodyContent {
+	color: #E5F4E3;
+	font-size: 1.3em;
+	line-height: 1.2em;
+}
+
+.center {
+	margin: auto;
+}

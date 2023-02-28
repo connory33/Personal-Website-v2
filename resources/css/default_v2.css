@@ -1,0 +1,48 @@
+.index-bg-img {
+    background-image: url(../images/enchantedlake.jpg);
+	width: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+
+/* Formatting images on project pages */
+.containedImage {
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+}
+
+.containedImage img {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+/* Formatting text on project pages */
+.sectionHeading {
+	color: #18314F;
+	padding: .6em;
+	font-size: 2.4em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.underline {
+	border-bottom-style: solid;
+	border-color: #18314F;
+	padding-bottom: .8em;
+}
+
+.headingContent {
+	color: #18314F;
+	font-size: 1.2em;
+	text-align: center;
+}
+
+
+.height-cap {
+    height: 16em;
+}

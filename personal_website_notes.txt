@@ -1,0 +1,9 @@
+
+
+-Fix about me page (background image) -- it's showing on mobile but not desktop
+
+-Make photos stack on project pages
+
+-Fix mobile navbar
+
+-Add other school projects: Grabber, maze runner?

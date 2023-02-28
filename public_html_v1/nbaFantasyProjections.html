@@ -1,0 +1,91 @@
+<html lang="en">
+  <!--Styling-->
+  <head>
+    <title>Connor Young</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/f2/ab/db/f2abdbcd9b1ebf6bc2879d5cb1b8067f.jpg">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="resources/css/default.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-grid.min.css">
+  </head>
+
+  <body>
+      <!--Nav-->
+      <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-toggleable">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand py-0" href="index_v2.html">
+          <img src="resources/images/Artboard 1.png" width="100" height="100">
+        </a>
+        <div class="collapse navbar-collapse justify-content-end">
+          <div class="navbar-nav align-items-end">
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="index_v2.html">Home</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="aboutMe.html">About Me</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="projects.html">Projects</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="resources/Young_Connor_Resume_Feb2021.pdf" download>Resume</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="index_v2.html#contact">Contact</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid" style="background:#f2f4f3">
+        <div class="container">
+            <h4 class="sectionHeading">NBA Fantasy Score Prediction Model</h4>
+            <p class="headingContent underline">This was a project that compared the efficacy of various machine learning models in predicting fantasy scores for NBA players.
+            </p>
+        </div>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-5 containedImage">
+                    <img src="resources/images/nba_results.PNG">
+                </div>
+                <div class="col-5 containedImage">
+                    <img src="resources/images/nba_paper_heading.PNG">
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-5 containedImage">
+                    <img src="resources/images/nba_code.PNG">
+                </div>
+                <div class="col-5 containedImage">
+                    <img src="resources/images/nba_code_2.PNG">
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <br>
+            <p>
+                For this project we built a model that DFS players can utilize to pick better lineups for fantasy competitions. Trained on 5 seasons of NBA
+                game data, the model outputs a prediction for a player's fantasy score in an upcoming game based on factors like the opposing team, the game
+                being home or away, and his performances in both the short-term and relatively long-term past.
+            </p>
+            <p>
+                We compared the prediction accuracy on a test set after training a pair of random forest and a pair of XGBoost models in order to determine
+                which gave the optimal performance. The winner was not actually technically a single model, but 7 independent ones that would each predict
+                a single stat out of the 7 categories that mathematically factor into fantasy score. Then we simply applied the open-source DraftKings fantasy
+                formula to those predictions to calculate the point value. When using these predictions in conjunction with salary cap optimization for a
+                DraftKings contest, we achieved an 8.58% improvement in lineup performance over the DraftKings-provided point projections.
+            </p>
+        </div>
+        <p class="text-center">The GitHub for this project can be viewed <a href="https://github.com/andrewkoo/cs5785_final_project">here</a></p>
+        <p class="text-center">The paper written for this project can be downloaded <a href="resources/AML_FinalProject_Report.pdf" download>here</a></p>
+        <br><br>
+    </div>
+
+      <div class="container-fluid footer" style="background-color: #35373b">
+        <a name="contact"></a>
+          <h4 class="footerHeading">Contact Me</h4>
+          <a style="color: dodgerblue" class="footerContent" href="https://www.linkedin.com/in/connoryoung33/">LinkedIn  </a>
+          <a style="color: #b55850" class="footerContent" href="https://www.github.com/connory33">  GitHub</a>
+          <p style="color: #e5f4e3" class="footerContent">connor@connoryoung.com</p>
+        <br>
+      </div>
+
+    </body>
+    </html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Connor Young</title>
+
+    <link rel="stylesheet" type="text/css" href="../resources/css/default_v2.css">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../resources/css/album.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About Me</h4>
+              <p class="text-white">
+                My name is Connor Young and I'm from Palo Alto, CA. I have a BS in Mechanical Engineering and a minor in Business from Cornell University
+                and a Master's in Operations Research and Information Engineering from Cornell Tech. I'm a logical and quantitative-minded person that enjoys 
+                using data and engineering to solve complex problems and inform decision-making. I aim to pursue data science as a career, and am especially 
+                interested in opportunities that combine engineering and analytics with my passion for the sports industry.
+            </p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a style="color: dodgerblue" class="footerContent" href="https://www.linkedin.com/in/connoryoung33/">LinkedIn</a></li>
+                <li><a style="color: #b55850" class="footerContent" href="https://www.github.com/connory33">GitHub</a></li>
+                <li><a href="#" class="text-white">connor@connoryoung.com</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <!-- <a href="../resources/images/Wheel1.jpg" width="20" height="20" class="mr-2"></a> -->
+            <strong>CY</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+
+      <div class="container-fluid" style="background:#f2f4f3">
+        <div class="container">
+            <h4 class="sectionHeading underline">NBA Fantasy Score Projection</h4>
+        </div>
+        <br>
+        <div class="container">
+          <p>
+            For this project we built a model that DFS players can utilize to pick better lineups for fantasy competitions. Trained on 5 seasons of NBA
+            game data, the model outputs a prediction for a player's fantasy score in an upcoming game based on factors like the opposing team, the game
+            being home or away, and his performances in both the short-term and relatively long-term past.
+        </p>
+        <p>
+            We compared the prediction accuracy on a test set after training a pair of random forest and a pair of XGBoost models in order to determine
+            which gave the optimal performance. The winner was not actually technically a single model, but 7 independent ones that would each predict
+            a single stat out of the 7 categories that mathematically factor into fantasy score. Then we simply applied the open-source DraftKings fantasy
+            formula to those predictions to calculate the point value. When using these predictions in conjunction with salary cap optimization for a
+            DraftKings contest, we achieved an 8.58% improvement in lineup performance over the DraftKings-provided point projections.
+        </p>
+        <br>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-5 containedImage">
+                    <img class="d-flex" src="../resources/images/nba_results.PNG">
+                </div>
+                <div class="col-5 containedImage">
+                    <img class="d-flex" src="../resources/images/nba_paper_heading.PNG">
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-5 containedImage">
+                    <img src="../resources/images/nba_code.PNG">
+                </div>
+                <div class="col-5 containedImage">
+                    <img src="../resources/images/nba_code_2.PNG">
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+        <br>
+        <p class="text-center">The GitHub for this project can be viewed <a href="https://github.com/andrewkoo/cs5785_final_project">here</a></p>
+        <p class="text-center">The paper written for this project can be downloaded <a href="resources/AML_FinalProject_Report.pdf" download>here</a></p>
+        <br><br>
+    </div>
+
+    </main>
+
+    <footer class="text-muted">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <p>Copyright &copy; 2021 Connor Young</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../js/vendor/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/vendor/holder.min.js"></script>
+  </body>
+</html>

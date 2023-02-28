@@ -1,0 +1,96 @@
+<html lang="en">
+    <!--Styling-->
+  <head>
+    <title>Connor Young</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/f2/ab/db/f2abdbcd9b1ebf6bc2879d5cb1b8067f.jpg">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="resources/css/default.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-grid.min.css">
+  </head>
+
+  <body>
+      <!--Nav-->
+      <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-toggleable">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand py-0" href="index_v2.html">
+          <img src="resources/images/Artboard 1.png" width="100" height="100">
+        </a>
+        <div class="collapse navbar-collapse justify-content-end">
+          <div class="navbar-nav align-items-end">
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="index_v2.html">Home</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="aboutMe.html">About Me</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="projects.html">Projects</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="resources/Young_Connor_Resume_Feb2021.pdf" download>Resume</a>
+            <a class="nav-item nav-link" style="color:#e5f4e3" href="index_v2.html#contact">Contact</a>
+          </div>
+        </div>
+      </nav>
+
+        <div class="container-fluid" style="background:#f2f4f3">
+                <div class="container">
+                    <h4 class="sectionHeading">Autonomous Robot</h4>
+                    <p class="headingContent underline">This project used circuits, Arduino, and bit-level C code to build an autonomous robot for a cube-clearing competition.</p>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-5 containedImage">
+                            <img src="resources/images/robot.jpg">
+                        </div>
+                        <div class="col-5 containedImage">
+                            <img src="resources/images/robot1.jpg">
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-5 containedImage">
+                            <img src="resources/images/robot3.jpg">
+                        </div>
+                        <div class="col-5 containedImage">
+                            <img src="resources/images/robot4.jpg">
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <br>
+                    <p>
+                        This robot was built for a 1v1 competition where it would be placed on a rectangular surface consisting of two halves painted blue and yellow.
+                        Small plastic cubes were distributed throughout the board at the start of the game, and each robot started on the back edge of its half. The
+                        goal is for the robot to move around and push the blocks to the other half, as the one with the least blocks on its side at the end of a 30
+                        second period wins.
+                    </p>
+                    <p>
+                        In order to accomplish this, we had to come up with the optimal battle strategy and then build and program the robot to reliably execute it.
+                        To allow the robot to gather the necessary information and move as required, we integrated a color sensor so that it could detect its location
+                        and region edges and constructed two H-bridge circuits to allow for independent wheel control and pulse width modulation. We programmed the
+                        strategy using Arduino and C with bits, registers, etc.
+                    </p>
+                    <p>
+                        In addition to the electrical and coding work, we also made some mechanical improvements to aid the robot. We used a piece of scrap plastic to
+                        fashion a snowplow attachment to increase the cube-clearing area and laser-cut acrylic to form a housing that would protect the circuits and
+                        add mass in case of any collisions with other robots.
+                    </p> 
+                </div>
+                <br><br>
+            </div>
+
+      <!--Footer-->
+      <div class="container-fluid footer" style="background-color: #35373b">
+        <a name="contact"></a>
+          <h4 class="footerHeading">Contact Me</h4>
+          <!-- <p class="footerContent" style="color: #e5f4e3">I'm always looking for exciting new opportunities.</p>
+          <br> -->
+          <a style="color: dodgerblue" class="footerContent" href="https://www.linkedin.com/in/connoryoung33/">LinkedIn  </a>
+          <a style="color: #b55850" class="footerContent" href="https://www.github.com/connory33">  GitHub</a>
+          <p style="color: #e5f4e3" class="footerContent">connor@connoryoung.com</p>
+        <br>
+      </div>
+    
+    </body>
+</html>
