@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/poqbjh2lifzm/public_html
+    - export DEPLOYPATH=/home/poqbjh2lifzm/public_html/
     - /bin/cp public_html_v2/index_v3.html $DEPLOYPATH
