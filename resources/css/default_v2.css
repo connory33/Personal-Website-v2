@@ -46,3 +46,19 @@
 .height-cap {
     height: 16em;
 }
+
+/* Formatting Spotify DB/search page */
+.spotifyTable {
+	border: 1px solid #18314F;
+}
+
+
+.nhlTable {
+	margin: 0 auto;
+	border: 1px solid white;
+	width: 50%;
+	background-color: gainsboro;
+}
+
+.nhlTable.tr:hover {
+	background-color: coral;}
