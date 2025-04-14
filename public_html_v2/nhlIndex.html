@@ -9,13 +9,13 @@
 
     <title>Connor Young</title>
 
-    <link rel="stylesheet" type="text/css" href="../resources/css/default_v2.css">
-
     <!-- Bootstrap core CSS -->
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../resources/css/album.css" rel="stylesheet">
+    <!-- <link href="../resources/css/album.css" rel="stylesheet"> -->
+
+    <link rel="stylesheet" type="text/css" href="../resources/css/default_v2.css">
   </head>
 
   <body>
@@ -23,9 +23,18 @@
     <div class="bg-dark text-white text-center py-5">
         <p>Search for NHL games below:</p>
 
-        <form method="post" action="nhlSQLconnector.php">
-            <input  type="text" name="search">
-            <input  type="submit" value="Submit">
+        <form method="GET" action="nhlSQLconnector.php">
+            <select name="search_column">
+                <option value="season">Season</option>
+                <option value="gameDate">Game Date</option>
+                <option value="easternStartTime">Start Time</option>
+                <option value="gameType">Game Type</option>
+                <option value="team">Team</option>
+                <option value="homeTeamId">Home Team</option>
+                <option value="visitingTeamId">Away Team</option>
+            </select>
+            <input  type="text" name="search_term" placeholder="Enter search term" required>
+            <input  type="submit" value="Search">
         </form>
     </div>
 
