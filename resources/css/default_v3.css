@@ -53,21 +53,19 @@
 }
 
 
-.nhlResultsTable {
+.nhlTable {
 	border: 1px solid white;
 	margin: 0 auto;
-    color: white;
+	background-color: gainsboro;
 }
 
 .nhlTable.tr:hover {
 	background-color: coral;}
 
 .table_header {
-	font-weight: bold;
-    background-color: #18314F;
-    color: white;
+	font-weight: bold
 }
 
-.goal-row {
-    background-color: #d4edda; /* light green */
+.test {
+	color: red;
 }

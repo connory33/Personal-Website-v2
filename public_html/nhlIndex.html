@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Connor Young</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <!-- <link href="../resources/css/album.css" rel="stylesheet"> -->
+
+    <link rel="stylesheet" type="text/css" href="../resources/css/default_v2.css">
+  </head>
+
+  <body>
+
+    <div class="bg-dark text-white text-center py-5">
+      <h2>NHL Historical Database</h2>
+      <p>This site serves as a repository for historical data from the National Hockey League (NHL).<br>
+        You can search past games by season, date, game type, start time, and teams.<br>Each game page
+        features additional details about the game, as well as play-by-play data.<br><br>
+        All data hosted here has been scraped from the public <a href=https://github.com/Zmalski/NHL-API-Reference>NHL API</a>. Thanks goes to the NHL for
+        their work to make this data available.<br><br>
+      </p>
+
+        <form method="GET" action="nhl_games.php">
+            <select name="search_column">
+                <option value="season">Season</option>
+                <option value="gameDate">Game Date</option>
+                <option value="easternStartTime">Start Time</option>
+                <option value="gameType">Game Type</option>
+                <option value="team">Team</option>
+                <option value="homeTeamId">Home Team</option>
+                <option value="visitingTeamId">Away Team</option>
+            </select>
+            <input  type="text" name="search_term" placeholder="Enter search term" required>
+            <input  type="submit" value="Search">
+        </form>
+        <br><br>
+        <p>This database is a work in progress. For any bugs or feature requests, please reach out
+          at connor@connoryoung.com.
+        </p>
+    </div>
+
+
+
+
+    <footer class="text-muted">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <p>Copyright &copy; 2025 Connor Young</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../js/vendor/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/vendor/holder.min.js"></script>
+  </body>
+</html>
