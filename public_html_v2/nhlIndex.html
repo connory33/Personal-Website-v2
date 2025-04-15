@@ -21,9 +21,15 @@
   <body>
 
     <div class="bg-dark text-white text-center py-5">
-        <p>Search for NHL games below:</p>
+      <h2>NHL Historical Database</h2>
+      <p>This site serves as a repository for historical data from the National Hockey League (NHL).<br>
+        You can search past games by season, date, game type, start time, and teams.<br>Each game page
+        features additional details about the game, as well as play-by-play data.<br><br>
+        All data hosted here has been scraped from the public <a href=https://github.com/Zmalski/NHL-API-Reference>NHL API</a>. Thanks goes to the NHL for
+        their work to make this data available.<br><br>
+      </p>
 
-        <form method="GET" action="nhlSQLconnector.php">
+        <form method="GET" action="nhl_games.php">
             <select name="search_column">
                 <option value="season">Season</option>
                 <option value="gameDate">Game Date</option>
@@ -36,6 +42,10 @@
             <input  type="text" name="search_term" placeholder="Enter search term" required>
             <input  type="submit" value="Search">
         </form>
+        <br><br>
+        <p>This database is a work in progress. For any bugs or feature requests, please reach out
+          at connor@connoryoung.com.
+        </p>
     </div>
 
 
@@ -46,7 +56,7 @@
         <p class="float-right">
           <a href="#">Back to top</a>
         </p>
-        <p>Copyright &copy; 2021 Connor Young</p>
+        <p>Copyright &copy; 2025 Connor Young</p>
       </div>
     </footer>
 

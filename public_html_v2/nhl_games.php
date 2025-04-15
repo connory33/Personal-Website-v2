@@ -22,7 +22,7 @@
     <div class="bg-dark text-white text-center">
         <p>Search again:</p>
 
-        <form method="GET" action="nhlSQLconnector.php">
+        <form method="GET" action="nhl_games.php">
             <select name="search_column">
                 <option value="season">Season</option>
                 <option value="gameDate">Game Date</option>
@@ -235,7 +235,6 @@
                 <td>Date</td>
                 <td>Start Time (EST)</td>
                 <td>Game Type</td>
-                <td>Duration</td>
                 <td>Home Name</td>
                 <td>Home Score</td>
                 <td>Visitor Name</td>
@@ -279,18 +278,18 @@
                 }
                 echo "<td>".$gameType_text."</td>";
 
-                # Period
-                $period_num = $row['regPeriods'];
-                if ($period_num == 3) {
-                    $period_text = "Regulation";
-                } elseif ($period_num == 4) {
-                    $period_text = "OT";
-                } elseif ($period_num == 5) {
-                    $period_text = "SO";
-                } else {
-                    $period_text = $period_num;
-                }
-                echo "<td>".$period_text."</td>";
+                // # Period
+                // $period_num = $row['regPeriods'];
+                // if ($period_num == 3) {
+                //     $period_text = "Regulation";
+                // } elseif ($period_num == 4) {
+                //     $period_text = "OT";
+                // } elseif ($period_num == 5) {
+                //     $period_text = "SO";
+                // } else {
+                //     $period_text = $period_num;
+                // }
+                // echo "<td>".$period_text."</td>";
 
                 # Home Team
                 if ($row['homeScore']>$row['awayScore']) {
