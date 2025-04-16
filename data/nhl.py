@@ -825,64 +825,89 @@ for playerID in playerID_list[:100]:
 
     # Featured Season
     if 'featuredStats' in player_data and 'regularSeason' in player_data['featuredStats']:
+
         featuredSeason.append(player_data['featuredStats']['season'])
         featuredSeasonStats = player_data['featuredStats']['regularSeason']['subSeason']
-        if 'assists' in featuredSeasonStats:
-            featuredSeasonAssists.append(featuredSeasonStats['assists'])
-        else:
-            featuredSeasonAssists.append(None)
-        if 'gameWinningGoals' in featuredSeasonStats:
-            featuredSeasonGWG.append(featuredSeasonStats['gameWinningGoals'])
-        else:
-            featuredSeasonGWG.append(None)
-        if 'gamesPlayed' in featuredSeasonStats:
-            featuredSeasonGP.append(featuredSeasonStats['gamesPlayed'])
-        else:
-            featuredSeasonGP.append(None)
-        if 'goals' in featuredSeasonStats:
-            featuredSeasonGoals.append(featuredSeasonStats['goals'])
-        else:
-            featuredSeasonGoals.append(None)
-        if 'otGoals' in featuredSeasonStats:
-            featuredSeasonOTGoals.append(featuredSeasonStats['otGoals'])
-        else:
-            featuredSeasonOTGoals.append(None)
-        if 'pim' in featuredSeasonStats:
-            featuredSeasonPIM.append(featuredSeasonStats['pim'])
-        else:
-            featuredSeasonPIM.append(None)
-        if 'plusMinus' in featuredSeasonStats:
-            featuredSeasonPlusMinus.append(featuredSeasonStats['plusMinus'])
-        else:
-            featuredSeasonPlusMinus.append(None)
-        if 'points' in featuredSeasonStats:
-            featuredSeasonPts.append(featuredSeasonStats['points'])
-        else:
-            featuredSeasonPts.append(None)
-        if 'powerPlayGoals' in featuredSeasonStats:
-            featuredSeasonPPG.append(featuredSeasonStats['powerPlayGoals'])
-        else:
-            featuredSeasonPPG.append(None)
-        if 'powerPlayPoints' in featuredSeasonStats:
-            featuredSeasonPPPoints.append(featuredSeasonStats['powerPlayPoints'])
-        else:
-            featuredSeasonPPPoints.append(None)
-        if 'shootingPctg' in featuredSeasonStats:
-            featuredSeasonShootingPct.append(featuredSeasonStats['shootingPctg'])
-        else:
-            featuredSeasonShootingPct.append(None)
-        if 'shorthandedGoals' in featuredSeasonStats:
-            featuredSeasonSHG.append(featuredSeasonStats['shorthandedGoals'])
-        else:
-            featuredSeasonSHG.append(None)
-        if 'shorthandedPoints' in featuredSeasonStats:
-            featuredSeasonSHPts.append(featuredSeasonStats['shorthandedPoints'])
-        else:
-            featuredSeasonSHPts.append(None)
-        if 'shots' in featuredSeasonStats:
-            featuredSeasonShots.append(featuredSeasonStats['shots'])
-        else:
-            featuredSeasonShots.append(None)
+        
+        # list tuples of key names and target lists to append to - allows looping to check if key
+        # exists and appends to list if so - no need to repeat if/else blocks for every key
+        featured_season_keys = [
+            ('assists', featuredSeasonAssists),
+            ('gameWinningGoals', featuredSeasonGWG),
+            ('gamesPlayed', featuredSeasonGP),
+            ('goals', featuredSeasonGoals),
+            ('otGoals', featuredSeasonOTGoals),
+            ('pim', featuredSeasonPIM),
+            ('plusMinus', featuredSeasonPlusMinus),
+            ('points', featuredSeasonPts),
+            ('powerPlayGoals', featuredSeasonPPG),
+            ('powerPlayPoints', featuredSeasonPPPoints),
+            ('shootingPctg', featuredSeasonShootingPct),
+            ('shorthandedGoals', featuredSeasonSHG),
+            ('shorthandedPoints', featuredSeasonSHPts),
+            ('shots', featuredSeasonShots)
+        ]
+
+        for key, target_list in featured_season_keys:
+            target_list.append(featuredSeasonStats.get(key, None))
+
+
+        # if 'assists' in featuredSeasonStats:
+        #     featuredSeasonAssists.append(featuredSeasonStats['assists'])
+        # else:
+        #     featuredSeasonAssists.append(None)
+        # if 'gameWinningGoals' in featuredSeasonStats:
+        #     featuredSeasonGWG.append(featuredSeasonStats['gameWinningGoals'])
+        # else:
+        #     featuredSeasonGWG.append(None)
+        # if 'gamesPlayed' in featuredSeasonStats:
+        #     featuredSeasonGP.append(featuredSeasonStats['gamesPlayed'])
+        # else:
+        #     featuredSeasonGP.append(None)
+        # if 'goals' in featuredSeasonStats:
+        #     featuredSeasonGoals.append(featuredSeasonStats['goals'])
+        # else:
+        #     featuredSeasonGoals.append(None)
+        # if 'otGoals' in featuredSeasonStats:
+        #     featuredSeasonOTGoals.append(featuredSeasonStats['otGoals'])
+        # else:
+        #     featuredSeasonOTGoals.append(None)
+        # if 'pim' in featuredSeasonStats:
+        #     featuredSeasonPIM.append(featuredSeasonStats['pim'])
+        # else:
+        #     featuredSeasonPIM.append(None)
+        # if 'plusMinus' in featuredSeasonStats:
+        #     featuredSeasonPlusMinus.append(featuredSeasonStats['plusMinus'])
+        # else:
+        #     featuredSeasonPlusMinus.append(None)
+        # if 'points' in featuredSeasonStats:
+        #     featuredSeasonPts.append(featuredSeasonStats['points'])
+        # else:
+        #     featuredSeasonPts.append(None)
+        # if 'powerPlayGoals' in featuredSeasonStats:
+        #     featuredSeasonPPG.append(featuredSeasonStats['powerPlayGoals'])
+        # else:
+        #     featuredSeasonPPG.append(None)
+        # if 'powerPlayPoints' in featuredSeasonStats:
+        #     featuredSeasonPPPoints.append(featuredSeasonStats['powerPlayPoints'])
+        # else:
+        #     featuredSeasonPPPoints.append(None)
+        # if 'shootingPctg' in featuredSeasonStats:
+        #     featuredSeasonShootingPct.append(featuredSeasonStats['shootingPctg'])
+        # else:
+        #     featuredSeasonShootingPct.append(None)
+        # if 'shorthandedGoals' in featuredSeasonStats:
+        #     featuredSeasonSHG.append(featuredSeasonStats['shorthandedGoals'])
+        # else:
+        #     featuredSeasonSHG.append(None)
+        # if 'shorthandedPoints' in featuredSeasonStats:
+        #     featuredSeasonSHPts.append(featuredSeasonStats['shorthandedPoints'])
+        # else:
+        #     featuredSeasonSHPts.append(None)
+        # if 'shots' in featuredSeasonStats:
+        #     featuredSeasonShots.append(featuredSeasonStats['shots'])
+        # else:
+        #     featuredSeasonShots.append(None)
     else:
         featuredSeasonAssists.append(None)
         featuredSeasonGWG.append(None)
