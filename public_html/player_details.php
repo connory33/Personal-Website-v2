@@ -88,34 +88,107 @@
                   $birthStateProvince = $row['birthStateProvince'];
                   $birthCountry = $row['birthCountry'];
                   $shootsCatches = $row['shootsCatches'];
-                  $draftYear = $row['draftYear'];
-                  $draftTeam = $row['draftTeam'];
-                  $draftRound = $row['draftRound'];
-                  $draftPickInRound = $row['draftPickInRound'];
-                  $draftOverall = $row['draftOverall'];
+                  if ($row['draftYear'] == '') {
+                    $draftYear = 'N/A';
+                    $draftTeam = 'N/A';
+                    $draftRound = 'N/A';
+                    $draftPickInRound = 'N/A';
+                    $draftOverall = 'N/A';
+                  } else {
+                    $draftYear = $row['draftYear'];
+                    $draftTeam = $row['draftTeam'];
+                    $draftRound = $row['draftRound'];
+                    $draftPickInRound = $row['draftPickInRound'];
+                    $draftOverall = $row['draftOverall'];
+                  }
                   if ($row['inHHOF']) {
                     $inHHOF = 'In HOF: Yes';
                   } else {
                     $inHHOF = 'In HOF: No';
                   }
-                  $featuredSeasonAssists = $row['featuredSeasonAssists'];
-                  $featuredSeasonGWG = $row['featuredSeasonGWG'];
-                  $featuredSeasonGP = $row['featuredSeasonGP'];
-                  if ($row['featuredSeasonGoals'] != '') {
-                    $featuredSeasonGoals = $row['featuredSeasonGoals'];
-                  } else{
-                    $featuredSeasonGoals = '0';
+                  # Featured Season
+                  $featuredSeason = $row['featuredSeason'];
+
+                  if ($row['featuredSeasonAssists'] == '') {
+                    $featuredSeasonAssists = '0';
+                  } else {
+                    $featuredSeasonAssists = $row['featuredSeasonAssists'];
                   }
-                  $featuredSeasonOTGoals = $row['featuredSeasonOTGoals'];
-                  $featuredSeasonPIM = $row['featuredSeasonPIM'];
-                  $featuredSeasonPlusMinus = $row['featuredSeasonPlusMinus'];
-                  $featuredSeasonPts = $row['featuredSeasonPts'];
-                  $featuredSeasonPPG = $row['featuredSeasonPPG'];
-                  $featuredSeasonPPPoints = $row['featuredSeasonPPPoints'];
-                  $featuredSeasonShootingPct = $row['featuredSeasonShootingPct'];
-                  $featuredSeasonSHG = $row['featuredSeasonSHG'];
-                  $featuredSeasonSHPts = $row['featuredSeasonSHPts'];
-                  $featuredSeasonShots = $row['featuredSeasonShots'];
+                  
+                  if ($row['featuredSeasonGWG'] == '') {
+                    $featuredSeasonGWG = '0';
+                  } else {
+                    $featuredSeasonGWG = $row['featuredSeasonGWG'];
+                  }
+                  
+                  $featuredSeasonGP = $row['featuredSeasonGP'];
+                  if ($row['featuredSeasonGoals'] == '') {
+                    $featuredSeasonGoals = '0';
+                  } else{
+                    $featuredSeasonGoals = $row['featuredSeasonGoals'];
+                  }
+
+                  if ($row['featuredSeasonOTGoals'] == '') {
+                    $featuredSeasonOTGoals = '0';
+                  } else {
+                    $featuredSeasonOTGoals = $row['featuredSeasonOTGoals'];
+                  }
+            
+                  if ($row['featuredSeasonPIM'] == '') {
+                    $featuredSeasonPIM = '0';
+                  } else {
+                    $featuredSeasonPIM = $row['featuredSeasonPIM'];
+                  }
+                  
+                  if ($row['featuredSeasonPlusMinus'] == '') {
+                    $featuredSeasonPlusMinus = '0';
+                  } else {
+                    $featuredSeasonPlusMinus = $row['featuredSeasonPlusMinus'];
+                  }
+                  
+                  if ($row['featuredSeasonPts'] == '') {
+                    $featuredSeasonPts = '0';
+                  } else {
+                    $featuredSeasonPts = $row['featuredSeasonPts'];
+                  }
+                  
+                  if ($row['featuredSeasonPPG'] == '') {
+                    $featuredSeasonPPG = '0';
+                  } else {
+                    $featuredSeasonPPG = $row['featuredSeasonPPG'];
+                  }
+                  
+                  if ($row['featuredSeasonPPPoints'] == '') {
+                    $featuredSeasonPPPoints = '0';
+                  } else {
+                    $featuredSeasonPPPoints = $row['featuredSeasonPPPoints'];
+                  }
+                  
+                  if ($row['featuredSeasonShootingPct'] == '') {
+                    $featuredSeasonShootingPct = '0';
+                  } else {
+                    $featuredSeasonShootingPct = $row['featuredSeasonShootingPct'];
+                  }
+                  
+                  if ($row['featuredSeasonSHG'] == '') {
+                    $featuredSeasonSHG = '0';
+                  } else {
+                    $featuredSeasonSHG = $row['featuredSeasonSHG'];
+                  }
+                  
+                  if ($row['featuredSeasonSHPts'] == '') {
+                    $featuredSeasonSHPts = '0';
+                  } else {
+                    $featuredSeasonSHPts = $row['featuredSeasonSHPts'];
+                  }
+                  
+                  if ($row['featuredSeasonShots'] == '') {
+                    $featuredSeasonShots = '0';
+                  } else {
+                    $featuredSeasonShots = $row['featuredSeasonShots'];
+                  }
+                  
+                  # Reg Season
                   $regSeasonCareerAssists = $row['regSeasonCareerAssists'];
                   $regSeasonCareerGWG = $row['regSeasonCareerGWG'];
                   $regSeasonCareerGP = $row['regSeasonCareerGP'];
@@ -197,8 +270,13 @@
               echo "<p style='margin-left: 5%'>Birthplace: " . $birthCity . ", " . $birthStateProvince . " (" . $birthCountry . ")</p>";
               echo "<p style='margin-left: 5%'>Shoots/catches: " . $shootsCatches . "</p>";
               echo "<p style='margin-left: 5%'>Position: " . $position . "</p>";
-              echo "<p style='margin-left: 5%'>Draft Info: " . $draftYear . " Rd. " . $draftRound . " Pick " . $draftPickInRound .
-                  " (" . $draftOverall . " overall) to " . $draftTeam . "</p>";
+              if ($draftYear == 'N/A') {
+                echo "<p style='margin-left: 5%'>Draft Info: Undrafted</p>";
+              } else {
+                echo "<p style='margin-left: 5%'>Draft Info: " . $draftYear . " Rd. " . $draftRound . " Pick " . $draftPickInRound .
+                " (" . $draftOverall . " overall) to " . $draftTeam . "</p>";
+              }
+              
               echo "<p style='margin-left: 5%'>" . $inHHOF . "</p>";
               # convert from strings to actual arrays to pair awards and years
               echo is_null($awardNames);
@@ -223,7 +301,10 @@
           echo "</div><br><br>";
 
           ### Featured Season Stats ###
-            echo "<h3 style='text-align: center'>Featured Season Statistics</h3>";
+            $formatted_featuredSeason_1 = substr($featuredSeason, 0, 4);
+            $formatted_featuredSeason_2 = substr($featuredSeason, 4);
+            echo "<h3 style='text-align: center'>Featured Season Statistics (" .
+             $formatted_featuredSeason_1 . "-" . $formatted_featuredSeason_2 . ")</h3>";
             echo "<table class='player-stats-table'>";
               echo "<tr class='table-header'>";
                 echo "<th style='width: 7%'>GP</th>";

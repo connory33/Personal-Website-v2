@@ -616,76 +616,76 @@ suffix= "/play-by-play"
 
 ####################################################### ROSTERS ########################################################
 
-gameID = []
-teamID = []
-playerID = []
-firstName = []
-lastName = []
-sweaterNumber = []
-positionCode = []
-headshotURLs = []
+# gameID = []
+# teamID = []
+# playerID = []
+# firstName = []
+# lastName = []
+# sweaterNumber = []
+# positionCode = []
+# headshotURLs = []
 
-for game_id in gameID_list[-30000:-20000]: # ['2022030117']:
-    game_url = base_url + str(game_id) + suffix
+# for game_id in gameID_list[-40000:-30000]: # ['2022030117']:
+#     game_url = base_url + str(game_id) + suffix
 
-    try:
-        response = requests.head(game_url, allow_redirects=True)
-        if response.status_code == 404:
-            print("Page not found (404).")
-        else:
-            data = requests.get(game_url).json()
+#     try:
+#         response = requests.head(game_url, allow_redirects=True)
+#         if response.status_code == 404:
+#             print("Page not found (404).")
+#         else:
+#             data = requests.get(game_url).json()
     
-            if not data['rosterSpots']:
-                gameID.append(np.nan)
-                teamID.append(np.nan)
-                playerID.append(np.nan)
-                firstName.append(np.nan)
-                lastName.append(np.nan)
-                sweaterNumber.append(np.nan)
-                positionCode.append(np.nan)
-                headshotURLs.append(np.nan)
+#             if not data['rosterSpots']:
+#                 gameID.append(np.nan)
+#                 teamID.append(np.nan)
+#                 playerID.append(np.nan)
+#                 firstName.append(np.nan)
+#                 lastName.append(np.nan)
+#                 sweaterNumber.append(np.nan)
+#                 positionCode.append(np.nan)
+#                 headshotURLs.append(np.nan)
 
-            else:
-                for player in data['rosterSpots']:
-                    if 'playerId' in player:
-                        gameID.append(game_id)
-                    else:
-                        gameID.append(None)
-                    if 'teamId' in player:
-                        teamID.append(player['teamId'])
-                    else:
-                        teamID.append(None)
-                    if 'playerId' in player:
-                        playerID.append(player['playerId'])
-                    else:
-                        playerID.append(None)
-                    if 'default' in player['firstName']:
-                        firstName.append(player['firstName']['default'])
-                    else:
-                        firstName.append(None)
-                    if 'default' in player['lastName']:
-                        lastName.append(player['lastName']['default'])
-                    else:
-                        lastName.append(None)
-                    if 'sweaterNumber' in player:
-                        sweaterNumber.append(player['sweaterNumber'])
-                    else:
-                        sweaterNumber.append(None)
-                    if 'positionCode' in player:
-                        positionCode.append(player['positionCode'])
-                    else:
-                        positionCode.append(None)
-                    if 'headshot' in player:
-                        headshotURLs.append(player['headshot'])
-                    else:
-                        headshotURLs.append(None)
-    except requests.RequestException as e:
-        print("Error checking URL:", e)
+#             else:
+#                 for player in data['rosterSpots']:
+#                     if 'playerId' in player:
+#                         gameID.append(game_id)
+#                     else:
+#                         gameID.append(None)
+#                     if 'teamId' in player:
+#                         teamID.append(player['teamId'])
+#                     else:
+#                         teamID.append(None)
+#                     if 'playerId' in player:
+#                         playerID.append(player['playerId'])
+#                     else:
+#                         playerID.append(None)
+#                     if 'default' in player['firstName']:
+#                         firstName.append(player['firstName']['default'])
+#                     else:
+#                         firstName.append(None)
+#                     if 'default' in player['lastName']:
+#                         lastName.append(player['lastName']['default'])
+#                     else:
+#                         lastName.append(None)
+#                     if 'sweaterNumber' in player:
+#                         sweaterNumber.append(player['sweaterNumber'])
+#                     else:
+#                         sweaterNumber.append(None)
+#                     if 'positionCode' in player:
+#                         positionCode.append(player['positionCode'])
+#                     else:
+#                         positionCode.append(None)
+#                     if 'headshot' in player:
+#                         headshotURLs.append(player['headshot'])
+#                     else:
+#                         headshotURLs.append(None)
+#     except requests.RequestException as e:
+#         print("Error checking URL:", e)
 
-df_roster = pd.DataFrame([gameID, teamID, playerID, firstName, lastName, sweaterNumber, positionCode, headshotURLs]).transpose()
-df_roster.columns = ['Game ID', 'Team ID', 'Player ID', 'First Name', 'Last Name', 'Number', 'Position', 'Headshot']
-df_roster.to_csv("roster_test.csv", index=False)
-print(df_roster.head())
+# df_roster = pd.DataFrame([gameID, teamID, playerID, firstName, lastName, sweaterNumber, positionCode, headshotURLs]).transpose()
+# df_roster.columns = ['Game ID', 'Team ID', 'Player ID', 'First Name', 'Last Name', 'Number', 'Position', 'Headshot']
+# df_roster.to_csv("roster_test.csv", index=False)
+# print(df_roster.head())
 
 
 ################################################### PLAYER DETAILS ########################################################
@@ -693,375 +693,375 @@ print(df_roster.head())
 # need to get distinct list of all player IDs from rosters - export w SQL from DB
 
 ### Define URL setup ###
-# player_base_url = "https://api-web.nhle.com/v1/player/" 
-# player_suffix = "/landing"
+player_base_url = "https://api-web.nhle.com/v1/player/" 
+player_suffix = "/landing"
 
-# playerID_list = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal Website/data/playerID_list.csv")
-# playerID_list = playerID_list[1:] # temp, remove 0 row before export
-# playerID_list = playerID_list['playerID'].to_list() # convert from df to list for looping
+playerID_list = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal Website/data/playerID_list.csv")
+playerID_list = playerID_list[1:] # temp, remove 0 row before export
+playerID_list = playerID_list['playerID'].to_list() # convert from df to list for looping
 
-# ### Create lists for player information ###
-# playerId = []; #isActive = []; currentTeamId = []; currentTeamAbbrev = []; fullTeamName = []; teamCommonName = []; teamPlaceNameWithPreposition = []
-# # firstName = []; lastName = []; badgesLogos = []; badgesNames = []; teamLogo = []; sweaterNumber = []; position = []; headshot = []; heroImage = []
-# # heightInInches = []; heightInCentimeters = []; weightInPounds = []; weightInKilograms = []; birthDate = []; birthCity = []; birthStateProvince = []
-# # birthCountry = []; shootsCatches = []; draftYear = []; draftTeam = []; draftRound = []; draftPickInRound = []; draftOverall = []; playerSlug = []
-# # inTop100AllTime = []; inHHOF = []; featuredSeason = []; featuredSeasonStats = []; featuredSeasonAssists = []; featuredSeasonGWG = []; featuredSeasonGP = []
-# # featuredSeasonGoals = []; featuredSeasonOTGoals = []; featuredSeasonPIM = []; featuredSeasonPlusMinus = []; featuredSeasonPts = []; featuredSeasonPPG = []
-# # featuredSeasonPPPoints = []; featuredSeasonShootingPct = []; featuredSeasonSHG = []; featuredSeasonSHPts = []; featuredSeasonShots = []; regSeasonCareer = []
-# # regSeasonCareerAssists = []; regSeasonCareerGWG = []; regSeasonCareerGP = []; regSeasonCareerGoals = []; regSeasonCareerOTGoals = []; regSeasonCareerPIM = []
-# # regSeasonCareerPlusMinus = []; regSeasonCareerPts = []; regSeasonCareerPPG = []; regSeasonCareerPPPoints = []; regSeasonCareerShootingPct = []
-# # regSeasonCareerSHG = []; regSeasonCareerSHPts = []; regSeasonCareerShots = []; playoffsCareer = []; playoffsCareerAssists = []; playoffsCareerGWG = []
-# # playoffsCareerGP = []; playoffsCareerGoals = []; playoffsCareerOTGoals = []; playoffsCareerPIM = []; playoffsCareerPlusMinus = []; playoffsCareerPts = []
-# # playoffsCareerPPG = []; playoffsCareerPPPoints = []; playoffsCareerShootingPct =[]; playoffsCareerSHG = []; playoffsCareerSHPts = []; playoffsCareerShots = []
-# # shopLink = []; twitterLink = []; watchLink = []; last5Games = []; seasonTotals = []; awardNames = []; awardSeasons = []; currentTeamRoster = []
+### Create lists for player information ###
+playerId = []; isActive = []; currentTeamId = []; currentTeamAbbrev = []; fullTeamName = []; teamCommonName = []; teamPlaceNameWithPreposition = []
+firstName = []; lastName = []; badgesLogos = []; badgesNames = []; teamLogo = []; sweaterNumber = []; position = []; headshot = []; heroImage = []
+heightInInches = []; heightInCentimeters = []; weightInPounds = []; weightInKilograms = []; birthDate = []; birthCity = []; birthStateProvince = []
+birthCountry = []; shootsCatches = []; draftYear = []; draftTeam = []; draftRound = []; draftPickInRound = []; draftOverall = []; playerSlug = []
+inTop100AllTime = []; inHHOF = []; featuredSeason = []; featuredSeasonStats = []; featuredSeasonAssists = []; featuredSeasonGWG = []; featuredSeasonGP = []
+featuredSeasonGoals = []; featuredSeasonOTGoals = []; featuredSeasonPIM = []; featuredSeasonPlusMinus = []; featuredSeasonPts = []; featuredSeasonPPG = []
+featuredSeasonPPPoints = []; featuredSeasonShootingPct = []; featuredSeasonSHG = []; featuredSeasonSHPts = []; featuredSeasonShots = []; regSeasonCareer = []
+regSeasonCareerAssists = []; regSeasonCareerGWG = []; regSeasonCareerGP = []; regSeasonCareerGoals = []; regSeasonCareerOTGoals = []; regSeasonCareerPIM = []
+regSeasonCareerPlusMinus = []; regSeasonCareerPts = []; regSeasonCareerPPG = []; regSeasonCareerPPPoints = []; regSeasonCareerShootingPct = []
+regSeasonCareerSHG = []; regSeasonCareerSHPts = []; regSeasonCareerShots = []; playoffsCareer = []; playoffsCareerAssists = []; playoffsCareerGWG = []
+playoffsCareerGP = []; playoffsCareerGoals = []; playoffsCareerOTGoals = []; playoffsCareerPIM = []; playoffsCareerPlusMinus = []; playoffsCareerPts = []
+playoffsCareerPPG = []; playoffsCareerPPPoints = []; playoffsCareerShootingPct =[]; playoffsCareerSHG = []; playoffsCareerSHPts = []; playoffsCareerShots = []
+shopLink = []; twitterLink = []; watchLink = []; last5Games = []; seasonTotals = []; awardNames = []; awardSeasons = []; currentTeamRoster = []
 
-# # ### Iterate through player IDs, get info for each player, append to lists for df creation later ###
-# for playerID in playerID_list[:2500]:
-#     player_url = player_base_url + str(playerID) + player_suffix
-#     player_data = requests.get(player_url).json()
-#     # print(playerID)
+# ### Iterate through player IDs, get info for each player, append to lists for df creation later ###
+for playerID in playerID_list[:100]:
+    player_url = player_base_url + str(playerID) + player_suffix
+    player_data = requests.get(player_url).json()
+    # print(playerID)
 
-#     # Basic Info
-#     playerId.append(player_data['playerId'])
-#     isActive.append(player_data['isActive'])
-#     if 'currentTeamId' in player_data:
-#         currentTeamId.append(player_data['currentTeamId'])
-#         currentTeamAbbrev.append(player_data['currentTeamAbbrev'])
-#         fullTeamName.append(player_data['fullTeamName']['default'])
-#         teamCommonName.append(player_data['teamCommonName']['default'])
-#         teamPlaceNameWithPreposition.append(player_data['teamPlaceNameWithPreposition']['default'])
-#     else:
-#         currentTeamId.append(None)
-#         currentTeamAbbrev.append(None)
-#         fullTeamName.append(None)
-#         teamCommonName.append(None)
-#         teamPlaceNameWithPreposition.append(None)
+    # Basic Info
+    playerId.append(player_data['playerId'])
+    isActive.append(player_data['isActive'])
+    if 'currentTeamId' in player_data:
+        currentTeamId.append(player_data['currentTeamId'])
+        currentTeamAbbrev.append(player_data['currentTeamAbbrev'])
+        fullTeamName.append(player_data['fullTeamName']['default'])
+        teamCommonName.append(player_data['teamCommonName']['default'])
+        teamPlaceNameWithPreposition.append(player_data['teamPlaceNameWithPreposition']['default'])
+    else:
+        currentTeamId.append(None)
+        currentTeamAbbrev.append(None)
+        fullTeamName.append(None)
+        teamCommonName.append(None)
+        teamPlaceNameWithPreposition.append(None)
     
-#     firstName.append(player_data['firstName']['default'])
-#     lastName.append(player_data['lastName']['default'])
-#     if 'badges' in player_data and player_data['badges']: # check if badges key exists and makes sure that list is not empty
-#         badgesLogos.append(player_data['badges'][0]['logoUrl']['default'])
-#         badgesNames.append(player_data['badges'][0]['title']['default'])
-#     else:
-#         badgesLogos.append(None)
-#         badgesNames.append(None)
-#     if 'teamLogo' in player_data:
-#         teamLogo.append(player_data['teamLogo'])
-#     else:
-#         teamLogo.append(None)
-#     if 'sweaterNumber' in player_data:
-#         sweaterNumber.append(player_data['sweaterNumber'])
-#     else:
-#         sweaterNumber.append(None)
-#     if 'position' in player_data:
-#         position.append(player_data['position'])
-#     else:
-#         position.append(None)
-#     if 'headshot' in player_data:
-#         headshot.append(player_data['headshot'])
-#     else:
-#         headshot.append(None)
-#     if 'heroImage' in player_data:
-#         heroImage.append(player_data['heroImage'])
-#     else:
-#         heroImage.append(None)
-#     if 'heightInInches' in player_data:
-#         heightInInches.append(player_data['heightInInches'])
-#     else:
-#         heightInInches.append(None)
-#     if 'heighInCentimeters' in player_data:
-#         heightInCentimeters.append(player_data['heightInCentimeters'])
-#     else:
-#         heightInCentimeters.append(None)
-#     if 'weightInPounds' in player_data:
-#         weightInPounds.append(player_data['weightInPounds'])
-#     else:
-#         weightInPounds.append(None)
-#     if 'weightInKilograms' in player_data:
-#         weightInKilograms.append(player_data['weightInKilograms'])
-#     else:
-#         weightInKilograms.append(None)
-#     if 'birthDate' in player_data:
-#         birthDate.append(player_data['birthDate'])
-#     else:
-#         birthDate.append(None)
-#     if 'birthCity' in player_data:
-#         birthCity.append(player_data['birthCity']['default'])
-#     else:
-#         birthCity.append(None)
-#     if 'birthStateProvince' in player_data:
-#         birthStateProvince.append(player_data['birthStateProvince']['default'])
-#     else:
-#         birthStateProvince.append(None)
-#     if 'birthCountry' in player_data:
-#         birthCountry.append(player_data['birthCountry'])
-#     else:
-#         birthCountry.append(None)
-#     if 'shootsCatches' in player_data:
-#         shootsCatches.append(player_data['shootsCatches'])
-#     else:
-#         shootsCatches.append(None)
+    firstName.append(player_data['firstName']['default'])
+    lastName.append(player_data['lastName']['default'])
+    if 'badges' in player_data and player_data['badges']: # check if badges key exists and makes sure that list is not empty
+        badgesLogos.append(player_data['badges'][0]['logoUrl']['default'])
+        badgesNames.append(player_data['badges'][0]['title']['default'])
+    else:
+        badgesLogos.append(None)
+        badgesNames.append(None)
+    if 'teamLogo' in player_data:
+        teamLogo.append(player_data['teamLogo'])
+    else:
+        teamLogo.append(None)
+    if 'sweaterNumber' in player_data:
+        sweaterNumber.append(player_data['sweaterNumber'])
+    else:
+        sweaterNumber.append(None)
+    if 'position' in player_data:
+        position.append(player_data['position'])
+    else:
+        position.append(None)
+    if 'headshot' in player_data:
+        headshot.append(player_data['headshot'])
+    else:
+        headshot.append(None)
+    if 'heroImage' in player_data:
+        heroImage.append(player_data['heroImage'])
+    else:
+        heroImage.append(None)
+    if 'heightInInches' in player_data:
+        heightInInches.append(player_data['heightInInches'])
+    else:
+        heightInInches.append(None)
+    if 'heighInCentimeters' in player_data:
+        heightInCentimeters.append(player_data['heightInCentimeters'])
+    else:
+        heightInCentimeters.append(None)
+    if 'weightInPounds' in player_data:
+        weightInPounds.append(player_data['weightInPounds'])
+    else:
+        weightInPounds.append(None)
+    if 'weightInKilograms' in player_data:
+        weightInKilograms.append(player_data['weightInKilograms'])
+    else:
+        weightInKilograms.append(None)
+    if 'birthDate' in player_data:
+        birthDate.append(player_data['birthDate'])
+    else:
+        birthDate.append(None)
+    if 'birthCity' in player_data:
+        birthCity.append(player_data['birthCity']['default'])
+    else:
+        birthCity.append(None)
+    if 'birthStateProvince' in player_data:
+        birthStateProvince.append(player_data['birthStateProvince']['default'])
+    else:
+        birthStateProvince.append(None)
+    if 'birthCountry' in player_data:
+        birthCountry.append(player_data['birthCountry'])
+    else:
+        birthCountry.append(None)
+    if 'shootsCatches' in player_data:
+        shootsCatches.append(player_data['shootsCatches'])
+    else:
+        shootsCatches.append(None)
 
-#     # Draft
-#     if 'draftDetails' in player_data:
-#         draftYear.append(player_data['draftDetails']['year'])
-#         draftTeam.append(player_data['draftDetails']['teamAbbrev'])
-#         draftRound.append(player_data['draftDetails']['round'])
-#         draftPickInRound.append(player_data['draftDetails']['pickInRound'])
-#         draftOverall.append(player_data['draftDetails']['overallPick'])
-#     else:
-#         draftYear.append(None)
-#         draftTeam.append(None)
-#         draftRound.append(None)
-#         draftPickInRound.append(None)
-#         draftOverall.append(None)
+    # Draft
+    if 'draftDetails' in player_data:
+        draftYear.append(player_data['draftDetails']['year'])
+        draftTeam.append(player_data['draftDetails']['teamAbbrev'])
+        draftRound.append(player_data['draftDetails']['round'])
+        draftPickInRound.append(player_data['draftDetails']['pickInRound'])
+        draftOverall.append(player_data['draftDetails']['overallPick'])
+    else:
+        draftYear.append(None)
+        draftTeam.append(None)
+        draftRound.append(None)
+        draftPickInRound.append(None)
+        draftOverall.append(None)
 
-#     playerSlug.append(player_data['playerSlug'])
-#     if 'inTop100AllTime' in player_data:
-#         inTop100AllTime.append(player_data['inTop100AllTime'])
-#     else:
-#         inTop100AllTime.append(None)
-#     inHHOF.append(player_data['inHHOF'])
+    playerSlug.append(player_data['playerSlug'])
+    if 'inTop100AllTime' in player_data:
+        inTop100AllTime.append(player_data['inTop100AllTime'])
+    else:
+        inTop100AllTime.append(None)
+    inHHOF.append(player_data['inHHOF'])
 
-#     # Featured Season
-#     if 'featuredStats' in player_data and 'regularSeason' in player_data['featuredStats']:
-#         featuredSeason.append(player_data['featuredStats']['season'])
-#         featuredSeasonStats = player_data['featuredStats']['regularSeason']['subSeason']
-#         if 'assists' in featuredSeasonStats:
-#             featuredSeasonAssists.append(featuredSeasonStats['assists'])
-#         else:
-#             featuredSeasonAssists.append(None)
-#         if 'gameWinningGoals' in featuredSeasonStats:
-#             featuredSeasonGWG.append(featuredSeasonStats['gameWinningGoals'])
-#         else:
-#             featuredSeasonGWG.append(None)
-#         if 'gamesPlayed' in featuredSeasonStats:
-#             featuredSeasonGP.append(featuredSeasonStats['gamesPlayed'])
-#         else:
-#             featuredSeasonGP.append(None)
-#         if 'goals' in featuredSeasonStats:
-#             featuredSeasonGoals.append(featuredSeasonStats['goals'])
-#         else:
-#             featuredSeasonGoals.append(None)
-#         if 'otGoals' in featuredSeasonStats:
-#             featuredSeasonOTGoals.append(featuredSeasonStats['otGoals'])
-#         else:
-#             featuredSeasonOTGoals.append(None)
-#         if 'pim' in featuredSeasonStats:
-#             featuredSeasonPIM.append(featuredSeasonStats['pim'])
-#         else:
-#             featuredSeasonPIM.append(None)
-#         if 'plusMinus' in featuredSeasonStats:
-#             featuredSeasonPlusMinus.append(featuredSeasonStats['plusMinus'])
-#         else:
-#             featuredSeasonPlusMinus.append(None)
-#         if 'points' in featuredSeasonStats:
-#             featuredSeasonPts.append(featuredSeasonStats['points'])
-#         else:
-#             featuredSeasonPts.append(None)
-#         if 'powerPlayGoals' in featuredSeasonStats:
-#             featuredSeasonPPG.append(featuredSeasonStats['powerPlayGoals'])
-#         else:
-#             featuredSeasonPPG.append(None)
-#         if 'powerPlayPoints' in featuredSeasonStats:
-#             featuredSeasonPPPoints.append(featuredSeasonStats['powerPlayPoints'])
-#         else:
-#             featuredSeasonPPPoints.append(None)
-#         if 'shootingPctg' in featuredSeasonStats:
-#             featuredSeasonShootingPct.append(featuredSeasonStats['shootingPctg'])
-#         else:
-#             featuredSeasonShootingPct.append(None)
-#         if 'shorthandedGoals' in featuredSeasonStats:
-#             featuredSeasonSHG.append(featuredSeasonStats['shorthandedGoals'])
-#         else:
-#             featuredSeasonSHG.append(None)
-#         if 'shorthandedPoints' in featuredSeasonStats:
-#             featuredSeasonSHPts.append(featuredSeasonStats['shorthandedPoints'])
-#         else:
-#             featuredSeasonSHPts.append(None)
-#         if 'shots' in featuredSeasonStats:
-#             featuredSeasonShots.append(featuredSeasonStats['shots'])
-#         else:
-#             featuredSeasonShots.append(None)
-#     else:
-#         featuredSeasonAssists.append(None)
-#         featuredSeasonGWG.append(None)
-#         featuredSeasonGP.append(None)
-#         featuredSeasonGoals.append(None)
-#         featuredSeasonOTGoals.append(None)
-#         featuredSeasonPIM.append(None)
-#         featuredSeasonPlusMinus.append(None)
-#         featuredSeasonPts.append(None)
-#         featuredSeasonPPG.append(None)
-#         featuredSeasonPPPoints.append(None)
-#         featuredSeasonShootingPct.append(None)
-#         featuredSeasonSHG.append(None)
-#         featuredSeasonSHPts.append(None)
-#         featuredSeasonShots.append(None)
+    # Featured Season
+    if 'featuredStats' in player_data and 'regularSeason' in player_data['featuredStats']:
+        featuredSeason.append(player_data['featuredStats']['season'])
+        featuredSeasonStats = player_data['featuredStats']['regularSeason']['subSeason']
+        if 'assists' in featuredSeasonStats:
+            featuredSeasonAssists.append(featuredSeasonStats['assists'])
+        else:
+            featuredSeasonAssists.append(None)
+        if 'gameWinningGoals' in featuredSeasonStats:
+            featuredSeasonGWG.append(featuredSeasonStats['gameWinningGoals'])
+        else:
+            featuredSeasonGWG.append(None)
+        if 'gamesPlayed' in featuredSeasonStats:
+            featuredSeasonGP.append(featuredSeasonStats['gamesPlayed'])
+        else:
+            featuredSeasonGP.append(None)
+        if 'goals' in featuredSeasonStats:
+            featuredSeasonGoals.append(featuredSeasonStats['goals'])
+        else:
+            featuredSeasonGoals.append(None)
+        if 'otGoals' in featuredSeasonStats:
+            featuredSeasonOTGoals.append(featuredSeasonStats['otGoals'])
+        else:
+            featuredSeasonOTGoals.append(None)
+        if 'pim' in featuredSeasonStats:
+            featuredSeasonPIM.append(featuredSeasonStats['pim'])
+        else:
+            featuredSeasonPIM.append(None)
+        if 'plusMinus' in featuredSeasonStats:
+            featuredSeasonPlusMinus.append(featuredSeasonStats['plusMinus'])
+        else:
+            featuredSeasonPlusMinus.append(None)
+        if 'points' in featuredSeasonStats:
+            featuredSeasonPts.append(featuredSeasonStats['points'])
+        else:
+            featuredSeasonPts.append(None)
+        if 'powerPlayGoals' in featuredSeasonStats:
+            featuredSeasonPPG.append(featuredSeasonStats['powerPlayGoals'])
+        else:
+            featuredSeasonPPG.append(None)
+        if 'powerPlayPoints' in featuredSeasonStats:
+            featuredSeasonPPPoints.append(featuredSeasonStats['powerPlayPoints'])
+        else:
+            featuredSeasonPPPoints.append(None)
+        if 'shootingPctg' in featuredSeasonStats:
+            featuredSeasonShootingPct.append(featuredSeasonStats['shootingPctg'])
+        else:
+            featuredSeasonShootingPct.append(None)
+        if 'shorthandedGoals' in featuredSeasonStats:
+            featuredSeasonSHG.append(featuredSeasonStats['shorthandedGoals'])
+        else:
+            featuredSeasonSHG.append(None)
+        if 'shorthandedPoints' in featuredSeasonStats:
+            featuredSeasonSHPts.append(featuredSeasonStats['shorthandedPoints'])
+        else:
+            featuredSeasonSHPts.append(None)
+        if 'shots' in featuredSeasonStats:
+            featuredSeasonShots.append(featuredSeasonStats['shots'])
+        else:
+            featuredSeasonShots.append(None)
+    else:
+        featuredSeasonAssists.append(None)
+        featuredSeasonGWG.append(None)
+        featuredSeasonGP.append(None)
+        featuredSeasonGoals.append(None)
+        featuredSeasonOTGoals.append(None)
+        featuredSeasonPIM.append(None)
+        featuredSeasonPlusMinus.append(None)
+        featuredSeasonPts.append(None)
+        featuredSeasonPPG.append(None)
+        featuredSeasonPPPoints.append(None)
+        featuredSeasonShootingPct.append(None)
+        featuredSeasonSHG.append(None)
+        featuredSeasonSHPts.append(None)
+        featuredSeasonShots.append(None)
 
-#     if 'careerTotals' in player_data:
-#         # Regular Season
-#         regSeasonCareer = player_data['careerTotals']['regularSeason']
-#         regSeasonCareerAssists.append(regSeasonCareer['assists'])
-#         if 'gameWinningGoals' in regSeasonCareer:
-#             regSeasonCareerGWG.append(regSeasonCareer['gameWinningGoals'])
-#         else:
-#             regSeasonCareerGWG.append(None)
-#         if 'gamesPlayed' in regSeasonCareer:
-#             regSeasonCareerGP.append(regSeasonCareer['gamesPlayed'])
-#         else:
-#             regSeasonCareerGP.append(None)
-#         if 'goals' in regSeasonCareer:
-#             regSeasonCareerGoals.append(regSeasonCareer['goals'])
-#         else:
-#             regSeasonCareerGoals.append(None)
-#         if 'otGoals' in regSeasonCareer:
-#             regSeasonCareerOTGoals.append(regSeasonCareer['otGoals'])
-#         else:
-#             regSeasonCareerOTGoals.append(None)
-#         if 'pim'in regSeasonCareer:
-#             regSeasonCareerPIM.append(regSeasonCareer['pim'])
-#         else:
-#             regSeasonCareerPIM.append(None)
-#         if 'plusMinus' in regSeasonCareer:
-#             regSeasonCareerPlusMinus.append(regSeasonCareer['plusMinus'])
-#         else:
-#             regSeasonCareerPlusMinus.append(None)
-#         if 'points' in regSeasonCareer:
-#             regSeasonCareerPts.append(regSeasonCareer['points'])
-#         else:
-#             regSeasonCareerPts.append(None)
-#         if 'powerPlayGoals' in regSeasonCareer:
-#             regSeasonCareerPPG.append(regSeasonCareer['powerPlayGoals'])
-#         else:
-#             regSeasonCareerPPG.append(None)
-#         if 'powerPlayPoints' in regSeasonCareer:
-#             regSeasonCareerPPPoints.append(regSeasonCareer['powerPlayPoints'])
-#         else:
-#             regSeasonCareerPPPoints.append(None)
-#         if 'shootingPctg' in regSeasonCareer:
-#             regSeasonCareerShootingPct.append(regSeasonCareer['shootingPctg'])
-#         else:
-#             regSeasonCareerShootingPct.append(None)
-#         if 'shorthandedGoals' in regSeasonCareer:
-#             regSeasonCareerSHG.append(regSeasonCareer['shorthandedGoals'])
-#         else:
-#             regSeasonCareerSHG.append(None)
-#         if 'shorthandedPoints' in regSeasonCareer:
-#             regSeasonCareerSHPts.append(regSeasonCareer['shorthandedPoints'])
-#         else:
-#             regSeasonCareerSHPts.append(None)
-#         if 'shots' in regSeasonCareer:
-#             regSeasonCareerShots.append(regSeasonCareer['shots'])
-#         else:
-#             regSeasonCareerShots.append(None)
+    if 'careerTotals' in player_data:
+        # Regular Season
+        regSeasonCareer = player_data['careerTotals']['regularSeason']
+        regSeasonCareerAssists.append(regSeasonCareer['assists'])
+        if 'gameWinningGoals' in regSeasonCareer:
+            regSeasonCareerGWG.append(regSeasonCareer['gameWinningGoals'])
+        else:
+            regSeasonCareerGWG.append(None)
+        if 'gamesPlayed' in regSeasonCareer:
+            regSeasonCareerGP.append(regSeasonCareer['gamesPlayed'])
+        else:
+            regSeasonCareerGP.append(None)
+        if 'goals' in regSeasonCareer:
+            regSeasonCareerGoals.append(regSeasonCareer['goals'])
+        else:
+            regSeasonCareerGoals.append(None)
+        if 'otGoals' in regSeasonCareer:
+            regSeasonCareerOTGoals.append(regSeasonCareer['otGoals'])
+        else:
+            regSeasonCareerOTGoals.append(None)
+        if 'pim'in regSeasonCareer:
+            regSeasonCareerPIM.append(regSeasonCareer['pim'])
+        else:
+            regSeasonCareerPIM.append(None)
+        if 'plusMinus' in regSeasonCareer:
+            regSeasonCareerPlusMinus.append(regSeasonCareer['plusMinus'])
+        else:
+            regSeasonCareerPlusMinus.append(None)
+        if 'points' in regSeasonCareer:
+            regSeasonCareerPts.append(regSeasonCareer['points'])
+        else:
+            regSeasonCareerPts.append(None)
+        if 'powerPlayGoals' in regSeasonCareer:
+            regSeasonCareerPPG.append(regSeasonCareer['powerPlayGoals'])
+        else:
+            regSeasonCareerPPG.append(None)
+        if 'powerPlayPoints' in regSeasonCareer:
+            regSeasonCareerPPPoints.append(regSeasonCareer['powerPlayPoints'])
+        else:
+            regSeasonCareerPPPoints.append(None)
+        if 'shootingPctg' in regSeasonCareer:
+            regSeasonCareerShootingPct.append(regSeasonCareer['shootingPctg'])
+        else:
+            regSeasonCareerShootingPct.append(None)
+        if 'shorthandedGoals' in regSeasonCareer:
+            regSeasonCareerSHG.append(regSeasonCareer['shorthandedGoals'])
+        else:
+            regSeasonCareerSHG.append(None)
+        if 'shorthandedPoints' in regSeasonCareer:
+            regSeasonCareerSHPts.append(regSeasonCareer['shorthandedPoints'])
+        else:
+            regSeasonCareerSHPts.append(None)
+        if 'shots' in regSeasonCareer:
+            regSeasonCareerShots.append(regSeasonCareer['shots'])
+        else:
+            regSeasonCareerShots.append(None)
 
-#         # Playoffs
-#         if 'playoffs' in player_data['careerTotals']:
-#             playoffsCareer = player_data['careerTotals']['playoffs']
-#             if 'assists' in playoffsCareer:
-#                 playoffsCareerAssists.append(playoffsCareer['assists'])
-#             else:
-#                 playoffsCareerAssists.append(None)
-#             if 'gameWinningGoals' in playoffsCareer:
-#                 playoffsCareerGWG.append(playoffsCareer['gameWinningGoals'])
-#             else:
-#                 playoffsCareerGWG.append(None)
-#             if 'gamesPlayed' in playoffsCareer:
-#                 playoffsCareerGP.append(playoffsCareer['gamesPlayed'])
-#             else:
-#                 playoffsCareerGP.append(None)
-#             if 'goals' in playoffsCareer:
-#                 playoffsCareerGoals.append(playoffsCareer['goals'])
-#             else:
-#                 playoffsCareerGoals.append(None)
-#             if 'otGoals' in playoffsCareer:
-#                 playoffsCareerOTGoals.append(playoffsCareer['otGoals'])
-#             else:
-#                 playoffsCareerOTGoals.append(None)
-#             if 'pim' in playoffsCareer:
-#                 playoffsCareerPIM.append(playoffsCareer['pim'])
-#             else:
-#                 playoffsCareerPIM.append(None)
-#             if 'plusMinus' in playoffsCareer:
-#                 playoffsCareerPlusMinus.append(playoffsCareer['plusMinus'])
-#             else:
-#                 playoffsCareerPlusMinus.append(None)
-#             if 'points' in playoffsCareer:
-#                 playoffsCareerPts.append(playoffsCareer['points'])
-#             else:
-#                 playoffsCareerPts.append(None)
-#             if 'powerPlayGoals' in playoffsCareer:
-#                 playoffsCareerPPG.append(playoffsCareer['powerPlayGoals'])
-#             else:
-#                 playoffsCareerPPG.append(None)
-#             if 'powerPlayPoints' in playoffsCareer:
-#                 playoffsCareerPPPoints.append(playoffsCareer['powerPlayPoints'])
-#             else:
-#                 playoffsCareerPPPoints.append(None)
-#             if 'shootingPctg' in playoffsCareer:
-#                 playoffsCareerShootingPct.append(playoffsCareer['shootingPctg'])
-#             else:
-#                 playoffsCareerShootingPct.append(None)
-#             if 'shorthandedGoals' in playoffsCareer:
-#                 playoffsCareerSHG.append(playoffsCareer['shorthandedGoals'])
-#             else:
-#                 playoffsCareerSHG.append(None)
-#             if 'shorthandedPoints' in playoffsCareer:
-#                 playoffsCareerSHPts.append(playoffsCareer['shorthandedPoints'])
-#             else:
-#                 playoffsCareerSHPts.append(None)
-#             if 'shots' in playoffsCareer:
-#                 playoffsCareerShots.append(playoffsCareer['shots'])
-#             else:
-#                 playoffsCareerShots.append(None)
-#         else:
-#             playoffsCareerAssists.append(None)
-#             playoffsCareerGWG.append(None)
-#             playoffsCareerGP.append(None)
-#             playoffsCareerGoals.append(None)
-#             playoffsCareerOTGoals.append(None)
-#             playoffsCareerPIM.append(None)
-#             playoffsCareerPlusMinus.append(None)
-#             playoffsCareerPts.append(None)
-#             playoffsCareerPPG.append(None)
-#             playoffsCareerPPPoints.append(None)
-#             playoffsCareerShootingPct.append(None)
-#             playoffsCareerSHG.append(None)
-#             playoffsCareerSHPts.append(None)
-#             playoffsCareerShots.append(None)
-#     else:
-#         regSeasonCareerAssists.append(None)
-#         regSeasonCareerGWG.append(None)
-#         regSeasonCareerGP.append(None)
-#         regSeasonCareerGoals.append(None)
-#         regSeasonCareerOTGoals.append(None)
-#         regSeasonCareerPIM.append(None)
-#         regSeasonCareerPlusMinus.append(None)
-#         regSeasonCareerPts.append(None)
-#         regSeasonCareerPPG.append(None)
-#         regSeasonCareerPPPoints.append(None)
-#         regSeasonCareerShootingPct.append(None)
-#         regSeasonCareerSHG.append(None)
-#         regSeasonCareerSHPts.append(None)
-#         regSeasonCareerShots.append(None)
+        # Playoffs
+        if 'playoffs' in player_data['careerTotals']:
+            playoffsCareer = player_data['careerTotals']['playoffs']
+            if 'assists' in playoffsCareer:
+                playoffsCareerAssists.append(playoffsCareer['assists'])
+            else:
+                playoffsCareerAssists.append(None)
+            if 'gameWinningGoals' in playoffsCareer:
+                playoffsCareerGWG.append(playoffsCareer['gameWinningGoals'])
+            else:
+                playoffsCareerGWG.append(None)
+            if 'gamesPlayed' in playoffsCareer:
+                playoffsCareerGP.append(playoffsCareer['gamesPlayed'])
+            else:
+                playoffsCareerGP.append(None)
+            if 'goals' in playoffsCareer:
+                playoffsCareerGoals.append(playoffsCareer['goals'])
+            else:
+                playoffsCareerGoals.append(None)
+            if 'otGoals' in playoffsCareer:
+                playoffsCareerOTGoals.append(playoffsCareer['otGoals'])
+            else:
+                playoffsCareerOTGoals.append(None)
+            if 'pim' in playoffsCareer:
+                playoffsCareerPIM.append(playoffsCareer['pim'])
+            else:
+                playoffsCareerPIM.append(None)
+            if 'plusMinus' in playoffsCareer:
+                playoffsCareerPlusMinus.append(playoffsCareer['plusMinus'])
+            else:
+                playoffsCareerPlusMinus.append(None)
+            if 'points' in playoffsCareer:
+                playoffsCareerPts.append(playoffsCareer['points'])
+            else:
+                playoffsCareerPts.append(None)
+            if 'powerPlayGoals' in playoffsCareer:
+                playoffsCareerPPG.append(playoffsCareer['powerPlayGoals'])
+            else:
+                playoffsCareerPPG.append(None)
+            if 'powerPlayPoints' in playoffsCareer:
+                playoffsCareerPPPoints.append(playoffsCareer['powerPlayPoints'])
+            else:
+                playoffsCareerPPPoints.append(None)
+            if 'shootingPctg' in playoffsCareer:
+                playoffsCareerShootingPct.append(playoffsCareer['shootingPctg'])
+            else:
+                playoffsCareerShootingPct.append(None)
+            if 'shorthandedGoals' in playoffsCareer:
+                playoffsCareerSHG.append(playoffsCareer['shorthandedGoals'])
+            else:
+                playoffsCareerSHG.append(None)
+            if 'shorthandedPoints' in playoffsCareer:
+                playoffsCareerSHPts.append(playoffsCareer['shorthandedPoints'])
+            else:
+                playoffsCareerSHPts.append(None)
+            if 'shots' in playoffsCareer:
+                playoffsCareerShots.append(playoffsCareer['shots'])
+            else:
+                playoffsCareerShots.append(None)
+        else:
+            playoffsCareerAssists.append(None)
+            playoffsCareerGWG.append(None)
+            playoffsCareerGP.append(None)
+            playoffsCareerGoals.append(None)
+            playoffsCareerOTGoals.append(None)
+            playoffsCareerPIM.append(None)
+            playoffsCareerPlusMinus.append(None)
+            playoffsCareerPts.append(None)
+            playoffsCareerPPG.append(None)
+            playoffsCareerPPPoints.append(None)
+            playoffsCareerShootingPct.append(None)
+            playoffsCareerSHG.append(None)
+            playoffsCareerSHPts.append(None)
+            playoffsCareerShots.append(None)
+    else:
+        regSeasonCareerAssists.append(None)
+        regSeasonCareerGWG.append(None)
+        regSeasonCareerGP.append(None)
+        regSeasonCareerGoals.append(None)
+        regSeasonCareerOTGoals.append(None)
+        regSeasonCareerPIM.append(None)
+        regSeasonCareerPlusMinus.append(None)
+        regSeasonCareerPts.append(None)
+        regSeasonCareerPPG.append(None)
+        regSeasonCareerPPPoints.append(None)
+        regSeasonCareerShootingPct.append(None)
+        regSeasonCareerSHG.append(None)
+        regSeasonCareerSHPts.append(None)
+        regSeasonCareerShots.append(None)
 
-#     # Other
-#     shopLink.append(player_data['shopLink'])
-#     twitterLink.append(player_data['twitterLink'])
-#     watchLink.append(player_data['watchLink'])
-#     if 'last5Games' in player_data:
-#         last5Games.append(player_data['last5Games'])
-#     else:
-#         last5Games.append(None)
+    # Other
+    shopLink.append(player_data['shopLink'])
+    twitterLink.append(player_data['twitterLink'])
+    watchLink.append(player_data['watchLink'])
+    if 'last5Games' in player_data:
+        last5Games.append(player_data['last5Games'])
+    else:
+        last5Games.append(None)
     
     # Season-by-Season Stats
-    # seasonTotals.append(player_data['seasonTotals'])
+    seasonTotals.append(player_data['seasonTotals'])
 
-    # print(player_data['seasonTotals'])
+    print(player_data['seasonTotals'])
 
 
-    ### SEASON SUMMARY DATA ###
+    # ## SEASON SUMMARY DATA ###
     # seasonAssists = []
     # seasonGameTypeId = []
     # seasonGamesPlayed = []
@@ -1090,18 +1090,6 @@ print(df_roster.head())
     #     seasonSequence.append(season['sequence'])
     #     seasonTeamName.append(season['teamName']['default'])
 
-    # print(len(playerId))
-    # print(len(seasonAssists))
-    # print(len(seasonGameTypeId))
-    # print(len(seasonGamesPlayed))
-    # print(len(seasonGoals))
-    # print(len(seasonLeagueAbbrev))
-    # print(len(seasonPIM))
-    # print(len(seasonPoints))
-    # print(len(seasonSeason))
-    # print(len(seasonSequence))
-    # print(len(seasonTeamName))
-
     # df_seasons_data = pd.DataFrame([playerId, seasonAssists, seasonGameTypeId, seasonGamesPlayed,
     #                                 seasonGoals, seasonLeagueAbbrev, seasonPIM, seasonPoints, seasonSeason,
     #                                 seasonSequence, seasonTeamName]).transpose()
@@ -1113,59 +1101,59 @@ print(df_roster.head())
     # df_seasons_data.to_csv("season_stats.csv", index=False)
 
 
-    # if 'awards' in player_data:
-    #     awards = player_data['awards']
-    #     for award in awards:
-    #         local_awardNames = []
-    #         local_awardSeasons = []
-    #         local_awardNames.append(award['trophy']['default'])
-    #         seasonsWon = []
-    #         for season in award['seasons']:
-    #             seasonsWon.append(season['seasonId'])
-    #         local_awardSeasons.append(seasonsWon)
-    #     awardNames.append(local_awardNames)
-    #     awardSeasons.append(local_awardSeasons)
-    # else:
-    #     awardNames.append(None)
-    #     awardSeasons.append(None)
-    # if 'currentTeamRoster' in player_data:
-    #     currentTeamRoster.append(player_data['currentTeamRoster'])
-    # else:
-        # currentTeamRoster.append(None)
+    if 'awards' in player_data:
+        awards = player_data['awards']
+        for award in awards:
+            local_awardNames = []
+            local_awardSeasons = []
+            local_awardNames.append(award['trophy']['default'])
+            seasonsWon = []
+            for season in award['seasons']:
+                seasonsWon.append(season['seasonId'])
+            local_awardSeasons.append(seasonsWon)
+        awardNames.append(local_awardNames)
+        awardSeasons.append(local_awardSeasons)
+    else:
+        awardNames.append(None)
+        awardSeasons.append(None)
+    if 'currentTeamRoster' in player_data:
+        currentTeamRoster.append(player_data['currentTeamRoster'])
+    else:
+        currentTeamRoster.append(None)
 
 
-### Create, save, and view df ###
-# df_players = pd.DataFrame([playerId, isActive, currentTeamId, currentTeamAbbrev, fullTeamName, teamCommonName, teamPlaceNameWithPreposition,
-#                             firstName, lastName, badgesLogos, badgesNames, teamLogo, sweaterNumber, position, headshot, heroImage, heightInInches, 
-#                             heightInCentimeters, weightInPounds, weightInKilograms, birthDate, birthCity, birthStateProvince, birthCountry, shootsCatches,
-#                             draftYear, draftTeam, draftRound, draftPickInRound, draftOverall, playerSlug, inTop100AllTime, inHHOF, featuredSeasonAssists,
-#                             featuredSeasonGWG, featuredSeasonGP, featuredSeasonGoals, featuredSeasonOTGoals, featuredSeasonPIM, featuredSeasonPlusMinus,
-#                             featuredSeasonPts, featuredSeasonPPG, featuredSeasonPPPoints, featuredSeasonShootingPct, featuredSeasonSHG, featuredSeasonSHPts,
-#                             featuredSeasonShots, regSeasonCareerAssists, regSeasonCareerGWG, regSeasonCareerGP, regSeasonCareerGoals, regSeasonCareerOTGoals,
-#                             regSeasonCareerPIM, regSeasonCareerPlusMinus, regSeasonCareerPts, regSeasonCareerPPG, regSeasonCareerPPPoints,
-#                             regSeasonCareerShootingPct, regSeasonCareerSHG, regSeasonCareerSHPts, regSeasonCareerShots, playoffsCareerAssists,
-#                             playoffsCareerGWG, playoffsCareerGP, playoffsCareerGoals, playoffsCareerOTGoals, playoffsCareerPIM, playoffsCareerPlusMinus,
-#                             playoffsCareerPts, playoffsCareerPPG, playoffsCareerPPPoints, playoffsCareerShootingPct, playoffsCareerSHG, playoffsCareerSHPts,
-#                             playoffsCareerShots, shopLink, twitterLink, watchLink, last5Games, seasonTotals, awardNames, awardSeasons, currentTeamRoster]
-#                             ).transpose()
+## Create, save, and view df ###
+df_players = pd.DataFrame([playerId, isActive, currentTeamId, currentTeamAbbrev, fullTeamName, teamCommonName, teamPlaceNameWithPreposition,
+                            firstName, lastName, badgesLogos, badgesNames, teamLogo, sweaterNumber, position, headshot, heroImage, heightInInches, 
+                            heightInCentimeters, weightInPounds, weightInKilograms, birthDate, birthCity, birthStateProvince, birthCountry, shootsCatches,
+                            draftYear, draftTeam, draftRound, draftPickInRound, draftOverall, playerSlug, inTop100AllTime, inHHOF, featuredSeason, featuredSeasonAssists,
+                            featuredSeasonGWG, featuredSeasonGP, featuredSeasonGoals, featuredSeasonOTGoals, featuredSeasonPIM, featuredSeasonPlusMinus,
+                            featuredSeasonPts, featuredSeasonPPG, featuredSeasonPPPoints, featuredSeasonShootingPct, featuredSeasonSHG, featuredSeasonSHPts,
+                            featuredSeasonShots, regSeasonCareerAssists, regSeasonCareerGWG, regSeasonCareerGP, regSeasonCareerGoals, regSeasonCareerOTGoals,
+                            regSeasonCareerPIM, regSeasonCareerPlusMinus, regSeasonCareerPts, regSeasonCareerPPG, regSeasonCareerPPPoints,
+                            regSeasonCareerShootingPct, regSeasonCareerSHG, regSeasonCareerSHPts, regSeasonCareerShots, playoffsCareerAssists,
+                            playoffsCareerGWG, playoffsCareerGP, playoffsCareerGoals, playoffsCareerOTGoals, playoffsCareerPIM, playoffsCareerPlusMinus,
+                            playoffsCareerPts, playoffsCareerPPG, playoffsCareerPPPoints, playoffsCareerShootingPct, playoffsCareerSHG, playoffsCareerSHPts,
+                            playoffsCareerShots, shopLink, twitterLink, watchLink, last5Games, seasonTotals, awardNames, awardSeasons, currentTeamRoster]
+                            ).transpose()
 
-# df_players.columns = ['playerId', 'isActive', 'currentTeamId', 'currentTeamAbbrev', 'fullTeamName', 'teamCommonName', 'teamPlaceNameWithPreposition',
-#                         'firstName', 'lastName', 'badgesLogos','badgesNames','teamLogo', 'sweaterNumber', 'position', 'headshot', 'heroImage',
-#                         'heightInInches', 'heightInCentimeters', 'weightInPounds', 'weightInKilograms', 'birthDate', 'birthCity', 'birthStateProvince', 
-#                         'birthCountry', 'shootsCatches', 'draftYear', 'draftTeam', 'draftRound', 'draftPickInRound', 'draftOverall','playerSlug', 
-#                         'inTop100AllTime', 'inHHOF','featuredSeasonAssists','featuredSeasonGWG','featuredSeasonGP', 'featuredSeasonGoals',
-#                         'featuredSeasonOTGoals', 'featuredSeasonPIM', 'featuredSeasonPlusMinus', 'featuredSeasonPts', 'featuredSeasonPPG',
-#                         'featuredSeasonPPPoints', 'featuredSeasonShootingPct', 'featuredSeasonSHG', 'featuredSeasonSHPts', 'featuredSeasonShots',
-#                         'regSeasonCareerAssists', 'regSeasonCareerGWG', 'regSeasonCareerGP', 'regSeasonCareerGoals', 'regSeasonCareerOTGoals',
-#                         'regSeasonCareerPIM', 'regSeasonCareerPlusMinus', 'regSeasonCareerPts', 'regSeasonCareerPPG', 'regSeasonCareerPPPoints',
-#                         'regSeasonCareerShootingPct', 'regSeasonCareerSHG','regSeasonCareerSHPts','regSeasonCareerShots', 'playoffsCareerAssists',
-#                         'playoffsCareerGWG', 'playoffsCareerGP', 'playoffsCareerGoals', 'playoffsCareerOTGoals', 'playoffsCareerPIM',
-#                         'playoffsCareerPlusMinus', 'playoffsCareerPts', 'playoffsCareerPPG', 'playoffsCareerPPPoints', 'playoffsCareerShootingPct',
-#                         'playoffsCareerSHG', 'playoffsCareerSHPts', 'playoffsCareerShots', 'shopLink', 'twitterLink', 'watchLink', 'last5Games',
-#                         'seasonTotals', 'awardNames', 'awardSeasons','currentTeamRoster']
+df_players.columns = ['playerId', 'isActive', 'currentTeamId', 'currentTeamAbbrev', 'fullTeamName', 'teamCommonName', 'teamPlaceNameWithPreposition',
+                        'firstName', 'lastName', 'badgesLogos','badgesNames','teamLogo', 'sweaterNumber', 'position', 'headshot', 'heroImage',
+                        'heightInInches', 'heightInCentimeters', 'weightInPounds', 'weightInKilograms', 'birthDate', 'birthCity', 'birthStateProvince', 
+                        'birthCountry', 'shootsCatches', 'draftYear', 'draftTeam', 'draftRound', 'draftPickInRound', 'draftOverall','playerSlug', 
+                        'inTop100AllTime', 'inHHOF','featuredSeason','featuredSeasonAssists','featuredSeasonGWG','featuredSeasonGP', 'featuredSeasonGoals',
+                        'featuredSeasonOTGoals', 'featuredSeasonPIM', 'featuredSeasonPlusMinus', 'featuredSeasonPts', 'featuredSeasonPPG',
+                        'featuredSeasonPPPoints', 'featuredSeasonShootingPct', 'featuredSeasonSHG', 'featuredSeasonSHPts', 'featuredSeasonShots',
+                        'regSeasonCareerAssists', 'regSeasonCareerGWG', 'regSeasonCareerGP', 'regSeasonCareerGoals', 'regSeasonCareerOTGoals',
+                        'regSeasonCareerPIM', 'regSeasonCareerPlusMinus', 'regSeasonCareerPts', 'regSeasonCareerPPG', 'regSeasonCareerPPPoints',
+                        'regSeasonCareerShootingPct', 'regSeasonCareerSHG','regSeasonCareerSHPts','regSeasonCareerShots', 'playoffsCareerAssists',
+                        'playoffsCareerGWG', 'playoffsCareerGP', 'playoffsCareerGoals', 'playoffsCareerOTGoals', 'playoffsCareerPIM',
+                        'playoffsCareerPlusMinus', 'playoffsCareerPts', 'playoffsCareerPPG', 'playoffsCareerPPPoints', 'playoffsCareerShootingPct',
+                        'playoffsCareerSHG', 'playoffsCareerSHPts', 'playoffsCareerShots', 'shopLink', 'twitterLink', 'watchLink', 'last5Games',
+                        'seasonTotals', 'awardNames', 'awardSeasons','currentTeamRoster']
 
-# df_players.to_csv("player_detail.csv", index=False)
-# print(df_players.head())
+df_players.to_csv("player_detail.csv", index=False)
+print(df_players.head())
 
 
 
