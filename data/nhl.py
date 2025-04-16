@@ -20,6 +20,9 @@ game_code = '2024021247'
 suffix= "/play-by-play"
 
 
+
+
+
 ################################ GAME SUMMARY INFORMATION (Primary Key GameID, location, teams, score, etc.) ####################################
 
 # game info
@@ -47,107 +50,116 @@ suffix= "/play-by-play"
 # gameOutcome = []
 # regPeriods = []
 
-# for game_id in gameID_list[30000:32000]:
+# print(len(gameID_list))
+
+# for game_id in gameID_list[50000:]:
 #     # print(game_id)
 #     # set game code to current game and pull JSON
 #     game_code = str(game_id)
 #     url = base_url+game_code+suffix
 #     # print(url)
-#     pbp = requests.get(url).json()
-
-#     # append all fields from this game to their respective lists, adding None if not found
-#     id.append(game_id)
-#     season.append(pbp['season'])
-#     gameType.append(pbp['gameType']) 
-
-#     game_row = game_df[game_df['id'] == game_id]
-#     if not game_row.empty:
-#         gameNumber.append(game_row.iloc[0]['gameNumber'])
-#         easternStartTime.append(game_row.iloc[0]['easternStartTime'])
-#         gameStateId.append(game_row.iloc[0]['gameStateId'])
-#     else:
-#         gameNumber.append(None)
-#         easternStartTime.append(None)
-#         gameStateId.append(None)
-
-#     if 'gameDate' in pbp:
-#         gameDate.append(pbp['gameDate'])
-#     else:
-#         gameDate.append(None)
-
-#     if 'plays' in pbp:
-#         pbp.pop('plays')
-    
-#     if 'rosterSpots' in pbp:
-#         pbp.pop('rosterSpots')
-
-#     if 'venue' in pbp:
-#         venue.append(pbp['venue']['default'])
-#     else:
-#         venue.append(None)
-
-#     if 'venueLocation' in pbp:
-#         venueLocation.append(pbp['venueLocation']['default'])
-#     else:
-#         venueLocation.append(None)
-
-#     if 'awayTeam' in pbp:
-#         awayTeamId.append(pbp['awayTeam']['id'])
-#         awayTeamName.append(pbp['awayTeam']['commonName']['default'])
-#         awayScore.append(pbp['awayTeam']['score'])
-#         if 'sog' in pbp['awayTeam']:
-#             awayShots.append(pbp['awayTeam']['sog'])
+#     try:
+#         response = requests.head(url, allow_redirects=True)
+#         if response.status_code == 404:
+#             print("Page not found (404).")
 #         else:
-#             awayShots.append(None)
-#         if 'logo' in pbp['awayTeam']:
-#             awayLogo.append(pbp['awayTeam']['logo'])
-#         else:
-#             awayLogo.append(None)
-#     else:
-#         awayTeamId.append(None)
-#         awayTeamName.append(None)
-#         awayScore.append(None)
-#         awayShots.append(None)
-#         awayLogo.append(None)
+#             pbp = requests.get(url).json()
+#             # append all fields from this game to their respective lists, adding None if not found
+#             id.append(game_id)
+#             season.append(pbp['season'])
+#             gameType.append(pbp['gameType']) 
 
-#     if 'homeTeam' in pbp:
-#         homeTeamId.append(pbp['homeTeam']['id'])
-#         homeTeamName.append(pbp['homeTeam']['commonName']['default'])
-#         homeScore.append(pbp['homeTeam']['score'])
-#         if 'sog' in pbp['homeTeam']:
-#             homeShots.append(pbp['homeTeam']['sog'])
-#         else:
-#             homeShots.append(None)
-#         if 'logo' in pbp['homeTeam']:
-#             homeLogo.append(pbp['homeTeam']['logo'])
-#         else:
-#             homeLogo.append(None)
-#     else:
-#         homeTeamId.append(None)
-#         homeTeamName.append(None)
-#         homeScore.append(None)
-#         homeShots.append(None)
-#         homeLogo.append(None)
+#             game_row = game_df[game_df['id'] == game_id]
+#             if not game_row.empty:
+#                 gameNumber.append(game_row.iloc[0]['gameNumber'])
+#                 easternStartTime.append(game_row.iloc[0]['easternStartTime'])
+#                 gameStateId.append(game_row.iloc[0]['gameStateId'])
+#             else:
+#                 gameNumber.append(None)
+#                 easternStartTime.append(None)
+#                 gameStateId.append(None)
 
-#     if 'shootoutInUse' in pbp:
-#         shootoutInUse.append(pbp['shootoutInUse'])
-#     else:
-#         shootoutInUse.append(None)
+#             if 'gameDate' in pbp:
+#                 gameDate.append(pbp['gameDate'])
+#             else:
+#                 gameDate.append(None)
 
-#     if 'otInUse' in pbp:
-#         otInUse.append(pbp['otInUse'])
-#     else:
-#         otInUse.append(None)
+#             if 'plays' in pbp:
+#                 pbp.pop('plays')
+            
+#             if 'rosterSpots' in pbp:
+#                 pbp.pop('rosterSpots')
 
-#     if 'gameOutcome' in pbp:
-#         gameOutcome.append(pbp['gameOutcome']['lastPeriodType'])
-#     else:
-#         gameOutcome.append(None)
+#             if 'venue' in pbp:
+#                 venue.append(pbp['venue']['default'])
+#             else:
+#                 venue.append(None)
 
-#     if 'regPeriods' in pbp:
-#         regPeriods.append(pbp['regPeriods'])
-#     else:
-#         regPeriods.append(None)
+#             if 'venueLocation' in pbp:
+#                 venueLocation.append(pbp['venueLocation']['default'])
+#             else:
+#                 venueLocation.append(None)
+
+#             if 'awayTeam' in pbp:
+#                 awayTeamId.append(pbp['awayTeam']['id'])
+#                 awayTeamName.append(pbp['awayTeam']['commonName']['default'])
+#                 awayScore.append(pbp['awayTeam']['score'])
+#                 if 'sog' in pbp['awayTeam']:
+#                     awayShots.append(pbp['awayTeam']['sog'])
+#                 else:
+#                     awayShots.append(None)
+#                 if 'logo' in pbp['awayTeam']:
+#                     awayLogo.append(pbp['awayTeam']['logo'])
+#                 else:
+#                     awayLogo.append(None)
+#             else:
+#                 awayTeamId.append(None)
+#                 awayTeamName.append(None)
+#                 awayScore.append(None)
+#                 awayShots.append(None)
+#                 awayLogo.append(None)
+
+#             if 'homeTeam' in pbp:
+#                 homeTeamId.append(pbp['homeTeam']['id'])
+#                 homeTeamName.append(pbp['homeTeam']['commonName']['default'])
+#                 homeScore.append(pbp['homeTeam']['score'])
+#                 if 'sog' in pbp['homeTeam']:
+#                     homeShots.append(pbp['homeTeam']['sog'])
+#                 else:
+#                     homeShots.append(None)
+#                 if 'logo' in pbp['homeTeam']:
+#                     homeLogo.append(pbp['homeTeam']['logo'])
+#                 else:
+#                     homeLogo.append(None)
+#             else:
+#                 homeTeamId.append(None)
+#                 homeTeamName.append(None)
+#                 homeScore.append(None)
+#                 homeShots.append(None)
+#                 homeLogo.append(None)
+
+#             if 'shootoutInUse' in pbp:
+#                 shootoutInUse.append(pbp['shootoutInUse'])
+#             else:
+#                 shootoutInUse.append(None)
+
+#             if 'otInUse' in pbp:
+#                 otInUse.append(pbp['otInUse'])
+#             else:
+#                 otInUse.append(None)
+
+#             if 'gameOutcome' in pbp:
+#                 gameOutcome.append(pbp['gameOutcome']['lastPeriodType'])
+#             else:
+#                 gameOutcome.append(None)
+
+#             if 'regPeriods' in pbp:
+#                 regPeriods.append(pbp['regPeriods'])
+#             else:
+#                 regPeriods.append(None)
+#     except requests.RequestException as e:
+#         print("Error checking URL:", e)
+
 
 # df_games = pd.DataFrame([id,season,gameType,gameNumber,gameDate,easternStartTime,gameStateId,venue,venueLocation,awayTeamId,awayTeamName,awayScore,
 #                          awayShots,awayLogo, homeTeamId,homeTeamName, homeScore, homeShots, homeLogo, shootoutInUse,otInUse,
@@ -200,7 +212,7 @@ suffix= "/play-by-play"
 
 # # print(data)
 
-# for game_id in gameID_list[-100:]: # ['2022030117']:
+# for game_id in gameID_list[-1000:-100]: # ['2022030117']:
 #     game_url = base_url + str(game_id) + suffix
 #     if requests.get(game_url):
 #         data = requests.get(game_url).json()
@@ -498,7 +510,10 @@ suffix= "/play-by-play"
 #                     faceoffWinnerId.append(None)
 #                     hittingPlayerId.append(None) 
 #                     hitteePlayerId.append(None)
-#                     shotType.append(play['details']['shotType'])
+#                     if shotType in play['details']:
+#                         shotType.append(play['details']['shotType'])
+#                     else:
+#                         shotType.append(None)
 #                     shootingPlayerId.append(None)
 #                     if 'goalieInNetId' in play['details']:
 #                         goalieInNetId.append(play['details']['goalieInNetId'])
@@ -601,71 +616,76 @@ suffix= "/play-by-play"
 
 ####################################################### ROSTERS ########################################################
 
-# gameID = []
-# teamID = []
-# playerID = []
-# firstName = []
-# lastName = []
-# sweaterNumber = []
-# positionCode = []
-# headshotURLs = []
+gameID = []
+teamID = []
+playerID = []
+firstName = []
+lastName = []
+sweaterNumber = []
+positionCode = []
+headshotURLs = []
 
-# for game_id in gameID_list[-10000:-9000]: # ['2022030117']:
-#     game_url = base_url + str(game_id) + suffix
-#     if requests.get(game_url):
-#         data = requests.get(game_url).json()
-#     else:
-#         continue
+for game_id in gameID_list[-30000:-20000]: # ['2022030117']:
+    game_url = base_url + str(game_id) + suffix
+
+    try:
+        response = requests.head(game_url, allow_redirects=True)
+        if response.status_code == 404:
+            print("Page not found (404).")
+        else:
+            data = requests.get(game_url).json()
     
-#     if not data['rosterSpots']:
-#         gameID.append(np.nan)
-#         teamID.append(np.nan)
-#         playerID.append(np.nan)
-#         firstName.append(np.nan)
-#         lastName.append(np.nan)
-#         sweaterNumber.append(np.nan)
-#         positionCode.append(np.nan)
-#         headshotURLs.append(np.nan)
+            if not data['rosterSpots']:
+                gameID.append(np.nan)
+                teamID.append(np.nan)
+                playerID.append(np.nan)
+                firstName.append(np.nan)
+                lastName.append(np.nan)
+                sweaterNumber.append(np.nan)
+                positionCode.append(np.nan)
+                headshotURLs.append(np.nan)
 
-#     else:
-#         for player in data['rosterSpots']:
-#             if 'playerId' in player:
-#                 gameID.append(game_id)
-#             else:
-#                 gameID.append(None)
-#             if 'teamId' in player:
-#                 teamID.append(player['teamId'])
-#             else:
-#                 teamID.append(None)
-#             if 'playerId' in player:
-#                 playerID.append(player['playerId'])
-#             else:
-#                 playerID.append(None)
-#             if 'default' in player['firstName']:
-#                 firstName.append(player['firstName']['default'])
-#             else:
-#                 firstName.append(None)
-#             if 'default' in player['lastName']:
-#                 lastName.append(player['lastName']['default'])
-#             else:
-#                 lastName.append(None)
-#             if 'sweaterNumber' in player:
-#                 sweaterNumber.append(player['sweaterNumber'])
-#             else:
-#                 sweaterNumber.append(None)
-#             if 'positionCode' in player:
-#                 positionCode.append(player['positionCode'])
-#             else:
-#                 positionCode.append(None)
-#             if 'headshot' in player:
-#                 headshotURLs.append(player['headshot'])
-#             else:
-#                 headshotURLs.append(None)
+            else:
+                for player in data['rosterSpots']:
+                    if 'playerId' in player:
+                        gameID.append(game_id)
+                    else:
+                        gameID.append(None)
+                    if 'teamId' in player:
+                        teamID.append(player['teamId'])
+                    else:
+                        teamID.append(None)
+                    if 'playerId' in player:
+                        playerID.append(player['playerId'])
+                    else:
+                        playerID.append(None)
+                    if 'default' in player['firstName']:
+                        firstName.append(player['firstName']['default'])
+                    else:
+                        firstName.append(None)
+                    if 'default' in player['lastName']:
+                        lastName.append(player['lastName']['default'])
+                    else:
+                        lastName.append(None)
+                    if 'sweaterNumber' in player:
+                        sweaterNumber.append(player['sweaterNumber'])
+                    else:
+                        sweaterNumber.append(None)
+                    if 'positionCode' in player:
+                        positionCode.append(player['positionCode'])
+                    else:
+                        positionCode.append(None)
+                    if 'headshot' in player:
+                        headshotURLs.append(player['headshot'])
+                    else:
+                        headshotURLs.append(None)
+    except requests.RequestException as e:
+        print("Error checking URL:", e)
 
-# df_roster = pd.DataFrame([gameID, teamID, playerID, firstName, lastName, sweaterNumber, positionCode, headshotURLs]).transpose()
-# df_roster.columns = ['Game ID', 'Team ID', 'Player ID', 'First Name', 'Last Name', 'Number', 'Position', 'Headshot']
-# df_roster.to_csv("roster_test.csv", index=False)
-# print(df_roster.head())
+df_roster = pd.DataFrame([gameID, teamID, playerID, firstName, lastName, sweaterNumber, positionCode, headshotURLs]).transpose()
+df_roster.columns = ['Game ID', 'Team ID', 'Player ID', 'First Name', 'Last Name', 'Number', 'Position', 'Headshot']
+df_roster.to_csv("roster_test.csv", index=False)
+print(df_roster.head())
 
 
 ################################################### PLAYER DETAILS ########################################################
@@ -673,33 +693,33 @@ suffix= "/play-by-play"
 # need to get distinct list of all player IDs from rosters - export w SQL from DB
 
 ### Define URL setup ###
-player_base_url = "https://api-web.nhle.com/v1/player/" 
-player_suffix = "/landing"
+# player_base_url = "https://api-web.nhle.com/v1/player/" 
+# player_suffix = "/landing"
 
-playerID_list = pd.read_csv("C:/Users/conno/OneDrive/Documents/playerID_list.csv")
-playerID_list = playerID_list[1:] # temp, remove 0 row before export
-playerID_list = playerID_list['playerID'].to_list() # convert from df to list for looping
+# playerID_list = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal Website/data/playerID_list.csv")
+# playerID_list = playerID_list[1:] # temp, remove 0 row before export
+# playerID_list = playerID_list['playerID'].to_list() # convert from df to list for looping
 
-### Create lists for player information ###
-playerId = []; isActive = []; currentTeamId = []; currentTeamAbbrev = []; fullTeamName = []; teamCommonName = []; teamPlaceNameWithPreposition = []
-firstName = []; lastName = []; badgesLogos = []; badgesNames = []; teamLogo = []; sweaterNumber = []; position = []; headshot = []; heroImage = []
-heightInInches = []; heightInCentimeters = []; weightInPounds = []; weightInKilograms = []; birthDate = []; birthCity = []; birthStateProvince = []
-birthCountry = []; shootsCatches = []; draftYear = []; draftTeam = []; draftRound = []; draftPickInRound = []; draftOverall = []; playerSlug = []
-inTop100AllTime = []; inHHOF = []; featuredSeason = []; featuredSeasonStats = []; featuredSeasonAssists = []; featuredSeasonGWG = []; featuredSeasonGP = []
-featuredSeasonGoals = []; featuredSeasonOTGoals = []; featuredSeasonPIM = []; featuredSeasonPlusMinus = []; featuredSeasonPts = []; featuredSeasonPPG = []
-featuredSeasonPPPoints = []; featuredSeasonShootingPct = []; featuredSeasonSHG = []; featuredSeasonSHPts = []; featuredSeasonShots = []; regSeasonCareer = []
-regSeasonCareerAssists = []; regSeasonCareerGWG = []; regSeasonCareerGP = []; regSeasonCareerGoals = []; regSeasonCareerOTGoals = []; regSeasonCareerPIM = []
-regSeasonCareerPlusMinus = []; regSeasonCareerPts = []; regSeasonCareerPPG = []; regSeasonCareerPPPoints = []; regSeasonCareerShootingPct = []
-regSeasonCareerSHG = []; regSeasonCareerSHPts = []; regSeasonCareerShots = []; playoffsCareer = []; playoffsCareerAssists = []; playoffsCareerGWG = []
-playoffsCareerGP = []; playoffsCareerGoals = []; playoffsCareerOTGoals = []; playoffsCareerPIM = []; playoffsCareerPlusMinus = []; playoffsCareerPts = []
-playoffsCareerPPG = []; playoffsCareerPPPoints = []; playoffsCareerShootingPct =[]; playoffsCareerSHG = []; playoffsCareerSHPts = []; playoffsCareerShots = []
-shopLink = []; twitterLink = []; watchLink = []; last5Games = []; seasonTotals = []; awardNames = []; awardSeasons = []; currentTeamRoster = []
+# ### Create lists for player information ###
+# playerId = []; #isActive = []; currentTeamId = []; currentTeamAbbrev = []; fullTeamName = []; teamCommonName = []; teamPlaceNameWithPreposition = []
+# # firstName = []; lastName = []; badgesLogos = []; badgesNames = []; teamLogo = []; sweaterNumber = []; position = []; headshot = []; heroImage = []
+# # heightInInches = []; heightInCentimeters = []; weightInPounds = []; weightInKilograms = []; birthDate = []; birthCity = []; birthStateProvince = []
+# # birthCountry = []; shootsCatches = []; draftYear = []; draftTeam = []; draftRound = []; draftPickInRound = []; draftOverall = []; playerSlug = []
+# # inTop100AllTime = []; inHHOF = []; featuredSeason = []; featuredSeasonStats = []; featuredSeasonAssists = []; featuredSeasonGWG = []; featuredSeasonGP = []
+# # featuredSeasonGoals = []; featuredSeasonOTGoals = []; featuredSeasonPIM = []; featuredSeasonPlusMinus = []; featuredSeasonPts = []; featuredSeasonPPG = []
+# # featuredSeasonPPPoints = []; featuredSeasonShootingPct = []; featuredSeasonSHG = []; featuredSeasonSHPts = []; featuredSeasonShots = []; regSeasonCareer = []
+# # regSeasonCareerAssists = []; regSeasonCareerGWG = []; regSeasonCareerGP = []; regSeasonCareerGoals = []; regSeasonCareerOTGoals = []; regSeasonCareerPIM = []
+# # regSeasonCareerPlusMinus = []; regSeasonCareerPts = []; regSeasonCareerPPG = []; regSeasonCareerPPPoints = []; regSeasonCareerShootingPct = []
+# # regSeasonCareerSHG = []; regSeasonCareerSHPts = []; regSeasonCareerShots = []; playoffsCareer = []; playoffsCareerAssists = []; playoffsCareerGWG = []
+# # playoffsCareerGP = []; playoffsCareerGoals = []; playoffsCareerOTGoals = []; playoffsCareerPIM = []; playoffsCareerPlusMinus = []; playoffsCareerPts = []
+# # playoffsCareerPPG = []; playoffsCareerPPPoints = []; playoffsCareerShootingPct =[]; playoffsCareerSHG = []; playoffsCareerSHPts = []; playoffsCareerShots = []
+# # shopLink = []; twitterLink = []; watchLink = []; last5Games = []; seasonTotals = []; awardNames = []; awardSeasons = []; currentTeamRoster = []
 
-### Iterate through player IDs, get info for each player, append to lists for df creation later ###
-for playerID in playerID_list:
-    player_url = player_base_url + str(playerID) + player_suffix
-    player_data = requests.get(player_url).json()
-    print(playerID)
+# # ### Iterate through player IDs, get info for each player, append to lists for df creation later ###
+# for playerID in playerID_list[:2500]:
+#     player_url = player_base_url + str(playerID) + player_suffix
+#     player_data = requests.get(player_url).json()
+#     # print(playerID)
 
 #     # Basic Info
 #     playerId.append(player_data['playerId'])
@@ -1034,29 +1054,87 @@ for playerID in playerID_list:
 #         last5Games.append(player_data['last5Games'])
 #     else:
 #         last5Games.append(None)
-#     seasonTotals.append(player_data['seasonTotals'])
-#     if 'awards' in player_data:
-#         awards = player_data['awards']
-#         for award in awards:
-#             local_awardNames = []
-#             local_awardSeasons = []
-#             local_awardNames.append(award['trophy']['default'])
-#             seasonsWon = []
-#             for season in award['seasons']:
-#                 seasonsWon.append(season['seasonId'])
-#             local_awardSeasons.append(seasonsWon)
-#         awardNames.append(local_awardNames)
-#         awardSeasons.append(local_awardSeasons)
-#     else:
-#         awardNames.append(None)
-#         awardSeasons.append(None)
-#     if 'currentTeamRoster' in player_data:
-#         currentTeamRoster.append(player_data['currentTeamRoster'])
-#     else:
-#         currentTeamRoster.append(None)
+    
+    # Season-by-Season Stats
+    # seasonTotals.append(player_data['seasonTotals'])
+
+    # print(player_data['seasonTotals'])
 
 
-# ### Create, save, and view df ###
+    ### SEASON SUMMARY DATA ###
+    # seasonAssists = []
+    # seasonGameTypeId = []
+    # seasonGamesPlayed = []
+    # seasonGoals = []
+    # seasonLeagueAbbrev = []
+    # seasonPIM = []
+    # seasonPoints = []
+    # seasonSeason = []
+    # seasonSequence = []
+    # seasonTeamName = []
+
+    # season_data = player_data['seasonTotals']
+    # for season in season_data:
+    #     playerId.append(playerID)
+    #     seasonAssists.append(season['assists'])
+    #     seasonGameTypeId.append(season['gameTypeId'])
+    #     seasonGamesPlayed.append(season['gamesPlayed'])
+    #     seasonGoals.append(season['goals'])
+    #     seasonLeagueAbbrev.append(season['leagueAbbrev'])
+    #     if 'pim' in season:
+    #         seasonPIM.append(season['pim'])
+    #     else:
+    #         seasonPIM.append(None)
+    #     seasonPoints.append(season['points'])
+    #     seasonSeason.append(season['season'])
+    #     seasonSequence.append(season['sequence'])
+    #     seasonTeamName.append(season['teamName']['default'])
+
+    # print(len(playerId))
+    # print(len(seasonAssists))
+    # print(len(seasonGameTypeId))
+    # print(len(seasonGamesPlayed))
+    # print(len(seasonGoals))
+    # print(len(seasonLeagueAbbrev))
+    # print(len(seasonPIM))
+    # print(len(seasonPoints))
+    # print(len(seasonSeason))
+    # print(len(seasonSequence))
+    # print(len(seasonTeamName))
+
+    # df_seasons_data = pd.DataFrame([playerId, seasonAssists, seasonGameTypeId, seasonGamesPlayed,
+    #                                 seasonGoals, seasonLeagueAbbrev, seasonPIM, seasonPoints, seasonSeason,
+    #                                 seasonSequence, seasonTeamName]).transpose()
+    # df_seasons_data.columns = ['playerId', 'seasonAssists', 'seasonGameTypeId', 'seasonGamesPlayed',
+    #                            'seasonGoals', 'seasonLeagueAbbrev', 'seasonPIM', 'seasonPoints', 'seasonSeason',
+    #                            'seasonSequence', 'seasonTeamName']
+    
+    # print(df_seasons_data.head())
+    # df_seasons_data.to_csv("season_stats.csv", index=False)
+
+
+    # if 'awards' in player_data:
+    #     awards = player_data['awards']
+    #     for award in awards:
+    #         local_awardNames = []
+    #         local_awardSeasons = []
+    #         local_awardNames.append(award['trophy']['default'])
+    #         seasonsWon = []
+    #         for season in award['seasons']:
+    #             seasonsWon.append(season['seasonId'])
+    #         local_awardSeasons.append(seasonsWon)
+    #     awardNames.append(local_awardNames)
+    #     awardSeasons.append(local_awardSeasons)
+    # else:
+    #     awardNames.append(None)
+    #     awardSeasons.append(None)
+    # if 'currentTeamRoster' in player_data:
+    #     currentTeamRoster.append(player_data['currentTeamRoster'])
+    # else:
+        # currentTeamRoster.append(None)
+
+
+### Create, save, and view df ###
 # df_players = pd.DataFrame([playerId, isActive, currentTeamId, currentTeamAbbrev, fullTeamName, teamCommonName, teamPlaceNameWithPreposition,
 #                             firstName, lastName, badgesLogos, badgesNames, teamLogo, sweaterNumber, position, headshot, heroImage, heightInInches, 
 #                             heightInCentimeters, weightInPounds, weightInKilograms, birthDate, birthCity, birthStateProvince, birthCountry, shootsCatches,
@@ -1080,12 +1158,13 @@ for playerID in playerID_list:
 #                         'featuredSeasonPPPoints', 'featuredSeasonShootingPct', 'featuredSeasonSHG', 'featuredSeasonSHPts', 'featuredSeasonShots',
 #                         'regSeasonCareerAssists', 'regSeasonCareerGWG', 'regSeasonCareerGP', 'regSeasonCareerGoals', 'regSeasonCareerOTGoals',
 #                         'regSeasonCareerPIM', 'regSeasonCareerPlusMinus', 'regSeasonCareerPts', 'regSeasonCareerPPG', 'regSeasonCareerPPPoints',
-#                         'regSeasonCareerShootingPct', 'regSeasonCareerSHG','regSeasonCareerSHPts','regSeasonCareerShots', 'playoffsCareerAssists',\
+#                         'regSeasonCareerShootingPct', 'regSeasonCareerSHG','regSeasonCareerSHPts','regSeasonCareerShots', 'playoffsCareerAssists',
 #                         'playoffsCareerGWG', 'playoffsCareerGP', 'playoffsCareerGoals', 'playoffsCareerOTGoals', 'playoffsCareerPIM',
 #                         'playoffsCareerPlusMinus', 'playoffsCareerPts', 'playoffsCareerPPG', 'playoffsCareerPPPoints', 'playoffsCareerShootingPct',
 #                         'playoffsCareerSHG', 'playoffsCareerSHPts', 'playoffsCareerShots', 'shopLink', 'twitterLink', 'watchLink', 'last5Games',
 #                         'seasonTotals', 'awardNames', 'awardSeasons','currentTeamRoster']
-    
+
+# df_players.to_csv("player_detail.csv", index=False)
 # print(df_players.head())
 
 

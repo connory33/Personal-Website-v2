@@ -1,0 +1,33 @@
+playerId,seasonAssists,seasonGameTypeId,seasonGamesPlayed,seasonGoals,seasonLeagueAbbrev,seasonPIM,seasonPoints,seasonSeason,seasonSequence,seasonTeamName
+8445071,0,2,8,9,TPHL,19,9,19081909,1,Haileybury
+8445071,0,2,1,2,NHA,0,2,19091910,1,Haileybury
+8445071,0,2,5,0,OPHL,,0,19101911,1,Galt
+8445071,0,3,3,3,OPHL,,3,19101911,1,Galt
+8445071,0,3,1,2,St-Cup,,2,19101911,2,Galt
+8445071,0,2,4,0,NHA,5,0,19111912,1,Mtl. Canadiens
+8445071,0,2,9,7,MPHL,15,7,19111912,2,Moncton
+8445071,0,3,2,0,St-Cup,5,0,19111912,3,Moncton
+8445071,0,2,16,4,NHA,14,4,19121913,1,Mtl. Canadiens
+8445071,9,2,20,4,NHA,14,13,19131914,1,Mtl. Canadiens
+8445071,0,3,2,0,NHA,0,0,19131914,1,Mtl. Canadiens
+8445071,1,2,20,2,NHA,40,3,19141915,1,Mtl. Canadiens
+8445071,2,2,19,2,NHA,19,4,19151916,1,Mtl. Canadiens
+8445071,0,3,1,0,St-Cup,0,0,19151916,2,Mtl. Canadiens
+8445071,4,2,20,8,NHA,36,12,19161917,1,Mtl. Canadiens
+8445071,0,3,2,0,NHA,8,0,19161917,1,Mtl. Canadiens
+8445071,0,3,3,0,St-Cup,0,0,19161917,2,Mtl. Canadiens
+8445071,1,2,20,2,NHL,12,3,19171918,1,Montréal Canadiens
+8445071,0,3,2,0,NHL,0,0,19171918,1,Montréal Canadiens
+8445071,4,2,18,5,NHL,12,9,19181919,1,Montréal Canadiens
+8445071,4,3,10,1,NHL,9,5,19181919,1,Montréal Canadiens
+8445071,1,3,5,1,Stanley Cup,0,2,19181919,10011278,Montréal Canadiens
+8445071,8,2,24,8,NHL,36,16,19191920,1,Montréal Canadiens
+8445071,9,2,24,11,NHL,28,20,19201921,1,Montréal Canadiens
+8445071,5,2,24,13,NHL,10,18,19211922,1,Montréal Canadiens
+8445071,3,2,24,2,NHL,4,5,19221923,1,Montréal Canadiens
+8445071,2,3,2,0,NHL,0,2,19221923,1,Montréal Canadiens
+8445071,6,2,29,9,WCHL,9,15,19231924,1,Sask. Crescents
+8445071,2,2,29,4,NHL,22,6,19241925,1,Montreal Maroons
+8445071,0,2,30,0,NHL,8,0,19251926,1,Pittsburgh Pirates
+8445071,0,3,2,0,NHL,0,0,19251926,1,Pittsburgh Pirates
+8445071,3,2,19,3,Can-Am,31,6,19261927,1,Que. Castors

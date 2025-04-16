@@ -35,6 +35,7 @@
             <input  type="text" name="search_term" placeholder="Enter search term" required>
             <input  type="submit" value="Search">
         </form>
+        <br>
 
         <?php
         include('db_connection.php');
@@ -217,18 +218,21 @@
                 die("Query failed: " . mysqli_error($conn));
             }
             
-            echo "<td>Previous search: </td>" . $originalSearchTerm . "<br>";
-
+            echo "<h5>Games found where " . $searchColumn . ' = ' . $originalSearchTerm . "</h5>";
+            
             if (mysqli_num_rows($result) > 0) {
-                print("<br> Results found: " . mysqli_num_rows($result) . "<br><br>");
+                echo "<h6>" . mysqli_num_rows($result) . " results<br><br></h6>";
             } else {
                 print("No results found.<br><br>");
             }
 
+            // echo "<style>.test-table { border: 5px solid red; }</style>";
             ?>
 
             <!-- Display results in a table format -->
-            <table style="width: 70%; margin: 0px auto; border: 1px solid #bcd6e7">
+            <!-- <table style="width: 70%; margin: 0px auto; border: 1px solid #bcd6e7"> -->
+            
+            <table class='games-table'>
             <tr style="color: white; font-weight: bold; background-color: #2e5b78; border: 1px solid #bcd6e7">
                 <td>Season</td>
                 <td>Game #</td>
@@ -244,7 +248,7 @@
 
             <?php
             while ($row = $result->fetch_assoc()){
-                echo "<tr style='border: 1px solid rgba(188, 214, 231, 0.3)'>";
+                echo "<tr>";
                 // echo "<td>".$row['id']."</td>";
                 
                 # Season

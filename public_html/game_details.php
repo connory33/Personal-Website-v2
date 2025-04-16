@@ -17,7 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="../resources/css/album.css" rel="stylesheet">
 
-    <link href="/resources/css/default_v3.css" rel="stylesheet" type="text/css" />
+    <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
   </head>
   <body>
