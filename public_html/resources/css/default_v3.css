@@ -52,20 +52,99 @@
 	border: 1px solid #18314F;
 }
 
-
-.nhlTable {
-	border: 1px solid white;
-	margin: 0 auto;
-	background-color: gainsboro;
-}
-
-.nhlTable.tr:hover {
-	background-color: coral;}
-
 .table_header {
-	font-weight: bold
+	font-weight: bold;
 }
 
-.test {
-	color: red;
+.games-table {
+	width: 70%;
+	margin: 0 auto;
 }
+
+.games-table tr {
+	border: 1px solid rgba(188, 214, 231, 0.3);
+}
+
+.games-table tr:hover {
+	background-color: rgb(91, 118, 119);
+}
+
+.player-stats-table {
+	width: 70%;
+	border: 1px solid #bcd6e7;
+	margin: 0px auto;
+	table-layout: fixed;
+  	border-collapse: collapse;
+	text-align: center;
+}
+
+.player-stats-table th, .player-stats-table td {
+	padding: 8px;
+	border: 1px solid #ccc;
+}
+
+.table-header {
+	color: white; 
+	font-weight: bold; 
+	background-color:#2e5b78;
+}
+
+.my-footer {
+	background-color: #171a1f;
+	color: white;
+}
+
+/* sets background color for Bootstrap's default footer class */
+.bg-body-tertiary {
+	background-color: #2f333b;
+	color: white;
+}
+
+/* Prevent horizontal scrolling on mobile */
+body {
+	overflow-x: hidden;
+}
+
+/* Responsive flex container for hero + bio */
+.hero-bio-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 40px;
+	margin-top: 20px;
+  }
+  
+  .hero-bio-image {
+	width: 600px;
+	border-radius: 8px;
+	flex-shrink: 0;
+  }
+  
+  .bio-box {
+	border: 1px solid #bcd6e7;
+	width: 300px;
+  }
+  
+  /* Only stack on mobile */
+  @media (max-width: 768px) {
+	.hero-bio-container {
+	  flex-direction: column;
+	  align-items: center;
+	  text-align: center;
+	  width: 100%;
+	}
+  
+	.hero-bio-image {
+	  width: 100%;
+	  max-width: 600px;
+	  height: auto;
+	}
+  
+	.bio-box {
+	  width: 90%;
+	}
+  
+	.bio-box p, .bio-box h4 {
+	  text-align: center;
+	}
+  }
