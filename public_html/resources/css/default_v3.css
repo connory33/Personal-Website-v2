@@ -37,7 +37,7 @@
 }
 
 .headingContent {
-	color: #18314F;
+	color: #18314f;
 	font-size: 1.2em;
 	text-align: center;
 }
@@ -65,9 +65,9 @@
 	border: 1px solid rgba(188, 214, 231, 0.3);
 }
 
-.games-table tr:hover {
+/* .games-table tr:hover {
 	background-color: rgb(91, 118, 119);
-}
+} */
 
 .player-stats-table {
 	width: 70%;
@@ -103,6 +103,17 @@
 /* Prevent horizontal scrolling on mobile */
 body {
 	overflow-x: hidden;
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+  }
+  
+.content-wrapper {
+	flex: 1; /* this makes the main content fill the space */
 }
 
 /* Responsive flex container for hero + bio */

@@ -22,18 +22,19 @@
     <div class="bg-dark text-white text-center">
         <p>Search again:</p>
 
-        <form method="GET" action="nhl_games.php">
-            <select name="search_column">
-                <option value="season">Season</option>
-                <option value="gameDate">Game Date</option>
-                <option value="easternStartTime">Start Time</option>
-                <option value="gameType">Game Type</option>
-                <option value="team">Team</option>
-                <option value="homeTeamId">Home Team</option>
-                <option value="awayTeamId">Away Team</option>
-            </select>
-            <input  type="text" name="search_term" placeholder="Enter search term" required>
-            <input  type="submit" value="Search">
+        <form id="nhl-search" method="GET" action="nhl_games.php">
+        <select name="search_column" id="nhl-search-column">
+            <option value="season">Season</option>
+            <option value="gameDate">Game Date</option>
+            <option value="easternStartTime">Start Time</option>
+            <option value="gameType">Game Type</option>
+            <option value="team">Team</option>
+            <option value="homeTeamId">Home Team</option>
+            <option value="awayTeamId">Away Team</option>
+            <option value="player">Player Name</option>
+        </select>
+        <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required>
+        <input  type="submit" value="Search">
         </form>
         <br>
 
@@ -176,6 +177,12 @@
 
             ///////////////////////////////// SQL Queries //////////////////////////////////
 
+
+            // Get user inputs for sort column and sort order
+            $sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'gameDate';
+            $sortOrder = (isset($_GET['order']) && strtolower($_GET['order']) === 'desc') ? 'DESC' : 'ASC';
+
+
             // Query for searching by team name and getting all game results, both home and away
             if ($searchColumn == "team") {
                 $sql = "SELECT
@@ -207,6 +214,16 @@
                     WHERE $searchColumn LIKE '%$searchTerm%'";
             }
 
+            $dateClause = '';
+            if (!empty($_GET['startDate']) && !empty($_GET['endDate'])) {
+                $startDate = $_GET['startDate'];
+                $endDate = $_GET['endDate'];
+                $dateClause = " AND gameDate BETWEEN '$startDate' AND '$endDate'";
+            }
+            ...
+            $sql .= $dateClause;
+            $sql .= " ORDER BY $sortColumn $sortOrder";
+
             // TROUBLESHOOTING
             // echo($sql);
             echo "<br>";
@@ -236,10 +253,10 @@
             <tr style="color: white; font-weight: bold; background-color: #2e5b78; border: 1px solid #bcd6e7">
                 <td>Season</td>
                 <td>Game #</td>
-                <td>Date</td>
+                <th><a href="?sort=gameDate&order=asc">Date ↑</a> | <a href="?sort=gameDate&order=desc">↓</a></th>
                 <td>Start Time (EST)</td>
                 <td>Game Type</td>
-                <td>Home Name</td>
+                <th><a href="?sort=home_team_name&order=asc">Home Team ↑</a></th>
                 <td>Home Score</td>
                 <td>Visitor Name</td>
                 <td>Visitor Score</td>
@@ -357,5 +374,18 @@
     <script src="../js/vendor/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/vendor/holder.min.js"></script>
+
+    <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
+    <script>
+        document.getElementById('nhl-search').addEventListener('submit', function (e) {
+            const column = document.getElementById('nhl-search-column').value;
+            if (column === 'player') {
+            this.action = 'nhl_players.php';
+            } else {
+            this.action = 'nhl_games.php';
+            }
+        });
+    </script>
+
   </body>
 </html>

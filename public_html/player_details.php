@@ -64,13 +64,16 @@
 
                   if ($row['heightInInches']) {
                     $heightIn = $row['heightInInches'];
+                    $heightFt = floor($heightIn/12);
+                    $heightInches = ($heightIn % 12);
+                    $heightIn = $heightFt . "' " . $heightInches . '"';
                   } else {
                     $heightIn = '?';
                   }
                   if ($row['heightInCentimeters']) {
                     $heightCm = $row['heightInCentimeters'];
                   } else {
-                    $heightCm = '?';
+                    $heightCm = intval($heightIn*2.54);
                   }
                   if ($row['weightInPounds']) {
                     $weightLb = $row['weightInPounds'];
@@ -83,7 +86,7 @@
                     $weightKg = '?';
                   }
                   
-                  $birthDate = $row['birthDate'];
+                  $birthDate = date('F j, Y',strtotime($row['birthDate']));
                   $birthCity = $row['birthCity'];
                   $birthStateProvince = $row['birthStateProvince'];
                   $birthCountry = $row['birthCountry'];
@@ -102,121 +105,66 @@
                     $draftOverall = $row['draftOverall'];
                   }
                   if ($row['inHHOF']) {
-                    $inHHOF = 'In HOF: Yes';
+                    $inHHOF = '<b>In HOF:</b> Yes';
                   } else {
-                    $inHHOF = 'In HOF: No';
+                    $inHHOF = '<b>In HOF:</b> No';
                   }
                   # Featured Season
                   $featuredSeason = $row['featuredSeason'];
 
-                  if ($row['featuredSeasonAssists'] == '') {
-                    $featuredSeasonAssists = '0';
-                  } else {
-                    $featuredSeasonAssists = $row['featuredSeasonAssists'];
-                  }
-                  
-                  if ($row['featuredSeasonGWG'] == '') {
-                    $featuredSeasonGWG = '0';
-                  } else {
-                    $featuredSeasonGWG = $row['featuredSeasonGWG'];
-                  }
-                  
-                  $featuredSeasonGP = $row['featuredSeasonGP'];
-                  if ($row['featuredSeasonGoals'] == '') {
-                    $featuredSeasonGoals = '0';
-                  } else{
-                    $featuredSeasonGoals = $row['featuredSeasonGoals'];
+                  # checks if a value (i.e. # of assists) is an empty string and changes to 0 if so
+                  function fillEmptyStats($value) {
+                    return $value === '' ? '0' : $value; # LEARN HOW THIS SYNTAX WORKS
                   }
 
-                  if ($row['featuredSeasonOTGoals'] == '') {
-                    $featuredSeasonOTGoals = '0';
-                  } else {
-                    $featuredSeasonOTGoals = $row['featuredSeasonOTGoals'];
-                  }
-            
-                  if ($row['featuredSeasonPIM'] == '') {
-                    $featuredSeasonPIM = '0';
-                  } else {
-                    $featuredSeasonPIM = $row['featuredSeasonPIM'];
-                  }
-                  
-                  if ($row['featuredSeasonPlusMinus'] == '') {
-                    $featuredSeasonPlusMinus = '0';
-                  } else {
-                    $featuredSeasonPlusMinus = $row['featuredSeasonPlusMinus'];
-                  }
-                  
-                  if ($row['featuredSeasonPts'] == '') {
-                    $featuredSeasonPts = '0';
-                  } else {
-                    $featuredSeasonPts = $row['featuredSeasonPts'];
-                  }
-                  
-                  if ($row['featuredSeasonPPG'] == '') {
-                    $featuredSeasonPPG = '0';
-                  } else {
-                    $featuredSeasonPPG = $row['featuredSeasonPPG'];
-                  }
-                  
-                  if ($row['featuredSeasonPPPoints'] == '') {
-                    $featuredSeasonPPPoints = '0';
-                  } else {
-                    $featuredSeasonPPPoints = $row['featuredSeasonPPPoints'];
-                  }
-                  
-                  if ($row['featuredSeasonShootingPct'] == '') {
-                    $featuredSeasonShootingPct = '0';
-                  } else {
-                    $featuredSeasonShootingPct = $row['featuredSeasonShootingPct'];
-                  }
-                  
-                  if ($row['featuredSeasonSHG'] == '') {
-                    $featuredSeasonSHG = '0';
-                  } else {
-                    $featuredSeasonSHG = $row['featuredSeasonSHG'];
-                  }
-                  
-                  if ($row['featuredSeasonSHPts'] == '') {
-                    $featuredSeasonSHPts = '0';
-                  } else {
-                    $featuredSeasonSHPts = $row['featuredSeasonSHPts'];
-                  }
-                  
-                  if ($row['featuredSeasonShots'] == '') {
-                    $featuredSeasonShots = '0';
-                  } else {
-                    $featuredSeasonShots = $row['featuredSeasonShots'];
-                  }
+                  $featuredSeasonGP = fillEmptyStats($row['featuredSeasonGP']);
+                  $featuredSeasonAssists = fillEmptyStats($row['featuredSeasonAssists']);
+                  $featuredSeasonGWG = fillEmptyStats($row['featuredSeasonGWG']);
+                  $featuredSeasonGoals = fillEmptyStats($row['featuredSeasonGoals']);
+                  $featuredSeasonOTGoals = fillEmptyStats($row['featuredSeasonOTGoals']);
+                  $featuredSeasonPIM = fillEmptyStats($row['featuredSeasonPIM']);
+                  $featuredSeasonPlusMinus = fillEmptyStats($row['featuredSeasonPlusMinus']);
+                  $featuredSeasonPts = fillEmptyStats($row['featuredSeasonPts']);
+                  $featuredSeasonPPG = fillEmptyStats($row['featuredSeasonPPG']);
+                  $featuredSeasonPPPoints = fillEmptyStats($row['featuredSeasonPPPoints']);
+                  $featuredSeasonShootingPct = fillEmptyStats($row['featuredSeasonShootingPct']);
+                  $featuredSeasonSHG = fillEmptyStats($row['featuredSeasonSHG']);
+                  $featuredSeasonSHPts = fillEmptyStats($row['featuredSeasonSHPts']);
+                  $featuredSeasonShots = fillEmptyStats($row['featuredSeasonShots']);
                   
                   # Reg Season
-                  $regSeasonCareerAssists = $row['regSeasonCareerAssists'];
-                  $regSeasonCareerGWG = $row['regSeasonCareerGWG'];
-                  $regSeasonCareerGP = $row['regSeasonCareerGP'];
-                  $regSeasonCareerGoals = $row['regSeasonCareerGoals'];
-                  $regSeasonCareerOTGoals = $row['regSeasonCareerOTGoals'];
-                  $regSeasonCareerPIM = $row['regSeasonCareerPIM'];
-                  $regSeasonCareerPlusMinus = $row['regSeasonCareerPlusMinus'];
-                  $regSeasonCareerPts = $row['regSeasonCareerPts'];
-                  $regSeasonCareerPPG = $row['regSeasonCareerPPG'];
-                  $regSeasonCareerPPPoints = $row['regSeasonCareerPPPoints'];
-                  $regSeasonCareerShootingPct = $row['regSeasonCareerShootingPct'];
-                  $regSeasonCareerSHG = $row['regSeasonCareerSHG'];
-                  $regSeasonCareerSHPts = $row['regSeasonCareerSHPts'];
-                  $regSeasonCareerShots = $row['regSeasonCareerShots'];
+                  $regSeasonCareerGP = fillEmptyStats($row['regSeasonCareerGP']);
+                  $regSeasonCareerAssists = fillEmptyStats($row['regSeasonCareerAssists']);
+                  $regSeasonCareerGWG = fillEmptyStats($row['regSeasonCareerGWG']);
+                  $regSeasonCareerGoals = fillEmptyStats($row['regSeasonCareerGoals']);
+                  $regSeasonCareerOTGoals = fillEmptyStats($row['regSeasonCareerOTGoals']);
+                  $regSeasonCareerPIM = fillEmptyStats($row['regSeasonCareerPIM']);
+                  $regSeasonCareerPlusMinus = fillEmptyStats($row['regSeasonCareerPlusMinus']);
+                  $regSeasonCareerPts = fillEmptyStats($row['regSeasonCareerPts']);
+                  $regSeasonCareerPPG = fillEmptyStats($row['regSeasonCareerPPG']);
+                  $regSeasonCareerPPPoints = fillEmptyStats($row['regSeasonCareerPPPoints']);
+                  $regSeasonCareerShootingPct = fillEmptyStats($row['regSeasonCareerShootingPct']);
+                  $regSeasonCareerSHG = fillEmptyStats($row['regSeasonCareerSHG']);
+                  $regSeasonCareerSHPts = fillEmptyStats($row['regSeasonCareerSHPts']);
+                  $regSeasonCareerShots = fillEmptyStats($row['regSeasonCareerShots']);
+
+                  # Playoffs
                   $playoffsCareerAssists = $row['playoffsCareerAssists'];
-                  $playoffsCareerGWG = $row['playoffsCareerGWG'];
-                  $playoffsCareerGP = $row['playoffsCareerGP'];
-                  $playoffsCareerGoals = $row['playoffsCareerGoals'];
-                  $playoffsCareerOTGoals = $row['playoffsCareerOTGoals'];
-                  $playoffsCareerPIM = $row['playoffsCareerPIM'];
-                  $playoffsCareerPlusMinus = $row['playoffsCareerPlusMinus'];
-                  $playoffsCareerPts = $row['playoffsCareerPts'];
-                  $playoffsCareerPPG = $row['playoffsCareerPPG'];
-                  $playoffsCareerPPPoints = $row['playoffsCareerPPPoints'];
-                  $playoffsCareerShootingPct = $row['playoffsCareerShootingPct'];
-                  $playoffsCareerSHG = $row['playoffsCareerSHG'];
-                  $playoffsCareerSHPts = $row['playoffsCareerSHPts'];
-                  $playoffsCareerShots = $row['playoffsCareerShots'];
+                  $playoffsCareerGP = fillEmptyStats($row['playoffsCareerGP']);
+                  $playoffsCareerAssists = fillEmptyStats($row['playoffsCareerAssists']);
+                  $playoffsCareerGWG = fillEmptyStats($row['playoffsCareerGWG']);
+                  $playoffsCareerGoals = fillEmptyStats($row['playoffsCareerGoals']);
+                  $playoffsCareerOTGoals = fillEmptyStats($row['playoffsCareerOTGoals']);
+                  $playoffsCareerPIM = fillEmptyStats($row['playoffsCareerPIM']);
+                  $playoffsCareerPlusMinus = fillEmptyStats($row['playoffsCareerPlusMinus']);
+                  $playoffsCareerPts = fillEmptyStats($row['playoffsCareerPts']);
+                  $playoffsCareerPPG = fillEmptyStats($row['playoffsCareerPPG']);
+                  $playoffsCareerPPPoints = fillEmptyStats($row['playoffsCareerPPPoints']);
+                  $playoffsCareerShootingPct = fillEmptyStats($row['playoffsCareerShootingPct']);
+                  $playoffsCareerSHG = fillEmptyStats($row['playoffsCareerSHG']);
+                  $playoffsCareerSHPts = fillEmptyStats($row['playoffsCareerSHPts']);
+                  $playoffsCareerShots = fillEmptyStats($row['playoffsCareerShots']);
+
                   $last5Games = $row['last5Games'];
                   $seasonTotals = $row['seasonTotals'];
                   $awardNames = $row['awardNames'];
@@ -252,7 +200,7 @@
           if ($badgesLogos != 'false' and $badgesLogos != '') {
             echo "<img src='" . htmlspecialchars($badgesLogos) . "' alt='badge logo' style='height: 90px;'>";
           } else {
-            echo "<p>No badges</p>";
+            echo "<p></p>";
           }
 
           ### Flexbox for hero image and player bio box ###
@@ -264,38 +212,44 @@
             // Right side: Bio box container
             echo "<div class='bio-box'>";
               echo "<h4 style='text-align: center; background-color:#2e5b78'>Player Bio<br></h4>";
-              echo "<p style='margin-left: 5%'>Height: " . $heightIn . " in / " . $heightCm . " cm</p>";
-              echo "<p style='margin-left: 5%'>Weight: " . $weightLb . " lbs / " . $weightKg . " kg</p>";
-              echo "<p style='margin-left: 5%'>Birthdate: " . $birthDate . "</p>";
-              echo "<p style='margin-left: 5%'>Birthplace: " . $birthCity . ", " . $birthStateProvince . " (" . $birthCountry . ")</p>";
-              echo "<p style='margin-left: 5%'>Shoots/catches: " . $shootsCatches . "</p>";
-              echo "<p style='margin-left: 5%'>Position: " . $position . "</p>";
+              echo "<p style='margin-left: 5%'><b>Height:</b>   " . $heightIn . " / " . $heightCm . " cm</p>";
+              echo "<p style='margin-left: 5%'><b>Weight:</b>   " . $weightLb . " lbs / " . $weightKg . " kg</p>";
+              echo "<p style='margin-left: 5%'><b>Birthdate:</b>   " . $birthDate . "</p>";
+              echo "<p style='margin-left: 5%'><b>Birthplace:</b>   " . $birthCity . ", " . $birthStateProvince . " (" . $birthCountry . ")</p>";
+              echo "<p style='margin-left: 5%'><b>Shoots/catches:</b>   " . $shootsCatches . "</p>";
+              echo "<p style='margin-left: 5%'><b>Position:</b>   " . $position . "</p>";
               if ($draftYear == 'N/A') {
-                echo "<p style='margin-left: 5%'>Draft Info: Undrafted</p>";
+                echo "<p style='margin-left: 5%'><b>Draft Info: </b>Undrafted</p>";
               } else {
-                echo "<p style='margin-left: 5%'>Draft Info: " . $draftYear . " Rd. " . $draftRound . " Pick " . $draftPickInRound .
+                echo "<p style='margin-left: 5%'><b>Draft Info: </b>" . $draftYear . " Rd. " . $draftRound . " Pick " . $draftPickInRound .
                 " (" . $draftOverall . " overall) to " . $draftTeam . "</p>";
               }
               
               echo "<p style='margin-left: 5%'>" . $inHHOF . "</p>";
               # convert from strings to actual arrays to pair awards and years
-              echo is_null($awardNames);
-              if ($awardNames != '') {
+              if (!empty($awardNames)) {
                 $awardNamesArray = json_decode(str_replace("'", '"', $awardNames), true);
-                  $awardSeasonsArray = json_decode(str_replace("'", '"', $awardSeasons), true);
-                  for ($i = 0; $i < count($awardNamesArray); $i++) {
-                    $award = $awardNamesArray[$i];
-                    $seasonsRaw = $awardSeasonsArray[$i];
-                    // Format 19331934 → 1933–1934
-                    $formattedSeasons = array_map(function($s) {
-                        return substr($s, 0, 4) . "–" . substr($s, 4);
-                    }, $seasonsRaw);
-                    $seasonString = implode(", ", $formattedSeasons);
-                    echo "<p style='margin-left: 5%'>Awards:<br>" . $award . " (" . $seasonString . ")" . "</p>";
-                  }
-              } else {
-                echo "<p style='margin-left: 5%'>Awards: None</p>";
-              }
+                $awardSeasonsArray = json_decode(str_replace("'", '"', $awardSeasons), true);
+            
+                if (is_array($awardNamesArray) && is_array($awardSeasonsArray)) {
+                    for ($i = 0; $i < count($awardNamesArray); $i++) {
+                        $award = $awardNamesArray[$i];
+                        $seasonsRaw = $awardSeasonsArray[$i];
+            
+                        // Format 19331934 → 1933–1934
+                        $formattedSeasons = array_map(function($s) {
+                            return substr($s, 0, 4) . "–" . substr($s, 4);
+                        }, $seasonsRaw);
+            
+                        $seasonString = implode(", ", $formattedSeasons);
+                        echo "<p style='margin-left: 5%'><b>Awards:</b><br>" . $award . " (" . $seasonString . ")" . "</p>";
+                    }
+                } else {
+                    echo "<p style='margin-left: 5%'><b>Awards:</b> None</p>";
+                }
+            } else {
+                echo "<p style='margin-left: 5%'><b>Awards:</b> None</p>";
+            }
               
             echo "</div>";
           echo "</div><br><br>";
@@ -430,19 +384,22 @@
         $seasonStats = mysqli_query($conn, $seasonStatsSQL);
 
         echo "<h3 style='text-align: center'>Season-by-Season Statistics</h3>";
-        echo "<table style='width: 70%; border: 1px solid #bcd6e7; margin: 0px auto'>";
+        echo "<table style='width: 70%; border: 1px solid #bcd6e7; margin: 0px auto; text-align: center'>";
         echo "<tr style='color: white; font-weight: bold; background-color:#2e5b78'>";
-        echo "<td>Season</td>";
-        echo "<td>League</td>";
-        echo "<td>Team Name</td>";
-        echo "<td>Game Type</td>";
-        echo "<td>GP</td>";
-        echo "<td>G</td>";
-        echo "<td>A</td>";
-        echo "<td>Pts</td>";
-        echo "<td>PIM</td>";
+        echo "<th>Season</th>";
+        echo "<th>League</th>";
+        echo "<th>Team Name</th>";
+        echo "<th>Game Type</th>";
+        echo "<th>GP</th>";
+        echo "<th>G</th>";
+        echo "<th>A</th>";
+        echo "<th>Pts</th>";
+        echo "<th>PIM</th>";
         // echo "<td>Sequence</td>";
         echo "</tr>";
+
+        # initializing variables to store career totals
+        $totalGP = $totalG = $totalA = $totalPts = $totalPIM = 0;
 
         while ($row = mysqli_fetch_assoc($seasonStats)) {
             echo "<tr>";
@@ -453,24 +410,49 @@
             echo "<td>" . htmlspecialchars($row['seasonTeamName']) . "</td>";
             $gameType_num = $row['seasonGameTypeId'];
                 if ($gameType_num == 1) {
-                    $gameType_text = "Preseason";
+                    $gameType_text = "Pre.";
                 } elseif ($gameType_num == 2) {
-                    $gameType_text = "Reg. Season";
+                    $gameType_text = "Reg.";
                 } elseif ($gameType_num == 3) {
-                    $gameType_text = "Playoffs";
+                    $gameType_text = "Post.";
                 } else {
                     $gameType_text = "Unknown";
                 }
                 echo "<td>".$gameType_text."</td>";
+
+
             // echo "<td>" . htmlspecialchars($row['seasonGameTypeId']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['seasonGamesPlayed']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['seasonGoals']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['seasonAssists']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['seasonPoints']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['seasonPIM']) . "</td>";
+            echo "<td>" . htmlspecialchars(fillEmptyStats($row['seasonGamesPlayed'])) . "</td>";
+            echo "<td>" . htmlspecialchars(fillEmptyStats($row['seasonGoals'])) . "</td>";
+            echo "<td>" . htmlspecialchars(fillEmptyStats($row['seasonAssists'])) . "</td>";
+            echo "<td>" . htmlspecialchars(fillEmptyStats($row['seasonPoints'])) . "</td>";
+            echo "<td>" . htmlspecialchars(fillEmptyStats($row['seasonPIM'])) . "</td>";
             // echo "<td>" . htmlspecialchars($row['seasonSequence']) . "</td>";
             echo "</tr>";
+
+            // Sum totals
+            $totalGP   += (int) $row['seasonGamesPlayed'];
+            $totalG    += (int) $row['seasonGoals'];
+            $totalA    += (int) $row['seasonAssists'];
+            $totalPts  += (int) $row['seasonPoints'];
+            $totalPIM  += (int) $row['seasonPIM'];
         }
+
+            echo "<tr style='font-weight: bold; border: 1px solid white'>";
+              echo "<td colspan='4' rowspan='2' style='vertical-align: middle; background-color: #18314f'>Career Totals</td>";
+              echo "<td style='border-left: 1px solid white; background-color: #2e5b78'>GP</td>";
+              echo "<td style='background-color: #2e5b78'>G</td>";
+              echo "<td style='background-color: #2e5b78'>A</td>";
+              echo "<td style='background-color: #2e5b78'>Pts</td>";
+              echo "<td style='background-color: #2e5b78'>PIM</td>";
+            echo "</tr>";
+            echo "<tr style='font-weight: bold; border: 1px solid white'>";
+              echo "<td style='border-left: 1px solid white'>" . $totalGP . "</td>";
+              echo "<td>" . $totalG . "</td>";
+              echo "<td>" . $totalA . "</td>";
+              echo "<td>" . $totalPts . "</td>";
+              echo "<td>" . $totalPIM . "</td>";
+            echo "</tr>";
 
         echo "</table><br><br>";
 
