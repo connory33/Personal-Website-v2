@@ -20,22 +20,25 @@
   </head>
   <body>
     <div class="bg-dark text-white text-center">
+        <br>
         <p>Search again:</p>
 
-        <form id="nhl-search" method="GET" action="nhl_games.php">
-          <select name="search_column" id="nhl-search-column">
-              <option value="season">Season</option>
-              <option value="gameDate">Game Date</option>
-              <option value="easternStartTime">Start Time</option>
-              <option value="gameType">Game Type</option>
-              <option value="team">Team</option>
-              <option value="homeTeamId">Home Team</option>
-              <option value="awayTeamId">Away Team</option>
-              <option value="player">Player Name</option>
-          </select>
-          <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required>
-          <input  type="submit" value="Search">
-        </form>
+        <div class='search-container'>
+            <form id="nhl-search" method="GET" action="nhl_games.php">
+                    <select name="search_column" id="nhl-search-column">
+                        <option value="season">Season</option>
+                        <option value="gameDate">Game Date</option>
+                        <option value="easternStartTime">Start Time</option>
+                        <option value="gameType">Game Type</option>
+                        <option value="team">Team</option>
+                        <option value="homeTeamId">Home Team</option>
+                        <option value="awayTeamId">Away Team</option>
+                        <option value="player">Player Name</option>
+                    </select>
+                    <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required>
+                    <input  type="submit" value="Search" class="btn btn-primary">
+            </form>
+        </div>
         <br>
 
         <?php
@@ -66,7 +69,7 @@
                 die("Query failed: " . mysqli_error($conn));
             }
             
-            echo "<h5>Players found where " . $searchColumn . ' = ' . $originalSearchTerm . "</h5>";
+            echo "<h5>Results found for  " . ucfirst($searchColumn) . ' = ' . $originalSearchTerm . "</h5>";
             
             if (mysqli_num_rows($result) > 0) {
                 echo "<h6>" . mysqli_num_rows($result) . " results<br><br></h6>";
@@ -77,18 +80,20 @@
             ?>
 
             <!-- Display results in a table format -->
-            <table class='games-table'>
-            <tr style="color: white; font-weight: bold; background-color: #2e5b78; border: 1px solid #bcd6e7">
-                <th>ID</th>
-                <th>Name</th>
-                <th>Number</th>
-                <th>Team</th>
-            </tr>
+            <table id='games-players-summary-table'>
+                <thead>
+                    <tr style="color: white; font-weight: bold; background-color: #2e5b78; border: 1px solid #bcd6e7">
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Number</th>
+                        <th>Team</th>
+                    </tr>
+                </thead>
 
             <?php
             while ($row = $result->fetch_assoc()){
                 echo "<tr>";
-                    echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>Test</td>";
+                    echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>" . $row['playerId'] . "</td>";
                     echo "<td>" . $row['firstName'] . ' ' . $row['lastName'] . "</td>";
                     if ($row['sweaterNumber'] == '') {
                         echo "<td>-</td>";

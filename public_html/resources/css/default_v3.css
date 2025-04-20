@@ -56,20 +56,38 @@
 	font-weight: bold;
 }
 
-.games-table {
+#games-players-summary-table {
 	width: 70%;
 	margin: 0 auto;
+	border: 2px solid #bcd6e7;
+	border-collapse: collapse;
+}
+  
+#games-players-summary-table thead {
+	color: white; 
+	font-weight: bold; 
+	background-color: #2e5b78; 
 }
 
-.games-table tr {
-	border: 1px solid rgba(188, 214, 231, 0.3);
+#games-players-summary-table tbody tr:first-child td {
+	border-top: 2px solid white; /* White line under header */
 }
 
-/* .games-table tr:hover {
-	background-color: rgb(91, 118, 119);
-} */
+#games-players-summary-table td {
+	border: 1px solid rgba(188, 214, 231, 0.3); /* Inner borders */
+	padding: 8px;
+  }
 
 .player-stats-table {
+	width: 70%;
+	border: 1px solid #bcd6e7;
+	margin: 0px auto;
+	table-layout: fixed;
+  	border-collapse: collapse;
+	text-align: center;
+}
+
+.goalie-stats-table {
 	width: 70%;
 	border: 1px solid #bcd6e7;
 	margin: 0px auto;
@@ -121,19 +139,21 @@ html, body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 40px;
-	margin-top: 20px;
+	gap: 5%;
+	margin-top: 30px;
   }
   
   .hero-bio-image {
-	width: 600px;
+	width: 550px;
 	border-radius: 8px;
 	flex-shrink: 0;
   }
   
   .bio-box {
 	border: 1px solid #bcd6e7;
-	width: 300px;
+	width: 400px;
+	background-color: rgba(188, 214, 231, 0.3);
+    border-radius: 8px;
   }
   
   /* Only stack on mobile */
@@ -159,3 +179,51 @@ html, body {
 	  text-align: center;
 	}
   }
+
+
+#nhl-search {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(188, 214, 231, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#nhl-search select,
+#nhl-search input[type="text"],
+#nhl-search input[type="submit"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+#nhl-search select {
+    flex: 1; /* left */
+}
+
+#search-term {
+    flex: 2; /* middle */
+}
+
+#nhl-search input[type="submit"] {
+    flex: 1; /* right */
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+#nhl-search input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.search-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

@@ -15,35 +15,37 @@
     <!-- Custom styles for this template -->
     <!-- <link href="../resources/css/album.css" rel="stylesheet"> -->
 
-    <link rel="stylesheet" type="text/css" href="../resources/css/default_v2.css">
+    <link rel="stylesheet" type="text/css" href="../resources/css/default_v3.css">
   </head>
 
   <body>
 
     <div class="bg-dark text-white text-center py-5 content-wrapper">
-      <h2>NHL Historical Database</h2>
-      <p>This site serves as a repository for historical data from the National Hockey League (NHL).<br>
-        You can search past games by season, date, game type, start time, and teams.<br>Each game page
-        features additional details about the game, as well as play-by-play data.<br><br>
+      <h2>NHL Historical Database</h2><br>
+      <p>This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
+        You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
+        <br><br>Game and player pages feature additional details such as rosters, play-by-play, player bio info, and players stats.<br><br>
         All data hosted here has been scraped from the public <a href=https://github.com/Zmalski/NHL-API-Reference>NHL API</a>. Thanks goes to the NHL for
-        their work to make this data available.<br><br>
+        their work to make this data available.<br><br><br>
       </p>
 
+      <div class='search-container'>
         <form id="nhl-search" method="GET" action="nhl_games.php">
-          <select name="search_column" id="nhl-search-column">
-              <option value="season">Season</option>
-              <option value="gameDate">Game Date</option>
-              <option value="easternStartTime">Start Time</option>
-              <option value="gameType">Game Type</option>
-              <option value="team">Team</option>
-              <option value="homeTeamId">Home Team</option>
-              <option value="awayTeamId">Away Team</option>
-              <option value="player">Player Name</option>
-          </select>
-          <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required>
-          <input  type="submit" value="Search">
+                <select name="search_column" id="nhl-search-column">
+                    <option value="season">Season</option>
+                    <option value="gameDate">Game Date</option>
+                    <option value="easternStartTime">Start Time</option>
+                    <option value="gameType">Game Type</option>
+                    <option value="team">Team</option>
+                    <option value="homeTeamId">Home Team</option>
+                    <option value="awayTeamId">Away Team</option>
+                    <option value="player">Player Name</option>
+                </select>
+                <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required>
+                <input  type="submit" value="Search" class="btn btn-primary">
         </form>
-        <br><br>
+    </div>
+        <br><br><br>
         <p>This database is a work in progress. For any bugs or feature requests, please reach out
           at connor@connoryoung.com.
         </p>
