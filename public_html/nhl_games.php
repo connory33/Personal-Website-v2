@@ -18,6 +18,62 @@
     <link href="/resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
   </head>
+  <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About Me</h4>
+              <p class="text-white">
+                  My name is Connor Young and I'm from Palo Alto, CA. I have a BS in Mechanical Engineering and a minor in Business from Cornell University
+                  and a Master's in Operations Research and Information Engineering from Cornell Tech. 
+                  <br /><br />
+                  My career goal is to bring innovative technologies to the world.
+                  I thrive at the intersection of technical and non-technical thinking and enjoy using my analytical mindset to break down and solve problems
+                  that are both quantitatively and qualitatively complex.
+                  <br /><br />
+                  I seek opportunities to understand and balance customer needs with engineering constraints to deliver
+                  innovative and high-value products. I greatly enjoy fast-paced work environments with high levels of
+                  collaboration, accountability, and room for impact and growth.
+              </p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a style="color: dodgerblue" class="footerContent" href="https://www.linkedin.com/in/connoryoung33/">LinkedIn</a></li>
+                <li><a style="color: #b55850" class="footerContent" href="https://www.github.com/connory33">GitHub</a></li>
+                <li><a href="#" class="text-white">connor@connoryoung.com</a></li>
+              </ul>
+              <h4 class="text-white">Site Navigation</h4>
+              <ul class="list-unstyled">
+                <li><a style="color: dodgerblue" class="footerContent" href="">Home</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="nhlIndex.html">NHL Database</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="nhlLinesProject.html">NHL Lines Project</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="nbaFantasyProjections.html">NBA Fantasy Project</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="maddenOptimizer.html">NFL Roster Project</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="seniorDesign.html">Sr. Design Project</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="autonomousRobot.html">Robot Project</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="thermistorCleaner.html">Thermistor Project</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="waterPump.html">Water Pump Project</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="planterBoxes.html">Planter Box Project</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <!-- <a href="../resources/images/Wheel1.jpg" width="20" height="20" class="mr-2"></a> -->
+            <strong>CY</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
   <body>
     
     <div class="bg-dark text-white text-center">
@@ -74,7 +130,9 @@
             $sql = "SELECT
                         nhl_games.*,
                         home_teams.fullName AS home_team_name,
-                        away_teams.fullName AS away_team_name
+                        home_teams.id AS home_team_id,
+                        away_teams.fullName AS away_team_name,
+                        away_teams.id AS away_team_id
                     FROM
                         nhl_games
                     JOIN nhl_teams AS home_teams
@@ -209,117 +267,127 @@
 
                 <!-- Display results in a table format -->
                 <!-- <table style="width: 70%; margin: 0px auto; border: 1px solid #bcd6e7"> -->
-                
-                <table id='games-players-summary-table'>
-                    <thead>
-                        <tr style='border: 1px solid #bcd6e7'>
-                            <th>Season</th>
-                            <th>Game<br>#</th>
-                            <?php
-                            echo "<th>Date<br><a style='color: white' href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
-                            . "&sort_by=gameDate&sort_order=asc'>△</a><a style='color: white' href='?search_column=" . urlencode($searchColumn)
-                            . "&search_term=" . urlencode($searchTerm)
-                            . "&sort_by=gameDate&sort_order=desc'>▽</a></th>";
-                            ?>
-                            <th>Start Time<br>(EST)</th>
-                            <th>Game<br>Type</th>
-                            <?php
-                            echo "<th>Home Team<br><a style='color: white' href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
-                            . "&sort_by=home_team_name&sort_order=asc'>△</a><a style='color: white' href='?search_column=" . urlencode($searchColumn)
-                            . "&search_term=" . urlencode($searchTerm)
-                            . "&sort_by=home_team_name&sort_order=desc'>▽</a></th>";
-                            ?>
-                            <th>Home<br>Score</th>
-                            <th>Away<br>Team</th>
-                            <th>Away<br>Score</th>
-                            <th>Game<br>ID</th>
-                        </tr>
-                    </thead>
+                <div class="table-container">
+                    <table id='games-players-summary-table'>
+                        <thead>
+                            <tr>
+                                <th>Season</th>
+                                <th>Game<br>#</th>
+                                <!--
+                                // echo "<th>Date<br><a style='color: white' href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
+                                // . "&sort_by=gameDate&sort_order=asc'>△</a><a style='color: white' href='?search_column=" . urlencode($searchColumn)
+                                // . "&search_term=" . urlencode($searchTerm)
+                                // . "&sort_by=gameDate&sort_order=desc'>▽</a></th>";
+                                //-->
+                                <th>Date<br>
+                                <span class='sort-arrows'>
+                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameDate&sort_order=asc'>△</a>
+                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameDate&sort_order=desc'>▽</a>
+                                </span>
+                                </th>
+                                <th>Start Time<br>(EST)</th>
+                                <th>Game<br>Type</th>
+                                <?php
+                                echo "<th>Home Team<br><a style='color: white' href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
+                                . "&sort_by=home_team_name&sort_order=asc'>△</a><a style='color: white' href='?search_column=" . urlencode($searchColumn)
+                                . "&search_term=" . urlencode($searchTerm)
+                                . "&sort_by=home_team_name&sort_order=desc'>▽</a></th>";
+                                ?>
+                                <th>Home<br>Score</th>
+                                <th>Away<br>Team</th>
+                                <th>Away<br>Score</th>
+                                <th>Game<br>ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                <?php
-                while ($row = $result->fetch_assoc()){
-                    echo "<tr>";
-                    // echo "<td>".$row['id']."</td>";
-                    
-                    # Season
-                    $formatted_season_1 = substr($row['season'], 0, 4);
-                    $formatted_season_2 = substr($row['season'], 4);
-                    echo "<td>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
-                    
-                    # Game Number
-                    echo "<td>".$row['gameNumber']."</td>";
+                    <?php
+                    while ($row = $result->fetch_assoc()){
+                        echo "<tr>";
+                        // echo "<td>".$row['id']."</td>";
+                        
+                        # Season
+                        $formatted_season_1 = substr($row['season'], 0, 4);
+                        $formatted_season_2 = substr($row['season'], 4);
+                        echo "<td>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
+                        
+                        # Game Number
+                        echo "<td>".$row['gameNumber']."</td>";
 
-                    # Date
-                    $gameDate = $row['gameDate'];
-                    $gameDatetime = new DateTime($gameDate);
-                    $formatted_gameDate = $gameDatetime->format('m/d/Y');
-                    echo "<td>".htmlspecialchars($formatted_gameDate)."</td>";
+                        # Date
+                        $gameDate = $row['gameDate'];
+                        $gameDatetime = new DateTime($gameDate);
+                        $formatted_gameDate = $gameDatetime->format('m/d/Y');
+                        echo "<td>".htmlspecialchars($formatted_gameDate)."</td>";
 
-                    # Time
-                    $formatted_startTime = substr($row['easternStartTime'], 11, -3);
-                    echo "<td>".htmlspecialchars($formatted_startTime)."</td>";
+                        # Time
+                        $formatted_startTime = substr($row['easternStartTime'], 11, -3);
+                        echo "<td>".htmlspecialchars($formatted_startTime)."</td>";
 
-                    # Game Type (i.e. Preseason, Regular Season, etc.)
-                    $gameType_num = $row['gameType'];
-                    if ($gameType_num == 1) {
-                        $gameType_text = "Preseason";
-                    } elseif ($gameType_num == 2) {
-                        $gameType_text = "Reg. Season";
-                    } elseif ($gameType_num == 3) {
-                        $gameType_text = "Playoffs";
-                    } else {
-                        $gameType_text = "Unknown";
+                        # Game Type (i.e. Preseason, Regular Season, etc.)
+                        $gameType_num = $row['gameType'];
+                        if ($gameType_num == 1) {
+                            $gameType_text = "Preseason";
+                        } elseif ($gameType_num == 2) {
+                            $gameType_text = "Reg. Season";
+                        } elseif ($gameType_num == 3) {
+                            $gameType_text = "Playoffs";
+                        } else {
+                            $gameType_text = "Unknown";
+                        }
+                        echo "<td>".$gameType_text."</td>";
+
+                        // # Period
+                        // $period_num = $row['regPeriods'];
+                        // if ($period_num == 3) {
+                        //     $period_text = "Regulation";
+                        // } elseif ($period_num == 4) {
+                        //     $period_text = "OT";
+                        // } elseif ($period_num == 5) {
+                        //     $period_text = "SO";
+                        // } else {
+                        //     $period_text = $period_num;
+                        // }
+                        // echo "<td>".$period_text."</td>";
+
+                        # Home Team
+                        if ($row['homeScore']>$row['awayScore']) {
+                            echo "<td style='font-weight: bold'><a href='team_details.php?team_id={$row['home_team_id']}'>" . htmlspecialchars($row['home_team_name']) . "</a></td>";
+                            // echo "<td style='font-weight: bold'>".$row['home_team_name']."</td>";
+                            echo "<td style='font-weight: bold'>".$row['homeScore']."</td>";
+                        } else {
+                            echo "<td>".$row['home_team_name']."</td>";
+                            echo "<td>".$row['homeScore']."</td>";
+                        }
+                        
+                        # Away Team
+                        if ($row['homeScore']<$row['awayScore']) {
+                            echo "<td style='font-weight: bold'>".$row['away_team_name']."</td>";
+                            echo "<td style='font-weight: bold'>".$row['awayScore']."</td>";
+                        } else {
+                            echo "<td>".$row['away_team_name']."</td>";
+                            echo "<td>".$row['awayScore']."</td>";
+                        }
+
+                        # Game ID
+                        echo "<td><a href='game_details.php?game_id=" . $row['id'] . "'>" . $row['id'] . "</a></td>";
+
+                        echo "</tr>";
                     }
-                    echo "<td>".$gameType_text."</td>";
+                        //// Extraneous ////
+                        // echo "<td style='font-weight: bold'>Game ID</td>";
+                        // echo "<td style='font-weight: bold'>gameScheduleStateId</td>";
+                        // echo "<td style='font-weight: bold'>gameStateId</td>";
+                        // echo "<td style='font-weight: bold'>Home Team Tricode</td>";
+                        // echo "<td style='font-weight: bold'>Visiting Team Tricode</td>";    
+                        // echo "<td>".$row['gameScheduleStateId']."</td>";
 
-                    // # Period
-                    // $period_num = $row['regPeriods'];
-                    // if ($period_num == 3) {
-                    //     $period_text = "Regulation";
-                    // } elseif ($period_num == 4) {
-                    //     $period_text = "OT";
-                    // } elseif ($period_num == 5) {
-                    //     $period_text = "SO";
-                    // } else {
-                    //     $period_text = $period_num;
-                    // }
-                    // echo "<td>".$period_text."</td>";
-
-                    # Home Team
-                    if ($row['homeScore']>$row['awayScore']) {
-                        echo "<td style='font-weight: bold'>".$row['home_team_name']."</td>";
-                        echo "<td style='font-weight: bold'>".$row['homeScore']."</td>";
-                    } else {
-                        echo "<td>".$row['home_team_name']."</td>";
-                        echo "<td>".$row['homeScore']."</td>";
-                    }
+                        # Game State (i.e. Final, In Progress, etc.)
+                        // echo "<td>".$row['gameStateId']."</td>";
                     
-                    # Away Team
-                    if ($row['homeScore']<$row['awayScore']) {
-                        echo "<td style='font-weight: bold'>".$row['away_team_name']."</td>";
-                        echo "<td style='font-weight: bold'>".$row['awayScore']."</td>";
-                    } else {
-                        echo "<td>".$row['away_team_name']."</td>";
-                        echo "<td>".$row['awayScore']."</td>";
-                    }
-
-                    # Game ID
-                    echo "<td><a href='game_details.php?game_id=" . $row['id'] . "'>" . $row['id'] . "</a></td>";
-
-                    echo "</tr>";
-                }
-                    //// Extraneous ////
-                    // echo "<td style='font-weight: bold'>Game ID</td>";
-                    // echo "<td style='font-weight: bold'>gameScheduleStateId</td>";
-                    // echo "<td style='font-weight: bold'>gameStateId</td>";
-                    // echo "<td style='font-weight: bold'>Home Team Tricode</td>";
-                    // echo "<td style='font-weight: bold'>Visiting Team Tricode</td>";    
-                    // echo "<td>".$row['gameScheduleStateId']."</td>";
-
-                    # Game State (i.e. Final, In Progress, etc.)
-                    // echo "<td>".$row['gameStateId']."</td>";
-
-                echo "</table>";
+                        echo "</tbody>";
+                    echo "</table>";
+                echo "</div>";
 
                 
                 $total_pages = ceil($total_rows / $limit);
