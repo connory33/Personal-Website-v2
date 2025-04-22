@@ -99,11 +99,12 @@
                         latest_stats.*,
                         season_stats.*
                       FROM nhl_teams AS teams
-                      JOIN team_latest_stats AS latest_stats
+                      LEFT JOIN team_latest_stats AS latest_stats
                         ON teams.id = latest_stats.teamID
-                      JOIN team_season_stats AS season_stats
+                      LEFT JOIN team_season_stats AS season_stats
                         ON teams.id = season_stats.teamID
-                      WHERE teams.id = $team_id";
+                      WHERE teams.id = $team_id
+                      GROUP BY season_stats.playerID";
               $result = mysqli_query($conn, $sql);
 
               if (!$result) {
@@ -135,7 +136,7 @@
 
             
               
-                    echo "<h3 style='text-align: center'>Skater Season Stats</h3>";
+                    echo "<h3 style='text-align: center'>Skater Current Season Stats</h3>";
                     echo "<table class='player-stats-table'>";
                     echo "<thead>";
                         echo "<tr>";
@@ -174,8 +175,9 @@
                 $seasonShots = $row['seasonShots'];
                 $seasonShootingPct = $row['seasonShootingPct'];
                 $seasonAvgTOI = $row['seasonAvgTOI'];
+                $seasonAvgTOI = gmdate("i:s", (int) $seasonAvgTOI); // Convert seconds to minutes:seconds format
                 $seasonAvgShifts = $row['seasonAvgShifts'];
-                $seasonFOWinPct = $row['seasonFOWinPct'];
+                $seasonFOWinPct = number_format((float) $row['seasonFOWinPct']*100, 1);
                 $seasonGS = $row['seasonGS'];
                 $seasonWins = $row['seasonWins'];
                 $seasonLosses = $row['seasonLosses'];
@@ -216,6 +218,7 @@
             }
             echo "</table>";
             echo "</div>";
+            echo "<br>";
           }
 
           
