@@ -1,4 +1,5 @@
 <!-- TEMPLATE FOR GAME DETAIL PAGES - GETS ID SELECTED ON GAMES PAGE AND USES IT TO QUERY DATABASE FOR ADDITIONAL GAME DETAILS -->
+<?php include('db_connection.php'); ?>
 
 <!doctype html>
 <html lang="en">
@@ -49,7 +50,7 @@
               </ul>
               <h4 class="text-white">Site Navigation</h4>
               <ul class="list-unstyled">
-                <li><a style="color: dodgerblue" class="footerContent" href="">Home</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="index_v3.html">Home</a></li>
                 <li><a style="color: dodgerblue" class="footerContent" href="nhlIndex.html">NHL Database</a></li>
                 <li><a style="color: dodgerblue" class="footerContent" href="nhlLinesProject.html">NHL Lines Project</a></li>
                 <li><a style="color: dodgerblue" class="footerContent" href="nbaFantasyProjections.html">NBA Fantasy Project</a></li>
@@ -85,8 +86,6 @@
           ini_set('display_errors', 1);
           ini_set('display_startup_errors', 1);
           error_reporting(E_ALL);
-          include('db_connection.php');
-
     ########## GET ALL PLAYER DATA TO USE FOR THE PAGE ##########
 
           // Check if the 'game_id' is passed in the URL
@@ -599,7 +598,7 @@
 
 
         ### Season-by-Season Stats ###
-          $seasonStatsSQL = "SELECT * FROM season_stats WHERE playerId=$player_id ORDER BY seasonSeason ASC";
+          $seasonStatsSQL = "SELECT * FROM player_season_stats WHERE playerID=$player_id ORDER BY seasonSeason ASC";
           $seasonStats = mysqli_query($conn, $seasonStatsSQL);
 
           echo "<h3 style='text-align: center'>Season-by-Season Statistics</h3>";

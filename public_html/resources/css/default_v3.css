@@ -10,6 +10,7 @@
 .my-footer {
 	background-color: #171a1f;
 	color: white;
+	width: 100%;
 }
 
 /* sets background color for Bootstrap's default footer class */
@@ -21,6 +22,8 @@
 /* Prevent horizontal scrolling on mobile */
 body {
 	overflow-x: hidden;
+	font-family: 'Inter', sans-serif;
+	line-height: 1.6;
 }
 
 html, body {
@@ -146,7 +149,7 @@ html, body {
 	padding: 20px;
 	border-radius: 8px;
 	gap: 15px;
-	margin-top: 15%;
+	margin-top: 7%;
 	color: rgb(233, 235, 236);
 	/* display: flex;
 	justify-content: center;
@@ -157,7 +160,7 @@ html, body {
 /* GAMES/PLAYER SUMMARY TABLE */
   /* Container div around your table */
 .table-container {
-	width: 70%;
+	width: 90%;
 	margin: 0 auto;
 	border: 3px solid #bcd6e7;
 	border-radius: 8px;
@@ -188,6 +191,38 @@ html, body {
   #games-players-summary-table thead th:last-child {
 	border-top-right-radius: 8px;
   }
+
+  /* column width styling */
+  .col-season {
+	width: 10%;
+  }
+  .col-gameNumber {
+	width: 9%;
+  }
+  .col-date {
+	width: 10%;
+  }
+  .col-startTime {
+	width: 11%;
+  }
+  .col-gameType {
+	width: 10%;
+  }
+  .col-homeTeam {
+	width: 10%;
+  }
+  .col-homeScore {
+	width: 10%;
+  }
+  .col-awayTeam {
+	width: 10%;
+  }
+  .col-awayScore {
+	width: 10%;
+  }
+  .col-id {
+	width: 10%;
+  }
   
   /* cell styling */
   #games-players-summary-table th,
@@ -204,10 +239,10 @@ html, body {
   }
   
   /* row styling */
-  #games-players-summary-table tr:nth-child(even) {
-	background-color: #4c5b64;
+  #games-players-summary-table tbody tr:nth-child(even) {
+	background-color: gray-500;
   }
-  #games-players-summary-table tr:nth-child(odd) {
+  #games-players-summary-table tbody tr:nth-child(odd) {
 	background-color: #4c5b64;
   }
   
@@ -232,15 +267,27 @@ html, body {
 	table-layout: fixed;
   	border-collapse: collapse;
 	text-align: center;
+	table-layout: fixed;
 }
 
 .goalie-stats-table {
-	width: 70%;
+	width: 85%;
 	border: 1px solid #bcd6e7;
 	margin: 0px auto;
 	table-layout: fixed;
   	border-collapse: collapse;
 	text-align: center;
+	table-layout: fixed;
+}
+
+.player-stats-table td, .player-stats-table th, .goalie-stats-table td, .goalie-stats-table th {
+	padding: 8px 10px;
+	border: 1px solid #ddd;
+	text-align: center;
+}
+
+.player-stats-table tr:hover, .goalie-stats-table tr:hover {
+	background-color: #dedede;
 }
 
 .player-stats-table thead tr, .goalie-stats-table thead tr {
@@ -249,7 +296,7 @@ html, body {
 	font-weight: bold;
 }
 
-.player-stats-table th, .player-stats-table td {
+.player-stats-table th, .player-stats-table td, .goalie-stats-table th, .goalie-stats-table td {
 	padding: 8px;
 	border: 1px solid #ccc;
 }
@@ -307,3 +354,127 @@ html, body {
 	font-weight: bold; 
 	background-color:#2e5b78;
 }
+
+
+/* ####################################################### NHL TEAM PAGE STYLES ########################################################## */
+.filter-container {
+  	margin: auto;
+	/* background-color: rgba(76, 91, 100, 0.85); */
+	width: 18%;
+	color: rgb(233, 235, 236); 
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	/* padding-left: 4px;
+	padding-right: 4px; */
+	gap: 7px;
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+#seasonDropdown select {
+	padding: 6px 12px;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+  }
+
+#seasonDropdown {
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px; 
+	padding: 5px; 
+	margin: 0;
+	color: black;
+}
+
+.team-header {
+	padding: 20px;
+	/* background: linear-gradient(to right, #111, #222); */
+	border-radius: 12px;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+	margin-bottom: 30px;
+  }
+
+/* Skater Table Width */
+.season-col-skater-stats {
+	width: 12%;
+}
+.gameType-col-skater-stats {
+	width: 3%;
+}
+.name-col-skater-stats {
+	width: 18%;
+}
+.position-col-skater-stats {
+	width: 5%;
+}
+.gp-col-skater-stats {
+	width: 5%;
+}
+.goals-season-col-skater-stats {
+	width: 5%;
+}
+.assists-season-col-skater-stats {
+	width: 5%;
+}
+.points-season-col-skater-stats {
+	width: 5%;
+}
+.plusMinus-season-col-skater-stats {
+	width: 5%;
+}
+.shots-col-skater-stats {
+	width: 7%;
+}
+.shotPct-col-skater-stats {
+	width: 7%;
+}
+.avgTOI-col-skater-stats {
+	width: 7%;
+}
+.avgShifts-col-skater-stats {
+	width: 8%;
+}
+.FOPct-col-skater-stats {
+	width: 8%;
+}
+
+/* Goalie Table Width */
+.season-col-goalie-stats { width: 10%; }
+.gameType-col-goalie-stats { width: 6%; }
+.name-col-goalie-stats { width: 14%; }
+.position-col-goalie-stats { width: 3%; }
+.gp-col-goalie-stats { width: 4%; }
+.gs-season-col-goalie-stats { width: 4%; }
+.wins-season-col-goalie-stats { width: 4%; }
+.losses-season-col-goalie-stats { width: 4%; }
+.ties-season-col-goalie-stats { width: 3%; }
+.otlosses-col-goalie-stats { width: 4%; }
+.GAA-col-goalie-stats { width: 6%; }
+.svPct-col-goalie-stats { width: 6%; }
+.SA-col-goalie-stats { width: 4%; }
+.saves-col-goalie-stats { width: 4%; }
+.GA-col-goalie-stats { width: 4%; }
+.SO-col-goalie-stats { width: 4%; }
+.TOI-col-goalie-stats { width: 6%; }
+
+.footer-teams {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 20px;
+  }
+  
+  .footer-teams a {
+	text-decoration: none;
+	color: black;
+  }
+  
+  .footer-teams a:hover {
+	text-decoration: underline;
+  }

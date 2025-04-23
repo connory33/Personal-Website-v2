@@ -46,7 +46,7 @@
               </ul>
               <h4 class="text-white">Site Navigation</h4>
               <ul class="list-unstyled">
-                <li><a style="color: dodgerblue" class="footerContent" href="">Home</a></li>
+                <li><a style="color: dodgerblue" class="footerContent" href="index_v3.html">Home</a></li>
                 <li><a style="color: dodgerblue" class="footerContent" href="nhlIndex.html">NHL Database</a></li>
                 <li><a style="color: dodgerblue" class="footerContent" href="nhlLinesProject.html">NHL Lines Project</a></li>
                 <li><a style="color: dodgerblue" class="footerContent" href="nbaFantasyProjections.html">NBA Fantasy Project</a></li>

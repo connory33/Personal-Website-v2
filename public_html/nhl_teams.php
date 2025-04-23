@@ -1,4 +1,3 @@
-<?php include('db_connection.php'); ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -74,7 +73,7 @@
           </button>
         </div>
       </div>
-    </header>
+  </header>
   <body>
     
     <div class="bg-dark text-white text-center">
@@ -99,6 +98,7 @@
         <br>
 
         <?php
+        include('db_connection.php');
 
         ini_set('display_errors', 1); error_reporting(E_ALL);
 
@@ -108,20 +108,22 @@
             $searchTerm = '';
             $originalSearchTerm = '';
 
-            $sortColumnMap = [
-                'gameDate' => 'nhl_games.gameDate',
+            # Set default values for sorting and ordering
+            $sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'gameDate';  // Default to 'gameDate'
+            $sortOrder = isset($_GET['order']) ? $_GET['order'] : 'desc';      // Default to 'desc'
+
+            # Validate allowed sort columns
+            $allowedSortColumns = [
+                'gameDate' => 'gameDate',
                 'home_team_name' => 'home_teams.fullName',
-                'away_team_name' => 'away_teams.fullName',
-                'home_score' => 'nhl_games.homeScore',
-                'away_score' => 'nhl_games.awayScore',
-                'game_id' => 'nhl_games.id'
+                'away_team_name' => 'away_teams.fullName'
             ];
-            
-            $requestedSortColumn = $_GET['sort_by'] ?? 'gameDate';
-            $sortColumn = isset($sortColumnMap[$requestedSortColumn]) ? $sortColumnMap[$requestedSortColumn] : 'nhl_games.gameDate';
-            
-            $sortOrder = (isset($_GET['sort_order']) && strtolower($_GET['sort_order']) === 'asc') ? 'ASC' : 'DESC';
-        
+
+            if (array_key_exists($sortColumn, $allowedSortColumns)) {
+                $sortColumn = $allowedSortColumns[$sortColumn];
+            } else {
+                $sortColumn = 'gameDate'; // Default to 'gameDate' if the sort column is invalid
+            }
 
             # SQL
             # base query
@@ -138,17 +140,16 @@
                     JOIN nhl_teams AS away_teams
                         ON nhl_games.awayTeamId = away_teams.id";
             # add where clause if search values are set (not empty)
-
-            // Pagination setup
-            $limit = 25; // Results per page
-            $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-            $offset = ($page - 1) * $limit;
-
             if (!empty($_GET['search_column']) && !empty($_GET['search_term'])) {
 
                 $searchColumn = mysqli_real_escape_string($conn, $_GET['search_column']);
                 $searchTerm = mysqli_real_escape_string($conn, $_GET['search_term']);
                 $originalSearchTerm = $searchTerm;
+
+                // Pagination setup
+                $limit = 25; // Results per page
+                $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+                $offset = ($page - 1) * $limit;
 
                 // Get total count (for Load More logic)
                 $count_sql = "SELECT COUNT(*) as total FROM (" . preg_replace("/SELECT.+?FROM/", "SELECT 1 FROM", $sql, 1) . ") as count_table";
@@ -247,8 +248,8 @@
                 $result = mysqli_query($conn, $sql) or die("Query failed: " . mysqli_error($conn));
 
 
-                // // Execute the query, check if successful and if results were found
-                // $result = mysqli_query($conn, $sql);
+                // Execute the query, check if successful and if results were found
+                $result = mysqli_query($conn, $sql);
 
                 if (!$result) {
                     die("Query failed: " . mysqli_error($conn));
@@ -268,87 +269,38 @@
                 <!-- <table style="width: 70%; margin: 0px auto; border: 1px solid #bcd6e7"> -->
                 <div class="table-container">
                     <table id='games-players-summary-table'>
-                        <colgroup>
-                        <col class="col-season">
-                        <col class="col-gameNumber">
-                        <col class="col-date">
-                        <col class="col-startTime">
-                        <col class="col-gameType">
-                        <col class="col-homeTeam">
-                        <col class="col-homeScore">
-                        <col class="col-awayTeam">
-                        <col class="col-awayScore">
-                        <col class="col-id">
-                        </colgroup>
                         <thead>
                             <tr>
-                                <th>Season<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=season&sort_order=asc'>△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=season&sort_order=desc'>▽</a>
-                                </span>
-                                </th>
-                                <th>Game #<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameNumber&sort_order=asc'>△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameNumber&sort_order=desc'>▽</a>
-                                </span>
-                                </th>
+                                <th>Season</th>
+                                <th>Game<br>#</th>
+                                <!--
+                                // echo "<th>Date<br><a style='color: white' href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
+                                // . "&sort_by=gameDate&sort_order=asc'>△</a><a style='color: white' href='?search_column=" . urlencode($searchColumn)
+                                // . "&search_term=" . urlencode($searchTerm)
+                                // . "&sort_by=gameDate&sort_order=desc'>▽</a></th>";
+                                //-->
                                 <th>Date<br>
                                 <span class='sort-arrows'>
                                     <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameDate&sort_order=asc'>△</a>
                                     <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameDate&sort_order=desc'>▽</a>
                                 </span>
                                 </th>
-                                <th>Start (EST)<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=easternStartTime&sort_order=asc'>△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=easternStartTime&sort_order=desc'>▽</a>
-                                </span>
-                                </th>
-                                <th>Game Type<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameType&sort_order=asc'>△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameType&sort_order=desc'>▽</a>
-                                </span>
-                                </th>
-                                <th>Home Team<br>
-                                    <span class='sort-arrows'>
-                                        <a href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=home_team_name&sort_order=asc'>△</a><a href='?search_column=" . urlencode($searchColumn)
-                                        . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=home_team_name&sort_order=desc'>▽</a>
-                                    </span>
-                                </th>
-                                <th>Home Score<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=homeScore&sort_order=asc'>△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=homeScore&sort_order=desc'>▽</a>
-                                </span>
-                                </th>
-                                <th>Away Team<br>
-                                    <span class='sort-arrows'>
-                                        <a href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=away_team_name&sort_order=asc'>△</a><a href='?search_column=" . urlencode($searchColumn)
-                                        . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=away_team_name&sort_order=desc'>▽</a>
-                                    </span>
-                                </th>
-                                <th>Away Score<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=awayScore&sort_order=asc'>△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=awayScore&sort_order=desc'>▽</a>
-                                </span>
-                                </th>
-                                <th>ID<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=id&sort_order=asc'>△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=id&sort_order=desc'>▽</a>
-                                </span>
-                                </th>
+                                <th>Start Time<br>(EST)</th>
+                                <th>Game<br>Type</th>
+                                <?php
+                                echo "<th>Home Team<br><a style='color: white' href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
+                                . "&sort_by=home_team_name&sort_order=asc'>△</a><a style='color: white' href='?search_column=" . urlencode($searchColumn)
+                                . "&search_term=" . urlencode($searchTerm)
+                                . "&sort_by=home_team_name&sort_order=desc'>▽</a></th>";
+                                ?>
+                                <th>Home<br>Score</th>
+                                <th>Away<br>Team</th>
+                                <th>Away<br>Score</th>
+                                <th>Game<br>ID</th>
                             </tr>
                         </thead>
                         <tbody>
+
 
                     <?php
                     while ($row = $result->fetch_assoc()){
@@ -405,16 +357,16 @@
                             // echo "<td style='font-weight: bold'>".$row['home_team_name']."</td>";
                             echo "<td style='font-weight: bold'>".$row['homeScore']."</td>";
                         } else {
-                            echo "<td><a href='team_details.php?team_id={$row['home_team_id']}'>" . htmlspecialchars($row['home_team_name']) . "</a></td>";
+                            echo "<td>".$row['home_team_name']."</td>";
                             echo "<td>".$row['homeScore']."</td>";
                         }
                         
                         # Away Team
                         if ($row['homeScore']<$row['awayScore']) {
-                            echo "<td style='font-weight: bold'><a href='team_details.php?team_id={$row['away_team_id']}'>" . htmlspecialchars($row['away_team_name']) . "</a></td>";
+                            echo "<td style='font-weight: bold'>".$row['away_team_name']."</td>";
                             echo "<td style='font-weight: bold'>".$row['awayScore']."</td>";
                         } else {
-                            echo "<td><a href='team_details.php?team_id={$row['away_team_id']}'>" . htmlspecialchars($row['away_team_name']) . "</a></td>";
+                            echo "<td>".$row['away_team_name']."</td>";
                             echo "<td>".$row['awayScore']."</td>";
                         }
 
