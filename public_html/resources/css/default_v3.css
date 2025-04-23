@@ -51,54 +51,6 @@ html, body {
 	justify-content: center;
 }
 
-/* SEARCH FORM STYLING */
-#nhl-search {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(188, 214, 231, 0.3);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-#nhl-search select,
-#nhl-search input[type="text"],
-#nhl-search input[type="submit"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-}
-
-#nhl-search select {
-    flex: 1; /* left */
-}
-
-#search-term {
-    flex: 2; /* middle */
-}
-
-#nhl-search input[type="submit"] {
-    flex: 1; /* right */
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: none;
-}
-
-#nhl-search input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-.search-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
 /* ################################################### PROJECT PAGE STYLES ################################################### */
 /* Formatting images on project pages */
 
@@ -158,32 +110,38 @@ html, body {
 
 /* #################################################### GAME/PLAYER SUMMARY STYLES #################################################### */
 /* GAMES/PLAYER SUMMARY TABLE */
+#nhl-games-players-summary-content-container {
+	background-color: #0b0c10;
+	color: #c5c6c7;
+}
+
   /* Container div around your table */
 .table-container {
 	width: 90%;
 	margin: 0 auto;
-	border: 3px solid #bcd6e7;
+	border: 3px solid #45a29e;
 	border-radius: 8px;
-	overflow: hidden; /* Ensures content doesn't overflow rounded corners */
-  }
+	overflow-x: auto;  
+}
   
   /* table styling */
   #games-players-summary-table {
-	width: 100%;
 	border-collapse: collapse;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	width: max-content; /* makes the table grow only as wide as needed */
+    min-width: 100%;
   }
   
   /* thead styling */
   #games-players-summary-table thead {
 	position: sticky;
 	top: 0;
-	background-color: #2e5b78;
+	background-color: #1f2833;
 	z-index: 2;
 	color: white;
 	text-align: center;
 	font-weight: 600;
-	border-bottom: 3px solid #bcd6e7;
+	border-bottom: 3px solid #45a29e;
   }
   #games-players-summary-table thead th:first-child {
 	border-top-left-radius: 8px;
@@ -236,18 +194,22 @@ html, body {
   }
   #games-players-summary-table th {
 	font-size: 0.95rem;
+	color: white;
   }
+  #games-players-summary-table tr {
+	color: black;
+}
   
   /* row styling */
   #games-players-summary-table tbody tr:nth-child(even) {
-	background-color: gray-500;
+	background-color: #e3e7eb;
   }
   #games-players-summary-table tbody tr:nth-child(odd) {
-	background-color: #4c5b64;
+	background-color: #c5c6c7;
   }
   
   #games-players-summary-table tbody tr:hover {
-	background-color: #9ab3c4;
+	background-color: #66fcf1;
 	transition: 0.2s ease-in-out;
   }
   
@@ -259,47 +221,83 @@ html, body {
   }
 
 /* ############################################################# NHL PLAYER PAGE STYLES ########################################################## */
-/* PLAYER STATS TABLE STYLING */
-.player-stats-table {
-	width: 85%;
-	border: 1px solid #bcd6e7;
-	margin: 0px auto;
-	table-layout: fixed;
-  	border-collapse: collapse;
-	text-align: center;
-	table-layout: fixed;
+/* Player Stats Table Styling */
+/* Player Stats Table Styling */
+.player-stats-table, .goalie-stats-table {
+    width: 85%;
+    margin: 20px auto;
+    table-layout: fixed;
+    border-collapse: separate; /* Use separate borders for table and rows */
+    border-spacing: 0; /* Remove space between borders */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #2e5b78;
+    border-radius: 8px;
+    border: none;
 }
 
-.goalie-stats-table {
-	width: 85%;
-	border: 1px solid #bcd6e7;
-	margin: 0px auto;
-	table-layout: fixed;
-  	border-collapse: collapse;
-	text-align: center;
-	table-layout: fixed;
+/* Apply border-radius to the thead to round the whole header */
+.player-stats-table thead, .goalie-stats-table thead {
+    background-color: #2e5b78;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0; /* Round the top corners of the entire header */
+    overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
 }
 
-.player-stats-table td, .player-stats-table th, .goalie-stats-table td, .goalie-stats-table th {
-	padding: 8px 10px;
-	border: 1px solid #ddd;
-	text-align: center;
+.player-stats-table th, .goalie-stats-table th {
+    padding: 12px;
+    border-bottom: 2px solid #ddd;
 }
 
-.player-stats-table tr:hover, .goalie-stats-table tr:hover {
-	background-color: #dedede;
+/* Table Cell Styling */
+.player-stats-table td, .goalie-stats-table td {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #333; /* Ensure text is dark enough for readability */
 }
 
-.player-stats-table thead tr, .goalie-stats-table thead tr {
-	background-color: #2e5b78;
-	color: white;
-	font-weight: bold;
+/* Zebra Striping (Alternating Row Colors) */
+.player-stats-table tr:nth-child(even), .goalie-stats-table tr:nth-child(even) {
+    background-color: #f7f7f7; /* Light gray for alternating rows */
 }
 
-.player-stats-table th, .player-stats-table td, .goalie-stats-table th, .goalie-stats-table td {
-	padding: 8px;
-	border: 1px solid #ccc;
+/* Row Hover Effect (Only for body rows) */
+.player-stats-table tbody tr:hover, .goalie-stats-table tbody tr:hover {
+    background-color: #e6f7ff; /* Subtle light blue on hover */
+    cursor: pointer;
 }
+
+
+
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .player-stats-table, .goalie-stats-table {
+            width: 100%;
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .player-stats-table th, .goalie-stats-table th,
+        .player-stats-table td, .goalie-stats-table td {
+            padding: 8px;
+        }
+    }
+
+    /* General Table Styling */
+    .player-stats-table th, .goalie-stats-table th {
+        text-align: center;
+    }
+
+    /* Border and shadow styling for cleaner look */
+    .player-stats-table, .goalie-stats-table {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
 
 /* Responsive flex container for hero + bio */
 .hero-bio-container {
@@ -349,11 +347,11 @@ html, body {
 
 
 
-.table-header {
+/* .table-header {
 	color: white; 
 	font-weight: bold; 
 	background-color:#2e5b78;
-}
+} */
 
 
 /* ####################################################### NHL TEAM PAGE STYLES ########################################################## */

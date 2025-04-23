@@ -21,6 +21,8 @@
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
   </head>
   <header>
       <div class="collapse bg-dark" id="navbarHeader">
@@ -376,7 +378,7 @@
              if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
               echo "<table class='goalie-stats-table'>";
-              echo "<tr class='table-header'>";
+              echo "<tr>";
                 echo "<th>GP</td>";
                 echo "<th>W</td>";
                 echo "<th>L</td>";
@@ -408,7 +410,7 @@
             } else {
               // SKATER STATS BLOCK
               echo "<table class='player-stats-table'>";
-                echo "<tr class='table-header'>";
+                echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
                   echo "<th style='width: 6%'>G</th>";
                   echo "<th style='width: 6%'>A</th>";
@@ -450,7 +452,7 @@
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
               echo "<table class='goalie-stats-table'>";
-                echo "<tr class='table-header'>";
+                echo "<tr>";
                   echo "<th>GP</td>";
                   echo "<th>W</td>";
                   echo "<th>L</td>";
@@ -481,7 +483,7 @@
             } else {
               // SKATER STATS BLOCK
               echo "<table class='player-stats-table'>";
-                echo "<tr class='table-header'>";
+                echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
                   echo "<th style='width: 6%'>G</th>";
                   echo "<th style='width: 6%'>A</th>";
@@ -521,7 +523,7 @@
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
               echo "<table class='goalie-stats-table'>";
-                echo "<tr class='table-header'>";
+                echo "<tr>";
                   echo "<th>GP</td>";
                   echo "<th>W</td>";
                   echo "<th>L</td>";
@@ -552,7 +554,7 @@
             } else {
               // SKATER STATS BLOCK
               echo "<table class='player-stats-table'>";
-                echo "<tr class='table-header'>";
+                echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
                   echo "<th style='width: 6%'>G</th>";
                   echo "<th style='width: 6%'>A</th>";
