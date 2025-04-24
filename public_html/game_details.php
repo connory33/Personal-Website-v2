@@ -168,6 +168,7 @@
                 nhl_games.awayTeamId as away_team_id,
                 home_teams.fullName as home_team_name,
                 away_teams.fullName as away_team_name,
+                event_team.triCode as event_team_tricode,
                 nhl_games.gameDate,
                 nhl_games.venue,
                 nhl_games.venueLocation,
@@ -184,6 +185,9 @@
 
                 LEFT JOIN nhl_teams AS away_teams
                 ON nhl_games.awayTeamId = away_teams.id
+
+                LEFT JOIN nhl_teams AS event_team
+                ON nhl_plays.eventOwnerTeamId = event_team.id
 
                 WHERE
                 nhl_plays.gameID = '$game_id'
@@ -378,7 +382,8 @@
                         echo "<h4 style='text-align: center;'>$team_label</h4><br>";
                         echo "<table style='width: 100%; border: 1px solid #bcd6e7'>";
                         echo "<tr style='color: white; font-weight: bold; background-color:#2e5b78'>";
-                        echo "<td>ID</td><td>Name</td><td>Number</td><td>Position</td><td>Headshot</td>";
+                        echo "<td>ID</td><td>Name</td><td>Number</td><td>Position</td>";
+                        // echo "<td>Headshot</td>";
                         echo "</tr>";
 
                         foreach ($players as $player) {
@@ -386,11 +391,19 @@
                             $player_id = $player['playerID'];
                             $player_name = isset($roster_lookup[$player_id]) ? $roster_lookup[$player_id] : 'Unknown';
                             echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_id</a></td>";
-                            echo "<td style='color:#000000'>" . htmlspecialchars($player_name) . "</td>";
+                            echo "<td style='color:#000000'><a style='color:navy' href='player_details.php?player_id=" . $player_id . "'" . "</a>" . $player_name . "</td>";
+                            // echo "<td style='color:#000000'>" . htmlspecialchars($player_name) . "</td>";
                             echo "<td style='color:#000000'>" . $player['sweaterNumber'] . "</td>";
-                            echo "<td style='color:#000000'>" . $player['positionCode'] . "</td>";
+                            if ($player['positionCode'] == 'L') {
+                                $positionDisplay = 'LW';
+                            } else if ($player['positionCode'] == 'R') {
+                                $positionDisplay = 'RW';
+                            } else {
+                                $positionDisplay = $player['positionCode'];
+                            }
+                            echo "<td style='color:#000000'>" . $positionDisplay . "</td>";
                             // echo "<td>" . $player['triCode'] . "</td>";
-                            echo "<td><img src='" . htmlspecialchars($player['headshotURL']) . "' alt='headshot' style='height: 65px;'></td>";
+                            // echo "<td><img src='" . htmlspecialchars($player['headshotURL']) . "' alt='headshot' style='height: 65px;'></td>";
                             echo "</tr>";
                         }
 
@@ -419,32 +432,66 @@
         <?php
         if (mysqli_num_rows($plays) > 0) {
         ?>
-            <div>
-                <table style="width: 75%; margin: 0px auto; border: 3px solid #bcd6e7">
 
-                    <tr style="color: white; font-weight: bold; background-color: #2e5b78; border: 2px solid #bcd6e7">
-                        <td>Period - Time Left</td>
-                        <td>Type</td>
-                        <td>Coordinates</td>
-                        <td>Event Team</td>
-                        <td>F/O Winner</td>
-                        <td>F/O Loser</td>
-                        <td>Hitter</td>
-                        <td>Hittee</td>
-                        <td>Shot Type</td>
-                        <td>Shooter</td>
-                        <td>Goalie</td>
-                        <td>Reason</td>
-                        <td>Take/Giveaway Player</td>
-                        <td>Blocker</td>
-                        <td>Scorer</td>
-                        <td>Primary Assister</td>
-                        <td>Penalty</td>
-                        <td>Committer</td>
-                        <td>Drawer</td>
+<div class="rink-key-wrapper">
+    <!-- Left column: Title + Rink Image -->
+    <div class="rink-key-column">
+        <h4 style='font-weight: bold;'>Rink Diagram/Coordinates</h4>
+        <img src='../resources/images/hockey-rink.jpg' style='max-width: 100%; height: auto;'>
+    </div>
+
+    <!-- Right column: Title + Legend -->
+    <div class="rink-key-column">
+        <h4 style='font-weight: bold; text-align: center;'>Play-by-Play Key</h4>
+        <div style='text-align: left;'>
+            <p style='margin-top: 10px'>
+            FO - Faceoff<br>
+            SOG - Shot on Goal<br>
+            Pen. - Penalty<br>
+            Block - Blocked Shot<br>
+            Miss - Missed Shot<br>
+            Stop - Stoppage<br>
+            Give - Giveaway<br>
+            Take - Takeaway<br>
+            D. Pen. - Delayed Penalty<br>
+            Back - Backhand<br>
+            Tip - Tip-in
+            </p>
+        </div>
+    </div>
+</div>
+<br>
+
+
+<h4 style="text-align: center; margin-top:20px">Play-by-Play Events</h4>
+    <div class="overflow-x-auto">
+        <table id="play-by-play-table" class="min-w-max table-auto">
+            <thead>
+                <tr style>
+                        <th class='pbp-col-time-left'>Per. Time Left</th>
+                        <th class='pbp-col-type'>Type</th>
+                        <th class='pbp-col-coords'>Coords.</th>
+                        <th class='pbp-col-team'>Team</th>
+                        <th class='pbp-col-fo-winner'>F/O Winner</th>
+                        <th class='pbp-col-fo-loser'>F/O Loser</th>
+                        <th class='pbp-col-hitter'>Hitter</th>
+                        <th class='pbp-col-hittee'>Hittee</th>
+                        <th class='pbp-col-shot-type'>Shot Type</th>
+                        <th class='pbp-col-shooter'>Shooter</th>
+                        <th class='pbp-col-goalie'>Goalie</th>
+                        <th class='pbp-col-reason'>Reason</th>
+                        <th class='pbp-col-take-give'>Taker / Giver</th>
+                        <th class='pbp-col-blocker'>Blocker</th>
+                        <th class='pbp-col-scorer'>Scorer</th>
+                        <th class='pbp-col-primary-assister'>1st Assist</th>
+                        <th class='pbp-col-penalty'>Penalty</th>
+                        <th class='pbp-col-committer'>Committer</th>
+                        <th class='pbp-col-drawer'>Drawer</th>
                     </tr>
-
+                </thead>
+                    <tbody>
                     <?php
+                    
                         while ($row = $plays->fetch_assoc()){
                             echo "<tr style='color: white; border: 1px solid #bcd6e7'>";
                             $rowClass = '';
@@ -466,9 +513,9 @@
                             // echo "<td>".$row['typeDescKey']."</td>";
                             $playType = $row['typeDescKey'];
                             if ($playType == 'period-start') {
-                                $formatted_playType = 'Period Start';
+                                $formatted_playType = 'Per. Start';
                             } else if ($playType == 'faceoff') {
-                                $formatted_playType = 'Faceoff';
+                                $formatted_playType = 'FO';
                             } else if ($playType == 'hit') {
                                 $formatted_playType = 'Hit';
                             } else if ($playType == 'shot-on-goal') {
@@ -476,21 +523,21 @@
                             } else if ($playType == 'goal') {
                                 $formatted_playType = 'Goal';
                             } else if ($playType == 'stoppage') {
-                                $formatted_playType = 'Stoppage';
+                                $formatted_playType = 'Stop';
                             } else if ($playType == 'giveaway') {
-                                $formatted_playType = 'Giveaway';
+                                $formatted_playType = 'Give';
                             } else if ($playType == 'takeaway') {
-                                $formatted_playType = 'Takeaway';
+                                $formatted_playType = 'Takea';
                             } else if ($playType == 'blocked-shot') {
-                                $formatted_playType = 'Blocked Shot';
+                                $formatted_playType = 'Block';
                             } else if ($playType == 'missed-shot') {
-                                $formatted_playType = 'Missed Shot';
+                                $formatted_playType = 'Miss';
                             } else if ($playType == 'penalty') {
-                                $formatted_playType = 'Penalty';
+                                $formatted_playType = 'Pen.';
                             } else if ($playType == 'delayed-penalty') {
-                                $formatted_playType = 'Delayed Penalty';
+                                $formatted_playType = 'D. Pen.';
                             } else if ($playType == 'period-end') {
-                                $formatted_playType = 'Period End';
+                                $formatted_playType = 'Per. End';
                             } else {
                                 $formatted_playType = $playType;
                             }
@@ -503,7 +550,7 @@
                             echo "<td>" . $formatted_coordinates . "</td>";
 
                             # Event Team
-                            echo "<td>".$row['eventOwnerTeamId']."</td>";
+                            echo "<td>".$row['event_team_tricode']."</td>";
 
                             # Faceoffs
                             $faceoff_winner_id = $row['faceoffWinnerId'];
@@ -524,11 +571,16 @@
                             
                             # Shot Type
                             $formatted_shotType = ucfirst($row['shotType']);
-                            // if (len($row['shotType']) == 0) {
-                            //     $formatted_shotType = '-';
-                            // } else {
-                            //     $formatted_shotType = ucfirst($row['shotType']);
-                            // }
+                            if ($formatted_shotType == 'Backhand') {
+                                $formatted_shotType = 'Back';
+                            } else if ($formatted_shotType == 'Tip-in') {
+                                $formatted_shotType = 'Tip';
+                            } else if ($formatted_shotType == ''){
+                                $formatted_shotType = '-';
+                            } else {
+                                $formatted_shotType = $formatted_shotType;
+                            }
+                            
                             echo "<td>".htmlspecialchars($formatted_shotType)."</td>";
 
                             # Shooting Player
@@ -549,11 +601,11 @@
                             if ($reason == 'wide-right') {
                                 $formatted_reason = 'Wide right';
                             } else if ($reason == 'high-and-wide-right') {
-                                $formatted_reason = 'High/wide right';
+                                $formatted_reason = 'High / wide right';
                             } else if ($reason == 'wide-left') {
                                 $formatted_reason = 'Wide left';
                             } else if ($reason == 'high-and-wide-left') {
-                                $formatted_reason = 'High/wide left';
+                                $formatted_reason = 'High / wide left';
                             } else if ($reason == 'puck-frozen') {
                                 $formatted_reason = 'Puck frozen';
                             } else if ($reason == 'goalie-stopped-after-sog') {
@@ -609,13 +661,15 @@
 
                             # Penalty
                             if ($row['penaltySeverity'] == 'MIN') {
-                                $formatted_severity = 'Minor';
+                                $formatted_severity = '(2)';
                             } else if ($row['penaltySeverity'] == 'MAJ') {
-                                $formatted_severity = 'Major';
+                                $formatted_severity = '(4)';
+                            } else if ($row['penaltySeverity'] == ''){
+                                $formatted_severity = '-';
                             } else {
-                                $formatted_severity = '';
+                                $formatted_severity = 'ERROR';
                             }
-                            echo "<td>".$formatted_severity.' - '.$row['penaltyType']."</td>";
+                            echo "<td>" . $row['penaltyType'] . ' ' . $formatted_severity . "</td>";
                             $committer_id = $row['committerId'];
                             $committer_name = isset($roster_lookup[$committer_id]) ? $roster_lookup[$committer_id] : 'Unknown';
                             $drawer_id = $row['drawerId'];
@@ -626,6 +680,7 @@
 
                             echo "</tr>";
                         }
+                echo "</tbody>";
 
                 echo "</table>";
         
