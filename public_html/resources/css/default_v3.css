@@ -225,17 +225,8 @@ html, body {
     padding-bottom: 1rem;
 }
 
-#team-rosters-table-container {
-    width: 40%;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-	margin-left: 5%;
-}
-
-
 .player-stats-table, .goalie-stats-table, .season-roster-table {
-    width: 100%;
+    width: 80%;
     margin: 20px auto;
     table-layout: fixed;
     border-collapse: separate; /* Use separate borders for table and rows */
@@ -443,6 +434,39 @@ html, body {
 	justify-content: center;
   }
 
+/* Skater Combined Table Width */
+.skaters-combined-season { width: 19%;}
+.skaters-combined-name { width: 27%;}
+.skaters-combined-position { width: 11%;}
+.skaters-combined-gp { width: 11%;}
+.skaters-combined-g { width: 11%;}
+.skaters-combined-a { width: 11%;}
+.skaters-combined-p { width: 11%;}
+.skaters-combined-plus-minus { width: 11%;}
+.skaters-combined-shots { width: 14%;}
+.skaters-combined-shot-pct { width: 13%;}
+.skaters-combined-avg-toi { width: 13%;}
+.skaters-combined-avg-shifts { width: 13%;}
+.skaters-combined-fo-pct { width: 13%;}
+
+/* Goalie Combined Table Width */
+.goalies-combined-season { width: 12%;}
+.goalies-combined-name { width: 15%;}
+.goalies-combined-gp { width: 5%;}
+.goalies-combined-gs { width: 5%;}
+.goalies-combined-w { width: 5%;}
+.goalies-combined-l { width: 5%;}
+.goalies-combined-t { width: 5%;}
+.goalies-combined-otl { width: 5%;}
+.goalies-combined-gaa { width: 6%;}
+.goalies-combined-sv { width: 7%;}
+.goalies-combined-sa { width: 6%;}
+.goalies-combined-saves { width: 6%;}
+.goalies-combined-ga { width: 6%;}
+.goalies-combined-so { width: 6%;}
+.goalies-combined-toi { width: 6%;}
+
+
 /* Roster Table Width */
 .season-col-roster { width: 20%; }
 .playerID-col-roster { width: 25%; }
@@ -490,6 +514,7 @@ html, body {
 	justify-content: center;
 	gap: 10px;
 	margin-top: 20px;
+	max-width: 72%;
   }
   
   .footer-teams a {

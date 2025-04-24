@@ -92,123 +92,125 @@
 
             // Combined query for skaters (forwards and defensemen)
             $skaters_combined_sql = "
-                SELECT 
-                    roster.team_id,
-                    roster.team_triCode,
-                    roster.position,
-                    roster.player_id,
-                    roster.firstName,
-                    roster.lastName,
-                    roster.season,
-                    CONCAT(roster.season, '-2') as seasonWithType,
-                    teams.*,
-                    stats.seasonGamesPlayed,
-                    stats.seasonGoals,
-                    stats.seasonAssists,
-                    stats.seasonPoints, 
-                    stats.seasonPlusMinus,
-                    stats.seasonShots,
-                    stats.seasonShootingPct,
-                    stats.seasonAvgTOI,
-                    stats.seasonAvgShifts,
-                    stats.seasonFOWinPct
-                FROM (
-                    -- Forward block
-                    SELECT 
-                        team_season_rosters.team_id,
-                        team_season_rosters.team_triCode,
-                        team_season_rosters.season,
-                        'forward' AS position,
-                        exploded_forwards.player_id,
-                        nhl_players.firstName,
-                        nhl_players.lastName
-                    FROM team_season_rosters
-                    JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
-                        ON 1=1
-                    JOIN nhl_players ON nhl_players.playerID = exploded_forwards.player_id
-                    WHERE team_season_rosters.team_id = $team_id
+                                SELECT 
+                                    roster.team_id,
+                                    roster.team_triCode,
+                                    roster.position,
+                                    roster.player_id,
+                                    roster.firstName,
+                                    roster.lastName,
+                                    roster.season,
+                                    CONCAT(roster.season, '-2') as seasonWithType,
+                                    teams.*,
+                                    stats.seasonGamesPlayed,
+                                    stats.seasonGoals,
+                                    stats.seasonAssists,
+                                    stats.seasonPoints, 
+                                    stats.seasonPlusMinus,
+                                    stats.seasonShots,
+                                    stats.seasonShootingPct,
+                                    stats.seasonAvgTOI,
+                                    stats.seasonAvgShifts,
+                                    stats.seasonFOWinPct
+                                FROM 
+                                (
+                                    -- Forward block
+                                    SELECT 
+                                        team_season_rosters.team_id,
+                                        team_season_rosters.team_triCode,
+                                        team_season_rosters.season,
+                                        'forward' AS position,
+                                        exploded_forwards.player_id,
+                                        nhl_players.firstName,
+                                        nhl_players.lastName
+                                    FROM team_season_rosters
+                                    JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
+                                        ON 1=1
+                                    JOIN nhl_players ON nhl_players.playerID = exploded_forwards.player_id
+                                    WHERE team_season_rosters.team_id = $team_id
 
-                    UNION ALL
+                                    UNION ALL
 
-                    -- Defense block
-                    SELECT 
-                        team_season_rosters.team_id,
-                        team_season_rosters.team_triCode,
-                        team_season_rosters.season,
-                        'defenseman' AS position,
-                        exploded_defensemen.player_id,
-                        nhl_players.firstName,
-                        nhl_players.lastName
-                    FROM team_season_rosters
-                    JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
-                        ON 1=1
-                    JOIN nhl_players ON nhl_players.playerID = exploded_defensemen.player_id
-                    WHERE team_season_rosters.team_id = $team_id
-                ) AS roster
-                LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
-                LEFT JOIN team_season_stats AS stats 
-                    ON stats.teamID = roster.team_id 
-                    AND stats.playerID = roster.player_id 
-                    AND CONCAT(roster.season, '-2') = stats.seasonID
-                ORDER BY roster.season DESC, roster.position, roster.lastName
-            ";
+                                    -- Defense block
+                                    SELECT 
+                                        team_season_rosters.team_id,
+                                        team_season_rosters.team_triCode,
+                                        team_season_rosters.season,
+                                        'defenseman' AS position,
+                                        exploded_defensemen.player_id,
+                                        nhl_players.firstName,
+                                        nhl_players.lastName
+                                    FROM team_season_rosters
+                                    JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
+                                        ON 1=1
+                                    JOIN nhl_players ON nhl_players.playerID = exploded_defensemen.player_id
+                                    WHERE team_season_rosters.team_id = $team_id
+                                ) AS roster
+
+                                LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
+                                LEFT JOIN team_season_stats AS stats 
+                                    ON stats.teamID = roster.team_id 
+                                    AND stats.playerID = roster.player_id 
+                                    AND CONCAT(roster.season, '-2') = stats.seasonID
+                                ORDER BY roster.season DESC, roster.position, roster.lastName
+                            ";
 
             // Combined query for goalies
             $goalies_combined_sql = "
-                SELECT 
-                    roster.team_id,
-                    roster.team_triCode,
-                    roster.position,
-                    roster.player_id,
-                    roster.firstName,
-                    roster.lastName,
-                    roster.season,
-                    CONCAT(roster.season, '-2') as seasonWithType,
-                    teams.*,
-                    stats.seasonGamesPlayed,
-                    stats.seasonGS,
-                    stats.seasonWins,
-                    stats.seasonLosses,
-                    stats.seasonTies,
-                    stats.seasonOTLosses,
-                    stats.seasonGAA,
-                    stats.seasonSavePct,
-                    stats.seasonSA,
-                    stats.seasonSaves,
-                    stats.seasonGA,
-                    stats.seasonSO,
-                    stats.seasonTOI
-                FROM (
-                    -- Goalie block
-                    SELECT 
-                        team_season_rosters.team_id,
-                        team_season_rosters.team_triCode,
-                        team_season_rosters.season,
-                        'goalie' AS position,
-                        exploded_goalies.player_id,
-                        nhl_players.firstName,
-                        nhl_players.lastName
-                    FROM team_season_rosters
-                    JOIN JSON_TABLE(team_season_rosters.goalies, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_goalies
-                        ON 1=1
-                    JOIN nhl_players ON nhl_players.playerID = exploded_goalies.player_id
-                    WHERE team_season_rosters.team_id = $team_id
-                ) AS roster
-                LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
-                LEFT JOIN team_season_stats AS stats 
-                    ON stats.teamID = roster.team_id 
-                    AND stats.playerID = roster.player_id 
-                    AND CONCAT(roster.season, '-2') = stats.seasonID
-                ORDER BY roster.season DESC, roster.lastName
-            ";
+                                    SELECT 
+                                        roster.team_id,
+                                        roster.team_triCode,
+                                        roster.position,
+                                        roster.player_id,
+                                        roster.firstName,
+                                        roster.lastName,
+                                        roster.season,
+                                        CONCAT(roster.season, '-2') as seasonWithType,
+                                        teams.*,
+                                        stats.seasonGamesPlayed,
+                                        stats.seasonGS,
+                                        stats.seasonWins,
+                                        stats.seasonLosses,
+                                        stats.seasonTies,
+                                        stats.seasonOTLosses,
+                                        stats.seasonGAA,
+                                        stats.seasonSavePct,
+                                        stats.seasonSA,
+                                        stats.seasonSaves,
+                                        stats.seasonGA,
+                                        stats.seasonSO,
+                                        stats.seasonTOI
+                                    FROM (
+                                        -- Goalie block
+                                        SELECT 
+                                            team_season_rosters.team_id,
+                                            team_season_rosters.team_triCode,
+                                            team_season_rosters.season,
+                                            'goalie' AS position,
+                                            exploded_goalies.player_id,
+                                            nhl_players.firstName,
+                                            nhl_players.lastName
+                                        FROM team_season_rosters
+                                        JOIN JSON_TABLE(team_season_rosters.goalies, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_goalies
+                                            ON 1=1
+                                        JOIN nhl_players ON nhl_players.playerID = exploded_goalies.player_id
+                                        WHERE team_season_rosters.team_id = $team_id
+                                    ) AS roster
+                                    LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
+                                    LEFT JOIN team_season_stats AS stats 
+                                        ON stats.teamID = roster.team_id 
+                                        AND stats.playerID = roster.player_id 
+                                        AND CONCAT(roster.season, '-2') = stats.seasonID
+                                    ORDER BY roster.season DESC, roster.lastName
+                                ";
               
             $result_skaters_combined = mysqli_query($conn, $skaters_combined_sql);
             $result_goalies_combined = mysqli_query($conn, $goalies_combined_sql);
 
-            echo "<script>
-                console.log('Skater query result rows: " . mysqli_num_rows($result_skaters_combined) . "');
-                console.log('Goalie query result rows: " . mysqli_num_rows($result_goalies_combined) . "');
-            </script>";
+            // echo "<script>
+            //     console.log('Skater query result rows: " . mysqli_num_rows($result_skaters_combined) . "');
+            //     console.log('Goalie query result rows: " . mysqli_num_rows($result_goalies_combined) . "');
+            // </script>";
 
             if (!$result_skaters_combined || !$result_goalies_combined) {
                 die("Query failed: " . mysqli_error($conn));
@@ -618,3 +620,299 @@
         </script>
     </body>
 </html>
+
+
+
+
+
+
+OLD:
+<!-- ROSTERS BY SEASON TABLE -->
+
+<div id='team-rosters-table-container' class="w-full overflow-x-auto">
+                <br>
+              <h3 style='text-align: center; color: $teamColor2'>Season Roster</h3>
+                <table class='season-roster-table w-full min-w-[900px] table-auto' style='color: black; border: 2px solid <?php echo $teamColor2 ?>'>
+                  <colgroup>
+                    <col class='season-col-roster'>
+                    <col class='playerID-col-roster'>
+                    <col class='name-col-roster'>
+                    <col class='position-col-roster'>
+                  </colgroup>
+                  <thead>
+                    <tr style='background-color: <?php echo $teamColor1 ?>; color: <?php echo $teamColor2 ?>'>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2 ?>'>Season</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2 ?>'>Player ID</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2 ?>'>Name</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2 ?>'>Position</th>
+                    </tr>
+                  </thead>
+                  <tbody id='seasonRosterTable'>
+
+              <?php
+              while ($row = mysqli_fetch_assoc($result_rosters)) {
+                // print_r($row);
+                $playerID = $row['player_id'];
+                $firstName = $row['firstName'];
+                $lastName = $row['lastName'];
+                $position = $row['position'];
+                $seasonID = $row['season'];
+
+                // echo "<script>console.log('SeasonID for player " . $playerID . ": " . $seasonID . "');</script>";
+
+                echo "<tr data-season='$seasonID'>";
+                  $seasonYear1 = substr($seasonID, 0, 4); // Extract the year from the seasonID
+                  $seasonYear2 = substr($seasonID, 4, 4); // Extract the year from the seasonID
+                  echo "<td>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";  // Season
+                  echo "<td>" . $playerID . "</td>";  // Player ID
+                  echo "<td>" . $firstName . ' ' . $lastName . "</td>";  // Name
+                  if ($position == 'forward') {
+                    $position = 'F';
+                  } elseif ($position == 'defenseman') {
+                    $position = 'D';
+                  } elseif ($position == 'goalie') {
+                    $position = 'G';
+                  }
+                  echo "<td>" . $position . "</td>";  // Position
+                
+                echo "</tr>";
+              }
+              echo "</tbody>";
+              echo "</table>";
+              echo "</div>";
+              ?>
+              
+              
+
+              <div id='player-goalie-stats-table-container' class="w-full overflow-x-auto">
+                          <br>
+                <?php
+                echo "<h3 style='text-align: center; color: $teamColor2'>Skater Season Stats</h3>";
+                echo "<table class='player-stats-table w-full min-w-[900px] table-auto' style='color: black; border: 2px solid $teamColor2'>";
+                echo "<colgroup>";
+                echo "<col class='season-col-skater-stats'>";
+                echo "<col class='gameType-col-skater-stats'>";
+                echo "<col class='name-col-skater-stats'>";
+                echo "<col class='position-col-skater-stats'>";
+                echo "<col class='gp-col-skater-stats'>";
+                echo "<col class='goals-season-col-skater-stats'>";
+                echo "<col class='assists-season-col-skater-stats'>";
+                echo "<col class='points-season-col-skater-stats'>";
+                echo "<col class='plusMinus-season-col-skater-stats'>";
+                echo "<col class='shots-col-skater-stats'>";
+                echo "<col class='shotPct-col-skater-stats'>";
+                echo "<col class='avgTOI-col-skater-stats'>";
+                echo "<col class='avgShifts-col-skater-stats'>";
+                echo "<col class='FOPct-col-skater-stats'>";
+                echo "</colgroup>";
+                echo "<thead>";
+                    echo "<tr style='background-color: $teamColor1; color: $teamColor2'>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Season</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Game Type</th>";
+                        // echo "<th style='width: 9%'>Player ID</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Name</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Pos.</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>GP</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>G</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>A</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>P</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>+/-</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Shots</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Shot %</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Avg TOI (min)</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>Avg Shifts/Gm</th>";
+                        echo "<th style='border-bottom: 2px solid $teamColor2;'>FO %</th>";
+                    echo "</tr>";
+                echo "</thead>";
+                echo "<tbody id='skaterStatsTable'>";
+                $skater_count = mysqli_num_rows($result_skaters);
+                if ($skater_count > 0) {
+                  mysqli_data_seek($result_skaters, 0); // Reset pointer again for the main table loop
+                  
+                  while ($row = mysqli_fetch_assoc($result_skaters)) {
+
+                    // print_r($row);
+
+                    $seasonID = $row['seasonID'];
+                    $teamID = $team_id;
+                    $playerID = $row['playerID'];
+                    // echo "Player ID: " . $playerID;
+                    $firstName = $row['firstName'];
+                    $lastName = $row['lastName'];
+                    $positionCode = $row['positionCode'];
+                    $seasonsGamesPlayed = $row['seasonGamesPlayed'];
+                    $seasonGoals = $row['seasonGoals'];
+                    $seasonAssists = $row['seasonAssists'];
+                    $seasonPoints = $row['seasonPoints'];
+                    $seasonPlusMinus = $row['seasonPlusMinus'] !== null && $row['seasonPlusMinus'] !== '' ? $row['seasonPlusMinus'] : "-";
+                    $seasonShots = $row['seasonShots'];
+                    $seasonShootingPct = $row['seasonShootingPct'];
+                    $seasonAvgTOI = $row['seasonAvgTOI'];
+                    $seasonAvgTOI = gmdate("i:s", (int) $seasonAvgTOI); // Convert seconds to minutes:seconds format
+                    $seasonAvgShifts = $row['seasonAvgShifts'];
+                    $seasonFOWinPct = number_format((float) $row['seasonFOWinPct']*100, 1);
+                    if ($positionCode == 'G') {
+                      continue; // Skip goalies in the skater stats table
+                    } else {
+                      echo "<tr data-season='$seasonID'>"; // Add data attribute for filtering
+                      $seasonYear1 = substr($seasonID, 0, 4); // Extract the year from the seasonID
+                      $seasonYear2 = substr($seasonID, 4, 4); // Extract the year from the seasonID
+                            echo "<td>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";
+                            $gameType = substr($seasonID, 9, 1); // Extract the game type from the seasonID
+                            if ($gameType == 1) {
+                              $gameType = 'Pre.';
+                            } elseif ($gameType == 2) {
+                              $gameType = 'Reg.';
+                            } elseif ($gameType == 3) {
+                              $gameType = 'Post.';
+                            }
+                            echo "<td>" . $gameType . "</td>";
+                            // echo "<td><a href='player_details.php?player_id=" . $playerID . "'" . "</a>" . $playerID . "</td>";
+                            echo "<td><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $playerID . "'>" . $firstName . " " . $lastName . "</a></td>";
+                            // echo "<td>" . $firstName . " " . $lastName . "</td>";
+                            echo "<td>" . $positionCode . "</td>";
+                            echo "<td>" . $seasonsGamesPlayed . "</td>";
+                            echo "<td>" . $seasonGoals . "</td>";
+                            echo "<td>" . $seasonAssists . "</td>";
+                            echo "<td>" . $seasonPoints . "</td>";
+                            // var_dump($row); "<br><br>";
+                            echo "<td>" . $seasonPlusMinus . "</td>";
+                            echo "<td>" . $seasonShots . "</td>";
+                            echo "<td>" . number_format((float) $seasonShootingPct*100, 1) . "</td>";
+                            // $seasonAvgTOI_total_secs = (float) $seasonAvgTOI;
+                            // $seasonAvgTOI_mins = (int) floor(($seasonAvgTOI_total_secs / 60));
+                            // $seasonAvg_remaining_secs = (int) ($seasonAvgTOI_total_secs % 60);
+                            // $formatted_seasonAvgTOI = sprintf("%02d:%02d", $seasonAvgTOI_mins, $seasonAvg_remaining_secs);
+                            echo "<td>" . $seasonAvgTOI . "</td>";
+                            echo "<td>" . number_format((float) $seasonAvgShifts, 1) . "</td>";
+                            echo "<td>" . $seasonFOWinPct . "</td>";
+                          echo "</tr>";
+                    }        
+                  }
+                }
+                echo "</tbody>";
+                echo "</table>";
+                echo "</div>";
+                echo "<br>";
+
+
+                ### GOALIE CURRENT SEASON STATS TABLE ###
+                echo "<h3 style='text-align: center; color: $teamColor2'>Goalie Season Stats</h3>";
+                echo "<div class='shadow-md rounded-lg overflow-x-auto'>";
+                echo "<table class='goalie-stats-table table-auto' style='color: black; border: 2px solid $teamColor2'>";
+                echo "<colgroup>";
+                echo "<col class='season-col-goalie-stats'>";
+                echo "<col class='gameType-col-goalie-stats'>";
+                echo "<col class='name-col-goalie-stats'>";
+                echo "<col class='gp-col-goalie-stats'>";
+                echo "<col class='gs-season-col-goalie-stats'>";
+                echo "<col class='wins-season-col-goalie-stats'>";
+                echo "<col class='losses-season-col-goalie-stats'>";
+                echo "<col class='ties-season-col-goalie-stats'>";
+                echo "<col class='otlosses-col-goalie-stats'>";
+                echo "<col class='GAA-col-goalie-stats'>";
+                echo "<col class='svPct-col-goalie-stats'>";
+                echo "<col class='SA-col-goalie-stats'>";
+                echo "<col class='saves-col-goalie-stats'>";
+                echo "<col class='GA-col-goalie-stats'>";
+                echo "<col class='SO-col-goalie-stats'>";
+                echo "<col class='TOI-col-goalie-stats'>";
+                echo "</colgroup>";
+                  echo "<thead>";
+                    echo "<tr style='background-color: $teamColor1; border: 2px solid $teamColor2; color: $teamColor2'>";
+                      echo "<th>Season</th>";
+                      echo "<th>Game Type</th>";
+                      echo "<th>Name</th>";
+                      echo "<th>GP</th>";
+                      echo "<th>GS</th>";
+                      echo "<th>W</th>";
+                      echo "<th>L</th>";
+                      echo "<th>T</th>";
+                      echo "<th>OTL</th>";
+                      echo "<th>GAA</th>";
+                      echo "<th>Sv. %</th>";
+                      echo "<th>SA</th>";
+                      echo "<th>Saves</th>";
+                      echo "<th>GA</th>";
+                      echo "<th>SO</th>";
+                      echo "<th>TOI (min)</th>";
+                    echo "</tr>";
+                echo "</thead>";
+                // $countSQL = "SELECT * FROM team_season_stats WHERE teamID = $team_id AND positionCode = 'G' AND seasonID = '$seasonID'";
+                // $result_count = mysqli_query($conn, $countSQL);
+                // $goalie_count = mysqli_num_rows($result_count);
+                $goalie_count = 1; // Placeholder for goalie count
+                // echo $result_count;
+                echo "<tbody id='goalieStatsTable'>";
+
+                if ($goalie_count > 0) {
+                  // Reset pointer for the main table loop
+                  mysqli_data_seek($result_goalies, 0);
+
+                  while ($row = mysqli_fetch_assoc($result_goalies)) {
+                    $seasonID = $row['seasonID'];
+                    $teamID = $team_id;
+                    $playerID = $row['playerID'];
+                    // echo "Player ID: " . $playerID;
+                    $firstName = $row['firstName'];
+                    $lastName = $row['lastName'];
+                    $positionCode = $row['positionCode'];
+                    $seasonsGamesPlayed = $row['seasonGamesPlayed'];
+                    $seasonGoals = $row['seasonGoals'];
+                    $seasonAssists = $row['seasonAssists'];
+                    $seasonPoints = $row['seasonPoints'];
+                    $seasonGS = $row['seasonGS'];
+                    $seasonWins = $row['seasonWins'];
+                    $seasonLosses = $row['seasonLosses'];
+                    $seasonTies = $row['seasonTies'];
+                    $seasonOTLosses = $row['seasonOTLosses'];
+                    $seasonGAA = $row['seasonGAA'];
+                    $seasonSavePct = $row['seasonSavePct'];
+                    $seasonSA = $row['seasonSA'];
+                    $seasonSaves = $row['seasonSaves'];
+                    $seasonGA = $row['seasonGA'];
+                    $seasonSO = $row['seasonSO'];
+                    $seasonTOI = $row['seasonTOI'];
+
+                    if ($positionCode == 'G') {
+                        echo "<tr data-season='$seasonID'>"; // Add data attribute for filtering
+                        $seasonYear1 = substr($seasonID, 0, 4); // Extract the year from the seasonID
+                        $seasonYear2 = substr($seasonID, 4, 4); // Extract the year from the seasonID
+                        echo "<td>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";
+                        $gameType = substr($seasonID, 9, 1); // Extract the game type from the seasonID
+                        if ($gameType == 1) {
+                          $gameType = 'Pre.';
+                        } elseif ($gameType == 2) {
+                          $gameType = 'Reg.';
+                        } elseif ($gameType == 3) {
+                          $gameType = 'Post.';
+                        }
+                        echo "<td>" . $gameType . "</td>";
+                        // echo "<td><a href='player_details.php?player_id=" . $playerID . "'" . "</a>" . $playerID . "</td>";
+                        echo "<td><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $playerID . "'>" . $firstName . " " . $lastName . "</a></td>";
+                        // echo "<td>" . $firstName . " " . $lastName . "</td>";
+                        // echo "<td>" . $positionCode . "</td>";
+                        echo "<td>" . $seasonsGamesPlayed . "</td>";
+                        echo "<td>" . $seasonGS . "</td>";
+                        echo "<td>" . $seasonWins . "</td>";
+                        echo "<td>" . $seasonLosses . "</td>";
+                        echo "<td>" . $seasonTies . "</td>";
+                        echo "<td>" . $seasonOTLosses . "</td>";
+                        echo "<td>" . number_format((float) $seasonGAA, 2) . "</td>";
+                        echo "<td>" . number_format((float) $seasonSavePct, 3) . "</td>";
+                        echo "<td>" . $seasonSA . "</td>";
+                        echo "<td>" . $seasonSaves . "</td>";
+                        echo "<td>" . $seasonGA . "</td>";
+                        echo "<td>" . $seasonSO. "</td>";
+                        echo "<td>" . gmdate("i:s", (int) $seasonTOI) . "</td>";
+                        echo "</tr>";
+                      }
+                    }
+                } else {
+                      echo "<tr class='no-data-row'>";  // Adding a class to identify it as a special row
+                      echo "<td colspan='16' style='text-align: center;'>No goalies found for this team.</td>";
+                      echo "</tr>";
+                  }
+                  echo "</tbody>";
+                  echo "</table>";
+                  echo "</div>";
