@@ -120,10 +120,13 @@
                             nhl_teams.id,
                             nhl_teams.fullName,
                             nhl_teams.triCode,
-                            nhl_games.homeTeamID as homeTeamID, nhl_games.awayTeamID as awayTeamID
+                            nhl_games.homeTeamID as homeTeamID, nhl_games.awayTeamID as awayTeamID,
+                            skaters_gamebygame_stats.goals AS skater_goals
                                 FROM nhl_rosters 
                                 JOIN nhl_teams ON nhl_rosters.teamID = nhl_teams.id
                                 JOIN nhl_games ON nhl_rosters.gameID = nhl_games.id
+                                JOIN skaters_gamebygame_stats ON nhl_rosters.playerID = skaters_gamebygame_stats.playerID
+                                JOIN goalies_gamebygame_stats ON nhl_rosters.playerID = goalies_gamebygame_stats.playerID
                                 WHERE nhl_rosters.gameID=$game_id
                                 ORDER BY nhl_rosters.lastName";
 
@@ -380,6 +383,7 @@
                         echo "<div style='width: 40%;'>"; # table wrapper
 
                         echo "<h4 style='text-align: center;'>$team_label</h4><br>";
+                        
                         echo "<table style='width: 100%; border: 1px solid #bcd6e7'>";
                         echo "<tr style='color: white; font-weight: bold; background-color:#2e5b78'>";
                         echo "<td>ID</td><td>Name</td><td>Number</td><td>Position</td>";
@@ -387,6 +391,7 @@
                         echo "</tr>";
 
                         foreach ($players as $player) {
+                            // echo "<p>TEST" . $row['skater_goals'] . "</p>"; THIS BREAKS IT
                             echo "<tr style='background-color:#939da3'>";
                             $player_id = $player['playerID'];
                             $player_name = isset($roster_lookup[$player_id]) ? $roster_lookup[$player_id] : 'Unknown';

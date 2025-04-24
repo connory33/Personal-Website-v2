@@ -139,7 +139,7 @@ html, body {
 	border-collapse: collapse;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	/* width: max-content; */
-    width: 85%;
+    width: 40%;
 	margin: 0 auto;
   }
   
@@ -191,19 +191,6 @@ html, body {
 	color: black;
 }
   
-  /* row styling */
-  #games-players-summary-table tbody tr:nth-child(even) {
-	background-color: #e3e7eb;
-  }
-  #games-players-summary-table tbody tr:nth-child(odd) {
-	background-color: #c5c6c7;
-  }
-  
-  #games-players-summary-table tbody tr:hover {
-	background-color: #66fcf1;
-	transition: 0.2s ease-in-out;
-  }
-  
   /* sort arrow styling */
   .sort-arrows a {
 	margin-left: 4px;
@@ -233,25 +220,21 @@ html, body {
     border: none;
 }
 
-.player-stats-table tbody tr:nth-child(even), .goalie-stats-table tbody tr:nth-child(even), .season-roster-table tbody tr:nth-child(even) {
-	background-color: #e3e7eb;
-  }
-.player-stats-table tbody tr:nth-child(odd), .goalie-stats-table tbody tr:nth-child(odd), .season-roster-table tbody tr:nth-child(odd) {
-	background-color: #c5c6c7;
-}
 
-.player-stats-table tbody tr:hover, .goalie-stats-table tbody tr:hover, .season-roster-table tbody tr:hover {
-	background-color: #66fcf1;
-	transition: 0.2s ease-in-out;
-}
 
 /* Apply border-radius to the thead to round the whole header */
 .player-stats-table thead, .goalie-stats-table thead, .season-roster-table thead {
-    /* background-color: #1f2833; */
-    /* color: white; */
-    font-weight: bold;
+	font-weight: bold;
     border-radius: 8px 8px 0 0; /* Round the top corners of the entire header */
     overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
+	position: sticky;
+	top: 0;
+	background-color: #0b0c10;
+	z-index: 2;
+	color: white;
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 3px solid #45a29e;
 }
 
 .player-stats-table th, .goalie-stats-table th, .season-roster-table th {
@@ -268,33 +251,17 @@ html, body {
 }
 
 
+/* General Table Styling */
+.player-stats-table th, .goalie-stats-table th {
+	text-align: center;
+}
 
-
-    /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-        .player-stats-table, .goalie-stats-table {
-            width: 100%;
-            margin: 0;
-            font-size: 12px;
-        }
-
-        .player-stats-table th, .goalie-stats-table th,
-        .player-stats-table td, .goalie-stats-table td {
-            padding: 8px;
-        }
-    }
-
-    /* General Table Styling */
-    .player-stats-table th, .goalie-stats-table th {
-        text-align: center;
-    }
-
-    /* Border and shadow styling for cleaner look */
-    .player-stats-table, .goalie-stats-table {
-        border-radius: 8px;
-        border: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
+/* Border and shadow styling for cleaner look */
+.player-stats-table, .goalie-stats-table {
+	border-radius: 8px;
+	border: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
 
 /* Responsive flex container for hero + bio */
@@ -304,55 +271,33 @@ html, body {
 	align-items: center;
 	gap: 5%;
 	margin-top: 30px;
-  }
-  
-  .hero-bio-image {
-	width: 550px;
-	border-radius: 8px;
-	flex-shrink: 0;
-  }
-  
-  .bio-box {
-	border: 1px solid #bcd6e7;
-	width: 400px;
-	background-color: rgba(188, 214, 231, 0.3);
-    border-radius: 8px;
-  }
-  
-  /* Only stack on mobile */
-  @media (max-width: 768px) {
-	.hero-bio-container {
-	  flex-direction: column;
-	  align-items: center;
-	  text-align: center;
-	  width: 100%;
-	}
-  
-	.hero-bio-image {
-	  width: 100%;
-	  max-width: 600px;
-	  height: auto;
-	}
-  
-	.bio-box {
-	  width: 90%;
-	}
-  
-	.bio-box p, .bio-box h4 {
-	  text-align: center;
-	}
-  }
-
-
-
-/* .table-header {
-	color: white; 
-	font-weight: bold; 
-	background-color:#2e5b78;
-} */
+}
+.hero-bio-image {
+width: 550px;
+border-radius: 8px;
+flex-shrink: 0;
+}
+.bio-box {
+border: 1px solid #bcd6e7;
+width: 400px;
+background-color: rgba(188, 214, 231, 0.3);
+border-radius: 8px;
+}
 
 
 /* ####################################################### NHL TEAM PAGE STYLES ########################################################## */
+
+/* Header box that contains the team name and logo */
+.team-header {
+	padding: 20px;
+	border-radius: 12px;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+	margin-bottom: 30px;
+	display: flex;
+	justify-content: center;
+}
+
+/* filter container for season filter dropdown */
 .filter-container {
     width: 100%;
     max-width: 300px;
@@ -367,17 +312,10 @@ html, body {
     font-size: 16px;
     box-sizing: border-box; /* Ensures padding doesn't overflow */
 }
-
-#team-details-content-container {
-	width: 100%;
-	/* background-color: #0b0c10; */
-}
-
 .filter-container label {
     margin: 0;
     line-height: 1;
 }
-
 .filter-container select {
     flex-shrink: 0;
     padding: 5px;
@@ -386,25 +324,7 @@ html, body {
     line-height: 1;
 }
 
-@media (max-width: 480px) {
-	.filter-container {
-		flex-direction: column;
-		align-items: flex-start;
-		font-size: 14px;
-	}
-
-	.filter-container label,
-	.filter-container select {
-		width: 100%;
-	}
-}
-
-#seasonDropdown select {
-	padding: 6px 12px;
-	border-radius: 8px;
-	border: 1px solid #ccc;
-  }
-
+/* Dropdown for selecting season */
 #seasonDropdown {
 	border-radius: 8px;
 	display: flex;
@@ -415,16 +335,209 @@ html, body {
 	margin: 0;
 	color: black;
 }
+#seasonDropdown select {
+	padding: 6px 12px;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+}
 
-.team-header {
-	padding: 20px;
-	/* background: linear-gradient(to right, #111, #222); */
-	border-radius: 12px;
-	box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-	margin-bottom: 30px;
+
+
+
+
+  /* ############################################## NHL Game Page Style ############################################# */
+
+
+
+/* ADDING GENERAL CLASSES HERE TO AVOID DUPLICATION OF CLASSES ON MULTIPLE DIFFERENT TABLES */
+/* ####################################################################### RE-USABLE TABLE STYLES ######################################################################### */
+
+/* outer container for horizontal scrolling tables */
+.default-horizontal-scroll-table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+/* classes for alternating row colors and hover effects */
+.default-zebra-table tbody tr:nth-child(even) {
+	background-color: #e3e7eb;
+}
+.default-zebra-table tbody tr:nth-child(odd) {
+	background-color: #c5c6c7;
+}
+.default-zebra-table tbody tr:hover {
+	background-color: #66fcf1;
+	transition: 0.2s ease-in-out;
+}
+
+/* RENAME IN PHP + REMOVE */
+	#play-by-play-table tbody tr:nth-child(even) {
+		background-color: #e3e7eb;
+	}
+	#play-by-play-table tbody tr:nth-child(odd) {
+		background-color: #c5c6c7;
+	}
+	#play-by-play-table tbody tr:hover {
+		background-color: #66fcf1;
+		transition: 0.2s ease-in-out;
+	}
+	.player-stats-table tbody tr:nth-child(even), .goalie-stats-table tbody tr:nth-child(even), .season-roster-table tbody tr:nth-child(even) {
+		background-color: #e3e7eb;
+	}
+	.player-stats-table tbody tr:nth-child(odd), .goalie-stats-table tbody tr:nth-child(odd), .season-roster-table tbody tr:nth-child(odd) {
+		background-color: #c5c6c7;
+	}
+	.season-roster-table tbody tr:hover {
+		background-color: #66fcf1;
+		transition: 0.2s ease-in-out;
+	}
+	#games-players-summary-table tbody tr:nth-child(even) {
+		background-color: #e3e7eb;
+	}
+	#games-players-summary-table tbody tr:nth-child(odd) {
+		background-color: #c5c6c7;
+	}
+	
+	#games-players-summary-table tbody tr:hover {
+		background-color: #66fcf1;
+		transition: 0.2s ease-in-out;
+	}
+
+/* furthest outer div class that surrounds whole page content and allows for full page width */
+.full-page-content-container {
+	width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  #play-by-play-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+#play-by-play-table {
+    width: 80%;
+    margin: 20px auto;
+    table-layout: fixed;
+    border-collapse: separate; /* Use separate borders for table and rows */
+    border-spacing: 0; /* Remove space between borders */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: none;
+}
+
+
+
+
+
+
+/* Apply border-radius to the thead to round the whole header */
+#play-by-play-table thead {
+    font-weight: bold;
+    border-radius: 8px 8px 0 0; /* Round the top corners of the entire header */
+    overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
+	position: sticky;
+	top: 0;
+	background-color: #0b0c10;
+	z-index: 2;
+	color: white;
+	text-align: center;
+	font-weight: 600;
+	border-bottom: 3px solid #45a29e;
+}
+
+#play-by-play-table th {
+    padding: 12px;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Table Cell Styling */
+#play-by-play-table td {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #333; /* Ensure text is dark enough for readability */
+}
+
+
+
+
+
+
+  .rink-key-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5%;
+    flex-wrap: wrap; /* Optional: makes it responsive on small screens */
+}
+
+/* Individual column for title + element */
+.rink-key-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ############################################################ RE-USABLE TEAM LINK FOOTER ############################################################### */
+
+.footer-teams {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
+	gap: 10px;
+	margin-top: 20px;
+	max-width: 72%;
   }
+  
+  .footer-teams a {
+	text-decoration: none;
+	color: black;
+  }
+  
+  .footer-teams a:hover {
+	text-decoration: underline;
+  }
+
+
+/* ######################################################################### TABLE WIDTHS ######################################################################### */
 
 /* Skater Combined Table Width */
 .skaters-combined-season { width: 19%;}
@@ -457,7 +570,6 @@ html, body {
 .goalies-combined-ga { width: 6%;}
 .goalies-combined-so { width: 6%;}
 .goalies-combined-toi { width: 6%;}
-
 
 /* Roster Table Width */
 .season-col-roster { width: 20%; }
@@ -500,161 +612,73 @@ html, body {
 .SO-col-goalie-stats { width: 4%; }
 .TOI-col-goalie-stats { width: 6%; }
 
-.footer-teams {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 10px;
-	margin-top: 20px;
-	max-width: 72%;
-  }
-  
-  .footer-teams a {
-	text-decoration: none;
-	color: black;
-  }
-  
-  .footer-teams a:hover {
-	text-decoration: underline;
-  }
+/* Play-by-Play Table on Game Details Page */
+.pbp-col-time-left { width: 4%; }
+.pbp-col-type { width: 4%; }
+.pbp-col-coords { width: 6%; }
+.pbp-col-team { width: 4%; }
+.pbp-col-fo-winner { width: 6%; }
+.pbp-col-fo-loser { width: 6%; }
+.pbp-col-hitter { width: 6%; }
+.pbp-col-hittee { width: 6%; }
+.pbp-col-shot-type { width: 5%; }
+.pbp-col-shooter { width: 6%; }
+.pbp-col-goalie { width: 6%; }
+.pbp-col-reason { width: 5%; }
+.pbp-col-take-give { width: 5%; }
+.pbp-col-blocker { width: 5%; }
+.pbp-col-scorer { width: 5%; }
+.pbp-col-primary-assister { width: 5%; }
+.pbp-col-penalty { width: 6%; }
+.pbp-col-committer { width: 5%; }
+.pbp-col-drawer { width: 5%; }
 
+/* ################################################################ MOBILE RESPONSIVENESS ################################################################# */
 
-  /* ############################################## NHL Game Page Style ############################################# */
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+	.player-stats-table, .goalie-stats-table {
+		width: 100%;
+		margin: 0;
+		font-size: 12px;
+	}
 
+	.player-stats-table th, .goalie-stats-table th,
+	.player-stats-table td, .goalie-stats-table td {
+		padding: 8px;
+	}
 
-
-/* ADDING GENERAL CLASSES HERE TO AVOID DUPLICATION OF CLASSES ON MULTIPLE DIFFERENT TABLES */
-.default-horizontal-scroll-table-container {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 1rem;
+	.hero-bio-container {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		width: 100%;
+	}
+	
+	  .hero-bio-image {
+		width: 100%;
+		max-width: 600px;
+		height: auto;
+	}
+	
+	  .bio-box {
+		width: 90%;
+	}
+	
+	  .bio-box p, .bio-box h4 {
+		text-align: center;
+	}
 }
 
-.default-zebra-table tbody tr:nth-child(even) {
-	background-color: #e3e7eb;
+@media (max-width: 480px) {
+	.filter-container {
+		flex-direction: column;
+		align-items: flex-start;
+		font-size: 14px;
+	}
+
+	.filter-container label,
+	.filter-container select {
+		width: 100%;
+	}
 }
-
-.default-zebra-table tbody tr:nth-child(odd) {
-	background-color: #c5c6c7;
-}
-
-.default-zebra-table tbody tr:hover {
-	background-color: #66fcf1;
-	transition: 0.2s ease-in-out;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-  #play-by-play-container {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-}
-
-#play-by-play-table {
-    width: 80%;
-    margin: 20px auto;
-    table-layout: fixed;
-    border-collapse: separate; /* Use separate borders for table and rows */
-    border-spacing: 0; /* Remove space between borders */
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    border: none;
-}
-
-
-#play-by-play-table tbody tr:nth-child(even) {
-	background-color: #e3e7eb;
-  }
-#play-by-play-table tbody tr:nth-child(odd) {
-	background-color: #c5c6c7;
-}
-
-#play-by-play-table tbody tr:hover {
-	background-color: #66fcf1;
-	transition: 0.2s ease-in-out;
-}
-
-/* Apply border-radius to the thead to round the whole header */
-#play-by-play-table thead {
-    font-weight: bold;
-    border-radius: 8px 8px 0 0; /* Round the top corners of the entire header */
-    overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
-	position: sticky;
-	top: 0;
-	background-color: #0b0c10;
-	z-index: 2;
-	color: white;
-	text-align: center;
-	font-weight: 600;
-	border-bottom: 3px solid #45a29e;
-}
-
-#play-by-play-table th {
-    padding: 12px;
-    border-bottom: 2px solid #ddd;
-}
-
-/* Table Cell Styling */
-#play-by-play-table td {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-    color: #333; /* Ensure text is dark enough for readability */
-}
-
-
-
-  /* column width styling */
-  .pbp-col-time-left { width: 4%; }
-  .pbp-col-type { width: 4%; }
-  .pbp-col-coords { width: 6%; }
-  .pbp-col-team { width: 4%; }
-  .pbp-col-fo-winner { width: 6%; }
-  .pbp-col-fo-loser { width: 6%; }
-  .pbp-col-hitter { width: 6%; }
-  .pbp-col-hittee { width: 6%; }
-  .pbp-col-shot-type { width: 5%; }
-  .pbp-col-shooter { width: 6%; }
-  .pbp-col-goalie { width: 6%; }
-  .pbp-col-reason { width: 5%; }
-  .pbp-col-take-give { width: 5%; }
-  .pbp-col-blocker { width: 5%; }
-  .pbp-col-scorer { width: 5%; }
-  .pbp-col-primary-assister { width: 5%; }
-  .pbp-col-penalty { width: 6%; }
-  .pbp-col-committer { width: 5%; }
-  .pbp-col-drawer { width: 5%; }
-
-
-
-  .rink-key-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 5%;
-    flex-wrap: wrap; /* Optional: makes it responsive on small screens */
-}
-
-/* Individual column for title + element */
-.rink-key-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-

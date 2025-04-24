@@ -378,20 +378,22 @@
              if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
               echo "<table class='goalie-stats-table'>";
+              echo "<thead class='goalie-stats-table'>";
               echo "<tr>";
-                echo "<th>GP</td>";
-                echo "<th>W</td>";
-                echo "<th>L</td>";
-                echo "<th>GAA</td>";
-                echo "<th>Save %</td>";
-                echo "<th>SO</td>";
-                echo "<th>T</td>";
-                echo "<th>GS</td>";
-                echo "<th>GA</td>";
+                echo "<th>GP</th>";
+                echo "<th>W</th>";
+                echo "<th>L</th>";
+                echo "<th>GAA</th>";
+                echo "<th>Save %</th>";
+                echo "<th>SO</th>";
+                echo "<th>T</th>";
+                echo "<th>GS</th>";
+                echo "<th>GA</th>";
                 echo "<th>OT L</td>";
                 echo "<th>SA</td>";
               echo "</tr>";
-                
+              echo "</thead>";
+              echo "<tbody class='goalie-stats-table'>";
                 echo "<tr>";
                   echo "<td>$featuredSeasonGP</td>";
                   echo "<td>$featuredSeasonWins</td>";
@@ -405,11 +407,13 @@
                   echo "<td>$featuredSeasonOTLosses</td>";
                   echo "<td>$featuredSeasonShotsAgainst</td>";
                 echo "</tr>";
+              echo "</tbody>";
               echo "</table><br><br>";
 
             } else {
               // SKATER STATS BLOCK
               echo "<table class='player-stats-table'>";
+                echo "<thead class='player-stats-table'>";
                 echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
                   echo "<th style='width: 6%'>G</th>";
@@ -426,6 +430,8 @@
                   echo "<th style='width: 7%'>GWG</th>";
                   echo "<th style='width: 7%'>OTG</th>"; 
                 echo "</tr>";
+                echo "</thead>";
+                echo "<tbody class='player-stats-table'>";
                 echo "<tr>";
                   echo "<td>" . $featuredSeasonGP . "</td>";
                   echo "<td>" . $featuredSeasonGoals . "</td>";
@@ -444,6 +450,7 @@
                   echo "<td>" . $featuredSeasonGWG . "</td>";
                   echo "<td>" . $featuredSeasonOTGoals . "</td>";
                 echo "</tr>";
+                echo "</tbody>";
               echo "</table><br><br>";
              }
 
@@ -452,6 +459,7 @@
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
               echo "<table class='goalie-stats-table'>";
+                echo "<thead class='goalie-stats-table'>";
                 echo "<tr>";
                   echo "<th>GP</td>";
                   echo "<th>W</td>";
@@ -465,7 +473,8 @@
                   echo "<th>OT L</td>";
                   echo "<th>SA</td>";
                 echo "</tr>";
-                
+                echo "</thead>";
+                echo "<tbody class='goalie-stats-table'>";
                 echo "<tr>";
                   echo "<td>$regSeasonCareerGP</td>";
                   echo "<td>$regSeasonCareerWins</td>";
@@ -479,10 +488,12 @@
                   echo "<td>$regSeasonCareerOTLosses</td>";
                   echo "<td>$regSeasonCareerShotsAgainst</td>";
                 echo "</tr>";
+                echo "</tbody>";
               echo "</table><br><br>";
             } else {
               // SKATER STATS BLOCK
               echo "<table class='player-stats-table'>";
+                echo "<thead class='player-stats-table'>";
                 echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
                   echo "<th style='width: 6%'>G</th>";
@@ -499,6 +510,8 @@
                   echo "<th style='width: 7%'>GWG</th>";
                   echo "<th style='width: 7%'>OTG</th>"; 
                 echo "</tr>";
+                echo "</thead>";
+                echo "<tbody class='player-stats-table'>";
                 echo "<tr>";
                   echo "<td>" . $regSeasonCareerGP . "</td>";
                   echo "<td>" . $regSeasonCareerGoals . "</td>";
@@ -516,6 +529,7 @@
                   echo "<td>" . $regSeasonCareerGWG . "</td>";
                   echo "<td>" . $regSeasonCareerOTGoals . "</td>";
                 echo "</tr>";
+                echo "</tbody>";
               echo "</table><br><br>";
             }
         ### Career Playoff Stats ###
@@ -523,6 +537,7 @@
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
               echo "<table class='goalie-stats-table'>";
+              echo "<thead class='goalie-stats-table'>";
                 echo "<tr>";
                   echo "<th>GP</td>";
                   echo "<th>W</td>";
@@ -536,7 +551,8 @@
                   echo "<th>OT L</td>";
                   echo "<th>SA</td>";
                 echo "</tr>";
-                
+                echo "</thead>";
+                echo "<tbody class='goalie-stats-table'>";
                 echo "<tr>";
                   echo "<td>$playoffsCareerGP</td>";
                   echo "<td>$playoffsCareerWins</td>";
@@ -550,10 +566,12 @@
                   echo "<td>$playoffsCareerOTLosses</td>";
                   echo "<td>$playoffsCareerShotsAgainst</td>";
                 echo "</tr>";
+                echo "</tbody>";
               echo "</table><br><br>";
             } else {
               // SKATER STATS BLOCK
               echo "<table class='player-stats-table'>";
+                echo "<thead class='player-stats-table'>";
                 echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
                   echo "<th style='width: 6%'>G</th>";
@@ -570,6 +588,8 @@
                   echo "<th style='width: 7%'>GWG</th>";
                   echo "<th style='width: 7%'>OTG</th>"; 
                 echo "</tr>";
+                echo "</thead>";
+                echo "<tbody class='player-stats-table'>";
                 echo "<tr>";
                   echo "<td>" . $playoffsCareerGP . "</td>";
                   echo "<td>" . $playoffsCareerGoals . "</td>";
@@ -587,6 +607,7 @@
                   echo "<td>" . $playoffsCareerGWG . "</td>";
                   echo "<td>" . $playoffsCareerOTGoals . "</td>";
                 echo "</tr>";
+                echo "</tbody>";
               echo "</table><br><br>";
             }
 

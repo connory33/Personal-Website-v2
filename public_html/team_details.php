@@ -313,7 +313,7 @@
               $teamColor5 = $team['teamColor5'];
               ?>
 
-              <div id="team-details-content-container">
+              <div class="full-page-content-container">
 
               <?php
               // echo "<div class='container; background-color: $teamColor1'>";
