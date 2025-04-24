@@ -1,3 +1,17 @@
+/*
+COLORS:
+#0B0C10 - 'NIGHT', dark black background
+#1F2833 - 'GUNMETAL', dark navy blue, table header background
+#45A29E - 'Verdigris', teal, table header border/accent color
+$c5c6c7 - 'SILVER', light gray, table body background for odd rows
+#e3e7eb - 'Gainsboro', light gray, table body background for even rows
+#66FCF1 - 'Fluorescent cyan', light blue, table row hover color
+*/
+
+
+
+
+
 /* ################################################## GLOBAL STYLES ################################################## */
 .index-bg-img {
     background-image: url(../images/enchantedlake.jpg);
@@ -113,6 +127,7 @@ html, body {
 #nhl-games-players-summary-content-container {
 	background-color: #0b0c10;
 	color: #c5c6c7;
+	text-align: center;
 }
 
   /* Container div around your table */
@@ -151,36 +166,16 @@ html, body {
   }
 
   /* column width styling */
-  .col-season {
-	width: 10%;
-  }
-  .col-gameNumber {
-	width: 9%;
-  }
-  .col-date {
-	width: 10%;
-  }
-  .col-startTime {
-	width: 11%;
-  }
-  .col-gameType {
-	width: 10%;
-  }
-  .col-homeTeam {
-	width: 10%;
-  }
-  .col-homeScore {
-	width: 10%;
-  }
-  .col-awayTeam {
-	width: 10%;
-  }
-  .col-awayScore {
-	width: 10%;
-  }
-  .col-id {
-	width: 10%;
-  }
+  .games-players-summary-col-season { width: 12%; }
+  .games-players-summary-col-gameNumber { width: 8%; }
+  .games-players-summary-col-date { width: 9%; }
+  .games-players-summary-col-startTime { width: 9%; }
+  .games-players-summary-col-gameType { width: 7%; }
+  .games-players-summary-col-homeTeam { width: 14%; }
+  .games-players-summary-col-homeScore { width: 8%; }
+  .games-players-summary-col-awayTeam { width: 14%; }
+  .games-players-summary-col-awayScore { width: 8%; }
+  .games-players-summary-col-id { width: 11%; }
   
   /* cell styling */
   #games-players-summary-table th,
@@ -223,50 +218,70 @@ html, body {
 /* ############################################################# NHL PLAYER PAGE STYLES ########################################################## */
 /* Player Stats Table Styling */
 /* Player Stats Table Styling */
-.player-stats-table, .goalie-stats-table {
-    width: 85%;
+#player-goalie-stats-table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+#team-rosters-table-container {
+    width: 40%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+	margin-left: 5%;
+}
+
+
+.player-stats-table, .goalie-stats-table, .season-roster-table {
+    width: 100%;
     margin: 20px auto;
     table-layout: fixed;
     border-collapse: separate; /* Use separate borders for table and rows */
     border-spacing: 0; /* Remove space between borders */
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #2e5b78;
     border-radius: 8px;
     border: none;
 }
 
+.player-stats-table tbody tr:nth-child(even), .goalie-stats-table tbody tr:nth-child(even), .season-roster-table tbody tr:nth-child(even) {
+	background-color: #e3e7eb;
+  }
+.player-stats-table tbody tr:nth-child(odd), .goalie-stats-table tbody tr:nth-child(odd), .season-roster-table tbody tr:nth-child(odd) {
+	background-color: #c5c6c7;
+}
+
+.player-stats-table tbody tr:hover, .goalie-stats-table tbody tr:hover, .season-roster-table tbody tr:hover {
+	background-color: #66fcf1;
+	transition: 0.2s ease-in-out;
+}
+
+.min-w-max {
+    min-width: max-content;
+}
+
 /* Apply border-radius to the thead to round the whole header */
-.player-stats-table thead, .goalie-stats-table thead {
-    background-color: #2e5b78;
-    color: white;
+.player-stats-table thead, .goalie-stats-table thead, .season-roster-table thead {
+    /* background-color: #1f2833; */
+    /* color: white; */
     font-weight: bold;
     border-radius: 8px 8px 0 0; /* Round the top corners of the entire header */
     overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
 }
 
-.player-stats-table th, .goalie-stats-table th {
+.player-stats-table th, .goalie-stats-table th, .season-roster-table th {
     padding: 12px;
     border-bottom: 2px solid #ddd;
 }
 
 /* Table Cell Styling */
-.player-stats-table td, .goalie-stats-table td {
+.player-stats-table td, .goalie-stats-table td, .season-roster-table td {
     padding: 10px 12px;
     border: 1px solid #ddd;
     text-align: center;
     color: #333; /* Ensure text is dark enough for readability */
-}
-
-/* Zebra Striping (Alternating Row Colors) */
-.player-stats-table tr:nth-child(even), .goalie-stats-table tr:nth-child(even) {
-    background-color: #f7f7f7; /* Light gray for alternating rows */
-}
-
-/* Row Hover Effect (Only for body rows) */
-.player-stats-table tbody tr:hover, .goalie-stats-table tbody tr:hover {
-    background-color: #e6f7ff; /* Subtle light blue on hover */
-    cursor: pointer;
 }
 
 
@@ -356,20 +371,49 @@ html, body {
 
 /* ####################################################### NHL TEAM PAGE STYLES ########################################################## */
 .filter-container {
-  	margin: auto;
-	/* background-color: rgba(76, 91, 100, 0.85); */
-	width: 18%;
-	color: rgb(233, 235, 236); 
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	padding-top: 7px;
-	padding-bottom: 7px;
-	/* padding-left: 4px;
-	padding-right: 4px; */
-	gap: 7px;
-	font-size: 18px;
-	margin-bottom: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 10px auto;
+    padding: 7px 10px;
+    border-radius: 5px;
+    color: rgb(233, 235, 236);
+    display: flex;
+    justify-content: space-between; /* Push label left, select right */
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensures padding doesn't overflow */
+}
+
+#team-details-content-container {
+	width: 100%;
+	/* background-color: #0b0c10; */
+}
+
+.filter-container label {
+    margin: 0;
+    line-height: 1;
+}
+
+.filter-container select {
+    flex-shrink: 0;
+    padding: 5px;
+	padding: 5px 8px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 480px) {
+	.filter-container {
+		flex-direction: column;
+		align-items: flex-start;
+		font-size: 14px;
+	}
+
+	.filter-container label,
+	.filter-container select {
+		width: 100%;
+	}
 }
 
 #seasonDropdown select {
@@ -395,51 +439,31 @@ html, body {
 	border-radius: 12px;
 	box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 	margin-bottom: 30px;
+	display: flex;
+	justify-content: center;
   }
 
+/* Roster Table Width */
+.season-col-roster { width: 20%; }
+.playerID-col-roster { width: 25%; }
+.name-col-roster { width: 35%; }
+.position-col-roster { width: 20%; }
+
 /* Skater Table Width */
-.season-col-skater-stats {
-	width: 12%;
-}
-.gameType-col-skater-stats {
-	width: 3%;
-}
-.name-col-skater-stats {
-	width: 18%;
-}
-.position-col-skater-stats {
-	width: 5%;
-}
-.gp-col-skater-stats {
-	width: 5%;
-}
-.goals-season-col-skater-stats {
-	width: 5%;
-}
-.assists-season-col-skater-stats {
-	width: 5%;
-}
-.points-season-col-skater-stats {
-	width: 5%;
-}
-.plusMinus-season-col-skater-stats {
-	width: 5%;
-}
-.shots-col-skater-stats {
-	width: 7%;
-}
-.shotPct-col-skater-stats {
-	width: 7%;
-}
-.avgTOI-col-skater-stats {
-	width: 7%;
-}
-.avgShifts-col-skater-stats {
-	width: 8%;
-}
-.FOPct-col-skater-stats {
-	width: 8%;
-}
+.season-col-skater-stats { width: 11%; }
+.gameType-col-skater-stats { width: 5%; }
+.name-col-skater-stats { width: 18%; }
+.position-col-skater-stats { width: 5%; }
+.gp-col-skater-stats { width: 5%; }
+.goals-season-col-skater-stats { width: 5%; }
+.assists-season-col-skater-stats { width: 5%; }
+.points-season-col-skater-stats { width: 5%; }
+.plusMinus-season-col-skater-stats { width: 5%; }
+.shots-col-skater-stats { width: 6%; }
+.shotPct-col-skater-stats { width: 7%; }
+.avgTOI-col-skater-stats { width: 7%; }
+.avgShifts-col-skater-stats { width: 8%; }
+.FOPct-col-skater-stats { width: 8%; }
 
 /* Goalie Table Width */
 .season-col-goalie-stats { width: 10%; }

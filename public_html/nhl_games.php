@@ -74,39 +74,6 @@
         </div>
       </div>
     </header>
- 
-    
-
-    <div id="nhl-games-players-summary-content-container">
-
-        <p class="text-lg text-center mb-4">Search again:</p>
-
-        <div class="flex justify-center">
-            <form id="nhl-search" method="GET" action="nhl_games.php"
-                class="backdrop-blur-sm px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-4xl">
-      
-            <!-- Dropdown -->
-            <select name="search_column" id="nhl-search-column"
-                class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="season">Season</option>
-                <option value="gameDate">Game Date</option>
-                <option value="easternStartTime">Start Time</option>
-                <option value="gameType">Game Type</option>
-                <option value="team">Team</option>
-                <option value="homeTeamId">Home Team</option>
-                <option value="awayTeamId">Away Team</option>
-                <option value="player">Player Name</option>
-            </select>
-
-            <!-- Text input -->
-            <input type="text" name="search_term" id="search-term" placeholder="Enter search term" required
-                class="w-full sm:flex-2 text-black px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-            <!-- Submit button -->
-            <input type="submit" value="Search"
-                class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
-            </form>
-        </div>
 
         <?php
         ini_set('display_errors', 1); error_reporting(E_ALL);
@@ -163,8 +130,6 @@
                 $start = $offset + 1;
                 $end = min($offset + $limit, $total_rows);
                 $total_pages = ceil($total_rows / $limit);
-
-                echo "<h5 style='text-align: center'>Games found where " . $searchColumn . ' = ' . $searchTerm . "</h5><br>";
 
                 # get lowercase version of search term to use in mapping numeric values
                 $lowerTerm = strtolower($searchTerm);
@@ -242,6 +207,32 @@
                     $sql .= (strpos($sql, 'WHERE') !== false ? " AND" : " WHERE") . " gameDate BETWEEN '$startDate' AND '$endDate'";
                 }
                 
+
+                // Add "counting" query to get total number of result rows independent of pagination limit
+                // Do this BEFORE adding ORDER BY and LIMIT clauses to the main query
+                $count_query = "SELECT COUNT(*) as total
+                FROM nhl_games
+                JOIN nhl_teams AS home_teams ON nhl_games.homeTeamId = home_teams.id
+                JOIN nhl_teams AS away_teams ON nhl_games.awayTeamId = away_teams.id";
+                // Apply same WHERE clause
+                $where_clauses = [];
+                if ($searchColumn === "team") {
+                    $where_clauses[] = "(home_teams.id = '$searchTerm' OR away_teams.id = '$searchTerm')";
+                } else {
+                    $where_clauses[] = "$searchColumn LIKE '%$searchTerm%'";
+                }
+                if (!empty($_GET['startDate']) && !empty($_GET['endDate'])) {
+                    $startDate = $_GET['startDate'];
+                    $endDate = $_GET['endDate'];
+                    $where_clauses[] = "gameDate BETWEEN '$startDate' AND '$endDate'";
+                }
+
+                if (!empty($where_clauses)) {
+                    $count_query .= " WHERE " . implode(" AND ", $where_clauses);
+                }
+                $count_result = mysqli_query($conn, $count_query) or die("Count query failed: " . mysqli_error($conn));
+                $total_rows = mysqli_fetch_assoc($count_result)['total'] ?? 0;
+
                 // Add order and limit clauses
                 $sql .= " ORDER BY $sortColumn $sortOrder";
                 $sql .= " LIMIT $limit OFFSET $offset";
@@ -253,23 +244,54 @@
                     die("Query failed: " . mysqli_error($conn));
                 }
                 
-                
                 ?>
+
+            <div id="nhl-games-players-summary-content-container">
+                <br>
+                <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
+
+                    <p class="text-lg text-center">Search again:</p>
+                    <div class="flex justify-center">
+                        <form id="nhl-search" method="GET" action="nhl_games.php"
+                            class="backdrop-blur-sm px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-4xl">
+                
+                        <!-- Dropdown -->
+                        <select name="search_column" id="nhl-search-column"
+                            class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="season">Season</option>
+                            <option value="gameDate">Game Date</option>
+                            <option value="easternStartTime">Start Time</option>
+                            <option value="gameType">Game Type</option>
+                            <option value="team">Team</option>
+                            <option value="homeTeamId">Home Team</option>
+                            <option value="awayTeamId">Away Team</option>
+                            <option value="player">Player Name</option>
+                        </select>
+
+                        <!-- Text input -->
+                        <input type="text" name="search_term" id="search-term" placeholder="Enter search term" required
+                            class="w-full sm:flex-2 text-black px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                        <!-- Submit button -->
+                        <input type="submit" value="Search"
+                            class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
+                        </form>
+                    </div>
 
                 <!-- Display results in a table format -->
                 <div class="table-container shadow-md rounded-lg overflow-x-auto">
                     <table id='games-players-summary-table' class="min-w-max table-auto">
                         <colgroup>
-                        <col class="col-season">
-                        <col class="col-gameNumber">
-                        <col class="col-date">
-                        <col class="col-startTime">
-                        <col class="col-gameType">
-                        <col class="col-homeTeam">
-                        <col class="col-homeScore">
-                        <col class="col-awayTeam">
-                        <col class="col-awayScore">
-                        <col class="col-id">
+                        <col class="games-players-summary-col-season">
+                        <col class="games-players-summary-col-gameNumber">
+                        <col class="games-players-summary-col-date">
+                        <col class="games-players-summary-col-startTime">
+                        <col class="games-players-summary-col-gameType">
+                        <col class="games-players-summary-col-homeTeam">
+                        <col class="games-players-summary-col-homeScore">
+                        <col class="games-players-summary-col-awayTeam">
+                        <col class="games-players-summary-col-awayScore">
+                        <col class="games-players-summary-col-id">
                         </colgroup>
                         <thead>
                             <tr>
@@ -331,7 +353,7 @@
                                     <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=awayScore&sort_order=desc' class="text-xs">▽</a>
                                 </span>
                                 </th>
-                                <th>ID<br>
+                                <th>Game ID<br>
                                 <span class='sort-arrows'>
                                     <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=id&sort_order=asc' class="text-xs">△</a>
                                     <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=id&sort_order=desc' class="text-xs">▽</a>
@@ -366,11 +388,11 @@
                         # Game Type (i.e. Preseason, Regular Season, etc.)
                         $gameType_num = $row['gameType'];
                         if ($gameType_num == 1) {
-                            $gameType_text = "Preseason";
+                            $gameType_text = "Pre.";
                         } elseif ($gameType_num == 2) {
-                            $gameType_text = "Reg. Season";
+                            $gameType_text = "Reg.";
                         } elseif ($gameType_num == 3) {
-                            $gameType_text = "Playoffs";
+                            $gameType_text = "Post.";
                         } else {
                             $gameType_text = "Unknown";
                         }

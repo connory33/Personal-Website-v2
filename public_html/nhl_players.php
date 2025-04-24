@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -19,7 +19,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-  </head>
+</head>
+<body>
   <header>
       <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
@@ -75,29 +76,7 @@
           </button>
         </div>
       </div>
-    </header>
-  <body>
-    <div class="bg-dark text-white text-center">
-        <br>
-        <p>Search again:</p>
-
-        <div class='search-container'>
-            <form id="nhl-search" method="GET" action="nhl_games.php">
-                    <select name="search_column" id="nhl-search-column">
-                        <option value="season">Season</option>
-                        <option value="gameDate">Game Date</option>
-                        <option value="easternStartTime">Start Time</option>
-                        <option value="gameType">Game Type</option>
-                        <option value="team">Team</option>
-                        <option value="homeTeamId">Home Team</option>
-                        <option value="awayTeamId">Away Team</option>
-                        <option value="player">Player Name</option>
-                    </select>
-                    <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required>
-                    <input  type="submit" value="Search" class="btn btn-primary">
-            </form>
-        </div>
-        <br>
+  </header>
 
         <?php
         include('db_connection.php');
@@ -134,23 +113,46 @@
 
             $sql .= " LIMIT $limit OFFSET $offset";
 
-            echo "<br>";
-
             // Execute the query, check if successful and if results were found
             $result = mysqli_query($conn, $sql);
 
             if (!$result) {
                 die("Query failed: " . mysqli_error($conn));
             }
-            
-            echo "<h5>Results found for  " . ucfirst($searchColumn) . ' = ' . $originalSearchTerm . "</h5>";
-            
+                        
             if (mysqli_num_rows($result) == 0) {
                 print("No results found.<br><br>");
             }
 
             ?>
 
+      <div id="nhl-games-players-summary-content-container">
+        <br>
+        <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
+
+            <p class="text-lg text-center">Search again:</p>
+
+            <div class="flex justify-center">
+              <form id="nhl-search" method="GET" action="nhl_games.php" class="backdrop-blur-sm px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4
+                items-stretch sm:items-center w-full max-w-4xl">
+                      <select name="search_column" id="nhl-search-column" class='w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300
+                      px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'>
+                          <option value="season">Season</option>
+                          <option value="gameDate">Game Date</option>
+                          <option value="easternStartTime">Start Time</option>
+                          <option value="gameType">Game Type</option>
+                          <option value="team">Team</option>
+                          <option value="homeTeamId">Home Team</option>
+                          <option value="awayTeamId">Away Team</option>
+                          <option value="player">Player Name</option>
+                      </select>
+                      <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required class="w-full sm:flex-2 text-black px-3 py-2
+                      rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <input type="submit" value="Search"
+                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
+              </form>
+            </div>
+            <br>
             <!-- Display results in a table format -->
             <div class="table-container">
                 <table id='games-players-summary-table'>
@@ -168,7 +170,7 @@
                         while ($row = $result->fetch_assoc()){
                             echo "<tr>";
                                 echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>" . $row['playerId'] . "</td>";
-                                echo "<td>" . $row['firstName'] . ' ' . $row['lastName'] . "</td>";
+                                echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>" . $row['firstName'] . ' ' . $row['lastName'] . "</td>";
                                 if ($row['sweaterNumber'] == '') {
                                     echo "<td>-</td>";
                                 } else {
@@ -220,10 +222,9 @@
             $conn->close();
         }
         ?>
-
-    <br>
-    <br>
-    </div>
+      <br>
+      <br>
+      </div>
 
     <footer class="text-muted">
       <div class="container">
