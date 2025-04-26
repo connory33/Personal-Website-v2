@@ -17,98 +17,79 @@
 
     <link rel="stylesheet" type="text/css" href="../resources/css/default_v3.css">
 
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-  <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-8 col-md-7 py-4">
-            <h4 class="text-white">About Me</h4>
-            <p class="text-white">
-                My name is Connor Young and I'm from Palo Alto, CA. I have a BS in Mechanical Engineering and a minor in Business from Cornell University
-                and a Master's in Operations Research and Information Engineering from Cornell Tech. 
-                <br /><br />
-                My career goal is to bring innovative technologies to the world.
-                I thrive at the intersection of technical and non-technical thinking and enjoy using my analytical mindset to break down and solve problems
-                that are both quantitatively and qualitatively complex.
-                <br /><br />
-                I seek opportunities to understand and balance customer needs with engineering constraints to deliver
-                innovative and high-value products. I greatly enjoy fast-paced work environments with high levels of
-                collaboration, accountability, and room for impact and growth.
-            </p>
-          </div>
-          <div class="col-sm-4 offset-md-1 py-4">
-            <h4 class="text-white">Contact</h4>
-            <ul class="list-unstyled">
-              <li><a style="color: dodgerblue" class="footerContent" href="https://www.linkedin.com/in/connoryoung33/">LinkedIn</a></li>
-              <li><a style="color: #b55850" class="footerContent" href="https://www.github.com/connory33">GitHub</a></li>
-              <li><a href="#" class="text-white">connor@connoryoung.com</a></li>
-            </ul>
-            <h4 class="text-white">Site Navigation</h4>
-            <ul class="list-unstyled">
-              <li><a style="color: dodgerblue" class="footerContent" href="index_v3.html">Home</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="nhlIndex.html">NHL Database</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="nhlLinesProject.html">NHL Lines Project</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="nbaFantasyProjections.html">NBA Fantasy Project</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="maddenOptimizer.html">NFL Roster Project</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="seniorDesign.html">Sr. Design Project</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="autonomousRobot.html">Robot Project</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="thermistorCleaner.html">Thermistor Project</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="waterPump.html">Water Pump Project</a></li>
-              <li><a style="color: dodgerblue" class="footerContent" href="planterBoxes.html">Planter Box Project</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+<!-- Header -->
+<header class="bg-gray-900 text-white shadow">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+    <div class="flex items-center space-x-4"> <!-- Add space between CY and Home -->
+      <a href="#" class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+          <circle cx="12" cy="13" r="4" />
+        </svg>
+        <strong>CY</strong>
+      </a>
+      <p><a href="https://connoryoung.com" class="hover:text-blue-400">Home</a></p>
+      <p><a href="aboutMe.html" class="hover:text-blue-400">About Me</a></p>
     </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-      <div class="container d-flex justify-content-between">
-        <a href="#" class="navbar-brand d-flex align-items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-          <!-- <a href="../resources/images/Wheel1.jpg" width="20" height="20" class="mr-2"></a> -->
-          <strong>CY</strong>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-    </div>
-  </header>
 
-    <div class="nhlindex-bg-img text-center py-5 content-wrapper">
-      <div id="nhlindex-content" class="container">
-        <h2>NHL Historical Database</h2><br>
-          <p>This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
-            You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
-            <br><br>Game and player pages feature additional details such as rosters, play-by-play, player bio info, and players stats.<br>
-            There are also team-specific pages that detail info and historical stats from each team. These are accessible via links in the game search or below on this page.<br>
-            All data hosted here has been scraped from the public <a style='color: rgb(15, 63, 152)' href=https://github.com/Zmalski/NHL-API-Reference>NHL API</a>. Thanks goes to the NHL for
-            their work to make this data available.<br><br><br>
-          </p>
+    <nav>
+      <ul class="flex flex-wrap gap-4 text-sm font-medium">
+        <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
+        <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
+        <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
+        <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
+        <li><a href="autonomousRobot.html" class="hover:text-blue-400">Robot</a></li>
+        <li><a href="thermistorCleaner.html" class="hover:text-blue-400">Thermistor</a></li>
+        <li><a href="waterPump.html" class="hover:text-blue-400">Water Pump</a></li>
+        <li><a href="planterBoxes.html" class="hover:text-blue-400">Planter Boxes</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-        <div class='search-container'>
+  <div class="nhlindex-bg-img flex align-center justify-center py-5">
+    <div id="nhlindex-content" class="text-center max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold">NHL Historical Database</h2><br>
+      <p>
+        This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
+        You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
+        <br><br>
+        Game and player pages feature additional details such as rosters, play-by-play, player bio info, and player stats.<br>
+        There are also team-specific pages that detail info and historical stats.
+      </p>
 
-          <form id="nhl-search" method="GET" action="nhl_games.php">
-                  <select name="search_column" id="nhl-search-column">
-                      <option value="season">Season</option>
-                      <option value="gameDate">Game Date</option>
-                      <option value="easternStartTime">Start Time</option>
-                      <option value="gameType">Game Type</option>
-                      <option value="team">Team</option>
-                      <option value="homeTeamId">Home Team</option>
-                      <option value="awayTeamId">Away Team</option>
-                      <option value="player">Player Name</option>
-                  </select>
-                  <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required>
-                  <input  type="submit" value="Search" class="btn btn-primary">
+        <div class="flex justify-center items-start">
+          <form id="nhl-search" method="GET" action="nhl_games.php"
+              class="px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 sm:items-center w-full max-w-4xl">
+  
+          <!-- Dropdown -->
+          <select name="search_column"
+              class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="season">Season</option>
+              <option value="gameDate">Game Date</option>
+              <option value="easternStartTime">Start Time</option>
+              <option value="gameType">Game Type</option>
+              <option value="team">Team</option>
+              <option value="homeTeamId">Home Team</option>
+              <option value="awayTeamId">Away Team</option>
+              <option value="player">Player Name</option>
+          </select>
+
+          <!-- Text input -->
+          <input type="text" name="search_term" id="search-term" placeholder="Enter search term" required
+              class="w-full sm:flex-2 text-black px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+          <!-- Submit button -->
+          <input type="submit" value="Search"
+              class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
           </form>
-          
-        </div>
+      </div>
         <br>
-        <div class="container" style="text-align: center; color: white; width: 50%">
-          <p>Select any team below to view details:</p>
+      <div style="text-align: center; color: white">
+          <p>Select any team below to view details:<br>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span> |</span>
@@ -141,10 +122,10 @@
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=23'>VAN</a><span> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a></p>
 
         </div>
-        <br><br>
+        <br>
         <p>This database is a work in progress. For any bugs or feature requests, please reach out
           at connor@connoryoung.com.
         </p>

@@ -6,6 +6,8 @@ COLORS:
 $c5c6c7 - 'SILVER', light gray, table body background for odd rows
 #e3e7eb - 'Gainsboro', light gray, table body background for even rows
 #66FCF1 - 'Fluorescent cyan', light blue, table row hover color
+rgb(111, 144, 205) - crease paint blue
+rgb(182, 71, 71) - red line red
 */
 
 
@@ -14,7 +16,152 @@ $c5c6c7 - 'SILVER', light gray, table body background for odd rows
 
 
 
-/* ################################################## MAIN INDEX PAGE STYLES ################################################## */
+:root {
+	--jumbotron-padding-y: 3rem;
+  }
+  
+  .jumbotron {
+	padding-top: var(--jumbotron-padding-y);
+	padding-bottom: var(--jumbotron-padding-y);
+	margin-bottom: 0;
+	background-color: #fff;
+  }
+  @media (min-width: 768px) {
+	.jumbotron {
+	  padding-top: calc(var(--jumbotron-padding-y) * 2);
+	  padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+	}
+  }
+  
+  .jumbotron p:last-child {
+	margin-bottom: 0;
+  }
+  
+  .jumbotron-heading {
+	font-weight: 300;
+  }
+  
+  .jumbotron .container {
+	max-width: 40rem;
+  }
+  
+  footer {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+	width: 100%; /* Full-width footer */
+  }
+
+  /* Footer container styling */
+  .footer-container {
+	  display: flex;
+	  justify-content: space-between; /* Push left and right content to far edges */
+	  align-items: center;
+	  width: 100%; /* Ensure it spans the full width of the screen */
+  }
+
+
+  /* Links in the center */
+  .footer-links {
+	  display: flex;
+	  justify-content: center;
+	  flex-wrap: wrap;
+	  gap: 10px;
+  }
+
+  /* Spacing around the | separator */
+  .footer-separator {
+	  margin: 0 4px; /* Space on both sides of the | */
+  }
+  .footer-separator::before {
+	content: " |";
+  }
+  
+
+  /* Styling for the copyright and back-to-top */
+  .footer-left,
+  .footer-right {
+	  flex-shrink: 0; /* Prevent shrinking of these elements */
+  }
+  
+  footer p {
+	margin-bottom: .25rem;
+  }
+  
+  .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+  
+
+
+
+/* ################################################## GLOBAL STYLES ################################################## */
+.index-bg-img {
+    background-image: url(../images/enchantedlake.jpg);
+	width: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.my-footer {
+	background-color: #171a1f;
+	color: white;
+	width: 100%;
+	border-top: 2px solid #1F2833;
+}
+
+/* sets background color for Bootstrap's default footer class */
+.bg-body-tertiary {
+	background-color: #2f333b;
+	color: white;
+}
+
+/* Prevent horizontal scrolling on mobile */
+body {
+	width: 100%;
+	overflow-x: hidden;
+	font-family: 'Inter', sans-serif;
+	line-height: 1.6;
+	background-color: #757c84;
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+  }
+  
+.content-wrapper {
+	flex: 1; /* this makes the main content fill the space */
+}
+
+.min-w-max {
+    min-width: max-content;
+}
+
+
+
+#navbarHeader {
+    background-color: #343a40; /* Navbar background color */
+    z-index: 1050; /* Ensure it stays above other elements */
+    position: fixed; /* Fix it to the top of the viewport */
+    top: 0; /* Align it to the top */
+    left: 0; /* Align it to the left */
+    width: 100%; /* Full width */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for expand/collapse */
+}
+
+#navbarHeader.collapse {
+    transform: translateY(-100%); /* Slide out of view when collapsed */
+}
+
+#navbarHeader.collapse.show {
+    transform: translateY(0); /* Slide into view when expanded */
+    background-color: #343a40; /* Ensure background color persists */
+}
+
+
+/* ################################################## INDEX PAGE STYLES ################################################## */
 .containedImage {
 	overflow: hidden;
 	display: flex;
@@ -28,16 +175,11 @@ $c5c6c7 - 'SILVER', light gray, table body background for odd rows
 	justify-content: center;
 }
 
-.index-bg-img {
-	background-image: url(../images/enchantedlake.jpg);
-	width: 100%;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-
 /* ################################################### PROJECT PAGE STYLES ################################################### */
+/* Formatting images on project pages */
 
+
+/* Formatting text on project pages */
 .sectionHeading {
 	color: #18314F;
 	padding: .6em;
@@ -45,13 +187,27 @@ $c5c6c7 - 'SILVER', light gray, table body background for odd rows
 	font-weight: bold;
 	text-align: center;
 }
+
+.underline {
+	border-bottom-style: solid;
+	border-color: #18314F;
+	padding-bottom: .8em;
+}
+
 .headingContent {
 	color: #18314f;
 	font-size: 1.2em;
 	text-align: center;
 }
+
+
 .height-cap {
     height: 16em;
+}
+
+/* Formatting Spotify DB/search page */
+.spotifyTable {
+	border: 1px solid #18314F;
 }
 
 /* #################################################### NHL INDEX STYLES #################################################### */
@@ -61,19 +217,19 @@ $c5c6c7 - 'SILVER', light gray, table body background for odd rows
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
+	height: 100%;
 }
 
 #nhlindex-content {
-	background-color: rgba(76, 91, 100, 0.85);
-	width: 100%;
-	padding: 20px;
+	margin-top: 20px;
+	background-color: rgba(76, 91, 100, 0.85); /* gray */
 	border-radius: 8px;
-	gap: 15px;
-	margin-top: 7%;
 	color: rgb(233, 235, 236);
-}
+	padding-top: 20px; padding-right: 20px; padding-left: 20px;
+	width: 70%;
+  }
 
-/* #################################################### GAME/PLAYER SUMMARY STYLES #################################################### */
+
 /* GAMES/PLAYER SUMMARY TABLE */
 #nhl-games-players-summary-content-container {
 	background-color: #1f2833;
@@ -88,6 +244,7 @@ $c5c6c7 - 'SILVER', light gray, table body background for odd rows
 	/* width: max-content; */
     width: 40%;
 	margin: 0 auto;
+	border: 2px solid white; /* Fixed typo from 'whitel=' to 'white' */
   }
   
   /* thead styling */
@@ -99,13 +256,9 @@ $c5c6c7 - 'SILVER', light gray, table body background for odd rows
 	color: white;
 	text-align: center;
 	font-weight: 600;
-	border-bottom: 3px solid #45a29e;
-  }
-  #games-players-summary-table thead th:first-child {
-	border-top-left-radius: 8px;
-  }
-  #games-players-summary-table thead th:last-child {
+	border-bottom: 3px solid white;
 	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
   }
 
   
@@ -226,7 +379,7 @@ border-radius: 8px;
 
   /* ############################################## NHL Game Page Style ############################################# */
 
-  #play-by-play-container {
+#play-by-play-container {
     width: 100%;
     max-width: 100%;
     overflow-x: auto;
@@ -243,6 +396,7 @@ border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     border: none;
+	zoom: .7;
 }
 
 /* Apply border-radius to the thead to round the whole header */
@@ -252,12 +406,12 @@ border-radius: 8px;
     overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
 	position: sticky;
 	top: 0;
-	background-color: #0b0c10;
+	background-color: #1F2833;
 	z-index: 2;
 	color: white;
 	text-align: center;
 	font-weight: 600;
-	border-bottom: 3px solid #45a29e;
+	border: 2px solid white;
 }
 
 #play-by-play-table th {
@@ -274,11 +428,53 @@ border-radius: 8px;
 }
 
 
+.roster-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Flexible column widths */
+    gap: 40px;
+    justify-content: center;
+    padding: 40px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+.team-column {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    flex-grow: 1; /* Allow columns to grow dynamically */
+	overflow-x: auto;
+}
+
+.roster-table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Ensure horizontal scrolling for tables */
+}
+
+.roster-table {
+    min-width: 1200px; /* Set a minimum width for the table */
+    border: 1px solid #bcd6e7;
+    width: auto; /* Allow the table to grow based on content */
+	overflow-x: auto;
+}
+
+.roster-title {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .roster-container {
+        grid-template-columns: 1fr; /* Stack tables vertically on small screens */
+    }
+}
 
 
 
 
-  .rink-key-wrapper {
+.rink-key-wrapper {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -294,45 +490,13 @@ border-radius: 8px;
     text-align: center;
 }
 
-
-
-
-
-/* ####################################################### GLOBAL STYLES ########################################################## */
-
-/* sets background color for Bootstrap's default footer class */
-.bg-body-tertiary {
-	background-color: #2f333b;
-	color: white;
+.rink-image {
+	border-radius: 8px;
+	border: 4px solid #1F2833;
 }
 
-/* Prevent horizontal scrolling on mobile */
-body {
-	overflow-x: hidden;
-	font-family: 'Inter', sans-serif;
-	line-height: 1.6;
-}
 
-html, body {
-	height: 100%;
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-  }
-  
-.content-wrapper {
-	flex: 1; /* this makes the main content fill the space */
-}
 
-.min-w-max {
-    min-width: max-content;
-}
-
-.underline {
-	border-bottom-style: solid;
-	border-color: #18314F;
-	padding-bottom: .8em;
-}
 
 
 /* ####################################################### NHL TEAM PAGE STYLES ########################################################## */
@@ -405,6 +569,17 @@ html, body {
 }
 
 /* classes for alternating row colors and hover effects */
+.default-zebra-table td {
+	color: black;
+}
+
+.default-zebra-table th {
+	background-color: #1F2833;
+	color: white;
+	text-align: center;
+	font-weight: 600;
+}
+
 .default-zebra-table tbody tr:nth-child(even) {
 	background-color: #e3e7eb;
 }
@@ -412,43 +587,11 @@ html, body {
 	background-color: #c5c6c7;
 }
 .default-zebra-table tbody tr:hover {
-	background-color: #66fcf1;
+	background-color: rgb(133, 149, 168);
 	transition: 0.2s ease-in-out;
+	color: white;
 }
-
-/* RENAME IN PHP + REMOVE */
-	#play-by-play-table tbody tr:nth-child(even) {
-		background-color: #e3e7eb;
-	}
-	#play-by-play-table tbody tr:nth-child(odd) {
-		background-color: #c5c6c7;
-	}
-	#play-by-play-table tbody tr:hover {
-		background-color: #66fcf1;
-		transition: 0.2s ease-in-out;
-	}
-	.player-stats-table tbody tr:nth-child(even), .goalie-stats-table tbody tr:nth-child(even), .season-roster-table tbody tr:nth-child(even) {
-		background-color: #e3e7eb;
-	}
-	.player-stats-table tbody tr:nth-child(odd), .goalie-stats-table tbody tr:nth-child(odd), .season-roster-table tbody tr:nth-child(odd) {
-		background-color: #c5c6c7;
-	}
-	.season-roster-table tbody tr:hover {
-		background-color: #66fcf1;
-		transition: 0.2s ease-in-out;
-	}
-	#games-players-summary-table tbody tr:nth-child(even) {
-		background-color: #e3e7eb;
-	}
-	#games-players-summary-table tbody tr:nth-child(odd) {
-		background-color: #c5c6c7;
-	}
 	
-	#games-players-summary-table tbody tr:hover {
-		background-color: #66fcf1;
-		transition: 0.2s ease-in-out;
-	}
-
 /* furthest outer div class that surrounds whole page content and allows for full page width */
 .full-page-content-container {
 	width: 100%;
@@ -580,6 +723,26 @@ text-decoration: underline;
 .games-players-summary-col-awayTeam { width: 14%; }
 .games-players-summary-col-awayScore { width: 8%; }
 .games-players-summary-col-id { width: 11%; }
+
+
+/* Skate Game Stats on Game Details Page */
+.game_details_skater_stats_name { width: 16%;}
+.game_details_skater_stats_number { width: 5%;}
+.game_details_skater_stats_position { width: 5%;}
+.game_details_skater_stats_goals { width: 5%;}
+.game_details_skater_stats_assists { width: 5%;}
+.game_details_skater_stats_points { width: 5%;}
+.game_details_skater_stats_plusminus { width: 5%;}
+.game_details_skater_stats_pim { width: 6%;}
+.game_details_skater_stats_hits { width: 6%;}
+.game_details_skater_stats_powerplaygoals { width: 6%;}
+.game_details_skater_stats_sog { width: 5%;}
+.game_details_skater_stats_faceoffpctg { width: 5%;}
+.game_details_skater_stats_toi { width: 6%;}
+.game_details_skater_stats_blockedshots { width: 5%;}
+.game_details_skater_stats_shifts { width: 5%;}
+.game_details_skater_stats_giveaways { width: 5%;}
+.game_details_skater_stats_takeaways { width: 5%;}
 
 /* ################################################################ MOBILE RESPONSIVENESS ################################################################# */
 

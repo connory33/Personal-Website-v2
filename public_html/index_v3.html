@@ -1,305 +1,145 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Connor Young's personal website" />
+    <meta name="author" content="Connor Young" />
+    <link rel="icon" href="../../../../favicon.ico" />
     <title>Connor Young</title>
 
-    <link rel="stylesheet" type="text/css" href="../resources/css/default_v3.css">
-
-    <!-- Bootstrap core CSS -->
-    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="../resources/css/album.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resources/css/default_v3.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body>
-
-    <header>
-      <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-8 col-md-7 py-4">
-              <h4 class="text-white">About Me</h4>
-              <p class="text-white">
-                  My name is Connor Young and I'm from Palo Alto, CA. I have a BS in Mechanical Engineering and a minor in Business from Cornell University
-                  and a Master's in Operations Research and Information Engineering from Cornell Tech. 
-                  <br /><br />
-                  My career goal is to bring innovative technologies to the world.
-                  I thrive at the intersection of technical and non-technical thinking and enjoy using my analytical mindset to break down and solve problems
-                  that are both quantitatively and qualitatively complex.
-                  <br /><br />
-                  I seek opportunities to understand and balance customer needs with engineering constraints to deliver
-                  innovative and high-value products. I greatly enjoy fast-paced work environments with high levels of
-                  collaboration, accountability, and room for impact and growth.
-              </p>
-            </div>
-            <div class="col-sm-4 offset-md-1 py-4">
-              <h4 class="text-white">Contact</h4>
-              <ul class="list-unstyled">
-                <li><a style="color: dodgerblue" class="footerContent" href="https://www.linkedin.com/in/connoryoung33/">LinkedIn</a></li>
-                <li><a style="color: #b55850" class="footerContent" href="https://www.github.com/connory33">GitHub</a></li>
-                <li><a href="#" class="text-white">connor@connoryoung.com</a></li>
-              </ul>
-              <h4 class="text-white">Site Navigation</h4>
-              <ul class="list-unstyled">
-                <li><a style="color: dodgerblue" class="footerContent" href="">Home</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="nhlIndex.html">NHL Database</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="nhlLinesProject.html">NHL Lines Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="nbaFantasyProjections.html">NBA Fantasy Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="maddenOptimizer.html">NFL Roster Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="seniorDesign.html">Sr. Design Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="autonomousRobot.html">Robot Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="thermistorCleaner.html">Thermistor Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="waterPump.html">Water Pump Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="planterBoxes.html">Planter Box Project</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-          <a href="#" class="navbar-brand d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-            <!-- <a href="../resources/images/Wheel1.jpg" width="20" height="20" class="mr-2"></a> -->
+  <body class="flex flex-col min-h-screen bg-white text-gray-900">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white shadow">
+      <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        <div class="flex items-center space-x-4"> <!-- Add space between CY and Home -->
+          <a href="#" class="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
             <strong>CY</strong>
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+          <p><a href="https://connoryoung.com" class="hover:text-blue-400">Home</a></p>
+          <p><a href="aboutMe.html" class="hover:text-blue-400">About Me</a></p>
         </div>
+    
+        <nav>
+          <ul class="flex flex-wrap gap-4 text-sm font-medium">
+            <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
+            <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
+            <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
+            <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
+            <li><a href="autonomousRobot.html" class="hover:text-blue-400">Robot</a></li>
+            <li><a href="thermistorCleaner.html" class="hover:text-blue-400">Thermistor</a></li>
+            <li><a href="waterPump.html" class="hover:text-blue-400">Water Pump</a></li>
+            <li><a href="planterBoxes.html" class="hover:text-blue-400">Planter Boxes</a></li>
+          </ul>
+        </nav>
       </div>
     </header>
+  
 
-    <main role="main">
+    <!-- Main -->
+    <main class="flex-grow">
+      <!-- <section class="text-center bg-cover bg-center py-16" style="background-image: url('https://picsum.photos/1200/800')"> -->
+        <section class="text-center bg-[url('/resources/images/enchantedlake.jpg')] bg-cover bg-center py-16">
 
-      <section class="jumbotron text-center index-bg-img">
-        <div class="container">
-          <h1 class="jumbotron-heading">Connor Young</h1>
-          <p>
-            <a class="btn btn-primary my-2" href="resources/ConnorYoung_Resume_Apr2025.pdf" download>Download Resume</a>
-          </p>
-          <p>
-            <!-- <a href="spotifyIndex.html">Spotify Test</a> -->
+          <h1 class="text-6xl font-bold text-blue-900">Connor Young</h1>
+          <p class="mt-6">
+            <a
+              href="resources/ConnorYoung_Resume_Apr2025.pdf"
+              download
+              class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded shadow hover:bg-blue-700 transition"
+            >
+              Download Resume
+            </a>
           </p>
         </div>
       </section>
 
+      <section class="text-center my-12 px-4">
+        <h4 class="text-3xl md:text-4xl font-medium mb-4">
+          <a href="nhlIndex.html" class="text-blue-700 hover:underline">Check out my latest/active project here!</a>
+        </h4>
+        <hr class="border-blue-900 w-4/5 mx-auto mb-8" />
+        <h2 class="text-4xl font-semibold mb-10">Past Projects</h2>
 
-      <div class="album py-5 bg-light">
-
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          
+          <div class="bg-white border shadow rounded-lg p-6 text-left">
+            <h3 class="text-xl font-bold mb-2">NHL Line Analysis</h3>
+            <p class="text-sm text-gray-600 mb-4">This was an analysis and investigation into the usage and dependency of different NHL teams on their various "lines" of forwards.</p>
+            <a href="nhlLinesProject.html" class="text-blue-600 hover:underline">View Project →</a>
+          </div>
         
-        <div class="container">
-          <p class="text-center">
-          <a href="nhlIndex.html">Check out my latest/active project here!</a>
-        </p>
-          <hr style="color:black">
-          <br>
-          <h2 class="text-center">Past Projects</h2>
-          <br>
 
-          <div class="row">
-
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">NHL Line Analysis</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/sample_shift_chart.PNG" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This was an analysis and investigation into the usage and dependency of different NHL teams on their various "lines" of forwards.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="nhlLinesProject.html">
-                        Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="bg-white border shadow rounded-lg p-6 text-left">
+              <h3 class="text-xl font-bold mb-2">NBA Fantasy Projection</h3>
+              <p class="text-sm text-gray-600 mb-4">This project compared the efficacy of various machine learning models in predicting fantasy scores for NBA players.</p>
+              <a href="nbaFantasyProjections.html" class="text-blue-600 hover:underline">View Project →</a>
             </div>
-            
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">NBA Fantasy Projection</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/nba_results.PNG" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This was a project that compared the efficacy of various machine learning models in predicting fantasy scores for NBA players.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="nbaFantasyProjections.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  
 
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">NFL Roster Optimizer</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/madden_thumbnail.PNG" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This was a fun exercise in roster optimization for different schemes using Madden ratings and Excel's evolutionary solver.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="maddenOptimizer.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center text-muted">Personal Website</h3>
-                </div>
-                <img class="card-img-top" src="../resources/images/personalwebsite.JPG" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This is a project that began in July 2019 as a joint portfolio-creation/learning experience.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="personalWebsite.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">Senior Design Project</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/under_construction.jpg" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Check back for a new project coming soon!</p>
-                  <br><br><br>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href=#>Coming Soon</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="bg-white border shadow rounded-lg p-6 text-left">
+              <h3 class="text-xl font-bold mb-2">NFL Roster Optimizer</h3>
+              <p class="text-sm text-gray-600 mb-4">This was a fun exercise in roster optimization using Madden ratings and Excel's evolutionary solver.</p>
+              <a href="maddenOptimizer.html" class="text-blue-600 hover:underline">View Project →</a>
             </div>
 
 
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">Autonomous Robot</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/robot.JPG" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This project used circuits, Arduino, and bit-level C code to build an autonomous robot for a cube-clearing competition.</p>
-                  <br>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="autonomousRobot.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="bg-white border shadow rounded-lg p-6 text-left">
+              <h3 class="text-xl font-bold mb-2">Senior Design Project</h3>
+              <p class="text-sm text-gray-600 mb-4">Check back for a new project coming soon!</p>
+              <a href="seniorDesignProject.html" class="text-blue-600 hover:underline">View Project →</a>
             </div>
-            <!-- <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">Miata Restoration</h3>
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/miata_front_right_topdown.jpg" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">My father and I recently purchased and began a restoration of a 1995 M-Edition Miata.</p>
-                  <br>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="miataRestoration.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
+      
 
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">Thermistor Cleaner</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/therm_parts.JPG" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This partner project tasked us with creating a physical product utilizing rapid prototyping techniques that could be used in commercial food service.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="thermistorCleaner.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="bg-white border shadow rounded-lg p-6 text-left">
+              <h3 class="text-xl font-bold mb-2">Autonomous Robot</h3>
+              <p class="text-sm text-gray-600 mb-4">This project used circuits, Arduino, and bit-level C code to build an autonomous robot for a cube-clearing competition.</p>
+              <a href="autonomousRobot.html" class="text-blue-600 hover:underline">View Project →</a>
             </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">Water Pump</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/WP1.jpeg" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This group project entailed designing and fabricating a mechanical water pump capable of pumping 1 liter of water per minute.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="waterPump.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        
+
+            <div class="bg-white border shadow rounded-lg p-6 text-left">
+              <h3 class="text-xl font-bold mb-2">Thermistor Cleaner</h3>
+              <p class="text-sm text-gray-600 mb-4">This partner project involved creating a commercial-ready cleaning device using rapid prototyping techniques.</p>
+              <a href="thermistorCleaner.html" class="text-blue-600 hover:underline">View Project →</a>
             </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <div class="card-body">
-                  <h3 class="text-center">Planter Boxes</h3> <!--text-muted-->
-                </div>
-                <img class="card-img-top height-cap" src="../resources/images/planterfinished.JPG" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">This was my Eagle Scout Project for the Menlo Park VA Hospital. I oversaw 10+ other scouts in this role
-                    for 100+ man-hours.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a href="planterBoxes.html">Read More</a></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        
+
+            <div class="bg-white border shadow rounded-lg p-6 text-left">
+              <h3 class="text-xl font-bold mb-2">Water Pump</h3>
+              <p class="text-sm text-gray-600 mb-4">This group project involved design and manufacturing of a mechanical pump capable of moving 1L of water per minute.</p>
+              <a href="waterPump.html" class="text-blue-600 hover:underline">View Project →</a>
             </div>
+
+
+            <div class="bg-white border shadow rounded-lg p-6 text-left">
+              <h3 class="text-xl font-bold mb-2">Planter Boxes</h3>
+              <p class="text-sm text-gray-600 mb-4">This was my Eagle Scout Project for the Menlo Park VA Hospital. I led 10+ scouts for 100+ total man-hours.</p>
+              <a href="planterBoxes.html" class="text-blue-600 hover:underline">View Project →</a>
+            </div>
+        
           </div>
         </div>
-      </div>
-
+      </section>
     </main>
 
-    <footer class="text-muted">
-      <div class="container">
-        <p class="float-right">
-          <a href="#">Back to top</a>
-        </p>
-        <p>Copyright &copy; 2025 Connor Young</p>
+    <!-- Footer -->
+    <footer class="bg-gray-100 text-gray-700 text-center py-4">
+      <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+        <p>&copy; 2025 Connor Young</p>
+        <p><a href="https://www.linkedin.com/in/connoryoung33/" class="hover:underline">LinkedIn</a></p>
+        <p><a href="https://www.github.com/connory33" class="hover:underline">GitHub</a></p>
+        <p><a href="mailto:connor@connoryoung.com" class="hover:underline">connor@connoryoung.com</a></p>
       </div>
     </footer>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/vendor/holder.min.js"></script>
   </body>
 </html>
+

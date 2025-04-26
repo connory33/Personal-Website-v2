@@ -19,65 +19,41 @@
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
+       <script src="https://cdn.tailwindcss.com"></script>
+
   </head>
-  <header>
-      <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-8 col-md-7 py-4">
-              <h4 class="text-white">About Me</h4>
-              <p class="text-white">
-                  My name is Connor Young and I'm from Palo Alto, CA. I have a BS in Mechanical Engineering and a minor in Business from Cornell University
-                  and a Master's in Operations Research and Information Engineering from Cornell Tech. 
-                  <br /><br />
-                  My career goal is to bring innovative technologies to the world.
-                  I thrive at the intersection of technical and non-technical thinking and enjoy using my analytical mindset to break down and solve problems
-                  that are both quantitatively and qualitatively complex.
-                  <br /><br />
-                  I seek opportunities to understand and balance customer needs with engineering constraints to deliver
-                  innovative and high-value products. I greatly enjoy fast-paced work environments with high levels of
-                  collaboration, accountability, and room for impact and growth.
-              </p>
-            </div>
-            <div class="col-sm-4 offset-md-1 py-4">
-              <h4 class="text-white">Contact</h4>
-              <ul class="list-unstyled">
-                <li><a style="color: dodgerblue" class="footerContent" href="https://www.linkedin.com/in/connoryoung33/">LinkedIn</a></li>
-                <li><a style="color: #b55850" class="footerContent" href="https://www.github.com/connory33">GitHub</a></li>
-                <li><a href="#" class="text-white">connor@connoryoung.com</a></li>
-              </ul>
-              <h4 class="text-white">Site Navigation</h4>
-              <ul class="list-unstyled">
-                <li><a style="color: dodgerblue" class="footerContent" href="">Home</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="nhlIndex.html">NHL Database</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="nhlLinesProject.html">NHL Lines Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="nbaFantasyProjections.html">NBA Fantasy Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="maddenOptimizer.html">NFL Roster Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="seniorDesign.html">Sr. Design Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="autonomousRobot.html">Robot Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="thermistorCleaner.html">Thermistor Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="waterPump.html">Water Pump Project</a></li>
-                <li><a style="color: dodgerblue" class="footerContent" href="planterBoxes.html">Planter Box Project</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-          <a href="#" class="navbar-brand d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-            <!-- <a href="../resources/images/Wheel1.jpg" width="20" height="20" class="mr-2"></a> -->
+ <!-- Header -->
+ <header class="bg-gray-900 text-white shadow">
+      <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        <div class="flex items-center space-x-4"> <!-- Add space between CY and Home -->
+          <a href="#" class="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
             <strong>CY</strong>
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+          <p><a href="https://connoryoung.com" class="hover:text-blue-400">Home</a></p>
+          <p><a href="aboutMe.html" class="hover:text-blue-400">About Me</a></p>
         </div>
+    
+        <nav>
+          <ul class="flex flex-wrap gap-4 text-sm font-medium">
+            <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
+            <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
+            <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
+            <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
+            <li><a href="autonomousRobot.html" class="hover:text-blue-400">Robot</a></li>
+            <li><a href="thermistorCleaner.html" class="hover:text-blue-400">Thermistor</a></li>
+            <li><a href="waterPump.html" class="hover:text-blue-400">Water Pump</a></li>
+            <li><a href="planterBoxes.html" class="hover:text-blue-400">Planter Boxes</a></li>
+          </ul>
+        </nav>
       </div>
     </header>
   <body>
     <div class="bg-dark text-white text-center">
+        <br><br>
 
         <?php
         include('db_connection.php');
@@ -114,20 +90,58 @@
                             nhl_rosters.playerID,
                             nhl_rosters.firstName,
                             nhl_rosters.lastName,
-                            nhl_rosters.sweaterNumber,
-                            nhl_rosters.positionCode,
+                            -- nhl_rosters.sweaterNumber,
+                            -- nhl_rosters.positionCode,
                             nhl_rosters.headshotURL,
                             nhl_teams.id,
                             nhl_teams.fullName,
                             nhl_teams.triCode,
                             nhl_games.homeTeamID as homeTeamID, nhl_games.awayTeamID as awayTeamID,
-                            skaters_gamebygame_stats.goals AS skater_goals
+                            skaters_gamebygame_stats.playerID AS skater_playerID,
+                            skaters_gamebygame_stats.sweaterNumber AS skater_sweaterNumber,
+                            skaters_gamebygame_stats.position AS skater_position,
+                            skaters_gamebygame_stats.position AS position, # duplicate column needed for filtering G/skaters on position
+                            skaters_gamebygame_stats.goals AS skater_goals,
+                            skaters_gamebygame_stats.assists AS skater_assists,
+                            skaters_gamebygame_stats.points AS skater_points,
+                            skaters_gamebygame_stats.plusMinus AS skater_plusMinus,
+                            skaters_gamebygame_stats.pim AS skater_pim,
+                            skaters_gamebygame_stats.hits AS skater_hits,
+                            skaters_gamebygame_stats.powerPlayGoals AS skater_powerPlayGoals,
+                            skaters_gamebygame_stats.sog AS skater_sog,
+                            skaters_gamebygame_stats.faceoffWinningPctg AS skater_faceoffWinningPctg,
+                            skaters_gamebygame_stats.toi AS skater_toi,
+                            skaters_gamebygame_stats.blockedShots AS skater_blockedShots,
+                            skaters_gamebygame_stats.shifts AS skater_shifts,
+                            skaters_gamebygame_stats.giveaways AS skater_giveaways,
+                            skaters_gamebygame_stats.takeaways AS skater_takeaways,
+                            goalies_gamebygame_stats.sweaterNumber AS goalie_sweaterNumber,
+                            goalies_gamebygame_stats.position AS goalie_position,
+                            goalies_gamebygame_stats.position AS position, # duplicate column needed for filtering G/skaters on position
+                            goalies_gamebygame_stats.pim AS goalie_pim,
+                            goalies_gamebygame_stats.toi AS goalie_toi,
+                            goalies_gamebygame_stats.evenStrengthShotsAgainst AS goalie_evenStrengthShotsAgainst,
+                            goalies_gamebygame_stats.powerPlayShotsAgainst AS goalie_powerPlayShotsAgainst,
+                            goalies_gamebygame_stats.shorthandedShotsAgainst AS goalie_shorthandedShotsAgainst,
+                            goalies_gamebygame_stats.saveShotsAgainst AS goalie_saveShotsAgainst,
+                            goalies_gamebygame_stats.savePctg AS goalie_savePctg,
+                            goalies_gamebygame_stats.evenStrengthGoalsAgainst AS goalie_evenStrengthGoalsAgainst,
+                            goalies_gamebygame_stats.powerPlayGoalsAgainst AS goalie_powerPlayGoalsAgainst,
+                            goalies_gamebygame_stats.shorthandedGoalsAgainst AS goalie_shorthandedGoalsAgainst,
+                            goalies_gamebygame_stats.goalsAgainst AS goalie_goalsAgainst,
+                            goalies_gamebygame_stats.starter AS goalie_starter,
+                            goalies_gamebygame_stats.shotsAgainst AS goalie_shotsAgainst,
+                            goalies_gamebygame_stats.saves AS goalie_saves
                                 FROM nhl_rosters 
                                 JOIN nhl_teams ON nhl_rosters.teamID = nhl_teams.id
                                 JOIN nhl_games ON nhl_rosters.gameID = nhl_games.id
-                                JOIN skaters_gamebygame_stats ON nhl_rosters.playerID = skaters_gamebygame_stats.playerID
-                                JOIN goalies_gamebygame_stats ON nhl_rosters.playerID = goalies_gamebygame_stats.playerID
-                                WHERE nhl_rosters.gameID=$game_id
+                                LEFT JOIN skaters_gamebygame_stats 
+                                    ON nhl_rosters.playerID = skaters_gamebygame_stats.playerID 
+                                    AND nhl_rosters.gameID = skaters_gamebygame_stats.gameID
+                                LEFT JOIN goalies_gamebygame_stats 
+                                    ON nhl_rosters.playerID = goalies_gamebygame_stats.playerID 
+                                    AND nhl_rosters.gameID = goalies_gamebygame_stats.gameID
+                                WHERE nhl_rosters.gameID='$game_id'
                                 ORDER BY nhl_rosters.lastName";
 
                 try {
@@ -292,80 +306,44 @@
                     $gameDatetime = new DateTime($game_date);
                     $formatted_gameDate = $gameDatetime->format('m/d/Y');
                 
-                    echo($formatted_outcome);
-                    echo "<h3><br> <img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' style='height: 65px;'>" . 
-                    htmlspecialchars($homeTeamName) . " (H) vs. " . htmlspecialchars($awayTeamName) . " (A) <img src='" . 
-                    htmlspecialchars($awayLogo) . "' alt='awayLogo' style='height: 65px;'></h3>";
-                    echo "<h3>" . htmlspecialchars($homeScore) . "     -     " . htmlspecialchars($awayScore) . 
-                    ' ' . $formatted_outcome . "</h3><br>";
-                    echo "<p>" . htmlspecialchars($venue) . ", " . htmlspecialchars($venueLocation) . "<br>"
-                    . htmlspecialchars($formatted_gameDate) . "<br>" . htmlspecialchars($formatted_startTime) . " EST</p>";
-                    echo "<p>Season: " . $formatted_season . "<br>Game Type: " . $gameType_text . "<br>Game Number: " . $gameNum .
-                    "<br>Game ID: " . htmlspecialchars($game_id) . "</p>";
-                    echo "<hr style='width:80%; background-color:white'>";
+                    echo "<div class='w-3/5 mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
+
+                    echo "<div class='flex flex-col items-center space-y-4'>";
+
+                    // Team logos and names
+                    echo "<div class='flex items-center justify-center space-x-6'>";
+                    echo "<img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' class='h-20'>";
+                    echo "<h3 class='text-3xl font-bold text-center'>" . htmlspecialchars($homeTeamName) . " (H) vs. " . htmlspecialchars($awayTeamName) . " (A)</h3>";
+                    echo "<img src='" . htmlspecialchars($awayLogo) . "' alt='awayLogo' class='h-20'>";
+                    echo "</div>";
+
+                    // Score line
+                    echo "<h3 class='text-4xl font-semibold'>" . htmlspecialchars($homeScore) . " - " . htmlspecialchars($awayScore) . " <span class='text-lg font-normal ml-2'>" . $formatted_outcome . "</span></h3>";
+
+                    // Venue and time
+                    echo "<p class='text-lg'>" . htmlspecialchars($venue) . ", " . htmlspecialchars($venueLocation) . "<br>" . htmlspecialchars($formatted_gameDate) . " " . htmlspecialchars($formatted_startTime) . " EST</p>";
+
+                    // Season and game info
+                    echo "<p class='text-base italic'>" . $formatted_season . " " . $gameType_text . " - Game Number " . $gameNum . "</p>";
+
+                    echo "</div>"; // flex-col container
+                    echo "</div>"; // banner wrapper
+                    echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
+
+                
                 }
 
+                    // echo "<p>Test</p> " . print_r($rosters_result);
 
-                ###############################################################################
-
-                    // Create field indexes to speed up SQL query
-                    // $indexes = [
-                    //     "CREATE INDEX idx_plays_gameID ON nhl_plays(gameID)",
-                    //     "CREATE INDEX idx_games_gameID ON nhl_games(id)",
-                    //     "CREATE INDEX idx_rosters_gameID ON nhl_rosters(gameID)",
-                    //     "CREATE INDEX idx_FOloserID ON nhl_plays(faceoffLoserId)",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_FOwinnerID ON nhl_plays(faceoffWinnerId)",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_ ON ()",
-                    //     "CREATE INDEX idx_ ON ()",
-
-                    //     # anything in join condition
-                    //     faceoff_losers.playerID (rosters)
-                    //     faceoff_winners.playerID (rosters)
-                    //     nhl_plays.hittingPlayerId = hitters.playerID (rosters)
-                    //     nhl_plays.hitteePlayerId = hittees.playerID (rosters)
-                    //     nhl_plays.shootingPlayerId = shooters.playerID (rosters)
-                    //     nhl_plays.goalieInNetId = goalies.playerID (rosters)
-                    //     nhl_plays.takeawayGiveawayPlayerId = takes_gives.playerID (rosters)
-                    //     nhl_plays.blockingPlayerId = blockers.playerID (rosters)
-                    //     nhl_plays.scoringPlayerID = scorers.playerID (rosters)
-                    //     nhl_plays.assist1PlayerId = assisters.playerID (rosters)
-                    //     nhl_plays.committerId = penalty_committers.playerID (rosters)
-                    //     nhl_plays.committerId = penalty_drawers.playerID (rosters)
-                    //     nhl_games.homeTeamId = home_teams.id
-                    //     nhl_games.visitingTeamId = visiting_teams.id
-
-                    //     # anything in order by
-                    //     nhl_plays.period, nhl_plays.timeInPeriod
-
-                    //     # anything frequently searched, filtered, or sorted
-
-                    // ]
-
-                    // foreach ($indexes as $indexesSQL) {
-                    //     if (mysqli_query($conn, $indexesSQL)) {
-                    //         echo "Success: " . htmlspecialchars($indexesSQL) . "<br>";
-                    //     } else {
-                    //         echo "Failed: " . htmlspecialchars($indexesSQL) . "<br>";
-                    //         echo "Error: " . mysqli_error($conn) . "<br>";
-                    //     }
-                    // }
-
-
-                    // echo '<pre>'; print_r($team_tricode_lookup); echo '</pre>';
 
 
                     ###################################### ROSTER TABLES #####################################
                     
                     $home_players = [];
                     $away_players = [];
+
                     while ($row = mysqli_fetch_assoc($rosters_result)) {
+                        // print_r($row);
                         if ($row['teamID'] == $row['homeTeamID']) {
                             $home_players[] = $row;
                             $home_team_name = $row['fullName'];
@@ -375,58 +353,210 @@
                         }
                     }
 
-                    // echo(bool($home_players));
-                    // echo '<pre>'; print_r($home_players); echo '</pre>';
-                    
 
-                    function render_roster_table($players, $team_label, $roster_lookup) {
-                        echo "<div style='width: 40%;'>"; # table wrapper
+                    $home_skaters = array_filter($home_players, fn($p) => $p['position'] !== 'G');
+                    $home_goalies = array_filter($home_players, fn($p) => $p['position'] === 'G');
 
-                        echo "<h4 style='text-align: center;'>$team_label</h4><br>";
-                        
-                        echo "<table style='width: 100%; border: 1px solid #bcd6e7'>";
-                        echo "<tr style='color: white; font-weight: bold; background-color:#2e5b78'>";
-                        echo "<td>ID</td><td>Name</td><td>Number</td><td>Position</td>";
-                        // echo "<td>Headshot</td>";
+                    $away_skaters = array_filter($away_players, fn($p) => $p['position'] !== 'G');
+                    $away_goalies = array_filter($away_players, fn($p) => $p['position'] === 'G');
+
+                    function render_skater_table($players, $team_label, $roster_lookup) {
+                        echo "<h4 class='roster-title text-2xl'>$team_label</h4>";
+                        echo "<div class='roster-table-wrapper'>";
+                        // echo "<h4 class='roster-title'>$team_label</h4><br>";
+                        echo "<table class='roster-table default-zebra-table'>";
+                        echo "<colgroup>";
+                        echo "<col class='game_details_skater_stats_name'>";
+                        echo "<col class='game_details_skater_stats_number'>";
+                        echo "<col class='game_details_skater_stats_position'>";
+                        echo "<col class='game_details_skater_stats_goals'>";
+                        echo "<col class='game_details_skater_stats_assists'>";
+                        echo "<col class='game_details_skater_stats_points'>";
+                        echo "<col class='game_details_skater_stats_plusminus'>";
+                        echo "<col class='game_details_skater_stats_pim'>";
+                        echo "<col class='game_details_skater_stats_hits'>";
+                        echo "<col class='game_details_skater_stats_powerplaygoals'>";
+                        echo "<col class='game_details_skater_stats_sog'>";
+                        echo "<col class='game_details_skater_stats_faceoffpctg'>";
+                        echo "<col class='game_details_skater_stats_toi'>";
+                        echo "<col class='game_details_skater_stats_blockedshots'>";
+                        echo "<col class='game_details_skater_stats_shifts'>";
+                        echo "<col class='game_details_skater_stats_giveaways'>";
+                        echo "<col class='game_details_skater_stats_takeaways'>";
+                        echo "<thead class='default-zebra-table'>";
+                        echo "<tr style='color: white; font-weight: bold; background-color: #1F2833' class='default-zebra-table'>";
+                        // echo "<th>ID</th>";
+                        echo "<th>Name</th>";
+                        echo "<th>#</th>";
+                        echo "<th>Pos</th>";
+                        echo "<th>G</th>";
+                        echo "<th>A</th>";
+                        echo "<th>P</th>";
+                        echo "<th>+/-</th>";
+                        echo "<th>PIM</th>";
+                        echo "<th>Hits</th>";
+                        echo "<th>PPG</th>";
+                        echo "<th>SOG</th>";
+                        echo "<th>FO %</th>";
+                        echo "<th>TOI</th>";
+                        echo "<th>Blocks</th>";
+                        echo "<th>Shifts</th>";
+                        echo "<th>Give</th>";
+                        echo "<th>Take</th>";
                         echo "</tr>";
-
+                        echo "</thead>";
+                        echo "<tbody>";
                         foreach ($players as $player) {
-                            // echo "<p>TEST" . $row['skater_goals'] . "</p>"; THIS BREAKS IT
-                            echo "<tr style='background-color:#939da3'>";
                             $player_id = $player['playerID'];
-                            $player_name = isset($roster_lookup[$player_id]) ? $roster_lookup[$player_id] : 'Unknown';
-                            echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_id</a></td>";
-                            echo "<td style='color:#000000'><a style='color:navy' href='player_details.php?player_id=" . $player_id . "'" . "</a>" . $player_name . "</td>";
-                            // echo "<td style='color:#000000'>" . htmlspecialchars($player_name) . "</td>";
-                            echo "<td style='color:#000000'>" . $player['sweaterNumber'] . "</td>";
-                            if ($player['positionCode'] == 'L') {
-                                $positionDisplay = 'LW';
-                            } else if ($player['positionCode'] == 'R') {
-                                $positionDisplay = 'RW';
-                            } else {
-                                $positionDisplay = $player['positionCode'];
+                            $player_name = $roster_lookup[$player_id] ?? 'Unknown';
+                            $position = $player['skater_position'];
+                            $positionDisplay = ($position == 'L') ? 'LW' : (($position == 'R') ? 'RW' : $position);
+                            $formatted_FOPctg = number_format($player['skater_faceoffWinningPctg'] * 100, 1);
+                            if ($formatted_FOPctg == 0) {
+                                $formatted_FOPctg = '-';
                             }
-                            echo "<td style='color:#000000'>" . $positionDisplay . "</td>";
-                            // echo "<td>" . $player['triCode'] . "</td>";
-                            // echo "<td><img src='" . htmlspecialchars($player['headshotURL']) . "' alt='headshot' style='height: 65px;'></td>";
+                            
+                            echo "<tr class='default-zebra-table'>";
+                            echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
+                            echo "<td>" . $player['skater_sweaterNumber'] . "</td>";
+                            echo "<td>" . $position . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_goals']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_assists']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_points']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_plusMinus']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_pim']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_hits']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_powerPlayGoals']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_sog']) . "</td>";
+                            echo "<td>" . htmlspecialchars($formatted_FOPctg) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_toi']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_blockedShots']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_shifts']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_giveaways']) . "</td>";
+                            echo "<td>" . htmlspecialchars($player['skater_takeaways']) . "</td>";
                             echo "</tr>";
                         }
-
-                        echo "</table>";
-                        echo "</div>"; # table wrapper
+                        echo "</tbody>";
+                        echo "</table></div>";
                     }
-                echo "<div style='display: flex; justify-content: center; gap: 40px; margin: 40px auto;'>"; # flex container
+                    
+                    function render_goalie_table($players, $team_label, $roster_lookup) {
+                        echo "<div class='roster-table-wrapper'>";
+                        echo "<table class='roster-table default-zebra-table'>";
+                        echo "<colgroup>";
+                        echo "<col class='game_details_goalie_stats_name'>";
+                        echo "<col class='game_details_goalie_stats_number'>";
+                        echo "<col class='game_details_goalie_stats_pim'>";
+                        echo "<col class='game_details_goalie_stats_toi'>";
+                        echo "<col class='game_details_goalie_stats_evenStrengthShotsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_powerPlayShotsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_shorthandedShotsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_saveShotsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_savePctg'>";
+                        echo "<col class='game_details_goalie_stats_evenStrengthGoalsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_powerPlayGoalsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_shorthandedGoalsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_goalsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_starter'>";
+                        echo "<col class='game_details_goalie_stats_shotsAgainst'>";
+                        echo "<col class='game_details_goalie_stats_saves'>";
+                        echo "<thead class='default-zebra-table'>";
+                        echo "<tr style='color: white; font-weight: bold; background-color: #1F2833' class='default-zebra-table'>"; // Added missing opening <tr> tag
+                        echo "<th>Name</th>";
+                        echo "<th>Number</th>";
+                        echo "<th>PIM</th>";
+                        echo "<th>TOI</th>";
+                        echo "<th>Even SA</th>";
+                        echo "<th>PP SA</th>";
+                        echo "<th>SH SA</th>";
+                        echo "<th>Sv SA</th>";
+                        echo "<th>Sv %</th>";
+                        echo "<th>Even GA</th>";
+                        echo "<th>PP GA</th>";
+                        echo "<th>SH GA</th>";
+                        echo "<th>GA</th>";
+                        echo "<th>Starter</th>";
+                        echo "<th>SA</th>";
+                        echo "<th>Saves</th>";
+                        echo "</tr>";
+                        echo "</thead>";
+                        echo "<tbody>";
+                    
+                        foreach ($players as $player) {
+                            $player_id = $player['playerID'];
+                            $player_name = $roster_lookup[$player_id] ?? 'Unknown';
+                            $goalie_savePctg = $player['goalie_savePctg'];
+                            if ($goalie_savePctg == '') {
+                                $goalie_savePctg = '-';
+                            }
+                            $starter = $player['goalie_starter'];
+                            if ($starter == 'True') {
+                                $player_name = $player_name . " (S)";
+                            }
+                            // echo $player_name;
+                    
+                            echo "<tr class='default-zebra-table'>";
+                            echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
+                            echo "<td>" . $player['goalie_sweaterNumber'] . "</td>";
+                            echo "<td>" . $player['goalie_pim'] . "</td>";
+                            echo "<td>" . $player['goalie_toi'] . "</td>";
+                            echo "<td>" . $player['goalie_evenStrengthShotsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_powerPlayShotsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_shorthandedShotsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_saveShotsAgainst'] . "</td>";
+                            echo "<td>" . $goalie_savePctg . "</td>";
+                            echo "<td>" . $player['goalie_evenStrengthGoalsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_powerPlayGoalsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_shorthandedGoalsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_goalsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_starter'] . "</td>";
+                            echo "<td>" . $player['goalie_shotsAgainst'] . "</td>";
+                            echo "<td>" . $player['goalie_saves'] . "</td>";
+                            echo "</tr>";
+                        }
+                        echo "</tbody></table></div>";
+                    }
+                    
+
         }
+        if (empty($home_players)) {
+            echo "<p>No roster data available.</p>";
+        } else {
+            // echo "<div style='display: flex; flex-direction: column; align-items: center;'>";
+        
+            // // Skaters (row with two side-by-side tables)
+            // echo "<div style='display: flex; justify-content: center; gap: 40px; margin-bottom: 40px;'>";
+            // render_skater_table($home_skaters, $home_team_name, $roster_lookup);
+            // render_skater_table($away_skaters, $away_team_name, $roster_lookup);
+            // echo "</div>";
+        
+            // // Goalies (another row with two side-by-side tables)
+            // echo "<div style='display: flex; justify-content: center; gap: 40px;'>";
+            // render_goalie_table($home_goalies, $home_team_name, $roster_lookup);
+            // render_goalie_table($away_goalies, $away_team_name, $roster_lookup);
+            // echo "</div>";
+        
+            // echo "</div>"; // close column wrapper
 
-                    if (empty($home_players)) {
-                        echo "<p>No roster data available.</p>";
-                    } else {
-                        render_roster_table($home_players, $home_team_name, $roster_lookup);
-                        render_roster_table($away_players, $away_team_name, $roster_lookup);
-                    }
+            echo "<div class='roster-container'>";
 
-            echo "</div>"; # flex container
-            echo "<hr style='width:80%; background-color:white'>";
+            echo "<div class='team-column'>";
+            render_skater_table($home_skaters, $home_team_name, $roster_lookup);
+            render_goalie_table($home_goalies, $home_team_name, $roster_lookup);
+            echo "</div>";
+
+            echo "<div class='team-column'>";
+            render_skater_table($away_skaters, $away_team_name, $roster_lookup);
+            render_goalie_table($away_goalies, $away_team_name, $roster_lookup);
+            echo "</div>";
+
+            echo "</div>"; // end .roster-container
+            echo "<p style='text-align: center'>(S) indicates the starting goalie</p>";
+            echo "<br>";
+
+        }
+        
+            echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
 
         ?>
 
@@ -435,66 +565,97 @@
 
 <!-- -------------------------------------------- PLAY-BY-PLAY --------------------------------------- -->
         <?php
+        ### Pagination logic ###
+        $limit = 25; // Results per page
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $offset = ($page - 1) * $limit;
+
+
+        // Get total count (for Load More logic)
+        $count_sql = "SELECT COUNT(*) as total FROM nhl_plays WHERE nhl_plays.gameID = $game_id";
+        $count_result = mysqli_query($conn, $count_sql);
+        $total_rows = mysqli_fetch_assoc($count_result)['total'];
+
+        $start = $offset + 1;
+        $end = min($offset + $limit, $total_rows);
+        $total_pages = ceil($total_rows / $limit);
+
+        
+
+        $plays_sql = "SELECT * FROM nhl_plays WHERE nhl_plays.gameID = $game_id ORDER BY nhl_plays.period, nhl_plays.timeInPeriod ASC LIMIT $offset, $limit";
+        $plays = mysqli_query($conn, $plays_sql);
+
         if (mysqli_num_rows($plays) > 0) {
         ?>
 
-<div class="rink-key-wrapper">
-    <!-- Left column: Title + Rink Image -->
-    <div class="rink-key-column">
-        <h4 style='font-weight: bold;'>Rink Diagram/Coordinates</h4>
-        <img src='../resources/images/hockey-rink.jpg' style='max-width: 100%; height: auto;'>
-    </div>
+        
+<?php
+echo "
+<div class='rink-key-wrapper'>
 
-    <!-- Right column: Title + Legend -->
-    <div class="rink-key-column">
-        <h4 style='font-weight: bold; text-align: center;'>Play-by-Play Key</h4>
-        <div style='text-align: left;'>
-            <p style='margin-top: 10px'>
-            FO - Faceoff<br>
-            SOG - Shot on Goal<br>
-            Pen. - Penalty<br>
-            Block - Blocked Shot<br>
-            Miss - Missed Shot<br>
-            Stop - Stoppage<br>
-            Give - Giveaway<br>
-            Take - Takeaway<br>
-            D. Pen. - Delayed Penalty<br>
-            Back - Backhand<br>
-            Tip - Tip-in
-            </p>
-        </div>
+  <!-- Left: Rink Image -->
+  <div class='rink-key-column'>
+    <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
+    <img src='../resources/images/hockey-rink.jpg'
+         alt='Hockey Rink'
+         class='rink-image shadow-md object-cover'
+         style='height: 340px; width: auto;'>
+  </div>
+
+  <!-- Right: Legend Box -->
+  <div class='rink-key-column'>
+    <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Key</h4>
+    <div class='bg-gray-800 rounded-lg p-4 text-sm text-white text-left leading-6 shadow-lg w-full max-w-xs border-2 border-slate-600'
+         style='min-height: 340px;'>
+      <p margin-top:2px; margin-bottom:2px;>
+        <strong>FO</strong> – Faceoff<br>
+        <strong>SOG</strong> – Shot on Goal<br>
+        <strong>Pen.</strong> – Penalty<br>
+        <strong>Block</strong> – Blocked Shot<br>
+        <strong>Miss</strong> – Missed Shot<br>
+        <strong>Stop</strong> – Stoppage<br>
+        <strong>Give</strong> – Giveaway<br>
+        <strong>Take</strong> – Takeaway<br>
+        <strong>D. Pen.</strong> – Delayed Penalty<br>
+        <strong>Back</strong> – Backhand<br>
+        <strong>Tip</strong> – Tip-in
+      </p>
     </div>
+  </div>
+
 </div>
 <br>
+<br>
+"; ?>
 
 
-<h4 style="text-align: center; margin-top:20px">Play-by-Play Events</h4>
-    <div class="overflow-x-auto">
-        <table id="play-by-play-table" class="min-w-max table-auto">
-            <thead>
-                <tr style>
-                        <th class='pbp-col-time-left'>Per. Time Left</th>
-                        <th class='pbp-col-type'>Type</th>
-                        <th class='pbp-col-coords'>Coords.</th>
-                        <th class='pbp-col-team'>Team</th>
-                        <th class='pbp-col-fo-winner'>F/O Winner</th>
-                        <th class='pbp-col-fo-loser'>F/O Loser</th>
-                        <th class='pbp-col-hitter'>Hitter</th>
-                        <th class='pbp-col-hittee'>Hittee</th>
-                        <th class='pbp-col-shot-type'>Shot Type</th>
-                        <th class='pbp-col-shooter'>Shooter</th>
-                        <th class='pbp-col-goalie'>Goalie</th>
-                        <th class='pbp-col-reason'>Reason</th>
-                        <th class='pbp-col-take-give'>Taker / Giver</th>
-                        <th class='pbp-col-blocker'>Blocker</th>
-                        <th class='pbp-col-scorer'>Scorer</th>
-                        <th class='pbp-col-primary-assister'>1st Assist</th>
-                        <th class='pbp-col-penalty'>Penalty</th>
-                        <th class='pbp-col-committer'>Committer</th>
-                        <th class='pbp-col-drawer'>Drawer</th>
-                    </tr>
-                </thead>
-                    <tbody>
+<h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Events</h4>
+<div class="overflow-x-auto">
+    <table id="play-by-play-table" class="min-w-max table-auto border-2 border-slate-600 border-collapse default-zebra-table">
+        <thead class='default-zebra-table'>
+            <tr class='default-zebra-table'>
+                <th class='pbp-col-time-left border-2 border-slate-600'>Per. Time Left</th>
+                <th class='pbp-col-type border-2 border-slate-600'>Type</th>
+                <th class='pbp-col-coords border-2 border-slate-600'>Coords.</th>
+                <th class='pbp-col-team border-2 border-slate-600'>Team</th>
+                <th class='pbp-col-fo-winner border-2 border-slate-600'>F/O Winner</th>
+                <th class='pbp-col-fo-loser border-2 border-slate-600'>F/O Loser</th>
+                <th class='pbp-col-hitter border-2 border-slate-600'>Hitter</th>
+                <th class='pbp-col-hittee border-2 border-slate-600'>Hittee</th>
+                <th class='pbp-col-shot-type border-2 border-slate-600'>Shot Type</th>
+                <th class='pbp-col-shooter border-2 border-slate-600'>Shooter</th>
+                <th class='pbp-col-goalie border-2 border-slate-600'>Goalie</th>
+                <th class='pbp-col-reason border-2 border-slate-600'>Reason</th>
+                <th class='pbp-col-take-give border-2 border-slate-600'>Taker / Giver</th>
+                <th class='pbp-col-blocker border-2 border-slate-600'>Blocker</th>
+                <th class='pbp-col-scorer border-2 border-slate-600'>Scorer</th>
+                <th class='pbp-col-primary-assister border-2 border-slate-600'>1st Assist</th>
+                <th class='pbp-col-penalty border-2 border-slate-600'>Penalty</th>
+                <th class='pbp-col-committer border-2 border-slate-600'>Committer</th>
+                <th class='pbp-col-drawer border-2 border-slate-600'>Drawer</th>
+            </tr>
+        </thead>
+        <tbody class='default-zebra-table'>
                     <?php
                     
                         while ($row = $plays->fetch_assoc()){
@@ -688,6 +849,39 @@
                 echo "</tbody>";
 
                 echo "</table>";
+
+
+                $total_pages = ceil($total_rows / $limit);
+
+                ?>
+                <div style = 'text-align:center'>
+                <?php if ($total_rows > 0): ?>
+                    <br><div style="margin-bottom: 10px;">
+                        Showing results <?= $start ?>–<?= $end ?> of <?= $total_rows ?> (Page <?= $page ?> of <?= $total_pages ?>)
+                    </div>
+                <?php endif; ?>
+
+                <?php
+
+                if ($page==1) {
+                    $next_page = $page + 1;
+                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
+                    echo "<div><a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
+                        </div>";
+                } else if ($page>1 and $page<$total_pages) {
+                    $prev_page = $page - 1;
+                    $next_page = $page + 1;
+                    $prev_page = http_build_query(array_merge($_GET, ['page' => $prev_page]));
+                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
+                    echo "<div style='text-align:center; margin-top: 20px;'>
+                        <a class='btn btn-secondary' href='?" . $prev_page . "' style='margin-right: 10px'>Previous</a>";
+                    echo "<a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
+                        </div>";
+                } else {
+                    $prev_page = $page - 1;
+                    echo "<div style='text-align:center; margin-top: 20px;'>
+                        <a class='btn btn-secondary' href='?" . $prev_page . "'>Previous</a></div>";
+                }
         
 
             mysqli_close($conn);
@@ -700,7 +894,7 @@
         </div>
 
         <footer class="bg-body-tertiary">
-      <div class="container">
+      <div class="container-fluid">
         <p class="float-right">
           <a href="#">Back to top</a>
         </p>
