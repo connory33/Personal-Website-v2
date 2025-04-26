@@ -39,7 +39,7 @@
               class="px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 sm:items-center w-full max-w-4xl">
   
           <!-- Dropdown -->
-          <select name="search_column"
+          <select name="search_column" id='nhl-search-column' required
               class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option value="season">Season</option>
               <option value="gameDate">Game Date</option>
@@ -123,15 +123,20 @@
 
       <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
       <script>
-        document.getElementById('nhl-search').addEventListener('submit', function (e) {
-            const column = document.getElementById('nhl-search-column').value;
-            if (column === 'player') {
-            this.action = 'nhl_players.php';
-            } else {
-            this.action = 'nhl_games.php';
-            }
-        });
+document.getElementById('nhl-search').addEventListener('submit', function (e) {
+    const column = document.getElementById('nhl-search-column').value;
+    console.log("Search column selected:", column); // Debugging
+    if (column === 'player') {
+        this.action = 'nhl_players.php';
+        console.log("Form action set to nhl_players.php"); // Debugging
+    } else {
+        this.action = 'nhl_games.php';
+        console.log("Form action set to nhl_games.php"); // Debugging
+    }
+});
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
   </body>
 </html>

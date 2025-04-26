@@ -1,4 +1,4 @@
-<header class="bg-gray-900 text-white shadow">
+<header class="text-white shadow" style="background-color: #18314f">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
     <div class="flex items-center space-x-4"> <!-- Add space between CY and Home -->
       <a href="#" class="flex items-center space-x-2">
@@ -9,19 +9,19 @@
         <strong>CY</strong>
       </a>
       <p><a href="https://connoryoung.com" class="hover:text-blue-400">Home</a></p>
-      <p><a href="aboutMe.html" class="hover:text-blue-400">About Me</a></p>
+      <p><a href="aboutMe.php" class="hover:text-blue-400">About Me</a></p>
     </div>
 
     <nav>
       <ul class="flex flex-wrap gap-4 text-sm font-medium">
-        <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
-        <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
-        <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
-        <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
-        <li><a href="autonomousRobot.html" class="hover:text-blue-400">Robot</a></li>
-        <li><a href="thermistorCleaner.html" class="hover:text-blue-400">Thermistor</a></li>
-        <li><a href="waterPump.html" class="hover:text-blue-400">Water Pump</a></li>
-        <li><a href="planterBoxes.html" class="hover:text-blue-400">Planter Boxes</a></li>
+        <li><a href="nhlLinesProject.php" class="hover:text-blue-400">NHL Lines</a></li>
+        <li><a href="nbaFantasyProjections.php" class="hover:text-blue-400">NBA Fantasy</a></li>
+        <li><a href="maddenOptimizer.php" class="hover:text-blue-400">NFL Roster</a></li>
+        <li><a href="seniorDesign.php" class="hover:text-blue-400">Sr. Design</a></li>
+        <li><a href="autonomousRobot.php" class="hover:text-blue-400">Robot</a></li>
+        <li><a href="thermistorCleaner.php" class="hover:text-blue-400">Thermistor</a></li>
+        <li><a href="waterPump.php" class="hover:text-blue-400">Water Pump</a></li>
+        <li><a href="planterBoxes.php" class="hover:text-blue-400">Planter Boxes</a></li>
       </ul>
     </nav>
   </div>
