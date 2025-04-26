@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -9,7 +9,7 @@
 
     <title>Connor Young</title>
 
-    <link rel="stylesheet" type="text/css" href="../resources/css/default_v2.css">
+    <link rel="stylesheet" type="text/css" href="../resources/css/default_v3.css">
 
     <!-- Bootstrap core CSS -->
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
@@ -37,7 +37,7 @@
   
       <nav>
         <ul class="flex flex-wrap gap-4 text-sm font-medium">
-          <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
+          <li><a href="nhlLinesProject.html" class="hover:text-blue-400">NHL Lines</a></li>
           <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
           <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
           <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
@@ -59,19 +59,29 @@
             <br>
             <div class="container">
                 <p>
-                    FILL
+                    In this project, I investigated the dependency of each NHL team on their "top line" throughout the course of the 2020-2021 and 2021-2022 seasons.
                 </p>
                 <p>
-                    FILL
+                    A typical NHL team uses 4 "lines" of forwards, rotating them frequently throughout the game. Each line is a set of 3 players, and the "top" or "1st" line
+                    generally receives the highest percentage of playing time in a game, decreasing with each line.
+                </p>
+                <p>
+                    Looking at the percentage of total playing time that each team gives to its top line and comparing it with overall team performance can reveal some interesting
+                    insights about the tradeoffs between having star players and having a "deep" roster where the lesser lines share more playing time. Of course, there are many other
+                    factors to consider in overall performance, as well as choices to make in how a top line is defined, given that many teams "shuffle" their lines throughout the course
+                    of a game. All of these topics and more are discussed in the associated paper.
+                </p>
+                <p>
+                    Data used for this project was scraped from the public NHL API and all analysis was done using Python and associated libraries.
                 </p>
                 <br>
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col-5 containedImage">
-                        <img class="d-flex" src="../resources/images/FILL">
+                        <img class="d-flex" src="../resources/images/shift_pic1.PNG">
                     </div>
                     <div class="col-5 containedImage">
-                        <img class="d-flex" src="../resources/images/FILL">
+                        <img class="d-flex" src="../resources/images/shift_pic2.PNG">
                     </div>
                     <div class="col-1"></div>
                 </div>
@@ -79,17 +89,17 @@
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col-5 containedImage">
-                        <img src="../resources/images/FILL">
+                        <img src="../resources/images/shift_pic3.PNG">
                     </div>
                     <div class="col-5 containedImage">
-                        <img src="../resources/images/FILL">
+                        <img src="../resources/images/shift_pic4.PNG">
                     </div>
                     <div class="col-1"></div>
                 </div>
             </div>
             <br>
-            <p class="text-center">The GitHub for this project can be viewed <a href="FILL">here</a></p>
-            <p class="text-center">The paper written for this project can be downloaded <a href="resources/FILL" download>here</a></p>
+            <p class="text-center">The GitHub for this project can be viewed <a href="https://github.com/connory33/NHL_shift_analysis">here.</a></p>
+            <p class="text-center">The paper written for this project can be downloaded <a href="resources/NHL_shift_analysis.pdf" download>here.</a></p>
             <br><br>
         </div>
 

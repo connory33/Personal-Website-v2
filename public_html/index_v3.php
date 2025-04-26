@@ -30,7 +30,7 @@
     
         <nav>
           <ul class="flex flex-wrap gap-4 text-sm font-medium">
-            <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
+            <li><a href="nhlLinesProject.html" class="hover:text-blue-400">NHL Lines</a></li>
             <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
             <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
             <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
@@ -47,9 +47,9 @@
     <!-- Main -->
     <main class="flex-grow">
       <!-- <section class="text-center bg-cover bg-center py-16" style="background-image: url('https://picsum.photos/1200/800')"> -->
-        <section class="text-center bg-[url('/resources/images/enchantedlake.jpg')] bg-cover bg-center py-16">
+        <section class="text-center bg-[url('../resources/images/enchantedlake.jpg')] bg-cover bg-center py-16">
 
-          <h1 class="text-6xl font-bold text-blue-900">Connor Young</h1>
+          <h1 class="text-6xl font-bold" style="color: #18314f">Connor Young</h1>
           <p class="mt-6">
             <a
               href="resources/ConnorYoung_Resume_Apr2025.pdf"
@@ -59,8 +59,7 @@
               Download Resume
             </a>
           </p>
-        </div>
-      </section>
+</section>
 
       <section class="text-center my-12 px-4">
         <h4 class="text-3xl md:text-4xl font-medium mb-4">
@@ -127,19 +126,25 @@
             </div>
         
           </div>
-        </div>
       </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-100 text-gray-700 text-center py-4">
+    <!-- <footer class="text-white text-center py-4" style="background-color: #18314f">
       <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
         <p>&copy; 2025 Connor Young</p>
         <p><a href="https://www.linkedin.com/in/connoryoung33/" class="hover:underline">LinkedIn</a></p>
         <p><a href="https://www.github.com/connory33" class="hover:underline">GitHub</a></p>
         <p><a href="mailto:connor@connoryoung.com" class="hover:underline">connor@connoryoung.com</a></p>
       </div>
-    </footer>
+    </footer> -->
+    <?php
+
+
+    <?php include 'footer.php'; ?>
+
+
+    
   </body>
 </html>
 

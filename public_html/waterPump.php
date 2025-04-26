@@ -54,30 +54,39 @@
 
       <div class="container-fluid" style="background:#f2f4f3">
         <div class="container">
-            <h4 class="sectionHeading underline">NBA Fantasy Score Projection</h4>
+            <h4 class="sectionHeading underline">Water Pump</h4>
         </div>
-        <br>
         <div class="container">
-          <p>
-            For this project we built a model that DFS players can utilize to pick better lineups for fantasy competitions. Trained on 5 seasons of NBA
-            game data, the model outputs a prediction for a player's fantasy score in an upcoming game based on factors like the opposing team, the game
-            being home or away, and his performances in both the short-term and relatively long-term past.
-        </p>
-        <p>
-            We compared the prediction accuracy on a test set after training a pair of random forest and a pair of XGBoost models in order to determine
-            which gave the optimal performance. The winner was not actually technically a single model, but 7 independent ones that would each predict
-            a single stat out of the 7 categories that mathematically factor into fantasy score. Then we simply applied the open-source DraftKings fantasy
-            formula to those predictions to calculate the point value. When using these predictions in conjunction with salary cap optimization for a
-            DraftKings contest, we achieved an 8.58% improvement in lineup performance over the DraftKings-provided point projections.
-        </p>
-        <br>
+          <br>
+            <p>
+                Our task was to make a pump that could move 1 liter of water per minute against gravity. We could use any pump type (piston, 
+                peristaltic, etc.) but had to fabricate it ourselves from aluminum stock and standard parts (o-rings, bearings, etc.) using a mill
+                and lathe. Our group initially split up to research the pros and cons of the various feasible types and prepare an initial CAD design
+                for the type we researched. I researched piston pumps, which we decided to use for their reliability and relatively simple fabrication.
+                Specifically, we chose a two-cylinder reciprocating pump powered by a scotch yoke mechanism.
+            </p>
+            <p>
+                After adding more detail to and improving the CAD design, we assembled a BOM and bought the necessary materials. Then it was a relatively
+                easy fabrication process except for the scotch yoke, which had to have its thickness substatially reduced with the lathe. After assembly
+                and testing, we ended up with a pump that moved 5 L/min.
+            </p>
+            <p>
+                I really enjoyed this project because it was fun to do something hands-on, especially given that we were able to take it all the way from
+                research and design to a finished and working pump that we could see in action. It was a very valuable experience from that perspective
+                and also in terms of getting practice working with an engineering team in a practical environment that included things like formal BOMs,
+                order forms, and cost estimates.
+                <!-- Technically, this project improved my design, CAD, and machining skills. However, it also was a great exercise for some more intangible
+                 abilities. This is one of few group engineering projects I've been a part of, and learning to delegate and cooperate in an engineering
+                  team is something I want to improve and excel at. I also was able to take a product all the way from ideation to completion and testing,
+                   something that students don't get a lot of in normal curriculum. --> 
+                </p>
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-5 containedImage">
-                    <img class="d-flex" src="../resources/images/nba_results.PNG">
+                    <img src="../resources/images/wp_cad.JPG">
                 </div>
-                <div class="col-5 containedImage">
-                    <img class="d-flex" src="../resources/images/nba_paper_heading.PNG">
+                <div class="col-5 containedImage">  
+                    <img src="../resources/images/WP1.jpeg">
                 </div>
                 <div class="col-1"></div>
             </div>
@@ -85,17 +94,14 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-5 containedImage">
-                    <img src="../resources/images/nba_code.PNG">
+                    <img src="../resources/images/Assembly_Render2.jpg">
                 </div>
                 <div class="col-5 containedImage">
-                    <img src="../resources/images/nba_code_2.PNG">
+                    <img src="../resources/images/Wheel2.jpg">
                 </div>
                 <div class="col-1"></div>
             </div>
         </div>
-        <br>
-        <p class="text-center">The GitHub for this project can be viewed <a href="https://github.com/andrewkoo/cs5785_final_project">here.</a></p>
-        <p class="text-center">The paper written for this project can be downloaded <a href="resources/AML_FinalProject_Report.pdf" download>here.</a></p>
         <br><br>
     </div>
 

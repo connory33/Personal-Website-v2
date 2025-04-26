@@ -70,85 +70,7 @@
           if (isset($_GET['team_id'])) {
             $team_id = $_GET['team_id'];
 
-            // $skaters_sql = "SELECT 
-            //                   teams.*,
-            //                   latest_stats.*,
-            //                   season_stats.*
-            //                 FROM nhl_teams AS teams
-            //                 LEFT JOIN team_latest_stats AS latest_stats
-            //                   ON teams.id = latest_stats.teamID
-            //                 LEFT JOIN team_season_stats AS season_stats
-            //                   ON teams.id = season_stats.teamID
-            //                 WHERE teams.id = $team_id AND season_stats.positionCode != 'G'
-            //                 GROUP BY season_stats.playerID
-            //                 ORDER BY season_stats.seasonID DESC";
 
-            // $goalies_sql = "SELECT 
-            //                   teams.*,
-            //                   latest_stats.*,
-            //                   season_stats.*
-            //                 FROM nhl_teams AS teams
-            //                 LEFT JOIN team_latest_stats AS latest_stats
-            //                   ON teams.id = latest_stats.teamID
-            //                 LEFT JOIN team_season_stats AS season_stats
-            //                   ON teams.id = season_stats.teamID
-            //                 WHERE teams.id = $team_id AND season_stats.positionCode = 'G'
-            //                 GROUP BY season_stats.playerID
-            //                 ORDER BY season_stats.seasonID DESC";
-
-            // $rosters_sql = " SELECT team_id, team_triCode, position, player_id, firstName, lastName, season
-            //             FROM (
-            //                 -- Forward block
-            //                 SELECT 
-            //                   team_season_rosters.team_id,
-            //                   team_season_rosters.team_triCode,
-            //                   team_season_rosters.season,
-            //                   'forward' AS position,
-            //                   exploded_forwards.player_id,
-            //                   nhl_players.firstName,
-            //                   nhl_players.lastName
-            //                 FROM team_season_rosters
-            //                 -- JSON_TABLE explodes list into individual rows to JOIN on
-            //                 JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
-            //                   ON 1=1
-            //                 JOIN nhl_players ON nhl_players.playerID = exploded_forwards.player_id
-            //                 WHERE team_season_rosters.team_id = $team_id
-
-            //                 UNION ALL
-
-            //                 -- Defense block
-            //                 SELECT 
-            //                   team_season_rosters.team_id,
-            //                   team_season_rosters.team_triCode,
-            //                   team_season_rosters.season,
-            //                   'defenseman' AS position,
-            //                   exploded_defensemen.player_id,
-            //                   nhl_players.firstName,
-            //                   nhl_players.lastName
-            //                 FROM team_season_rosters
-            //                 JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
-            //                   ON 1=1
-            //                 JOIN nhl_players ON nhl_players.playerID = exploded_defensemen.player_id
-            //                 WHERE team_season_rosters.team_id = $team_id
-
-            //                 UNION ALL
-
-            //                 -- Goalie block
-            //                 SELECT 
-            //                   team_season_rosters.team_id,
-            //                   team_season_rosters.team_triCode,
-            //                   team_season_rosters.season,
-            //                   'goalie' AS position,
-            //                   exploded_goalies.player_id,
-            //                   nhl_players.firstName,
-            //                   nhl_players.lastName
-            //                 FROM team_season_rosters
-            //                 JOIN JSON_TABLE(team_season_rosters.goalies, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_goalies
-            //                   ON 1=1
-            //                 JOIN nhl_players ON nhl_players.playerID = exploded_goalies.player_id
-            //                 WHERE team_season_rosters.team_id = $team_id
-            //             ) AS roster_view
-            //             ";
             // Combined query for skaters (forwards and defensemen)
             $skaters_combined_sql = "
                                 SELECT 
@@ -626,14 +548,7 @@
           
           
       
-        <footer class="bg-body-tertiary">
-            <div class="container">
-                <p class="float-right">
-                <a href="#">Back to top</a>
-                </p>
-                <p>Copyright &copy; 2025 Connor Young</p>
-            </div>
-        </footer>
+          <?php include 'footer.php'; ?>
         
             <!-- Bootstrap core JavaScript
             ================================================== -->

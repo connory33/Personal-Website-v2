@@ -54,30 +54,35 @@
 
       <div class="container-fluid" style="background:#f2f4f3">
         <div class="container">
-            <h4 class="sectionHeading underline">NBA Fantasy Score Projection</h4>
+            <h4 class="sectionHeading underline">Autonomous Robot</h4>
         </div>
-        <br>
         <div class="container">
+          <br>
           <p>
-            For this project we built a model that DFS players can utilize to pick better lineups for fantasy competitions. Trained on 5 seasons of NBA
-            game data, the model outputs a prediction for a player's fantasy score in an upcoming game based on factors like the opposing team, the game
-            being home or away, and his performances in both the short-term and relatively long-term past.
+            This robot was built for a 1v1 competition where it would be placed on a rectangular surface consisting of two halves painted blue and yellow.
+            Small plastic cubes were distributed throughout the board at the start of the game, and each robot started on the back edge of its half. The
+            goal is for the robot to move around and push the blocks to the other half, as the one with the least blocks on its side at the end of a 30
+            second period wins.
         </p>
         <p>
-            We compared the prediction accuracy on a test set after training a pair of random forest and a pair of XGBoost models in order to determine
-            which gave the optimal performance. The winner was not actually technically a single model, but 7 independent ones that would each predict
-            a single stat out of the 7 categories that mathematically factor into fantasy score. Then we simply applied the open-source DraftKings fantasy
-            formula to those predictions to calculate the point value. When using these predictions in conjunction with salary cap optimization for a
-            DraftKings contest, we achieved an 8.58% improvement in lineup performance over the DraftKings-provided point projections.
+            In order to accomplish this, we had to come up with the optimal battle strategy and then build and program the robot to reliably execute it.
+            To allow the robot to gather the necessary information and move as required, we integrated a color sensor so that it could detect its location
+            and region edges and constructed two H-bridge circuits to allow for independent wheel control and pulse width modulation. We programmed the
+            strategy using Arduino and C with bits, registers, etc.
         </p>
-        <br>
+        <p>
+            In addition to the electrical and coding work, we also made some mechanical improvements to aid the robot. We used a piece of scrap plastic to
+            fashion a snowplow attachment to increase the cube-clearing area and laser-cut acrylic to form a housing that would protect the circuits and
+            add mass in case of any collisions with other robots.
+        </p> 
+          <br>
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-5 containedImage">
-                    <img class="d-flex" src="../resources/images/nba_results.PNG">
+                    <img src="../resources/images/robot.jpg">
                 </div>
                 <div class="col-5 containedImage">
-                    <img class="d-flex" src="../resources/images/nba_paper_heading.PNG">
+                    <img src="../resources/images/robot1.jpg">
                 </div>
                 <div class="col-1"></div>
             </div>
@@ -85,19 +90,18 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-5 containedImage">
-                    <img src="../resources/images/nba_code.PNG">
+                    <img src="../resources/images/robot3.jpg">
                 </div>
                 <div class="col-5 containedImage">
-                    <img src="../resources/images/nba_code_2.PNG">
+                    <img src="../resources/images/robot4.jpg">
                 </div>
                 <div class="col-1"></div>
             </div>
+            <br>
         </div>
-        <br>
-        <p class="text-center">The GitHub for this project can be viewed <a href="https://github.com/andrewkoo/cs5785_final_project">here.</a></p>
-        <p class="text-center">The paper written for this project can be downloaded <a href="resources/AML_FinalProject_Report.pdf" download>here.</a></p>
         <br><br>
     </div>
+
 
     </main>
 
@@ -113,3 +117,4 @@
     <script src="../js/vendor/holder.min.js"></script>
   </body>
 </html>
+

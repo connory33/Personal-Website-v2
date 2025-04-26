@@ -447,14 +447,7 @@
     <br>
     </div>
 
-    <footer class="bg-body-tertiary">
-      <div class="container">
-        <p class="float-right">
-          <a href="#">Back to top</a>
-        </p>
-        <p>Copyright &copy; 2025 Connor Young</p>
-      </div>
-    </footer>
+    <?php include 'footer.php'; ?>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

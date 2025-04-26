@@ -41,7 +41,7 @@
     
         <nav>
           <ul class="flex flex-wrap gap-4 text-sm font-medium">
-            <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
+            <li><a href="nhlLinesProject.html" class="hover:text-blue-400">NHL Lines</a></li>
             <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
             <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
             <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
@@ -730,14 +730,7 @@
     </div>
 
     
-    <footer class="bg-body-tertiary">
-      <div class="container">
-        <p class="float-right">
-          <a href="#">Back to top</a>
-        </p>
-        <p>Copyright &copy; 2025 Connor Young</p>
-      </div>
-    </footer>
+    <?php include 'footer.php'; ?>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

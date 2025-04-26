@@ -54,30 +54,27 @@
 
       <div class="container-fluid" style="background:#f2f4f3">
         <div class="container">
-            <h4 class="sectionHeading underline">NBA Fantasy Score Projection</h4>
+            <h4 class="sectionHeading underline">Thermistor Cleaner</h4>
         </div>
-        <br>
         <div class="container">
-          <p>
-            For this project we built a model that DFS players can utilize to pick better lineups for fantasy competitions. Trained on 5 seasons of NBA
-            game data, the model outputs a prediction for a player's fantasy score in an upcoming game based on factors like the opposing team, the game
-            being home or away, and his performances in both the short-term and relatively long-term past.
-        </p>
-        <p>
-            We compared the prediction accuracy on a test set after training a pair of random forest and a pair of XGBoost models in order to determine
-            which gave the optimal performance. The winner was not actually technically a single model, but 7 independent ones that would each predict
-            a single stat out of the 7 categories that mathematically factor into fantasy score. Then we simply applied the open-source DraftKings fantasy
-            formula to those predictions to calculate the point value. When using these predictions in conjunction with salary cap optimization for a
-            DraftKings contest, we achieved an 8.58% improvement in lineup performance over the DraftKings-provided point projections.
-        </p>
-        <br>
+          <br>
+            <p>The first part of the project was customer research, where my partner and I spoke with a campus dining hall worker about their painpoints.
+                They told us that food trays needed to be periodically measured for temperature, and that the same thermometer probe (thermistor) is used
+                 for each tray. This creates an issue with contamination if the thermistor is not sufficiently cleaned between measurements, something that
+                  very commonly happens with innatentive or lazy workers.</p>
+            <p>We wanted to create a device that attached to the thermometer and quickly cleaned the probe with the push of a button. We thought the best 
+                way to do this would be a scraping device that traveled along the thermistor, also equipped with a internal brush to remove residue.</p>
+            <p>We originally looked into linear actuators, but they were too expensive for our budget. We found solenoids as a possible linear motion alternative,
+                but their tiny range of motion presented an issue. In an effort to increase this, we devised a lever system in combination with the solenoids that 
+                would increase the range of motion from 2 mm to ~2 inches.</p>
+            <p>The housing was laser-cut from acrylic, and the bars for the lever system were 3D printed for minimum weight.</p>
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-5 containedImage">
-                    <img class="d-flex" src="../resources/images/nba_results.PNG">
+                    <img src="../resources/images/therm_parts.JPG">
                 </div>
-                <div class="col-5 containedImage">
-                    <img class="d-flex" src="../resources/images/nba_paper_heading.PNG">
+                <div class="col-5 containedImage">  
+                    <img src="../resources/images/therm_top_inside.JPG">
                 </div>
                 <div class="col-1"></div>
             </div>
@@ -85,17 +82,14 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-5 containedImage">
-                    <img src="../resources/images/nba_code.PNG">
+                    <img src="../resources/images/therm_side.JPG">
                 </div>
                 <div class="col-5 containedImage">
-                    <img src="../resources/images/nba_code_2.PNG">
+                    <img src="">
                 </div>
                 <div class="col-1"></div>
             </div>
         </div>
-        <br>
-        <p class="text-center">The GitHub for this project can be viewed <a href="https://github.com/andrewkoo/cs5785_final_project">here.</a></p>
-        <p class="text-center">The paper written for this project can be downloaded <a href="resources/AML_FinalProject_Report.pdf" download>here.</a></p>
         <br><br>
     </div>
 
