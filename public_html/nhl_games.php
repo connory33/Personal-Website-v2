@@ -19,34 +19,7 @@
   </head>
   <body>
 <!-- Header -->
-<header class="bg-gray-900 text-white shadow">
-      <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-        <div class="flex items-center space-x-4"> <!-- Add space between CY and Home -->
-          <a href="#" class="flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-              <circle cx="12" cy="13" r="4" />
-            </svg>
-            <strong>CY</strong>
-          </a>
-          <p><a href="https://connoryoung.com" class="hover:text-blue-400">Home</a></p>
-          <p><a href="aboutMe.html" class="hover:text-blue-400">About Me</a></p>
-        </div>
-    
-        <nav>
-          <ul class="flex flex-wrap gap-4 text-sm font-medium">
-            <li><a href="nhlIndex.html" class="hover:text-blue-400">NHL Lines</a></li>
-            <li><a href="nbaFantasyProjections.html" class="hover:text-blue-400">NBA Fantasy</a></li>
-            <li><a href="maddenOptimizer.html" class="hover:text-blue-400">NFL Roster</a></li>
-            <li><a href="seniorDesign.html" class="hover:text-blue-400">Sr. Design</a></li>
-            <li><a href="autonomousRobot.html" class="hover:text-blue-400">Robot</a></li>
-            <li><a href="thermistorCleaner.html" class="hover:text-blue-400">Thermistor</a></li>
-            <li><a href="waterPump.html" class="hover:text-blue-400">Water Pump</a></li>
-            <li><a href="planterBoxes.html" class="hover:text-blue-400">Planter Boxes</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+<?php include 'header.php'; ?>
 
         <?php
         ini_set('display_errors', 1); error_reporting(E_ALL);
@@ -172,6 +145,7 @@
                 } else {
                     $sql .= " WHERE $searchColumn LIKE '%$searchTerm%'";
                 }
+                
 
                 // Date range filter
                 if (!empty($_GET['startDate']) && !empty($_GET['endDate'])) {
@@ -225,12 +199,11 @@
 
                     <p class="text-lg text-center">Search again:</p>
                     <div class="flex justify-center">
-                        <form method="GET" action="nhl_games.php"
-                            class="backdrop-blur-sm px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-4xl">
+                        <form id='nhl-search' method="GET" action="nhl_games.php"
+                            class="backdrop-blur-sm px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-4xl nhl-search-column">
                 
                         <!-- Dropdown -->
-                        <select name="search_column"
-                            class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select name="search_column" id='nhl-search-column' class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="season">Season</option>
                             <option value="gameDate">Game Date</option>
                             <option value="easternStartTime">Start Time</option>
@@ -460,14 +433,17 @@
 
     <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
     <script>
-        document.getElementById('nhl-search').addEventListener('submit', function (e) {
-            const column = document.getElementById('nhl-search-column').value;
-            if (column === 'player') {
-            this.action = 'nhl_players.php';
-            } else {
-            this.action = 'nhl_games.php';
-            }
-        });
+document.getElementById('nhl-search').addEventListener('submit', function (e) {
+    const column = document.getElementById('nhl-search-column').value;
+    console.log("Search column selected:", column); // Debugging
+    if (column === 'player') {
+        this.action = 'nhl_players.php';
+        console.log("Form action set to nhl_players.php"); // Debugging
+    } else {
+        this.action = 'nhl_games.php';
+        console.log("Form action set to nhl_games.php"); // Debugging
+    }
+});
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
