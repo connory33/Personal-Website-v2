@@ -98,10 +98,10 @@
             </div>
             <br>
             <!-- Display results in a table format -->
-            <div class="table-container">
-                <table id='games-players-summary-table'>
-                    <thead>
-                        <tr>
+            <div class="table-container default-zebra-table">
+                <table id='games-players-summary-table' class='default-zebra-table mx-auto'>
+                    <thead class='default-zebra-table'>
+                        <tr class='default-zebra-table'>
                             <th>ID</th>
                             <th>Name</th>
                             <th>Number</th>

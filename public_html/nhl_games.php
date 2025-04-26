@@ -225,7 +225,7 @@
                     </div>
 
                 <!-- Display results in a table format -->
-                <div class="table-container shadow-md rounded-lg overflow-x-auto">
+                <div class="table-container shadow-md rounded-lg overflow-x-auto default-zebra-table mx-auto">
                     <table id='games-players-summary-table' class="min-w-max table-auto default-zebra-table">
                         <colgroup>
                         <col class="games-players-summary-col-season">
@@ -239,8 +239,8 @@
                         <col class="games-players-summary-col-awayScore">
                         <col class="games-players-summary-col-id">
                         </colgroup>
-                        <thead>
-                            <tr>
+                        <thead class='default-zebra-table'>
+                            <tr class='default-zebra-table'>
                                 <th>Season<br>
                                 <span class='sort-arrows'>
                                     <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=season&sort_order=asc' class="text-xs">△</a>

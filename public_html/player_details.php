@@ -21,7 +21,7 @@
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
   </head>
   <!-- Header -->

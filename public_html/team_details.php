@@ -18,7 +18,7 @@
 
         <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
-        <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+        <script src="https://cdn.tailwindcss.com"></script>
 
     </head>
     <body>
@@ -249,7 +249,7 @@
                 <!-- SKATERS COMBINED TABLE -->
                 <div class="w-full overflow-x-auto">
                     <br>
-                    <h3 style='text-align: center; color: <?php echo $teamColor2; ?>'>Skaters - Season Roster & Stats</h3>
+                    <h3 style='text-align: center; color: <?php echo $teamColor2; ?>'>Skaters <?php echo $seasonYear1 . "-" . $seasonYear2; ?></h3>
                     <table class='player-stats-table default-zebra-table min-w-[900px] table-auto' style='color: black; border: 2px solid <?php echo $teamColor2; ?>'>
                     <colgroup>
                     <col class='skaters-combined-season'>
@@ -266,7 +266,7 @@
                     <col class='skaters-combined-avg-shifts'>
                     <col class='skaters-combined-fo-pct'>
                       </colgroup>
-                    <thead>
+                    <thead class='default-zebra-table'>
                             <tr style='background-color: <?php echo $teamColor1; ?>; color: <?php echo $teamColor2; ?>'>
                                 <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
                                 <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Name</th>
@@ -363,7 +363,7 @@
                 <br>
                 <h3 style='text-align: center; color: <?php echo $teamColor2; ?>'>Goalies - Season Roster & Stats</h3>
                 <div class="shadow-md rounded-lg overflow-x-auto">
-                    <table class='goalie-stats-table default-zebra-table table-auto' style='color: black; border: 2px solid <?php echo $teamColor2; ?>'>
+                    <table class='goalie-stats-table default-zebra-table table-auto' style='color: black; border: 2px solid <?php echo $teamColor2; ?>;'>
                     <colgroup>
                     <col class='goalies-combined-season'>
                     <col class='goalies-combined-name'>
@@ -384,7 +384,7 @@
 
 
 
-                    <thead>
+                    <thead class='default-zebra-table'>
                             <tr style='background-color: <?php echo $teamColor1; ?>; border: 2px solid <?php echo $teamColor2; ?>; color: <?php echo $teamColor2; ?>'>
                                 <th>Season</th>
                                 <th>Name</th>
@@ -595,6 +595,20 @@
                   } else {
                       console.error("Season dropdown not found!");
                   }
+
+                      // Handle season selection change
+    document.getElementById('seasonDropdown').addEventListener('change', function () {
+        const selectedSeason = this.value;
+        const seasonYear1 = selectedSeason.substring(0, 4); // Extract first 4 digits
+        const seasonYear2 = selectedSeason.substring(4, 8); // Extract last 4 digits
+
+        // Update the Skaters table header
+        const skatersHeader = document.getElementById('skatersHeader');
+        skatersHeader.textContent = `Skaters ${seasonYear1}-${seasonYear2}`;
+
+        // Optionally, you can add logic here to load data dynamically or filter table rows
+        // based on the selected season.
+    });
               });
                           </script>
     </body>

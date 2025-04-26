@@ -236,22 +236,22 @@ main {
 
 /* GAMES/PLAYER SUMMARY TABLE */
 #nhl-games-players-summary-content-container {
-	background-color: #1f2833;
+	background-color: #434446;
 	color: #c5c6c7;
 	text-align: center;
 }
   
   /* table styling */
-  #games-players-summary-table {
+  /* #games-players-summary-table {
 	border-collapse: collapse;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	/* width: max-content; */
+
     width: 40%;
 	margin: 0 auto;
-	border: 2px solid white; /* Fixed typo from 'whitel=' to 'white' */
+	border: 2px solid white; 
   }
   
-  /* thead styling */
+
   #games-players-summary-table thead {
 	position: sticky;
 	top: 0;
@@ -263,10 +263,9 @@ main {
 	border-bottom: 3px solid white;
 	border-top-right-radius: 8px;
 	border-top-left-radius: 8px;
-  }
+  } */
 
   
-  /* cell styling */
   #games-players-summary-table th,
   #games-players-summary-table td {
 	padding: 12px 16px;
