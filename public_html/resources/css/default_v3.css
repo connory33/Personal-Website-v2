@@ -321,12 +321,10 @@ main {
     overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
 	position: sticky;
 	top: 0;
-	background-color: #0b0c10;
 	z-index: 2;
 	color: white;
 	text-align: center;
 	font-weight: bold;
-	border-bottom: 3px solid #45a29e;
 }
 
 .player-stats-table th, .goalie-stats-table th, .season-roster-table th {
@@ -342,12 +340,6 @@ main {
     color: #333; /* Ensure text is dark enough for readability */
 }
 
-
-/* General Table Styling */
-.player-stats-table th, .goalie-stats-table th {
-	text-align: center;
-}
-
 /* Border and shadow styling for cleaner look */
 .player-stats-table, .goalie-stats-table {
 	border-radius: 8px;
@@ -361,14 +353,17 @@ main {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 5%;
+	gap: 10%;
 	margin-top: 30px;
+	flex-wrap: wrap;
 }
 .hero-bio-image {
-width: 550px;
-border-radius: 8px;
-flex-shrink: 0;
-}
+	width: 100%;        /* always fill its container */
+	max-width: 800px;   /* but never grow bigger than 550px */
+	border-radius: 8px;
+	flex-shrink: 0;
+  }
+  
 .bio-box {
 border: 1px solid #bcd6e7;
 width: 400px;
@@ -376,7 +371,31 @@ background-color: rgba(188, 214, 231, 0.3);
 border-radius: 8px;
 }
 
-
+.career-header {
+	background-color: #18314f;
+	color: white !important;
+	font-weight: bold;
+	border: 3px solid white;
+  }
+  
+  .career-subheader {
+	background-color: #18314f;
+	color: white !important;
+	font-weight: bold;
+	border: 3px solid white;
+	border-left: none; /* Because you want left border separate sometimes */
+  }
+  
+  .career-data {
+	border: 3px solid white;
+	font-weight: 600;
+  }
+  
+.player-season-by-season-stats-table {
+	width: 70%;
+	margin: 0px auto; 
+	text-align: center
+}
 
 
 
@@ -622,19 +641,19 @@ text-decoration: underline;
 /* ######################################################################### TABLE WIDTHS ######################################################################### */
 
 /* Skater Combined Table Width */
-.skaters-combined-season { width: 19%;}
-.skaters-combined-name { width: 27%;}
-.skaters-combined-position { width: 11%;}
-.skaters-combined-gp { width: 11%;}
-.skaters-combined-g { width: 11%;}
-.skaters-combined-a { width: 11%;}
-.skaters-combined-p { width: 11%;}
-.skaters-combined-plus-minus { width: 11%;}
-.skaters-combined-shots { width: 14%;}
-.skaters-combined-shot-pct { width: 13%;}
-.skaters-combined-avg-toi { width: 13%;}
-.skaters-combined-avg-shifts { width: 13%;}
-.skaters-combined-fo-pct { width: 13%;}
+.skaters-combined-season { width: 8%;}
+.skaters-combined-name { width: 15%;}
+.skaters-combined-position { width: 7%;}
+.skaters-combined-gp { width: 7%;}
+.skaters-combined-g { width: 7%;}
+.skaters-combined-a { width: 7%;}
+.skaters-combined-p { width: 7%;}
+.skaters-combined-plus-minus { width: 7%;}
+.skaters-combined-shots { width: 7%;}
+.skaters-combined-shot-pct { width: 7%;}
+.skaters-combined-avg-toi { width: 7%;}
+.skaters-combined-avg-shifts { width: 7%;}
+.skaters-combined-fo-pct { width: 7%;}
 
 /* Goalie Combined Table Width */
 .goalies-combined-season { width: 12%;}

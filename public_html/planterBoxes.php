@@ -13,6 +13,8 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
 
   </head>
 
@@ -63,14 +65,7 @@
 
     </main>
 
-    <footer class="text-muted">
-      <div class="container">
-        <p class="float-right">
-          <a href="#">Back to top</a>
-        </p>
-        <p>Copyright &copy; 2021 Connor Young</p>
-      </div>
-    </footer>
+<?php include 'footer.php'; ?>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

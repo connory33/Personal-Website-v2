@@ -14,6 +14,8 @@
     <!-- Bootstrap core CSS -->
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
   </head>
 
   <body>

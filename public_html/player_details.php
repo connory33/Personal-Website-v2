@@ -13,12 +13,6 @@
 
     <title>Connor Young</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="../resources/css/album.css" rel="stylesheet">
-
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -222,9 +216,9 @@
           echo "<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;'>";
             // Left side: Name and status
             echo "<div>";
-              echo "<h1 style='margin: 0'>" . $name . " #" . $sweaterNumber . "</h1>";
+              echo "<h1 class='text-4xl' style='margin: 0'>" . $name . " #" . $sweaterNumber . "</h1>";
               if ($active == 'Yes') {
-                echo "<p style='color: green; font-weight: bold; margin: 0'>Active - " . $player_id . "</p>";
+                echo "<p style='color: green; margin: 0' class='font-medium text-2xl'>Active - " . $player_id . "</p>";
               } else {
                 echo "<p style='color: red; font-weight: bold; margin: 0'>Not Active - " . $player_id . "</p>";
               }
@@ -256,7 +250,12 @@
         ### Flexbox for hero image and player bio box ###
           echo "<div class='hero-bio-container'>";
             
-            // Left side: Bio box container
+              // Left side: Hero image container
+            echo "<div>";
+            echo "<img style = 'border: 1px solid #bcd6e7' src='" . htmlspecialchars($heroImage) . "' alt='heroImage' class='hero-bio-image'>";
+            echo "</div>";
+
+            // Right side: Bio box container
             echo "<div class='bio-box'>";
               echo "<h4 style='text-align: center; background-color: #2e5b78; border-top-right-radius: 8px; border-top-left-radius: 8px;
               border: 1px solid #bcd6e7'>Player Bio<br></h4>";
@@ -307,25 +306,22 @@
               }
             echo "</div>";
 
-            // Right side: Hero image container
-            echo "<div>";
-                echo "<img style = 'border: 1px solid #bcd6e7' src='" . htmlspecialchars($heroImage) . "' alt='heroImage' class='hero-bio-image'>";
-            echo "</div>";
 
           echo "</div><br><br>";
 
       ##### Stat Tables #####
 
         ### Featured Season Stats ###
-            $formatted_featuredSeason_1 = substr($featuredSeason, 0, 4);
-            $formatted_featuredSeason_2 = substr($featuredSeason, 4);
-            echo "<h3 style='text-align: center'>Featured Season Statistics (" .
-             $formatted_featuredSeason_1 . "-" . $formatted_featuredSeason_2 . ")</h3>";
-             if (strtolower($position) == 'g') {
-              // GOALIE STATS BLOCK
-              echo "<table class='goalie-stats-table'>";
-              echo "<thead class='goalie-stats-table'>";
-              echo "<tr>";
+        $formatted_featuredSeason_1 = substr($featuredSeason, 0, 4);
+        $formatted_featuredSeason_2 = substr($featuredSeason, 4);
+        echo "<h3 class='text-center text-2xl'>Featured Season Statistics (" .
+         $formatted_featuredSeason_1 . "-" . $formatted_featuredSeason_2 . ")</h3>";
+        
+        if (strtolower($position) == 'g') {
+            // GOALIE STATS BLOCK
+            echo "<table class='goalie-stats-table default-zebra-table'>";
+            echo "<thead>";
+            echo "<tr>";
                 echo "<th>GP</th>";
                 echo "<th>W</th>";
                 echo "<th>L</th>";
@@ -335,30 +331,32 @@
                 echo "<th>T</th>";
                 echo "<th>GS</th>";
                 echo "<th>GA</th>";
-                echo "<th>OT L</td>";
-                echo "<th>SA</td>";
-              echo "</tr>";
-              echo "</thead>";
-              echo "<tbody class='goalie-stats-table'>";
-                echo "<tr>";
-                  echo "<td>$featuredSeasonGP</td>";
-                  echo "<td>$featuredSeasonWins</td>";
-                  echo "<td>$featuredSeasonLosses</td>";
-                  echo "<td>" . number_format($featuredSeasonGAA,2) . "</td>";
-                  echo "<td>" . number_format($featuredSeasonSavePct,3) . "</td>";
-                  echo "<td>$featuredSeasonSO</td>";
-                  echo "<td>$featuredSeasonTies</td>";
-                  echo "<td>$featuredSeasonGS</td>";
-                  echo "<td>$featuredSeasonGA</td>";
-                  echo "<td>$featuredSeasonOTLosses</td>";
-                  echo "<td>$featuredSeasonShotsAgainst</td>";
-                echo "</tr>";
-              echo "</tbody>";
-              echo "</table><br><br>";
+                echo "<th>OT L</th>";
+                echo "<th>SA</th>";
+            echo "</tr>";
+            echo "</thead>";
+        
+            echo "<tbody>";
+            echo "<tr>";
+                echo "<td>$featuredSeasonGP</td>";
+                echo "<td>$featuredSeasonWins</td>";
+                echo "<td>$featuredSeasonLosses</td>";
+                echo "<td>" . number_format($featuredSeasonGAA,2) . "</td>";
+                echo "<td>" . number_format($featuredSeasonSavePct,3) . "</td>";
+                echo "<td>$featuredSeasonSO</td>";
+                echo "<td>$featuredSeasonTies</td>";
+                echo "<td>$featuredSeasonGS</td>";
+                echo "<td>$featuredSeasonGA</td>";
+                echo "<td>$featuredSeasonOTLosses</td>";
+                echo "<td>$featuredSeasonShotsAgainst</td>";
+            echo "</tr>";
+            echo "</tbody>";
+            echo "</table><br><br>";
+        
 
             } else {
               // SKATER STATS BLOCK
-              echo "<table class='player-stats-table'>";
+              echo "<table class='player-stats-table default-zebra-table'>";
                 echo "<thead class='player-stats-table'>";
                 echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
@@ -401,10 +399,10 @@
              }
 
         ### Career Regular Season Stats ###
-            echo "<h3 style='text-align: center'>Career Regular Season Statistics</h3>";
+            echo "<h3 class='text-center text-2xl'>Career Regular Season Statistics</h3>";
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
-              echo "<table class='goalie-stats-table'>";
+              echo "<table class='goalie-stats-table default-zebra-table'>";
                 echo "<thead class='goalie-stats-table'>";
                 echo "<tr>";
                   echo "<th>GP</td>";
@@ -438,7 +436,7 @@
               echo "</table><br><br>";
             } else {
               // SKATER STATS BLOCK
-              echo "<table class='player-stats-table'>";
+              echo "<table class='player-stats-table default-zebra-table'>";
                 echo "<thead class='player-stats-table'>";
                 echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
@@ -479,10 +477,10 @@
               echo "</table><br><br>";
             }
         ### Career Playoff Stats ###
-            echo "<h3 style='text-align: center'>Career Playoff Statistics</h3>";
+            echo "<h3 class='text-center text-2xl'>Career Playoff Statistics</h3>";
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
-              echo "<table class='goalie-stats-table'>";
+              echo "<table class='goalie-stats-table default-zebra-table'>";
               echo "<thead class='goalie-stats-table'>";
                 echo "<tr>";
                   echo "<th>GP</td>";
@@ -516,7 +514,7 @@
               echo "</table><br><br>";
             } else {
               // SKATER STATS BLOCK
-              echo "<table class='player-stats-table'>";
+              echo "<table class='player-stats-table default-zebra-table'>";
                 echo "<thead class='player-stats-table'>";
                 echo "<tr>";
                   echo "<th style='width: 7%'>GP</th>";
@@ -571,7 +569,7 @@
           $seasonStats = mysqli_query($conn, $seasonStatsSQL);
 
           echo "<h3 style='text-align: center'>Season-by-Season Statistics</h3>";
-          echo "<table style='width: 70%; border: 1px solid #bcd6e7; margin: 0px auto; text-align: center'>";
+          echo "<table class='player-season-by-season-stats-table default-zebra-table'>";
             echo "<tr style='color: white; font-weight: bold; background-color:#2e5b78; border: 1px solid #bcd6e7'>";
             if (strtolower($position) == 'g') {
               echo "<th>Season</th>";
@@ -651,44 +649,44 @@
             echo "</tr>";
           }
               
-              if (strtolower($position) == 'g') {
-                $avgGAA = $count > 0 ? $totalGAA / $count : 0;
-                $avgSavePct = $count > 0 ? $totalSavePct / $count : 0;
-            
-                echo "<tr style='font-weight: bold; border: 1px solid white'>";
-                    echo "<td colspan='4' rowspan='2' style='vertical-align: middle; background-color: #18314f'>Career Totals</td>";
-                    echo "<td style='border-left: 1px solid white; background-color: #2e5b78'>GP</td>";
-                    echo "<td style='background-color: #2e5b78'>W</td>";
-                    echo "<td style='background-color: #2e5b78'>L</td>";
-                    echo "<td style='background-color: #2e5b78'>GAA</td>";
-                    echo "<td style='background-color: #2e5b78'>Sv %</td>";
-                echo "</tr>";
-            
-                echo "<tr style='font-weight: bold; border: 1px solid white'>";
-                    echo "<td style='border-left: 1px solid white'>" . $totalGP . "</td>";
-                    echo "<td>" . $totalW . "</td>";
-                    echo "<td>" . $totalL . "</td>";
-                    echo "<td>" . number_format($avgGAA, 2) . "</td>";
-                    echo "<td>" . number_format($avgSavePct, 3) . "</td>";
-                echo "</tr>";
-            } else {
-                echo "<tr style='font-weight: bold; border: 1px solid white'>";
-                    echo "<td colspan='4' rowspan='2' style='vertical-align: middle; background-color: #18314f'>Career Totals</td>";
-                    echo "<td style='border-left: 1px solid white; background-color: #2e5b78'>GP</td>";
-                    echo "<td style='background-color: #2e5b78'>G</td>";
-                    echo "<td style='background-color: #2e5b78'>A</td>";
-                    echo "<td style='background-color: #2e5b78'>Pts</td>";
-                    echo "<td style='background-color: #2e5b78'>PIM</td>";
-                echo "</tr>";
-            
-                echo "<tr style='font-weight: bold; border: 1px solid white'>";
-                    echo "<td style='border-left: 1px solid white'>" . $totalGP . "</td>";
-                    echo "<td>" . $totalG . "</td>";
-                    echo "<td>" . $totalA . "</td>";
-                    echo "<td>" . $totalPts . "</td>";
-                    echo "<td>" . $totalPIM . "</td>";
-                echo "</tr>";
-            }
+          if (strtolower($position) == 'g') {
+            $avgGAA = $count > 0 ? $totalGAA / $count : 0;
+            $avgSavePct = $count > 0 ? $totalSavePct / $count : 0;
+        
+            echo "<tr>";
+              echo "<td colspan='4' rowspan='2' class='career-header'>Career Totals</td>";
+              echo "<td class='career-subheader'>GP</td>";
+              echo "<td class='career-subheader'>W</td>";
+              echo "<td class='career-subheader'>L</td>";
+              echo "<td class='career-subheader'>GAA</td>";
+              echo "<td class='career-subheader'>Sv %</td>";
+            echo "</tr>";
+        
+            echo "<tr>";
+              echo "<td class='career-data'>$totalGP</td>";
+              echo "<td class='career-data'>$totalW</td>";
+              echo "<td class='career-data'>$totalL</td>";
+              echo "<td class='career-data'>" . number_format($avgGAA, 2) . "</td>";
+              echo "<td class='career-data'>" . number_format($avgSavePct, 3) . "</td>";
+            echo "</tr>";
+        } else {
+            echo "<tr>";
+              echo "<td colspan='4' rowspan='2' class='career-header'>Career Totals</td>";
+              echo "<td class='career-subheader'>GP</td>";
+              echo "<td class='career-subheader'>G</td>";
+              echo "<td class='career-subheader'>A</td>";
+              echo "<td class='career-subheader'>Pts</td>";
+              echo "<td class='career-subheader'>PIM</td>";
+            echo "</tr>";
+        
+            echo "<tr>";
+              echo "<td class='career-data'>$totalGP</td>";
+              echo "<td class='career-data'>$totalG</td>";
+              echo "<td class='career-data'>$totalA</td>";
+              echo "<td class='career-data'>$totalPts</td>";
+              echo "<td class='career-data'>$totalPIM</td>";
+            echo "</tr>";
+        }
 
               
 

@@ -13,7 +13,7 @@
         <title>Connor Young</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+        <!-- <link href="../resources/css/bootstrap.min.css" rel="stylesheet"> -->
 
 
         <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
@@ -190,7 +190,7 @@
               width: 70%; margin: auto;'>";
                 // Left side: Team Name
                 echo "<div>";
-                    echo "<h1 style='margin-top: 3px; color:$teamColor1'>Team Details: </h1>" . "<h1 style='color: $teamColor1'>" . $team['fullName'] . "</h1>";
+                    echo "<h1 class='text-2xl' style='margin-top: 3px; color:black'>Team Details: </h1>" . "<h1 class='text-4xl' style='color: $teamColor1'>" . $team['fullName'] . "</h1>";
                 echo "</div>";
                 // Right side: Team Logo
                 $teamLogo = $team['teamLogo'];
@@ -229,27 +229,36 @@
               rsort($seasons); // Sort seasons in descending order to show the latest season first
               ?>
               <br><br>
-              <!-- Step 2: Add Dropdown for Season Selection -->
-              <div class="container filter-container" style='border: 1px solid <?php echo $teamColor2; ?>; border-radius: 5px; background-color: <?php echo $teamColor1; ?>;
-                margin: auto; color: black'>
-                  <label for="seasonDropdown">Filter by Season:</label>
-                  <select id="seasonDropdown" style="border: 1px solid <?php echo $teamColor2; ?>">;
-                      <?php foreach ($seasons as $seasonID): ?>
-                          <?php 
-                              $seasonYear1 = substr($seasonID, 0, 4);
-                              $seasonYear2 = substr($seasonID, 4, 4);
-                          ?>
-                          <option value="<?php echo $seasonID; ?>">
-                              <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
-                          </option>
-                      <?php endforeach; ?>
-                  </select>
-              </div>
+<!-- Step 2: Add Dropdown for Season Selection -->
+<div class="mx-auto w-fit px-6 py-4 border rounded-md text-black flex items-center space-x-4"
+     style="border-color: <?php echo $teamColor2; ?>; background-color: <?php echo $teamColor1; ?>;">
+
+  <label for="seasonDropdown" class="text-base flex">
+    Filter by Season: 
+  </label>
+
+  <select id="seasonDropdown" class="border rounded px-3 py-2 text-base"
+          style="border-color: <?php echo $teamColor2; ?>;">
+      <?php foreach ($seasons as $seasonID): ?>
+          <?php 
+              $seasonYear1 = substr($seasonID, 0, 4);
+              $seasonYear2 = substr($seasonID, 4, 4);
+          ?>
+          <option value="<?php echo $seasonID; ?>">
+              <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
+          </option>
+      <?php endforeach; ?>
+  </select>
+
+</div>
+
+
+
 
                 <!-- SKATERS COMBINED TABLE -->
                 <div class="w-full overflow-x-auto">
                     <br>
-                    <h3 style='text-align: center; color: <?php echo $teamColor2; ?>'>Skaters <?php echo $seasonYear1 . "-" . $seasonYear2; ?></h3>
+                    <h3 class='text-center text-4xl' style='color: <?php echo $teamColor2; ?>'>Skaters <?php echo $seasonYear1 . "-" . $seasonYear2; ?></h3>
                     <table class='player-stats-table default-zebra-table min-w-[900px] table-auto' style='color: black; border: 2px solid <?php echo $teamColor2; ?>'>
                     <colgroup>
                     <col class='skaters-combined-season'>
@@ -361,7 +370,7 @@
                 
                 <!-- GOALIES COMBINED TABLE -->
                 <br>
-                <h3 style='text-align: center; color: <?php echo $teamColor2; ?>'>Goalies - Season Roster & Stats</h3>
+                <h3 class='text-center text-4xl' style='color: <?php echo $teamColor2; ?>'>Goalies - Season Roster & Stats</h3>
                 <div class="shadow-md rounded-lg overflow-x-auto">
                     <table class='goalie-stats-table default-zebra-table table-auto' style='color: black; border: 2px solid <?php echo $teamColor2; ?>;'>
                     <colgroup>
@@ -475,8 +484,8 @@
         mysqli_close($conn);
           ?>
           <br>
-          <p style='color: black; text-align: center'>Select any team below to view details:</p>
-              <div class="container footer-teams" style="text-align: center; color: black; background-color: $teamColor3">
+          <p class='text-black text-center font-semibold '>Select any team below to view details:</p>
+              <div class="w-2/5 mx-auto text-center footer-teams" style="text-align: center; color: black;">
               <a href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
               <a href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
               <a href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
