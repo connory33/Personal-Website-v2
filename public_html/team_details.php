@@ -107,6 +107,70 @@
                                 ORDER BY roster.season DESC, roster.lastName
                             ";
 
+
+            echo "EXPLAIN SELECT 
+                                    roster.team_id,
+                                    roster.team_triCode,
+                                    roster.position,
+                                    roster.player_id,
+                                    roster.firstName,
+                                    roster.lastName,
+                                    roster.season,
+                                    CONCAT(roster.season, '-2') as seasonWithType,
+                                    teams.*,
+                                    stats.seasonGamesPlayed,
+                                    stats.seasonGoals,
+                                    stats.seasonAssists,
+                                    stats.seasonPoints, 
+                                    stats.seasonPlusMinus,
+                                    stats.seasonShots,
+                                    stats.seasonShootingPct,
+                                    stats.seasonAvgTOI,
+                                    stats.seasonAvgShifts,
+                                    stats.seasonFOWinPct
+                                FROM 
+                                (
+                                    -- Forward block
+                                    SELECT 
+                                        team_season_rosters.team_id,
+                                        team_season_rosters.team_triCode,
+                                        team_season_rosters.season,
+                                        nhl_players.position,
+                                        exploded_forwards.player_id,
+                                        nhl_players.firstName,
+                                        nhl_players.lastName
+                                    FROM team_season_rosters
+                                    JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
+                                        ON 1=1
+                                    JOIN nhl_players ON nhl_players.playerID = exploded_forwards.player_id
+                                    WHERE team_season_rosters.team_id = $team_id
+
+                                    UNION ALL
+
+                                    -- Defense block
+                                    SELECT 
+                                        team_season_rosters.team_id,
+                                        team_season_rosters.team_triCode,
+                                        team_season_rosters.season,
+                                        nhl_players.position,
+                                        exploded_defensemen.player_id,
+                                        nhl_players.firstName,
+                                        nhl_players.lastName
+                                    FROM team_season_rosters
+                                    JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
+                                        ON 1=1
+                                    JOIN nhl_players ON nhl_players.playerID = exploded_defensemen.player_id
+                                    WHERE team_season_rosters.team_id = $team_id
+                                ) AS roster
+
+                                LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
+                                LEFT JOIN team_season_stats AS stats 
+                                    ON stats.teamID = roster.team_id 
+                                    AND stats.playerID = roster.player_id 
+                                    AND CONCAT(roster.season, '-2') = stats.seasonID
+                                ORDER BY roster.season DESC, roster.lastName
+                            ";
+
             // Combined query for goalies
             $goalies_combined_sql = "
                                     SELECT 
@@ -233,22 +297,22 @@
 <div class="mx-auto w-fit px-6 py-4 border rounded-md text-black flex items-center space-x-4"
      style="border-color: <?php echo $teamColor2; ?>; background-color: <?php echo $teamColor1; ?>;">
 
-  <label for="seasonDropdown" class="text-base flex">
+     <label for="seasonDropdown" class="text-base flex">
     Filter by Season: 
-  </label>
+</label>
 
-  <select id="seasonDropdown" class="border rounded px-3 py-2 text-base"
-          style="border-color: <?php echo $teamColor2; ?>;">
-      <?php foreach ($seasons as $seasonID): ?>
-          <?php 
-              $seasonYear1 = substr($seasonID, 0, 4);
-              $seasonYear2 = substr($seasonID, 4, 4);
-          ?>
-          <option value="<?php echo $seasonID; ?>">
-              <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
-          </option>
-      <?php endforeach; ?>
-  </select>
+<select id="seasonDropdown" class="border rounded px-3 py-2 text-base"
+        style="border-color: <?php echo $teamColor2; ?>;" onchange="updateSeason()">
+    <?php foreach ($seasons as $seasonID): ?>
+        <?php 
+            $seasonYear1 = substr($seasonID, 0, 4);
+            $seasonYear2 = substr($seasonID, 4, 4);
+        ?>
+        <option value="<?php echo $seasonID; ?>">
+            <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 
 </div>
 
@@ -258,7 +322,7 @@
                 <!-- SKATERS COMBINED TABLE -->
                 <div class="w-full overflow-x-auto">
                     <br>
-                    <h3 class='text-center text-4xl' style='color: <?php echo $teamColor2; ?>'>Skaters <?php echo $seasonYear1 . "-" . $seasonYear2; ?></h3>
+                    <h3 id='seasonTitle' class='text-center text-4xl' style='color: <?php echo $teamColor2; ?>'>Skaters <?php echo "(" . $seasonYear1 . "-" . $seasonYear2 . ")" ?></h3>
                     <table class='player-stats-table default-zebra-table min-w-[900px] table-auto' style='color: black; border: 2px solid <?php echo $teamColor2; ?>'>
                     <colgroup>
                     <col class='skaters-combined-season'>
@@ -370,7 +434,7 @@
                 
                 <!-- GOALIES COMBINED TABLE -->
                 <br>
-                <h3 class='text-center text-4xl' style='color: <?php echo $teamColor2; ?>'>Goalies - Season Roster & Stats</h3>
+                <h3 id='seasonTitle' class='text-center text-4xl' style='color: <?php echo $teamColor2; ?>'>Goalies <?php echo "(" . $seasonYear1 . "-" . $seasonYear2 . ")" ; ?></h3>
                 <div class="shadow-md rounded-lg overflow-x-auto">
                     <table class='goalie-stats-table default-zebra-table table-auto' style='color: black; border: 2px solid <?php echo $teamColor2; ?>;'>
                     <colgroup>
@@ -538,6 +602,28 @@
             <script src="../js/vendor/popper.min.js"></script>
             <script src="../js/bootstrap.min.js"></script>
             <script src="../js/vendor/holder.min.js"></script>
+            <script>
+                // Make sure the DOM is fully loaded before running the script
+                document.addEventListener("DOMContentLoaded", function() {
+                    function updateSeason() {
+                        // Get the selected season from the dropdown
+                        var selectedSeason = document.getElementById("seasonDropdown").value;
+
+                        // Extract the season years from the selected value
+                        var seasonYear1 = selectedSeason.substr(0, 4);
+                        var seasonYear2 = selectedSeason.substr(4, 4);
+
+                        // Update the <h3> element with the selected season
+                        document.getElementById("seasonTitle").textContent = "Skaters " + seasonYear1 + "-" + seasonYear2;
+                    }
+
+                    // Trigger the updateSeason function on page load to match the initial dropdown value
+                    updateSeason();
+
+                    // Add event listener for the dropdown change
+                    document.getElementById("seasonDropdown").addEventListener("change", updateSeason);
+                });
+            </script>
             <script>
                   document.addEventListener('DOMContentLoaded', function () {
                   const dropdown = document.getElementById('seasonDropdown');

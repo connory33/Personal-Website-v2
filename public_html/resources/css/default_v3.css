@@ -240,30 +240,6 @@ main {
 	color: #c5c6c7;
 	text-align: center;
 }
-  
-  /* table styling */
-  /* #games-players-summary-table {
-	border-collapse: collapse;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-    width: 40%;
-	margin: 0 auto;
-	border: 2px solid white; 
-  }
-  
-
-  #games-players-summary-table thead {
-	position: sticky;
-	top: 0;
-	background-color: #0b0c10;
-	z-index: 2;
-	color: white;
-	text-align: center;
-	font-weight: 600;
-	border-bottom: 3px solid white;
-	border-top-right-radius: 8px;
-	border-top-left-radius: 8px;
-  } */
 
   
   #games-players-summary-table th,
@@ -292,7 +268,6 @@ main {
 
 /* ############################################################# NHL PLAYER PAGE STYLES ########################################################## */
 /* Player Stats Table Styling */
-/* Player Stats Table Styling */
 #player-goalie-stats-table-container {
     width: 100%;
     max-width: 100%;
@@ -301,23 +276,22 @@ main {
 }
 
 .player-stats-table, .goalie-stats-table, .season-roster-table {
-    width: 80%;
+    width: 100%;
     margin: 20px auto;
     table-layout: fixed;
-    border-collapse: separate; /* Use separate borders for table and rows */
-    border-spacing: 0; /* Remove space between borders */
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    border: none;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    /* border-radius: 8px; */
+	zoom: .9;
 }
+
 
 
 
 /* Apply border-radius to the thead to round the whole header */
 .player-stats-table thead, .goalie-stats-table thead, .season-roster-table thead {
 	font-weight: bold;
-    border-radius: 8px 8px 0 0; /* Round the top corners of the entire header */
+    /* border-radius: 8px 8px 0 0; */
     overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
 	position: sticky;
 	top: 0;
@@ -328,23 +302,17 @@ main {
 }
 
 .player-stats-table th, .goalie-stats-table th, .season-roster-table th {
-    padding: 12px;
+    padding: 5px;
     border-bottom: 2px solid #ddd;
+	border: 1px solid #e3e7eb;
 }
 
 /* Table Cell Styling */
 .player-stats-table td, .goalie-stats-table td, .season-roster-table td {
     padding: 10px 12px;
-    border: 1px solid #ddd;
     text-align: center;
     color: #333; /* Ensure text is dark enough for readability */
-}
-
-/* Border and shadow styling for cleaner look */
-.player-stats-table, .goalie-stats-table {
-	border-radius: 8px;
-	border: none;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	border: 1px solid #e3e7eb;
 }
 
 
@@ -352,8 +320,7 @@ main {
 .hero-bio-container {
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	gap: 10%;
+	align-items: stretch;
 	margin-top: 30px;
 	flex-wrap: wrap;
 }
@@ -364,12 +331,47 @@ main {
 	flex-shrink: 0;
   }
   
-.bio-box {
-border: 1px solid #bcd6e7;
-width: 400px;
-background-color: rgba(188, 214, 231, 0.3);
-border-radius: 8px;
-}
+  .bio-box {
+	border: 1px solid #e3e7eb;
+	border-radius: 8px;
+	overflow: hidden;
+	background-color: #e3e7eb;
+  }
+  
+  .bio-header {
+	text-align: center;
+	background-color: #18314f;
+	color: white;
+	padding: 10px;
+	margin: 0;
+	font-size: 1.25rem; /* a little larger */
+	font-weight: bold;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	border-bottom: 1px solid #e3e7eb;
+  }
+  
+  .bio-body {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	height: 400px; /* Adjust this as you want */
+	padding: 10px 5%;
+	color: black;
+  }
+  
+  .bio-body p {
+	margin: 0 0 8px 0;
+  }
+  
+  .awards {
+	margin-top: 10px;
+  }
+  
+  .awards p {
+	margin: 0 0 5px 0;
+  }
+  
 
 .career-header {
 	background-color: #18314f;
@@ -391,10 +393,20 @@ border-radius: 8px;
 	font-weight: 600;
   }
   
-.player-season-by-season-stats-table {
-	width: 70%;
-	margin: 0px auto; 
-	text-align: center
+  .player-season-by-season-stats-table {
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
+	border: 2px solid #e3e7eb;
+	border-radius: 8px; /* <<< OPTIONAL if you want rounded table */
+	overflow: hidden;   /* <<< OPTIONAL for cleaner rounding */
+	zoom: .9;
+}
+
+.player-season-by-season-stats-table th,
+.player-season-by-season-stats-table td {
+	border: 1px solid #e3e7eb;
+	padding: 8px;
 }
 
 
@@ -596,7 +608,7 @@ border-radius: 8px;
 }
 
 .default-zebra-table th {
-	background-color: #1F2833;
+	background-color: #18314f;
 	color: white;
 	text-align: center;
 	font-weight: 600;
@@ -612,6 +624,14 @@ border-radius: 8px;
 	background-color: rgb(133, 149, 168);
 	transition: 0.2s ease-in-out;
 	color: white;
+}
+
+.default-zebra-table {
+	width: 100%;
+	border-radius: 8px;
+	border: 2px solid #e3e7eb !important;
+	overflow: hidden;
+	border-collapse: collapse;
 }
 	
 /* furthest outer div class that surrounds whole page content and allows for full page width */
@@ -639,6 +659,21 @@ text-decoration: underline;
 
 
 /* ######################################################################### TABLE WIDTHS ######################################################################### */
+
+/* Goalie Featured/Career Reg/Career Playoff Table Width */
+.goalie-player-details-gp { width: 9%; }
+.goalie-player-details-gs { width: 9%; }
+.goalie-player-details-w { width: 9%;}
+.goalie-player-details-l { width: 9%;}
+.goalie-player-details-gaa { width: 9%;}
+.goalie-player-details-savepct { width: 10%;}
+.goalie-player-details-so { width: 9%;}
+.goalie-player-details-t { width: 9%;}
+.goalie-player-details-gs { width: 9%;}
+.goalie-player-details-ga { width: 9%;}
+.goalie-player-details-otl { width: 9%;}
+.goalie-player-details-sa { width: 9%;}
+
 
 /* Skater Combined Table Width */
 .skaters-combined-season { width: 8%;}
