@@ -128,7 +128,6 @@
                 AND stats.playerID = temp_roster.player_id 
                 AND CONCAT(temp_roster.season, '-2') = stats.seasonID
             ORDER BY temp_roster.season DESC, temp_roster.lastName
-            LIMIT 50;
             ";
             $result_skaters_combined = mysqli_query($conn, $sql4);
 
@@ -191,16 +190,15 @@
             stats.seasonGA,
             stats.seasonSO,
             stats.seasonTOI
-            FROM temp_goalies AS goalies
+            FROM temp_goalies
             LEFT JOIN nhl_teams AS teams ON teams.id = temp_goalies.team_id
             LEFT JOIN team_season_stats AS stats 
                 ON stats.teamID = temp_goalies.team_id 
                 AND stats.playerID = temp_goalies.player_id 
                 AND CONCAT(temp_goalies.season, '-2') = stats.seasonID
             ORDER BY temp_goalies.season DESC, temp_goalies.lastName
-            LIMIT 50;
             ";
-            $result_skaters_combined = mysqli_query($conn, $sql4);
+            $result_goalies_combined = mysqli_query($conn, $sql4);
   
             // Step 6: Drop temporary tables after use
             mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_goalies");
@@ -300,6 +298,44 @@
 </select>
 
 </div>
+<?php
+// Get the selected seasonID from the GET request (example: '20242025')
+$seasonID = $_GET['season'] ?? null;
+
+if ($seasonID) {
+    // Prepare the cache file path
+    $cacheFile = __DIR__ . "/cache/stats_$seasonID.json";
+
+    // Figure out the "current" season in your format
+    $currentYear = date('Y');
+    $nextYear = $currentYear + 1;
+    $currentSeasonID = $currentYear . $nextYear; // '20242025' format
+
+    if ($seasonID !== $currentSeasonID && file_exists($cacheFile)) {
+        // Load from cache if it's not the current season
+        $data = json_decode(file_get_contents($cacheFile), true);
+    } else {
+        // Live query if current season OR cache doesn't exist
+        $season_safe = mysqli_real_escape_string($conn, $seasonID); // Escape input
+        $sql = "SELECT * FROM player_stats WHERE seasonID = '$season_safe'";
+        $result = mysqli_query($conn, $sql);
+        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        // Save to cache if NOT current season
+        if ($seasonID !== $currentSeasonID) {
+            if (!file_exists(__DIR__ . '/cache')) {
+                mkdir(__DIR__ . '/cache', 0777, true);
+            }
+            file_put_contents($cacheFile, json_encode($data));
+        }
+    }
+
+    // Now $data holds your season player stats!
+} else {
+    // Handle missing seasonID if needed
+    echo "No season selected.";
+}
+?>
 
 
 
