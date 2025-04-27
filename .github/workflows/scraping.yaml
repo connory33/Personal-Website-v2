@@ -1,0 +1,32 @@
+name: Automate Scraping and Database Update
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC (you can adjust the schedule here)
+  workflow_dispatch:  # Allow manual triggering from GitHub UI
+
+jobs:
+  update-database:
+    runs-on: ubuntu-latest  # Run the job on the latest Ubuntu server
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'  # Set the PHP version you need
+
+      - name: Install dependencies (if needed)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-curl php-mbstring php-xml php-cli
+
+      - name: Run scraping script
+        run: |
+          php /path/to/update_database.php  # Adjust the path to your script
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}  # Use secrets for sensitive information like DB credentials
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
