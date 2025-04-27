@@ -21,7 +21,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip  # If using Python, install pip
-          pip3 install -r public_html/resources/data/requirements.txt  # Install any Python dependencies
+          pip3 install -r ../../public_html/resources/data/requirements.txt  # Install any Python dependencies
 
       - name: Print working directory (debugging)
         run: |
