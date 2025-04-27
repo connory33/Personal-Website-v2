@@ -24,7 +24,7 @@
 <?php include 'header.php'; ?>
 
   <div class="nhlindex-bg-img flex align-center justify-center py-5">
-    <div id="nhlindex-content" class="text-center max-w-6xl mx-auto">
+    <div id="nhlindex-content" class="text-center max-w-6xl mx-auto flex-grow">
       <h2 class="text-2xl font-bold">NHL Historical Database</h2><br>
       <p>
         This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
