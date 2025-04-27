@@ -24,7 +24,7 @@ jobs:
 
       - name: Run scraping script
         run: |
-          php C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/update_database.php # Adjust the path to your script
+          php C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/update_database.py # Adjust the path to your script
         env:
           DB_HOST: ${{ secrets.DB_HOST }}  # Use secrets for sensitive information like DB credentials
           DB_USER: ${{ secrets.DB_USER }}
