@@ -34,9 +34,10 @@
             $searchTerm = mysqli_real_escape_string($conn, $_GET['search_term']);
             $originalSearchTerm = $searchTerm;
 
-            $sql = "SELECT *
+            $sql = "SELECT nhl_players.*, nhl_teams.triCode as currentTeamAbbrev
                 FROM
                     nhl_players
+                LEFT JOIN nhl_teams on nhl_players.currentTeamID = nhl_teams.id
                 WHERE 
                     firstName LIKE '%$searchTerm%' 
                     OR lastName LIKE '%$searchTerm%'";

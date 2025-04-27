@@ -633,6 +633,7 @@ main {
 	overflow: hidden;
 	border-collapse: collapse;
 }
+
 	
 /* furthest outer div class that surrounds whole page content and allows for full page width */
 .full-page-content-container {

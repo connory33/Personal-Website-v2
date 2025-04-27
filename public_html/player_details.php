@@ -34,8 +34,9 @@
           if (isset($_GET['player_id'])) {
               $player_id = $_GET['player_id'];
 
-              $sql = "SELECT * 
-                      FROM nhl_players 
+              $sql = "SELECT *, nhl_teams.teamLogo, nhl_teams.fullName AS fullTeamName
+                      FROM nhl_players
+                      LEFT JOIN nhl_teams ON nhl_players.currentTeamId = nhl_teams.id
                       WHERE playerID=$player_id";
               $playerInfo = mysqli_query($conn, $sql);
 
@@ -359,7 +360,7 @@
         
         ### Last 5 Games ###
         echo "<h3 class='text-center text-2xl text-white'>Last 5 Games</h3>";      
-        echo "<table class='last-5-games-table default-zebra-table'>";
+        echo "<table class='last-5-games-table default-zebra-table text-center'>";
         echo "<colgroup>";
         echo "<col class='last-5-games-id'>";
         echo "<col class='last-5-games-team'>";
@@ -386,7 +387,7 @@
           $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
 
           echo "<tr>";
-          echo "<td>" . $last5_games_id . "</td>";
+          echo "<td><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
           echo "<td>" . $last5_games_team . "</td>";
           echo "<td>" . $last5_games_opponent . "</td>";
           echo "<td>" . $last5_games_homeRoad . "</td>";
@@ -673,7 +674,11 @@
         
         
       ### Season-by-Season Stats ###
-          $seasonStatsSQL = "SELECT * FROM player_season_stats WHERE playerID=$player_id ORDER BY seasonSeason ASC";
+          $seasonStatsSQL = "SELECT *
+                             FROM player_season_stats 
+                             JOIN 
+                             WHERE playerID=$player_id 
+                             ORDER BY seasonSeason ASC";
           $seasonStats = mysqli_query($conn, $seasonStatsSQL);
 
           echo "<h3 class='text-center text-2xl'>Season-by-Season Statistics</h3>";

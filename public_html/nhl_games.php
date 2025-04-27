@@ -225,6 +225,7 @@
                     </div>
 
                 <!-- Display results in a table format -->
+                <p>Click on any team name or game ID to view additional details about the player or game.</p><br>
                 <div class="table-container shadow-md rounded-lg overflow-x-auto default-zebra-table mx-auto">
                     <table id='games-players-summary-table' class="min-w-max table-auto default-zebra-table">
                         <colgroup>

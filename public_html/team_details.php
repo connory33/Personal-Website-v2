@@ -43,194 +43,179 @@
 
 
             // Combined query for skaters (forwards and defensemen)
-            $skaters_combined_sql = "
-                                SELECT 
-                                    roster.team_id,
-                                    roster.team_triCode,
-                                    roster.position,
-                                    roster.player_id,
-                                    roster.firstName,
-                                    roster.lastName,
-                                    roster.season,
-                                    CONCAT(roster.season, '-2') as seasonWithType,
-                                    teams.*,
-                                    stats.seasonGamesPlayed,
-                                    stats.seasonGoals,
-                                    stats.seasonAssists,
-                                    stats.seasonPoints, 
-                                    stats.seasonPlusMinus,
-                                    stats.seasonShots,
-                                    stats.seasonShootingPct,
-                                    stats.seasonAvgTOI,
-                                    stats.seasonAvgShifts,
-                                    stats.seasonFOWinPct
-                                FROM 
-                                (
-                                    -- Forward block
-                                    SELECT 
-                                        team_season_rosters.team_id,
-                                        team_season_rosters.team_triCode,
-                                        team_season_rosters.season,
-                                        nhl_players.position,
-                                        exploded_forwards.player_id,
-                                        nhl_players.firstName,
-                                        nhl_players.lastName
-                                    FROM team_season_rosters
-                                    JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
-                                        ON 1=1
-                                    JOIN nhl_players ON nhl_players.playerID = exploded_forwards.player_id
-                                    WHERE team_season_rosters.team_id = $team_id
+            // Step 1: Create the temp_forwards table
+            $sql1 = "
+            CREATE TEMPORARY TABLE temp_forwards AS
+            SELECT 
+                team_season_rosters.team_id,
+                nhl_teams.triCode,
+                team_season_rosters.season,
+                nhl_players.position,
+                exploded_forwards.player_id,
+                nhl_players.firstName,
+                nhl_players.lastName
+            FROM team_season_rosters
+            JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
+                ON 1=1
+            JOIN nhl_players ON nhl_players.playerID = exploded_forwards.player_id
+            JOIN nhl_teams ON nhl_teams.id = team_season_rosters.team_id
+            WHERE team_season_rosters.team_id = $team_id;
+            ";
+            mysqli_query($conn, $sql1);
 
-                                    UNION ALL
+            // Step 2: Create the temp_defensemen table
+            $sql2 = "
+            CREATE TEMPORARY TABLE temp_defensemen AS
+            SELECT 
+                team_season_rosters.team_id,
+                nhl_teams.triCode,
+                team_season_rosters.season,
+                nhl_players.position,
+                exploded_defensemen.player_id,
+                nhl_players.firstName,
+                nhl_players.lastName
+            FROM team_season_rosters
+            JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
+                ON 1=1
+            JOIN nhl_players ON nhl_players.playerID = exploded_defensemen.player_id
+            JOIN nhl_teams ON nhl_teams.id = team_season_rosters.team_id
+            WHERE team_season_rosters.team_id = $team_id;
+            ";
+            mysqli_query($conn, $sql2);
 
-                                    -- Defense block
-                                    SELECT 
-                                        team_season_rosters.team_id,
-                                        team_season_rosters.team_triCode,
-                                        team_season_rosters.season,
-                                        nhl_players.position,
-                                        exploded_defensemen.player_id,
-                                        nhl_players.firstName,
-                                        nhl_players.lastName
-                                    FROM team_season_rosters
-                                    JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
-                                        ON 1=1
-                                    JOIN nhl_players ON nhl_players.playerID = exploded_defensemen.player_id
-                                    WHERE team_season_rosters.team_id = $team_id
-                                ) AS roster
+            // Step 3: Create the temp_roster table by combining temp_forwards and temp_defensemen
+            $sql3 = "
+            CREATE TEMPORARY TABLE temp_roster AS
+            SELECT * FROM temp_forwards
+            UNION ALL
+            SELECT * FROM temp_defensemen;
+            ";
+            mysqli_query($conn, $sql3);
 
-                                LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
-                                LEFT JOIN team_season_stats AS stats 
-                                    ON stats.teamID = roster.team_id 
-                                    AND stats.playerID = roster.player_id 
-                                    AND CONCAT(roster.season, '-2') = stats.seasonID
-                                ORDER BY roster.season DESC, roster.lastName
-                            ";
+            // Step 4: Run the main query to fetch the results
+            $sql4 = "
+            SELECT 
+                temp_roster.team_id,
+                teams.triCode,
+                temp_roster.position,
+                temp_roster.player_id,
+                temp_roster.firstName,
+                temp_roster.lastName,
+                temp_roster.season,
+                CONCAT(temp_roster.season, '-2') as seasonWithType,
+                teams.id,
+                teams.fullName,
+                teams.teamLogo,
+                teams.teamColor1,
+                teams.teamColor2,
+                teams.teamColor3,
+                teams.teamColor4,
+                teams.teamColor5,
+                stats.seasonGamesPlayed,
+                stats.seasonGoals,
+                stats.seasonAssists,
+                stats.seasonPoints, 
+                stats.seasonPlusMinus,
+                stats.seasonShots,
+                stats.seasonShootingPct,
+                stats.seasonAvgTOI,
+                stats.seasonAvgShifts,
+                stats.seasonFOWinPct
+            FROM temp_roster AS temp_roster
+            LEFT JOIN nhl_teams AS teams ON teams.id = temp_roster.team_id
+            LEFT JOIN team_season_stats AS stats 
+                ON stats.teamID = temp_roster.team_id 
+                AND stats.playerID = temp_roster.player_id 
+                AND CONCAT(temp_roster.season, '-2') = stats.seasonID
+            ORDER BY temp_roster.season DESC, temp_roster.lastName
+            LIMIT 50;
+            ";
+            $result_skaters_combined = mysqli_query($conn, $sql4);
 
+            // Step 6: Drop temporary tables after use
+            mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_forwards");
+            mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_defensemen");
+            mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_roster");
 
-            echo "EXPLAIN SELECT 
-                                    roster.team_id,
-                                    roster.team_triCode,
-                                    roster.position,
-                                    roster.player_id,
-                                    roster.firstName,
-                                    roster.lastName,
-                                    roster.season,
-                                    CONCAT(roster.season, '-2') as seasonWithType,
-                                    teams.*,
-                                    stats.seasonGamesPlayed,
-                                    stats.seasonGoals,
-                                    stats.seasonAssists,
-                                    stats.seasonPoints, 
-                                    stats.seasonPlusMinus,
-                                    stats.seasonShots,
-                                    stats.seasonShootingPct,
-                                    stats.seasonAvgTOI,
-                                    stats.seasonAvgShifts,
-                                    stats.seasonFOWinPct
-                                FROM 
-                                (
-                                    -- Forward block
-                                    SELECT 
-                                        team_season_rosters.team_id,
-                                        team_season_rosters.team_triCode,
-                                        team_season_rosters.season,
-                                        nhl_players.position,
-                                        exploded_forwards.player_id,
-                                        nhl_players.firstName,
-                                        nhl_players.lastName
-                                    FROM team_season_rosters
-                                    JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
-                                        ON 1=1
-                                    JOIN nhl_players ON nhl_players.playerID = exploded_forwards.player_id
-                                    WHERE team_season_rosters.team_id = $team_id
+  
+            // Step 1: Create the temp_goalies table
+            $sql1 = "
+            CREATE TEMPORARY TABLE temp_goalies AS
+            SELECT 
+                team_season_rosters.team_id,
+                nhl_teams.triCode,
+                team_season_rosters.season,
+                CAST('goalie' AS VARCHAR(10)) AS position,
+                exploded_goalies.player_id,
+                nhl_players.firstName,
+                nhl_players.lastName
+            FROM team_season_rosters
+            JOIN JSON_TABLE(team_season_rosters.goalies, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_goalies
+                ON 1=1
+            JOIN nhl_players ON nhl_players.playerID = exploded_goalies.player_id
+            JOIN nhl_teams ON nhl_teams.id = team_season_rosters.team_id
+            WHERE team_season_rosters.team_id = $team_id
+            ";
 
-                                    UNION ALL
-
-                                    -- Defense block
-                                    SELECT 
-                                        team_season_rosters.team_id,
-                                        team_season_rosters.team_triCode,
-                                        team_season_rosters.season,
-                                        nhl_players.position,
-                                        exploded_defensemen.player_id,
-                                        nhl_players.firstName,
-                                        nhl_players.lastName
-                                    FROM team_season_rosters
-                                    JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
-                                        ON 1=1
-                                    JOIN nhl_players ON nhl_players.playerID = exploded_defensemen.player_id
-                                    WHERE team_season_rosters.team_id = $team_id
-                                ) AS roster
-
-                                LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
-                                LEFT JOIN team_season_stats AS stats 
-                                    ON stats.teamID = roster.team_id 
-                                    AND stats.playerID = roster.player_id 
-                                    AND CONCAT(roster.season, '-2') = stats.seasonID
-                                ORDER BY roster.season DESC, roster.lastName
-                            ";
-
-            // Combined query for goalies
-            $goalies_combined_sql = "
-                                    SELECT 
-                                        roster.team_id,
-                                        roster.team_triCode,
-                                        roster.position,
-                                        roster.player_id,
-                                        roster.firstName,
-                                        roster.lastName,
-                                        roster.season,
-                                        CONCAT(roster.season, '-2') as seasonWithType,
-                                        teams.*,
-                                        stats.seasonGamesPlayed,
-                                        stats.seasonGS,
-                                        stats.seasonWins,
-                                        stats.seasonLosses,
-                                        stats.seasonTies,
-                                        stats.seasonOTLosses,
-                                        stats.seasonGAA,
-                                        stats.seasonSavePct,
-                                        stats.seasonSA,
-                                        stats.seasonSaves,
-                                        stats.seasonGA,
-                                        stats.seasonSO,
-                                        stats.seasonTOI
-                                    FROM (
-                                        -- Goalie block
-                                        SELECT 
-                                            team_season_rosters.team_id,
-                                            team_season_rosters.team_triCode,
-                                            team_season_rosters.season,
-                                            'goalie' AS position,
-                                            exploded_goalies.player_id,
-                                            nhl_players.firstName,
-                                            nhl_players.lastName
-                                        FROM team_season_rosters
-                                        JOIN JSON_TABLE(team_season_rosters.goalies, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_goalies
-                                            ON 1=1
-                                        JOIN nhl_players ON nhl_players.playerID = exploded_goalies.player_id
-                                        WHERE team_season_rosters.team_id = $team_id
-                                    ) AS roster
-                                    LEFT JOIN nhl_teams AS teams ON teams.id = roster.team_id
-                                    LEFT JOIN team_season_stats AS stats 
-                                        ON stats.teamID = roster.team_id 
-                                        AND stats.playerID = roster.player_id 
-                                        AND CONCAT(roster.season, '-2') = stats.seasonID
-                                    ORDER BY roster.season DESC, roster.lastName
-                                ";
+            mysqli_query($conn, $sql1);
+  
+  
+            // Step 4: Run the main query to fetch the results
+            $sql4 = "
+            SELECT 
+            teams.triCode,
+            temp_goalies.position,
+            temp_goalies.player_id,
+            temp_goalies.firstName,
+            temp_goalies.lastName,
+            temp_goalies.season,
+            CONCAT(temp_goalies.season, '-2') as seasonWithType,
+            teams.id,
+            teams.fullName,
+            teams.teamLogo,
+            teams.teamColor1,
+            teams.teamColor2,
+            teams.teamColor3,
+            teams.teamColor4,
+            teams.teamColor5,
+            stats.seasonGamesPlayed,
+            stats.seasonGS,
+            stats.seasonWins,
+            stats.seasonLosses,
+            stats.seasonTies,
+            stats.seasonOTLosses,
+            stats.seasonGAA,
+            stats.seasonSavePct,
+            stats.seasonSA,
+            stats.seasonSaves,
+            stats.seasonGA,
+            stats.seasonSO,
+            stats.seasonTOI
+            FROM temp_goalies AS goalies
+            LEFT JOIN nhl_teams AS teams ON teams.id = temp_goalies.team_id
+            LEFT JOIN team_season_stats AS stats 
+                ON stats.teamID = temp_goalies.team_id 
+                AND stats.playerID = temp_goalies.player_id 
+                AND CONCAT(temp_goalies.season, '-2') = stats.seasonID
+            ORDER BY temp_goalies.season DESC, temp_goalies.lastName
+            LIMIT 50;
+            ";
+            $result_skaters_combined = mysqli_query($conn, $sql4);
+  
+            // Step 6: Drop temporary tables after use
+            mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_goalies");
               
-            $result_skaters_combined = mysqli_query($conn, $skaters_combined_sql);
-            $result_goalies_combined = mysqli_query($conn, $goalies_combined_sql);
+            // $result_skaters_combined = mysqli_query($conn, $skaters_combined_sql);
+            // $result_goalies_combined = mysqli_query($conn, $goalies_combined_sql);
 
               
             // $result_skaters = mysqli_query($conn, $skaters_sql);
             // $result_goalies = mysqli_query($conn, $goalies_sql);
             // $result_rosters = mysqli_query($conn, $rosters_sql);
 
-            if (!$result_skaters_combined || !$result_goalies_combined) {
+            if (!$result_skaters_combined) {
               die("Query failed: " . mysqli_error($conn));
-          } elseif (mysqli_num_rows($result_skaters_combined) == 0 && mysqli_num_rows($result_goalies_combined) == 0) {
+          } elseif (mysqli_num_rows($result_skaters_combined) == 0) {
               echo "No players found for this team.";
           } else {
               // Fetch the row to get the team logo and build header

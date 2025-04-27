@@ -14,9 +14,6 @@
     <!-- Bootstrap core CSS -->
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="../resources/css/album.css" rel="stylesheet">
-
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
        <script src="https://cdn.tailwindcss.com"></script>
@@ -31,6 +28,10 @@
         <?php
         include('db_connection.php');
 
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
         // Check if the 'game_id' is passed in the URL
         if (isset($_GET['game_id'])) {
                 $game_id = $_GET['game_id'];
@@ -38,7 +39,10 @@
                 ###################### DEFINING ALL SQL QUERIES ################################
                 # Fetch all roster data to allow PHP lookup instead of SQL joins for speed
                 $roster_lookup = [];
-                $rosterSQL = "SELECT playerID, firstName, lastName FROM nhl_rosters";
+                $rosterSQL = "SELECT nhl_rosters.playerID, nhl_players.firstName, nhl_players.lastName 
+                              FROM nhl_rosters
+                              JOIN nhl_players ON nhl_rosters.playerID = nhl_players.playerId
+                              WHERE nhl_rosters.gameID='$game_id'";
                 $players = mysqli_query($conn, $rosterSQL);
 
                 while ($row = mysqli_fetch_assoc($players)) {
@@ -61,11 +65,9 @@
                 $rostertableSQL = "SELECT nhl_rosters.gameID,
                             nhl_rosters.teamID,
                             nhl_rosters.playerID,
-                            nhl_rosters.firstName,
-                            nhl_rosters.lastName,
-                            -- nhl_rosters.sweaterNumber,
-                            -- nhl_rosters.positionCode,
-                            nhl_rosters.headshotURL,
+                            nhl_players.firstName,
+                            nhl_players.lastName,
+                            nhl_players.headshot,
                             nhl_teams.id,
                             nhl_teams.fullName,
                             nhl_teams.triCode,
@@ -108,6 +110,8 @@
                                 FROM nhl_rosters 
                                 JOIN nhl_teams ON nhl_rosters.teamID = nhl_teams.id
                                 JOIN nhl_games ON nhl_rosters.gameID = nhl_games.id
+                                LEFT JOIN nhl_players 
+                                    ON nhl_rosters.playerID = nhl_players.playerId
                                 LEFT JOIN skaters_gamebygame_stats 
                                     ON nhl_rosters.playerID = skaters_gamebygame_stats.playerID 
                                     AND nhl_rosters.gameID = skaters_gamebygame_stats.gameID
@@ -115,7 +119,7 @@
                                     ON nhl_rosters.playerID = goalies_gamebygame_stats.playerID 
                                     AND nhl_rosters.gameID = goalies_gamebygame_stats.gameID
                                 WHERE nhl_rosters.gameID='$game_id'
-                                ORDER BY nhl_rosters.lastName";
+                                ORDER BY nhl_players.lastName";
 
                 try {
                     $rosters_result = mysqli_query($conn, $rostertableSQL);
@@ -201,7 +205,13 @@
                 $row = mysqli_fetch_assoc($plays);
                 // $home_team_name = $row['home_team_name'];
                 // $away_team_name = $row['away_team_name'];
-                $game_date = $row['gameDate'];
+
+                if ($row !== null && isset($row['gameDate'])) {
+                    $game_date = $row['gameDate'];
+                } else {
+                    $game_data = '';
+                }
+                
 
                 # Header Info
                 $headerSQL = "SELECT nhl_games.id,
@@ -212,13 +222,14 @@
                 nhl_games.gameStateId,
                 nhl_games.homeScore,
                 nhl_games.awayScore,
-                nhl_games.homeLogo,
-                nhl_games.awayLogo,
+                home_teams.teamLogo AS homeLogo,
+                away_teams.teamLogo AS awayLogo,
                 nhl_games.gameType,
                 nhl_games.gameNumber,
                 nhl_games.season,
                 home_teams.fullName AS home_team_name,
-                away_teams.fullName AS away_team_name
+                away_teams.fullName AS away_team_name,
+                nhl_games.gameOutcome
                 FROM 
                 nhl_games
                 LEFT JOIN nhl_teams AS home_teams
@@ -269,7 +280,6 @@
                     $formatted_season = substr($season, 0, 4) . '-' . substr($season, 4);
                     $game_outcome = $row['gameOutcome']; #### this isn't working
                     if ($game_outcome == 'REG') {
-                        echo "<p>reg</p>";
                         $formatted_outcome = '';
                     }
                     else if ($game_outcome == 'OT') {
@@ -279,28 +289,29 @@
                     $gameDatetime = new DateTime($game_date);
                     $formatted_gameDate = $gameDatetime->format('m/d/Y');
                 
-                    echo "<div class='w-3/5 mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
-
-                    echo "<div class='flex flex-col items-center space-y-4'>";
+                    echo "<div class='max-w-[80%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
+                    echo "<div class='flex flex-col items-center space-y-4'>"; // Removed flex-grow on the outer container
 
                     // Team logos and names
-                    echo "<div class='flex items-center justify-center space-x-6'>";
-                    echo "<img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' class='h-20'>";
-                    echo "<h3 class='text-3xl font-bold text-center'>" . htmlspecialchars($homeTeamName) . " (H) vs. " . htmlspecialchars($awayTeamName) . " (A)</h3>";
-                    echo "<img src='" . htmlspecialchars($awayLogo) . "' alt='awayLogo' class='h-20'>";
+                    echo "<div class='flex items-center justify-center space-x-6'>"; // Keep the spacing but remove flex-grow
+                    echo "<img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>"; // Added max-width for logos
+                    echo "<h3 class='text-3xl font-bold text-center whitespace-nowrap'>" . htmlspecialchars($homeTeamName) . " (H) <span class='mx-2'>vs.</span> " . htmlspecialchars($awayTeamName) . " (A)</h3>";
+                    echo "<img src='" . htmlspecialchars($awayLogo) . "' alt='awayLogo' class='h-20 max-w-xs'>"; // Added max-width for logos
                     echo "</div>";
-
+                    
                     // Score line
                     echo "<h3 class='text-4xl font-semibold'>" . htmlspecialchars($homeScore) . " - " . htmlspecialchars($awayScore) . " <span class='text-lg font-normal ml-2'>" . $formatted_outcome . "</span></h3>";
-
+                    
                     // Venue and time
                     echo "<p class='text-lg'>" . htmlspecialchars($venue) . ", " . htmlspecialchars($venueLocation) . "<br>" . htmlspecialchars($formatted_gameDate) . " " . htmlspecialchars($formatted_startTime) . " EST</p>";
-
+                    
                     // Season and game info
                     echo "<p class='text-base italic'>" . $formatted_season . " " . $gameType_text . " - Game Number " . $gameNum . "</p>";
-
+                    
                     echo "</div>"; // flex-col container
                     echo "</div>"; // banner wrapper
+                    
+                    
                     echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
 
                 
