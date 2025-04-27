@@ -23,46 +23,47 @@
 <!-- Header -->
 <?php include 'header.php'; ?>
 
-  <div class="nhlindex-bg-img flex align-center justify-center py-5">
-    <div id="nhlindex-content" class="text-center max-w-6xl mx-auto flex-grow">
-      <h2 class="text-2xl font-bold">NHL Historical Database</h2><br>
-      <p>
-        This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
-        You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
-        <br><br>
-        Game and player pages feature additional details such as rosters, play-by-play, player bio info, and player stats.<br>
-        There are also team-specific pages that detail info and historical stats.
-      </p>
+<div class="nhlindex-bg-img flex items-center justify-center py-5 h-screen">  <!-- Set h-screen to take full viewport height -->
+    <div id="nhlindex-content" class="text-center max-w-6xl mx-auto flex-grow flex flex-col">  <!-- flex-grow will stretch it vertically -->
+        <h2 class="text-4xl font-bold">NHL Historical Database</h2><br>
+        <p>
+            This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
+            You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
+            <br><br>
+            Game and player pages feature additional details such as rosters, play-by-play, player bio info, and player stats.<br>
+            There are also team-specific pages that detail info and historical stats.
+        </p>
 
         <div class="flex justify-center items-start">
-          <form id="nhl-search" method="GET" action="nhl_games.php"
-              class="px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 sm:items-center w-full max-w-4xl">
-  
-          <!-- Dropdown -->
-          <select name="search_column" id='nhl-search-column' required
-              class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="season">Season</option>
-              <option value="gameDate">Game Date</option>
-              <option value="easternStartTime">Start Time</option>
-              <option value="gameType">Game Type</option>
-              <option value="team">Team</option>
-              <option value="homeTeamId">Home Team</option>
-              <option value="awayTeamId">Away Team</option>
-              <option value="player">Player Name</option>
-          </select>
-
-          <!-- Text input -->
-          <input type="text" name="search_term" id="search-term" placeholder="Enter search term" required
-              class="w-full sm:flex-2 text-black px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-          <!-- Submit button -->
-          <input type="submit" value="Search"
-              class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
-          </form>
-      </div>
+            <form id="nhl-search" method="GET" action="nhl_games.php"
+                class="px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 sm:items-center w-full max-w-4xl">
+    
+            <!-- Dropdown -->
+            <select name="search_column" id='nhl-search-column' required
+                class="w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="season">Season</option>
+                <option value="gameDate">Game Date</option>
+                <option value="easternStartTime">Start Time</option>
+                <option value="gameType">Game Type</option>
+                <option value="team">Team</option>
+                <option value="homeTeamId">Home Team</option>
+                <option value="awayTeamId">Away Team</option>
+                <option value="player">Player Name</option>
+            </select>
+    
+            <!-- Text input -->
+            <input type="text" name="search_term" id="search-term" placeholder="Enter search term" required
+                class="w-full sm:flex-2 text-black px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    
+            <!-- Submit button -->
+            <input type="submit" value="Search"
+                class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
+            </form>
+        </div>
         <br>
-      <div style="text-align: center; color: white">
-          <p>Select any team below to view details:<br>
+        <div class='w-3/5 text-white text-center mx-auto'>
+          <p class='font-semibold'>Select any team below to view details:</p>
+          <p>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span> |</span>
@@ -102,6 +103,7 @@
         <p>This database is a work in progress. For any bugs or feature requests, please reach out
           at connor@connoryoung.com.
         </p>
+        <br>
       </div>
     </div>
 

@@ -12,19 +12,24 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+      - name: Set up Python (if required for the script)
+        uses: actions/setup-python@v2
         with:
-          php-version: '8.0'  # Set the PHP version you need
+          python-version: '3.9'  # Use the appropriate Python version
 
       - name: Install dependencies (if needed)
         run: |
           sudo apt-get update
-          sudo apt-get install -y php-curl php-mbstring php-xml php-cli
+          sudo apt-get install -y python3-pip  # If using Python, install pip
+          pip3 install -r public_html/resources/data/requirements.txt  # Install any Python dependencies
+
+      - name: Print working directory (debugging)
+        run: |
+          pwd
 
       - name: Run scraping script
         run: |
-          php ../../public_html/resources/data/update_database.py # Adjust the path to your script
+          python3 public_html/resources/data/update_database.py  # Adjust the path to your script
         env:
           DB_HOST: ${{ secrets.DB_HOST }}  # Use secrets for sensitive information like DB credentials
           DB_USER: ${{ secrets.DB_USER }}
