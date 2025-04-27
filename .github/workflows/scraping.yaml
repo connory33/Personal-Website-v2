@@ -17,11 +17,21 @@ jobs:
         with:
           python-version: '3.9'  # Use the appropriate Python version
 
+      - name: Install dependencies from requirements.txt
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Install dependencies (if needed)
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip  # If using Python, install pip
           pip3 install -r requirements.txt  # Install any Python dependencies
+
+      - name: Clear pip cache and install dependencies
+        run: |
+          pip cache purge
+          pip install -r requirements.txt
 
       - name: Print working directory (debugging)
         run: |
