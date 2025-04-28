@@ -25,7 +25,7 @@
 
 <div class="nhlindex-bg-img flex items-center justify-center py-5 h-screen">  <!-- Set h-screen to take full viewport height -->
     <div id="nhlindex-content" class="text-center max-w-6xl mx-auto flex-grow flex flex-col">  <!-- flex-grow will stretch it vertically -->
-        <h2 class="text-4xl font-bold">NHL Historical Database</h2><br>
+        <h2 class="text-4xl font-bold text-slate-800">NHL Historical Database</h2><br>
         <p>
             This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
             You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
@@ -62,40 +62,40 @@
         </div>
         <br>
         <div class='w-3/5 text-white text-center mx-auto'>
-          <p class='font-semibold'>Select any team below to view details:</p>
+          <p class='font-semibold text-slate-800'>Select any team below to view details:</p>
           <p>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=7'>BUF</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=20'>CGY</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=12'>CAR</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=16'>CHI</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=21'>COL</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=29'>CBJ</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=25'>DAL</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=17'>DET</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=22'>EDM</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=13'>FLA</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=26'>LAK</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=30'>MIN</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=8'>MTL</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=1'>NJD</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=18'>NSH</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=2'>NYI</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=3'>NYR</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=9'>OTT</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=4'>PHI</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=5'>PIT</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=28'>SJS</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=55'>SEA</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=19'>STL</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=14'>TBL</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=10'>TOR</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=59'>UTA</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=23'>VAN</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=7'>BUF</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=20'>CGY</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=12'>CAR</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=16'>CHI</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=21'>COL</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=29'>CBJ</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=25'>DAL</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=17'>DET</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=22'>EDM</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=13'>FLA</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=26'>LAK</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=30'>MIN</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=8'>MTL</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=1'>NJD</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=18'>NSH</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=2'>NYI</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=3'>NYR</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=9'>OTT</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=4'>PHI</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=5'>PIT</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=28'>SJS</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=55'>SEA</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=19'>STL</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=14'>TBL</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=10'>TOR</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=59'>UTA</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=23'>VAN</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span class='text-slate-800'> |</span>
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a></p>
 
         </div>

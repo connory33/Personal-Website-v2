@@ -98,13 +98,20 @@
               </form>
             </div>
             <br>
+            <p>Click any player ID or name to view additional details.</p>
+            <br>
             <!-- Display results in a table format -->
-            <div class="table-container default-zebra-table">
+            <div class="table-container default-zebra-table max-w-[80%] mx-auto">
                 <table id='games-players-summary-table' class='default-zebra-table mx-auto'>
                     <thead class='default-zebra-table'>
                         <tr class='default-zebra-table'>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Height</th>
+                            <th>Weight</th>
+                            <th>Birthdate</th>
+                            <th>Country</th>
+                            <th>Shoots / Catches </th>
                             <th>Number</th>
                             <th>Team</th>
                         </tr>
@@ -116,6 +123,12 @@
                             echo "<tr>";
                                 echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>" . $row['playerId'] . "</td>";
                                 echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>" . $row['firstName'] . ' ' . $row['lastName'] . "</td>";
+                                echo "<td>" . $row['heightInInches'] . " in/" . $row['heightInCentimeters'] . " cm</td>";
+                                echo "<td>" . $row['weightInPounds'] . " lbs/" . $row['weightInKilograms'] . " kg</td>";
+                                echo "<td>" . date('m/d/Y', strtotime($row['birthDate'])) . "</td>";
+                                echo "<td>" . $row['birthCountry'] . "</td>";
+                                echo "<td>" . $row['shootsCatches'] . "</td>";
+                                
                                 if ($row['sweaterNumber'] == '') {
                                     echo "<td>-</td>";
                                 } else {

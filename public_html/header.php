@@ -1,9 +1,9 @@
 
 
-<header class="text-white shadow" style="background-color: #18314f;">
+<header class="text-white shadow bg-slate-800"> <!--style="background-color: #18314f-->
   <div class="mx-auto flex items-center justify-between px-4 py-3" style="line-height: 1.2;">
     <div class="flex items-center space-x-4">
-      <a href="#" class="flex items-center space-x-2">
+      <a href="https://connoryoung.com" class="flex items-center space-x-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
           <circle cx="12" cy="13" r="4" />

@@ -521,9 +521,9 @@
             // echo "</div>";
         
             // echo "</div>"; // close column wrapper
-
+            echo "<br><br>";
+            echo "<h4 class='text-center text-4xl'>Game Rosters & Statistics</h4>";
             echo "<div class='roster-container'>";
-
             echo "<div class='team-column'>";
             render_skater_table($home_skaters, $home_team_name, $roster_lookup);
             render_goalie_table($home_goalies, $home_team_name, $roster_lookup);
@@ -541,6 +541,9 @@
         }
         
             echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
+            echo "<br><a href='https://connoryoung.com/shift_charts.php?game_id=" . $game_id . "'>Click here to view shift charts for this game.</a><br><br>";
+            echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
+
 
         ?>
 
@@ -568,12 +571,15 @@
 
         $plays_sql = "SELECT * FROM nhl_plays WHERE nhl_plays.gameID = $game_id ORDER BY nhl_plays.period, nhl_plays.timeInPeriod ASC LIMIT $offset, $limit";
         $plays = mysqli_query($conn, $plays_sql);
+        echo "<h4 class='text-center text-4xl'>Play-by-Play Events</h4>";
 
         if (mysqli_num_rows($plays) > 0) {
         ?>
 
         
 <?php
+
+
 echo "
 <div class='rink-key-wrapper'>
 
@@ -613,7 +619,7 @@ echo "
 "; ?>
 
 
-<h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Events</h4>
+<!-- <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Events</h4> -->
 <div class="overflow-x-auto">
     <table id="play-by-play-table" class="min-w-max table-auto border-2 border-slate-600 border-collapse default-zebra-table">
         <thead class='default-zebra-table'>
@@ -871,7 +877,7 @@ echo "
             mysqli_close($conn);
             
         } else {
-                echo "<p style='text-align: center'>No play-by-play data available for this game.</p>";
+                echo "<br><p style='text-align: center'>No play-by-play data available for this game.</p>";
         }
         ?>
             <br>

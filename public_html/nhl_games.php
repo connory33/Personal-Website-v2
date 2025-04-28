@@ -21,6 +21,8 @@
 <!-- Header -->
 <?php include 'header.php'; ?>
 
+
+
         <?php
         ini_set('display_errors', 1); error_reporting(E_ALL);
 
@@ -193,7 +195,7 @@
                 
                 ?>
 
-            <div id="nhl-games-players-summary-content-container">
+            <div id="nhl-games-players-summary-content-container" class='bg-dark'>
                 <br>
                 <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
 

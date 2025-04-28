@@ -21,7 +21,7 @@
   <!-- Header -->
   <?php include 'header.php'; ?>
   <body>
-    <div class="bg-neutral-700 text-white" style='align-items: flex-start'>
+    <div class="bg-dark text-white" style='align-items: flex-start'>
       <div style='margin-left: 10px; margin-right: 10px'>
         <?php
 
@@ -239,6 +239,7 @@
               WHERE player_last_5_games.playerId = '$player_id'";
 
             $last5GameInfo = mysqli_query($conn, $last5GameSQL);
+
             
             // echo $last5GameSQL;
           echo "<br>";
@@ -251,7 +252,7 @@
             echo "<div>";
               echo "<h1 class='text-4xl' style='margin-left: 20px; margin-top: 20px'>" . $name . " #" . $sweaterNumber . "</h1>";
               if ($active == 'Yes') {
-                echo "<p style='color: green; margin-left: 20px; margin-top: 20px' class='font-medium text-2xl'>Active - " . $player_id . "</p>";
+                echo "<p style='color: #4CAF50; margin-left: 20px; margin-top: 20px' class='font-medium text-2xl'>Active - " . $player_id . "</p>";
               } else {
                 echo "<p style='color: red; font-weight: bold; margin-left: 20px; margin-top: 20px'>Not Active - " . $player_id . "</p>";
               }
@@ -356,48 +357,72 @@
         echo "<div class='flex flex-col lg:flex-row gap-10'>";
 
         // LEFT COLUMN (top 3 tables stacked)
-        echo "<div style='margin-top:14px' class='flex flex-col lg:basis-[43%]'>";
-        
-        ### Last 5 Games ###
-        echo "<h3 class='text-center text-2xl text-white'>Last 5 Games</h3>";      
-        echo "<table class='last-5-games-table default-zebra-table text-center'>";
-        echo "<colgroup>";
-        echo "<col class='last-5-games-id'>";
-        echo "<col class='last-5-games-team'>";
-        echo "<col class='last-5-games-opponent'>";
-        echo "<col class='last-5-games-home-road'>";
-        echo "</colgroup>";
-        echo "<thead>";
-        echo "<tr>";
-            echo "<th>Game ID</th>";
-            echo "<th>Team</th>";
-            echo "<th>Opponent</th>";
-            echo "<th>Home/Road</th>";
-            echo "<th>Goals</th>";
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
+        echo "<div style='margin-top:14px' class='flex flex-col lg:basis-[45%]'>";
 
-        while ($row = mysqli_fetch_assoc($last5GameInfo)) {
-          $last5_games_id = isset($row['game_id']) ? $row['game_id'] : null;
-          $last5_games_date = isset($row['game_date']) ? $row['game_date'] : null;
-          $last5_games_team = isset($row['team']) ? $row['team'] : null;
-          $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
-          $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
-          $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
-
+        echo "<h3 class='text-center text-2xl text-white'>Last 5 Games Statistics</h3>";
+        if (mysqli_num_rows($last5GameInfo) == 0) {
+          echo "<table class='player-stats-table goalie-stats-table default-zebra-table text-center'>";
+          echo "<colgroup>";
+          echo "<col class='last-5-games-id'>";
+          echo "<col class='last-5-games-team'>";
+          echo "<col class='last-5-games-opponent'>";
+          echo "<col class='last-5-games-home-road'>";
+          echo "</colgroup>";
+          echo "<thead>";
           echo "<tr>";
-          echo "<td><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
-          echo "<td>" . $last5_games_team . "</td>";
-          echo "<td>" . $last5_games_opponent . "</td>";
-          echo "<td>" . $last5_games_homeRoad . "</td>";
-          echo "<td>" . $last5_games_goals . "</td>";
+              echo "<th>Game ID</th>";
+              echo "<th>Team</th>";
+              echo "<th>Opponent</th>";
+              echo "<th>Home/Road</th>";
+              echo "<th>Goals</th>";
           echo "</tr>";
+          echo "</thead>";
+          echo "<tbody>";
+          echo "<tr>";
+          echo "<td colspan='5' class='text-center'>No data available.</td>";
+          echo "</tr>";
+          echo "</tbody>";
+          echo "</table><br><br>";
+        } else {
+          ### Last 5 Games ###      
+          echo "<table class='player-stats-table goalie-stats-table default-zebra-table text-center'>";
+          echo "<colgroup>";
+          echo "<col class='last-5-games-id'>";
+          echo "<col class='last-5-games-team'>";
+          echo "<col class='last-5-games-opponent'>";
+          echo "<col class='last-5-games-home-road'>";
+          echo "</colgroup>";
+          echo "<thead>";
+          echo "<tr>";
+              echo "<th>Game ID</th>";
+              echo "<th>Team</th>";
+              echo "<th>Opponent</th>";
+              echo "<th>Home/Road</th>";
+              echo "<th>Goals</th>";
+          echo "</tr>";
+          echo "</thead>";
 
-    }
-    echo "</tbody>";
-    echo "</table><br><br>";
+          while ($row = mysqli_fetch_assoc($last5GameInfo)) {
+            $last5_games_id = isset($row['game_id']) ? $row['game_id'] : null;
+            $last5_games_date = isset($row['game_date']) ? $row['game_date'] : null;
+            $last5_games_team = isset($row['team']) ? $row['team'] : null;
+            $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
+            $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
+            $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
+
+            echo "<tr>";
+            echo "<td><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
+            echo "<td>" . $last5_games_team . "</td>";
+            echo "<td>" . $last5_games_opponent . "</td>";
+            echo "<td>" . $last5_games_homeRoad . "</td>";
+            echo "<td>" . $last5_games_goals . "</td>";
+            echo "</tr>";
+
+      }
+      echo "</tbody>";
+      echo "</table><br><br>";
   }
+}
 
 
           ### Featured Season Stats ###
@@ -461,20 +486,20 @@
               echo "<table class='player-stats-table default-zebra-table'>";
                 echo "<thead>";
                 echo "<tr>";
-                  echo "<th style='width: 7%'>GP</th>";
-                  echo "<th style='width: 6%'>G</th>";
-                  echo "<th style='width: 6%'>A</th>";
-                  echo "<th style='width: 7%'>Pts</th>";
-                  echo "<th style='width: 7%'>+/-</th>";
-                  echo "<th style='width: 7%'>PIM</th>";
-                  echo "<th style='width: 7%'>Shots</th>";
-                  echo "<th style='width: 9%'>Shot %</th>";
-                  echo "<th style='width: 7%'>PPG</th>";
-                  echo "<th style='width: 7%'>PP Pts</th>";
-                  echo "<th style='width: 7%'>SHG</th>";
-                  echo "<th style='width: 9%'>SH Pts</th>";
-                  echo "<th style='width: 7%'>GWG</th>";
-                  echo "<th style='width: 7%'>OTG</th>"; 
+                echo "<th style='width: 7%'>GP</th>";
+                echo "<th style='width: 6%'>G</th>";
+                echo "<th style='width: 6%'>A</th>";
+                echo "<th style='width: 7%'>Pts</th>";
+                echo "<th style='width: 7%'>+/-</th>";
+                echo "<th style='width: 7%'>PIM</th>";
+                echo "<th style='width: 9%'>Shots</th>";
+                echo "<th style='width: 8%'>Shot %</th>";
+                echo "<th style='width: 7%'>PPG</th>";
+                echo "<th style='width: 7%'>PP Pts</th>";
+                echo "<th style='width: 7%'>SHG</th>";
+                echo "<th style='width: 8%'>SH Pts</th>";
+                echo "<th style='width: 7%'>GWG</th>";
+                echo "<th style='width: 7%'>OTG</th>"; 
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
@@ -541,20 +566,20 @@
               echo "<table class='player-stats-table default-zebra-table'>";
                 echo "<thead>";
                 echo "<tr>";
-                  echo "<th style='width: 7%'>GP</th>";
-                  echo "<th style='width: 6%'>G</th>";
-                  echo "<th style='width: 6%'>A</th>";
-                  echo "<th style='width: 7%'>Pts</th>";
-                  echo "<th style='width: 7%'>+/-</th>";
-                  echo "<th style='width: 7%'>PIM</th>";
-                  echo "<th style='width: 7%'>Shots</th>";
-                  echo "<th style='width: 9%'>Shot %</th>";
-                  echo "<th style='width: 7%'>PPG</th>";
-                  echo "<th style='width: 7%'>PP Pts</th>";
-                  echo "<th style='width: 7%'>SHG</th>";
-                  echo "<th style='width: 9%'>SH Pts</th>";
-                  echo "<th style='width: 7%'>GWG</th>";
-                  echo "<th style='width: 7%'>OTG</th>"; 
+                echo "<th style='width: 7%'>GP</th>";
+                echo "<th style='width: 6%'>G</th>";
+                echo "<th style='width: 6%'>A</th>";
+                echo "<th style='width: 7%'>Pts</th>";
+                echo "<th style='width: 7%'>+/-</th>";
+                echo "<th style='width: 7%'>PIM</th>";
+                echo "<th style='width: 9%'>Shots</th>";
+                echo "<th style='width: 8%'>Shot %</th>";
+                echo "<th style='width: 7%'>PPG</th>";
+                echo "<th style='width: 7%'>PP Pts</th>";
+                echo "<th style='width: 7%'>SHG</th>";
+                echo "<th style='width: 8%'>SH Pts</th>";
+                echo "<th style='width: 7%'>GWG</th>";
+                echo "<th style='width: 7%'>OTG</th>"; 
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
@@ -625,12 +650,12 @@
                   echo "<th style='width: 7%'>Pts</th>";
                   echo "<th style='width: 7%'>+/-</th>";
                   echo "<th style='width: 7%'>PIM</th>";
-                  echo "<th style='width: 7%'>Shots</th>";
-                  echo "<th style='width: 9%'>Shot %</th>";
+                  echo "<th style='width: 9%'>Shots</th>";
+                  echo "<th style='width: 8%'>Shot %</th>";
                   echo "<th style='width: 7%'>PPG</th>";
                   echo "<th style='width: 7%'>PP Pts</th>";
                   echo "<th style='width: 7%'>SHG</th>";
-                  echo "<th style='width: 9%'>SH Pts</th>";
+                  echo "<th style='width: 8%'>SH Pts</th>";
                   echo "<th style='width: 7%'>GWG</th>";
                   echo "<th style='width: 7%'>OTG</th>"; 
                 echo "</tr>";
@@ -660,7 +685,7 @@
             echo "</div>"; // END LEFT COLUMN
 
             // RIGHT COLUMN (bottom season-by-season table)
-            echo "<div class='flex flex-col gap-8 lg:basis-[57%]'>";
+            echo "<div class='flex flex-col gap-8 lg:basis-[55%]'>";
 
         ### Extra stats to add later ###
             // echo "<p>" . $last5Games . "</p>";
@@ -676,13 +701,29 @@
       ### Season-by-Season Stats ###
           $seasonStatsSQL = "SELECT *
                              FROM player_season_stats 
-                             JOIN 
                              WHERE playerID=$player_id 
                              ORDER BY seasonSeason ASC";
           $seasonStats = mysqli_query($conn, $seasonStatsSQL);
 
           echo "<h3 class='text-center text-2xl'>Season-by-Season Statistics</h3>";
           echo "<table class='player-season-by-season-stats-table default-zebra-table' style='border: 1px solid #bcd6e7'>";
+          echo "<colgroup>";
+            echo "<col class='season-by-season-season'>";
+            echo "<col class='season-by-season-league'>";
+            echo "<col class='season-by-season-team'>";
+            echo "<col class='season-by-season-gametype'>";
+            echo "<col class='season-by-season-gp'>";
+            if (strtolower($position) == 'g') {
+              echo "<col class='season-by-season-wins'>";
+              echo "<col class='season-by-season-losses'>";
+              echo "<col class='season-by-season-gaa'>";
+              echo "<col class='season-by-season-savepct'>";
+            } else {
+              echo "<col class='season-by-season-goals'>";
+              echo "<col class='season-by-season-assists'>";
+              echo "<col class='season-by-season-pts'>";
+              echo "<col class='season-by-season-pim'>";
+            }
           echo "<thead>";
             echo "<tr>";
             if (strtolower($position) == 'g') {
