@@ -110,10 +110,8 @@ data['prev_typeDescKey'] = data.groupby('gameID')['typeDescKey'].shift(1)  # Shi
 
 # create specific feature for rebound
 data['rebound'] = np.where(data['prev_typeDescKey'] == 'shot', 1, 0)
-print(data['timeRemaining'])
 
-data['timeRemaining'] = data['timeRemaining'].apply(mmss_to_seconds)  # Convert to seconds
-# data['timeRemaining'] = data['timeRemaining'].astype(int)  # Ensure it's an integer
+data['timeRemaining'] = data['timeRemaining'].apply(mmss_to_seconds)  # Convert to seconds, leave as string so formatting works
 
 # Strength state of game (5v5, 4v4, etc.)
 data['penaltyStartTime'] = np.where(data['duration'].notnull(), data['timeRemaining'], np.nan)
@@ -162,6 +160,8 @@ for idx, row in data.iterrows():
 # After this, you can reassign the strength column based on the adjusted penalty status
 data['strength'] = data['penalty_active'].apply(lambda x: 'PK' if x else 'EV')
 
+data['penaltyType'] = np.where(data['penaltyType'], 1, 0)
+
 
 
 
@@ -181,6 +181,8 @@ for col in ['typeDescKey', 'shotType', 'penaltyType', 'prev_typeDescKey']:
 features = ['xCoord', 'yCoord', 'homeTeamDefendingSide', 'distance', 'angle', 'shotType_wrist', 'shotType_snap', 'shotType_slap',  'shotType_tip-in', 'shotType_wrap-around', 
             'log_distance', 'sin_angle', 'strength'] + \
            [col for col in data.columns if col.startswith('prev_typeDescKey')]  # Add the one-hot encoded columns dynamically
+missing_columns = [col for col in features if col not in data.columns]
+print("Missing columns:", missing_columns)
 X = data[features]
 y = data['goal']
 

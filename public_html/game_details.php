@@ -114,9 +114,13 @@
                                 LEFT JOIN skaters_gamebygame_stats 
                                     ON nhl_rosters.playerID = skaters_gamebygame_stats.playerID 
                                     AND nhl_rosters.gameID = skaters_gamebygame_stats.gameID
+                                    AND skaters_gamebygame_stats.position IS NOT NULL
+
                                 LEFT JOIN goalies_gamebygame_stats 
                                     ON nhl_rosters.playerID = goalies_gamebygame_stats.playerID 
                                     AND nhl_rosters.gameID = goalies_gamebygame_stats.gameID
+                                    AND goalies_gamebygame_stats.position IS NOT NULL
+
                                 WHERE nhl_rosters.gameID='$game_id'
                                 ORDER BY nhl_players.lastName";
 
