@@ -97,7 +97,7 @@ if (isset($_GET['game_id'])) {
         $formatted_gameDate = $gameDatetime->format('m/d/Y');
 
         
-        echo "<div class='bg-neutral-700 text-white text-center'>"; // whole page background color
+        echo "<div class='bg-slate-700 text-white text-center'>"; // whole page background color
         ?>
         <div class="relative">
             <div class="absolute top-0 left-0" style='margin-left: 20px; margin-top: 20px;'>

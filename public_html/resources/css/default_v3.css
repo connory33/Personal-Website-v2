@@ -236,7 +236,6 @@ main {
 
 /* GAMES/PLAYER SUMMARY TABLE */
 #nhl-games-players-summary-content-container {
-	background-color: #434446;
 	color: #c5c6c7;
 	text-align: center;
 }
@@ -254,6 +253,7 @@ main {
   #games-players-summary-table th {
 	font-size: 0.95rem;
 	color: white;
+	background-color: #18314f;
   }
   #games-players-summary-table tr {
 	color: black;
@@ -275,7 +275,7 @@ main {
     padding-bottom: 1rem;
 }
 
-.player-stats-table, .goalie-stats-table, .season-roster-table {
+.player-stats-table, .goalie-stats-table, .season-roster-table, .overall-team-stats-table {
     width: 100%;
     margin: 20px auto;
     table-layout: fixed;
@@ -297,19 +297,20 @@ main {
 	top: 0;
 	z-index: 2;
 	color: white;
-	background-color: #18314f;
+	/* background-color: #18314f; */
 	text-align: center;
 	font-weight: bold;
+	background-color: #18314F;
 }
 
-.player-stats-table th, .goalie-stats-table th, .season-roster-table th {
+.player-stats-table th, .goalie-stats-table th, .season-roster-table th, .overall-team-stats-table th {
     padding: 5px;
     border-bottom: 2px solid #ddd;
 	border: 1px solid #e3e7eb;
 }
 
 /* Table Cell Styling */
-.player-stats-table td, .goalie-stats-table td, .season-roster-table td {
+.player-stats-table td, .goalie-stats-table td, .season-roster-table td, .overall-team-stats-table td {
     padding: 10px 12px;
     text-align: center;
     color: #333; /* Ensure text is dark enough for readability */
@@ -529,10 +530,6 @@ background-color: #18314F;
     text-align: center;
 }
 
-.rink-image {
-	border-radius: 8px;
-	border: 4px solid #1F2833;
-}
 
 
 
@@ -689,7 +686,6 @@ background-color: #18314F;
 
 
 
-
 /* ############################################################## */
 .shift-table {
 	width: 100%
@@ -774,6 +770,29 @@ text-decoration: underline;
 
 
 /* ######################################################################### TABLE WIDTHS ######################################################################### */
+
+/* Team Overall Season Stats Table Width */
+/* .overall-team-stats-table-season { width: %;}
+.overall-team-stats-table-gp { width: %;}
+.overall-team-stats-table-w { width: %;}
+.overall-team-stats-table-l { width: %;}
+.overall-team-stats-table-otl { width: %;}
+.overall-team-stats-table-pts { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;}
+.overall-team-stats-table { width: %;} */
 
 /* Goalie Featured/Career Reg/Career Playoff Table Width */
 .goalie-player-details-gp { width: 9%; }

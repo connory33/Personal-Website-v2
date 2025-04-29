@@ -11,8 +11,6 @@
 
     <title>Connor Young</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
@@ -22,7 +20,7 @@
  <!-- Header -->
  <?php include 'header.php'; ?>
   <body>
-    <div class="bg-dark text-white text-center">
+    <div class="bg-slate-700 text-white text-center">
         <br><br>
 
         <?php
@@ -71,11 +69,13 @@
                             nhl_teams.id,
                             nhl_teams.fullName,
                             nhl_teams.triCode,
+                            -- SUM(skaters_gamebygame_stats.sog) AS total_shots,
+                            -- SUM(skaters_gamebygame_stats.blockedShots) AS total_blocked_shots,
+                            -- SUM(skaters_gamebygame_stats.missedShots) AS total_missed_shots,
                             nhl_games.homeTeamID as homeTeamID, nhl_games.awayTeamID as awayTeamID,
                             skaters_gamebygame_stats.playerID AS skater_playerID,
                             skaters_gamebygame_stats.sweaterNumber AS skater_sweaterNumber,
                             skaters_gamebygame_stats.position AS skater_position,
-                            skaters_gamebygame_stats.position AS position, # duplicate column needed for filtering G/skaters on position
                             skaters_gamebygame_stats.goals AS skater_goals,
                             skaters_gamebygame_stats.assists AS skater_assists,
                             skaters_gamebygame_stats.points AS skater_points,
@@ -92,7 +92,6 @@
                             skaters_gamebygame_stats.takeaways AS skater_takeaways,
                             goalies_gamebygame_stats.sweaterNumber AS goalie_sweaterNumber,
                             goalies_gamebygame_stats.position AS goalie_position,
-                            goalies_gamebygame_stats.position AS position, # duplicate column needed for filtering G/skaters on position
                             goalies_gamebygame_stats.pim AS goalie_pim,
                             goalies_gamebygame_stats.toi AS goalie_toi,
                             goalies_gamebygame_stats.evenStrengthShotsAgainst AS goalie_evenStrengthShotsAgainst,
@@ -338,11 +337,12 @@
                     }
 
 
-                    $home_skaters = array_filter($home_players, fn($p) => $p['position'] !== 'G');
-                    $home_goalies = array_filter($home_players, fn($p) => $p['position'] === 'G');
+                    $home_skaters = array_filter($home_players, fn($p) => $p['skater_position'] !== null && $p['skater_position'] !== '');
+                    $home_goalies = array_filter($home_players, fn($p) => $p['goalie_position'] !== null && $p['goalie_position'] !== '');
 
-                    $away_skaters = array_filter($away_players, fn($p) => $p['position'] !== 'G');
-                    $away_goalies = array_filter($away_players, fn($p) => $p['position'] === 'G');
+                    $away_skaters = array_filter($away_players, fn($p) => $p['skater_position'] !== null && $p['skater_position'] !== '');
+                    $away_goalies = array_filter($away_players, fn($p) => $p['goalie_position'] !== null && $p['goalie_position'] !== '');
+
 
                     function render_skater_table($players, $team_label, $roster_lookup) {
                         echo "<h4 class='roster-title text-2xl'>$team_label</h4>";
@@ -399,6 +399,9 @@
                             if ($formatted_FOPctg == 0) {
                                 $formatted_FOPctg = '-';
                             }
+                            // $totalShots = $row['total_shots'] ?? 0;
+                            // $totalBlockedShots = $row['total_blocked_shots'] ?? 0;
+                            // $totalMissedShots = $row['total_missed_shots'] ?? 0;
                             
                             echo "<tr class='default-zebra-table'>";
                             echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
@@ -477,6 +480,7 @@
                             if ($starter == 'True') {
                                 $player_name = $player_name . " (S)";
                             }
+                            
                             // echo $player_name;
                     
                             echo "<tr class='default-zebra-table'>";
@@ -571,7 +575,7 @@
 
         $plays_sql = "SELECT * FROM nhl_plays WHERE nhl_plays.gameID = $game_id ORDER BY nhl_plays.period, nhl_plays.timeInPeriod ASC LIMIT $offset, $limit";
         $plays = mysqli_query($conn, $plays_sql);
-        echo "<h4 class='text-center text-4xl'>Play-by-Play Events</h4>";
+        echo "<h4 class='text-center text-4xl'>Play-by-Play Events</h4><br>";
 
         if (mysqli_num_rows($plays) > 0) {
         ?>
@@ -588,7 +592,7 @@ echo "
     <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
     <img src='../resources/images/hockey-rink.jpg'
          alt='Hockey Rink'
-         class='rink-image shadow-md object-cover'
+         class='rink-image shadow-md object-cover border-2 border-slate-600 rounded-lg'
          style='height: 340px; width: auto;'>
   </div>
 
@@ -706,7 +710,7 @@ echo "
                             echo "<td>" . $formatted_coordinates . "</td>";
 
                             # Event Team
-                            echo "<td>".$row['event_team_tricode']."</td>";
+                            echo "<td>".($row['event_team_tricode'] ?? 'N/A')."</td>";
 
                             # Faceoffs
                             $faceoff_winner_id = $row['faceoffWinnerId'];

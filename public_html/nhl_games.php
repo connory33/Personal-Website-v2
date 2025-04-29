@@ -228,7 +228,14 @@
 
                 <!-- Display results in a table format -->
                 <p>Click on any team name or game ID to view additional details about the player or game.</p><br>
-                <div class="table-container shadow-md rounded-lg overflow-x-auto default-zebra-table mx-auto">
+                <div class="table-container shadow-md rounded-lg overflow-x-auto mx-auto">
+                        <!-- Search Filter Fields -->
+                    <div class="flex mx-auto mb-4">
+                    <h2 class="text-4xl font-bold text-white text-center">Game Results</h2><br>
+                    <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Search by Team">
+            </div>
+
+                    <!-- Table -->
                     <table id='games-players-summary-table' class="min-w-max table-auto default-zebra-table">
                         <colgroup>
                         <col class="games-players-summary-col-season">
@@ -376,18 +383,41 @@
                     echo "</table>";
                 echo "</div>";
 
-                
+            
                 $total_pages = ceil($total_rows / $limit);
-
-                ?>
-                <div style = 'text-align:center'>
-                <?php if ($total_rows > 0): ?>
-                    <br><div style="margin-bottom: 10px;">
-                        Showing results <?= $start ?>–<?= $end ?> of <?= $total_rows ?> (Page <?= $page ?> of <?= $total_pages ?>)
-                    </div>
-                <?php endif; ?>
-
-                <?php
+                
+                if ($total_pages > 1) {
+                    echo "<div style='text-align:center; margin-top: 20px;'>";
+                
+                    // Previous button
+                    if ($page > 1) {
+                        $prev_page = http_build_query(array_merge($_GET, ['page' => $page - 1]));
+                        echo "<a class='btn btn-secondary' href='?" . $prev_page . "' style='margin-right: 5px'>Previous</a>";
+                    }
+                
+                    // Numbered page buttons (e.g., 1 2 3 4 5)
+                    $range = 2; // how many pages to show on each side
+                    $start = max(1, $page - $range);
+                    $end = min($total_pages, $page + $range);
+                
+                    for ($i = $start; $i <= $end; $i++) {
+                        $page_query = http_build_query(array_merge($_GET, ['page' => $i]));
+                        $btn_class = $i == $page ? 'btn btn-primary' : 'btn btn-secondary';
+                        echo "<a class='$btn_class' href='?$page_query' style='margin: 0 2px;'>$i</a>";
+                    }
+                
+                    // Next button
+                    if ($page < $total_pages) {
+                        $next_page = http_build_query(array_merge($_GET, ['page' => $page + 1]));
+                        echo "<a class='btn btn-secondary' href='?" . $next_page . "' style='margin-left: 5px'>Next</a>";
+                    }
+                
+                    echo "</div>";
+                }
+            
+                
+    
+               
 
                 if ($page==1) {
                     $next_page = $page + 1;
@@ -408,6 +438,10 @@
                     echo "<div style='text-align:center; margin-top: 20px;'>
                         <a class='btn btn-secondary' href='?" . $prev_page . "'>Previous</a></div>";
                 }
+
+
+                    
+
                 echo "</div>";
                 
                 
@@ -422,34 +456,137 @@
     <br>
     <br>
     </div>
+    
 
     <?php include 'footer.php'; ?>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/vendor/holder.min.js"></script>
 
-    <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
+    <!-- JS for pagination -->
     <script>
-document.getElementById('nhl-search').addEventListener('submit', function (e) {
-    const column = document.getElementById('nhl-search-column').value;
-    console.log("Search column selected:", column); // Debugging
-    if (column === 'player') {
-        this.action = 'nhl_players.php';
-        console.log("Form action set to nhl_players.php"); // Debugging
-    } else {
-        this.action = 'nhl_games.php';
-        console.log("Form action set to nhl_games.php"); // Debugging
+document.addEventListener("DOMContentLoaded", function () {
+    const tableBody = document.querySelector("#games-players-summary-table tbody");
+    const searchByPlayer = document.getElementById("searchByPlayer");
+    const searchByTeam = document.getElementById("searchByTeam");
+    const pagination = document.getElementById("pagination");
+
+    let currentPage = 1;
+    const pageSize = 50;
+    let allData = [];       // All raw data
+    let filteredData = [];  // Filtered data to be paginated
+
+    // Fetch the initial table data from the DOM
+    function loadDataFromDOM() {
+        const rows = document.querySelectorAll("#games-players-summary-table tbody tr");
+        rows.forEach(row => {
+            const cells = row.querySelectorAll("td");
+            allData.push({
+                playerName: cells[0].innerText.trim(),
+                playerID: cells[0].querySelector("a")?.href.split("=").pop(),
+                shiftNumber: cells[1].innerText.trim(),
+                period: cells[2].innerText.trim(),
+                startTime: cells[3].innerText.trim(),
+                endTime: cells[4].innerText.trim(),
+                duration: cells[5].innerText.trim(),
+                teamTricode: cells[6].innerText.trim(),
+                eventDescription: cells[7].innerText.trim()
+            });
+        });
+        filteredData = [...allData];
+        renderTable(filteredData);
+        // renderPagination(filteredData);
     }
+
+    // Render table page
+    function renderTable(data) {
+        tableBody.innerHTML = "";
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+        const page = data.slice(start, end);
+
+        page.forEach(row => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><a href="player_details.php?team_id=${row.playerID}">${row.playerName}</a></td>
+                <td>${row.shiftNumber}</td>
+                <td>${row.period}</td>
+                <td>${row.startTime}</td>
+                <td>${row.endTime}</td>
+                <td>${row.duration}</td>
+                <td>${row.teamTricode}</td>
+                <td>${row.eventDescription}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+
+    // Combined render
+    function updateTableAndPagination() {
+        renderTable(filteredData);
+        // renderPagination(filteredData);
+    }
+
+
+
+    // Filter handler
+    function applyFilters() {
+        const playerFilter = searchByPlayer.value.toLowerCase();
+        const teamFilter = searchByTeam.value.toLowerCase();
+
+        filteredData = allData.filter(row => {
+            const matchPlayer = row.playerName.toLowerCase().includes(playerFilter);
+            const matchTeam = row.teamTricode.toLowerCase().includes(teamFilter);
+            return matchPlayer && matchTeam;
+        });
+
+        currentPage = 1;
+        updateTableAndPagination();
+    }
+
+    // Add input event listeners
+    searchByPlayer.addEventListener("input", applyFilters);
+    searchByTeam.addEventListener("input", applyFilters);
+
+    // Init on page load
+    loadDataFromDOM();
 });
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</script>
+
+
+
+    <!-- JS for search filter on table -->
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // const searchByPlayerInput = document.getElementById("searchByPlayer");
+    const searchByTeamInput = document.getElementById("searchByTeam");
+    const table = document.getElementById("games-players-summary-table");
+    const rows = table.querySelectorAll("tbody tr");
+
+    function filterTable() {
+        // const playerFilter = searchByPlayerInput.value.toLowerCase();
+        const teamFilter = searchByTeamInput.value.toLowerCase();
+
+        rows.forEach(row => {
+            const playerText = row.innerText.toLowerCase();
+            const homeTeam = row.children[5]?.innerText.toLowerCase() || ""; // Home team column
+            const awayTeam = row.children[7]?.innerText.toLowerCase() || ""; // Away team column
+
+            // const matchesPlayer = !playerFilter || playerText.includes(playerFilter);
+            const matchesTeam = !teamFilter || homeTeam.includes(teamFilter) || awayTeam.includes(teamFilter);
+
+            if (matchesTeam) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    // searchByPlayerInput.addEventListener("input", filterTable);
+    searchByTeamInput.addEventListener("input", filterTable);
+});
+</script>
+
 
   </body>
 </html>

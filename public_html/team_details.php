@@ -249,7 +249,7 @@
               $teamColor2Contrast = getTextColorForBackground($teamColor2);  // Contrast color for teamColor2
               ?>
               
-              <div class="full-page-content-container">
+              <div class="full-page-content-container bg-slate-700">
                   <?php
                   echo "<div style='padding-left: 10px; padding-right: 10px; padding-top: 25px'>";
                   
@@ -330,89 +330,103 @@
               </select>
 
 </div>
-
+<br><br>
 
               <div class="max-w-[80%] mx-auto">
               <!-- OVERALL TEAM STATS BY SEASON -->
               <div>
-                <table class='default-zebra-table overall-team-stats-table'>
+                <h2 class="text-2xl text-center" style='color: <?php echo $teamColor1Contrast; ?>'>Overall Team Stats</h2>
+                <table class='default-zebra-table overall-team-stats-table text-center'>
                   <colgroup>
                   </colgroup>
-                  <thead>
+                  <thead style='background-color: <?php echo $teamColor1; ?>'>
                     <tr>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>FOWin%</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GP</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA/GP</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF/GP</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>L</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OTL</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PK%</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pt%</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pts</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PPNet%</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PP%</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Reg/OT Wins</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SA/GP</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SF/GP</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Team ID</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Ties</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>W</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Reg Wins</th>
-                      <th>style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SO Wins</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>W</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>L</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OTL</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pts</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>T</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Reg Wins</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OT Wins</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SO Wins</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>FO Win %</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SA/GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SF/GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF/GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA/GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PK %</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pt %</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PPNet %</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PP %</th>
+                      
+                      
+                      <!-- <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Team ID</th> -->
+                      
+                      
+                      
+                      
                   </thead>
-                  <tbody>
+                  <tbody id='overallStatsTable'>
 
               <?php
               while ($row = mysqli_fetch_assoc($overallStatsResult)) {
+                
                 $overallSeason = $row['season_id'];
-                $overallFOWinPct = $row['faceoffWinPct'];
                 $overallGP = $row['gamesPlayed'];
-                $overallGA = $row['goalsAgainst'];
-                $overallGAper = $row['goalsAgainstPerGame'];
-                $overallGF = $row['goalsFor'];
-                $overallGFper = $row['goalsForPerGame'];
+                $overallW = $row['wins'];
                 $overallL = $row['losses'];
                 $overallOTL = $row['otLosses'];
-                $overallPKPct = $row['penaltyKillPct'];
-                $overallPtPct = $row['pointPct'];
                 $overallPts = $row['points'];
-                $overallPPNetPct = $row['powerPlayNetPct'];
-                $overallPPPct = $row['powerPlayPct'];
+                $overallTies = $row['ties'];
+                $overallRegWins = $row['winsInRegulation'];
                 $overallRegOTWins = $row['regulationAndOtWins'];
+                $overallSOWins = $row['winsInShootout'];
+                $overallFOWinPct = $row['faceoffWinPct'];
                 $overallShotsAgainstPerGame = $row['shotsAgainstPerGame'];
                 $overallShotsForPer = $row['shotsForPerGame'];
-                $overallTeamID = $row['teamId'];
-                $overallTies = $row['ties'];
-                $overallW = $row['wins'];
-                $overallRegWins = $row['winsInRegulation'];
-                $overallSOWins = $row['winsInShootout'];
+                $overallGF = $row['goalsFor'];
+                $overallGFper = $row['goalsForPerGame'];
+                $overallGA = $row['goalsAgainst'];
+                $overallGAper = $row['goalsAgainstPerGame'];
+                $overallPKPct = $row['penaltyKillPct'];
+                $overallPtPct = $row['pointPct'];
+                $overallPPNetPct = $row['powerPlayNetPct'];
+                $overallPPPct = $row['powerPlayPct'];
 
-                echo "<tr>";
-                echo "<td>" . $overallSeason . "</td>";
-                echo "<td>" . $overallFOWinPct . "</td>";
+                # derived variables
+                $overallOTWins = $overallRegOTWins - $overallRegWins; // Overtime Wins = Reg OT Wins - Reg Wins
+                $overall_totalWins = $overallW + $overallRegWins + $overallSOWins;
+                # Corsi For = (Corsi For) / (Corsi For + Corsi Against) * 100 = Total Shot Attempts (for) / Total Shot Attempts (for + against) * 100
+                # = 
+                // $corsi_for
+                
+
+                echo "<tr data-season='$overallSeason'>";
+                echo "<td>" . substr($overallSeason, 0, 4) . "-" . substr($overallSeason, 4, 4) . "</td>";
                 echo "<td>" . $overallGP . "</td>";
-                echo "<td>" . $overallGA . "</td>";
-                echo "<td>" . $overallGAper . "</td>";
-                echo "<td>" . $overallGF . "</td>";
-                echo "<td>" . $overallGFper . "</td>";
+                echo "<td>" . $overallW . "</td>";
                 echo "<td>" . $overallL . "</td>";
                 echo "<td>" . $overallOTL . "</td>";
-                echo "<td>" . $overallPKPct . "</td>";
-                echo "<td>" . $overallPtPct . "</td>";
                 echo "<td>" . $overallPts . "</td>";
-                echo "<td>" . $overallPPNetPct . "</td>";
-                echo "<td>" . $overallPPPct . "</td>";
-                echo "<td>" . $overallRegOTWins . "</td>";
-                echo "<td>" . $overallShotsAgainstPerGame . "</td>";
-                echo "<td>" . $overallShotsForPer . "</td>";
-                echo "<td>" . $overallTeamID . "</td>";
                 echo "<td>" . $overallTies . "</td>";
-                echo "<td>" . $overallW . "</td>";
                 echo "<td>" . $overallRegWins . "</td>";
+                echo "<td>" . $overallOTWins . "</td>";
                 echo "<td>" . $overallSOWins . "</td>";
+                echo "<td>" . number_format($overallFOWinPct,2) . "</td>";
+                echo "<td>" . number_format($overallShotsAgainstPerGame,2) . "</td>";
+                echo "<td>" . number_format($overallShotsForPer,2) . "</td>";
+                echo "<td>" . $overallGF . "</td>";
+                echo "<td>" . number_format($overallGFper,2) . "</td>";
+                echo "<td>" . $overallGA . "</td>";
+                echo "<td>" . number_format($overallGAper,2) . "</td>";
+                echo "<td>" . number_format($overallPKPct,2) . "</td>";
+                echo "<td>" . number_format($overallPtPct,2) . "</td>";
+                echo "<td>" . number_format($overallPPNetPct,2) . "</td>";
+                echo "<td>" . number_format($overallPPPct,2) . "</td>";
                 echo "</tr>";
 
             }
@@ -424,7 +438,8 @@
                 <!-- SKATERS COMBINED TABLE -->
               
                   <div>
-                    <br>
+                  <br>
+                    <h2 class="text-2xl text-center" style='color: <?php echo $teamColor1Contrast; ?>'>Individual Player Stats</h2>
                     <table class='skaters-combined-table default-zebra-table min-w-[900px] table-auto' style="border: 2px solid <?php echo $teamColor2; ?>;">
                     <colgroup>
                     <col class='skaters-combined-season'>
@@ -442,7 +457,7 @@
                     <col class='skaters-combined-fo-pct'>
                       </colgroup>
                     <thead style='background-color: <?php echo $teamColor1; ?> !important;'>
-                            <tr>
+                            <tr data-season='$seasonWithType'>
                                 <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
                                 <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Name</th>
                                 <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pos.</th>
@@ -732,6 +747,8 @@
                   const skaterRows = document.querySelectorAll('#skaterStatsTable tr');
                   const goalieRows = document.querySelectorAll('#goalieStatsTable tr');
                   const rosterRows = document.querySelectorAll('#seasonRosterTable tr');
+                  const overallRows = document.querySelectorAll('#overallStatsTable tr');
+
 
                   // // Debug information
                   // console.log('Season dropdown:', dropdown ? dropdown.value : 'Not found');
@@ -772,9 +789,20 @@
                       rosterRows.forEach(row => {
                           if (row.dataset.season === seasonID || row.dataset.season === baseSeasonID) {
                               row.style.display = ''; // Show row
+                              alert(row.dataset.season);
                           } else {
                               row.style.display = 'none'; // Hide row
+                              
                           }
+                      });
+
+                      // Filter overall rows
+                      overallRows.forEach(row => {
+                          if (row.dataset.season === seasonID || row.dataset.season === baseSeasonID) {
+                            row.style.display = ''; // Show row
+                          } else {
+                              row.style.display = 'none'; // Hide row
+                            }
                       });
                   }
 

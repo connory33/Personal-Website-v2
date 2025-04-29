@@ -71,7 +71,7 @@
 
             ?>
 
-      <div id="nhl-games-players-summary-content-container">
+      <div id="nhl-games-players-summary-content-container" class='bg-slate-700 h-screen'>
         <br>
         <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
 

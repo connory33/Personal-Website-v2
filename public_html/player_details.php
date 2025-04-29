@@ -21,7 +21,7 @@
   <!-- Header -->
   <?php include 'header.php'; ?>
   <body>
-    <div class="bg-dark text-white" style='align-items: flex-start'>
+    <div class="bg-slate-700 text-white" style='align-items: flex-start'>
       <div style='margin-left: 10px; margin-right: 10px'>
         <?php
 
@@ -229,14 +229,27 @@
                   skaters_gamebygame_stats.shifts AS skater_shifts,
                   skaters_gamebygame_stats.giveaways AS skater_giveaways,
                   skaters_gamebygame_stats.takeaways AS skater_takeaways,
-                  goalies_gamebygame_stats.*
+                  goalies_gamebygame_stats.pim AS goalie_pim,
+                  goalies_gamebygame_stats.evenStrengthShotsAgainst AS evenStrengthSA,
+                  goalies_gamebygame_stats.powerPlayShotsAgainst AS powerPlaySA,
+                  goalies_gamebygame_stats.shorthandedShotsAgainst AS shorthandedSA,
+                  goalies_gamebygame_stats.saveShotsAgainst AS saveSA,
+                  goalies_gamebygame_stats.savePctg AS savePctg,
+                  goalies_gamebygame_stats.evenStrengthGoalsAgainst AS evenStrengthGA,
+                  goalies_gamebygame_stats.powerPlayGoalsAgainst AS powerPlayGA,
+                  goalies_gamebygame_stats.shorthandedGoalsAgainst AS shorthandedGA,
+                  goalies_gamebygame_stats.goalsAgainst AS goalsAgainst,
+                  goalies_gamebygame_stats.starter AS starter,
+                  goalies_gamebygame_stats.shotsAgainst AS shotsAgainst,
+                  goalies_gamebygame_stats.saves AS saves
+
               FROM player_last_5_games
               LEFT JOIN skaters_gamebygame_stats 
                   ON player_last_5_games.playerId = skaters_gamebygame_stats.playerId
                   AND player_last_5_games.game_id = skaters_gamebygame_stats.gameID
               LEFT JOIN goalies_gamebygame_stats 
                   ON player_last_5_games.playerId = goalies_gamebygame_stats.playerId
-              WHERE player_last_5_games.playerId = '$player_id'";
+              WHERE player_last_5_games.playerId = '$player_id' AND game_id != 0";
 
             $last5GameInfo = mysqli_query($conn, $last5GameSQL);
 
@@ -351,7 +364,7 @@
 
           echo "</div><br><br>";
 
-      ##### Stat Tables #####
+      ########################################################################## Stat Tables ##################################################################
 
         // Start OUTER WRAPPER
         echo "<div class='flex flex-col lg:flex-row gap-10'>";
@@ -359,9 +372,39 @@
         // LEFT COLUMN (top 3 tables stacked)
         echo "<div style='margin-top:14px' class='flex flex-col lg:basis-[45%]'>";
 
+        ### Last 5 Games ###  
         echo "<h3 class='text-center text-2xl text-white'>Last 5 Games Statistics</h3>";
-        if (mysqli_num_rows($last5GameInfo) == 0) {
-          echo "<table class='player-stats-table goalie-stats-table default-zebra-table text-center'>";
+          # Goalies
+        if (strtolower($position) == 'g') {
+          if (mysqli_num_rows($last5GameInfo) == 0) {
+            echo "<table class='player-stats-table goalie-stats-table default-zebra-table text-center'>";
+            echo "<colgroup>";
+            echo "<col class='last-5-games-id'>";
+            echo "<col class='last-5-games-team'>";
+            echo "<col class='last-5-games-opponent'>";
+            echo "<col class='last-5-games-home-road'>";
+            echo "</colgroup>";
+            echo "<thead>";
+            echo "<tr>";
+                echo "<th>Game ID</th>";
+                echo "<th>Team</th>";
+                echo "<th>Opponent</th>";
+                echo "<th>Home / Road</th>";
+                echo "<th>SA</th>";
+                echo "<th>GA</th>";
+                echo "<th>Saves</th>";
+                echo "<th>Save %</th>";
+                echo "<th>Starter</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            echo "<tr>";
+            echo "<td colspan='9' class='text-center'>No data available.</td>";
+            echo "</tr>";
+            echo "</tbody>";
+            echo "</table><br><br>";
+          } else {
+          echo "<table class='goalie-stats-table default-zebra-table text-center'>";
           echo "<colgroup>";
           echo "<col class='last-5-games-id'>";
           echo "<col class='last-5-games-team'>";
@@ -370,38 +413,17 @@
           echo "</colgroup>";
           echo "<thead>";
           echo "<tr>";
-              echo "<th>Game ID</th>";
-              echo "<th>Team</th>";
-              echo "<th>Opponent</th>";
-              echo "<th>Home/Road</th>";
-              echo "<th>Goals</th>";
-          echo "</tr>";
+                echo "<th>Game ID</th>";
+                echo "<th>Team</th>";
+                echo "<th>Opponent</th>";
+                echo "<th>Home / Road</th>";
+                echo "<th>SA</th>";
+                echo "<th>GA</th>";
+                echo "<th>Saves</th>";
+                echo "<th>Save %</th>";
+                echo "<th>Starter</th>";
+            echo "</tr>";
           echo "</thead>";
-          echo "<tbody>";
-          echo "<tr>";
-          echo "<td colspan='5' class='text-center'>No data available.</td>";
-          echo "</tr>";
-          echo "</tbody>";
-          echo "</table><br><br>";
-        } else {
-          ### Last 5 Games ###      
-          echo "<table class='player-stats-table goalie-stats-table default-zebra-table text-center'>";
-          echo "<colgroup>";
-          echo "<col class='last-5-games-id'>";
-          echo "<col class='last-5-games-team'>";
-          echo "<col class='last-5-games-opponent'>";
-          echo "<col class='last-5-games-home-road'>";
-          echo "</colgroup>";
-          echo "<thead>";
-          echo "<tr>";
-              echo "<th>Game ID</th>";
-              echo "<th>Team</th>";
-              echo "<th>Opponent</th>";
-              echo "<th>Home/Road</th>";
-              echo "<th>Goals</th>";
-          echo "</tr>";
-          echo "</thead>";
-
           while ($row = mysqli_fetch_assoc($last5GameInfo)) {
             $last5_games_id = isset($row['game_id']) ? $row['game_id'] : null;
             $last5_games_date = isset($row['game_date']) ? $row['game_date'] : null;
@@ -409,20 +431,85 @@
             $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
             $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
             $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
-
+            $last5_games_shotsAgainst = isset($row['goalie_shotsAgainst']) ? $row['goalie_shotsAgainst'] : null;
+            $last5_games_goalsAgainst = isset($row['goalie_goalsAgainst']) ? $row['goalie_goalsAgainst'] : null;
+            $last5_games_saves = isset($row['goalie_saves']) ? $row['goalie_saves'] : null;
+            $last5_games_savePctg = isset($row['goalie_savePctg']) ? $row['goalie_savePctg'] : null;
+            $last5_games_starter = isset($row['goalie_starter']) ? $row['goalie_starter'] : null;
             echo "<tr>";
             echo "<td><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
             echo "<td>" . $last5_games_team . "</td>";
             echo "<td>" . $last5_games_opponent . "</td>";
             echo "<td>" . $last5_games_homeRoad . "</td>";
-            echo "<td>" . $last5_games_goals . "</td>";
+            echo "<td>" . $last5_games_shotsAgainst . "</td>";
+            echo "<td>" . $last5_games_goalsAgainst . "</td>";
+            echo "<td>" . $last5_games_saves . "</td>";
+            echo "<td>" . $last5_games_savePctg . "</td>";
+            echo "<td>" . $last5_games_starter . "</td>";
             echo "</tr>";
+          }
+          }
 
-      }
+        } else {
+          if (mysqli_num_rows($last5GameInfo) == 0) {
+            # Skaters
+            echo "<table class='player-stats-table goalie-stats-table default-zebra-table text-center'>";
+            echo "<colgroup>";
+            echo "<col class='last-5-games-id'>";
+            echo "<col class='last-5-games-team'>";
+            echo "<col class='last-5-games-opponent'>";
+            echo "<col class='last-5-games-home-road'>";
+            echo "</colgroup>";
+            echo "<thead>";
+            echo "<tr>";
+                echo "<th>Game ID</th>";
+                echo "<th>Team</th>";
+                echo "<th>Opponent</th>";
+                echo "<th>Home / Road</th>";
+                echo "<th>Goals</th>";
+            echo "</tr>";
+            echo "</thead>";
+              echo "<tr>";
+              echo "<td colspan='5' class='text-center'>No data available.</td>";
+              echo "</tr>";
+          } else {
+            echo "<table class='player-stats-table goalie-stats-table default-zebra-table text-center'>";
+            echo "<colgroup>";
+            echo "<col class='last-5-games-id'>";
+            echo "<col class='last-5-games-team'>";
+            echo "<col class='last-5-games-opponent'>";
+            echo "<col class='last-5-games-home-road'>";
+            echo "</colgroup>";
+            echo "<thead>";
+            echo "<tr>";
+                echo "<th>Game ID</th>";
+                echo "<th>Team</th>";
+                echo "<th>Opponent</th>";
+                echo "<th>Home / Road</th>";
+                echo "<th>Goals</th>";
+            echo "</tr>";
+            echo "</thead>";
+            while ($row = mysqli_fetch_assoc($last5GameInfo)) {
+              $last5_games_id = isset($row['game_id']) ? $row['game_id'] : null;
+              $last5_games_date = isset($row['game_date']) ? $row['game_date'] : null;
+              $last5_games_team = isset($row['team']) ? $row['team'] : null;
+              $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
+              $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
+              $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
+              echo "<tr>";
+              echo "<td><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
+              echo "<td>" . $last5_games_team . "</td>";
+              echo "<td>" . $last5_games_opponent . "</td>";
+              echo "<td>" . $last5_games_homeRoad . "</td>";
+              echo "<td>" . $last5_games_goals . "</td>";
+              echo "</tr>";
+            }
+          }
+        }
       echo "</tbody>";
       echo "</table><br><br>";
-  }
-}
+        }
+      
 
 
           ### Featured Season Stats ###
