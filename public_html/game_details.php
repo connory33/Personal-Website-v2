@@ -292,7 +292,7 @@
                     $gameDatetime = new DateTime($game_date);
                     $formatted_gameDate = $gameDatetime->format('m/d/Y');
                 
-                    echo "<div class='max-w-[80%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
+                    echo "<div class='max-w-[90%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
                     echo "<div class='flex flex-col items-center space-y-4'>"; // Removed flex-grow on the outer container
 
                     // Team logos and names
@@ -583,8 +583,8 @@
         <img src="../resources/images/hockey-rink2.jpg" id="rink-image" width="600" height="255" />
         <div id="marker" style="
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: red;
             border-radius: 50%;
             display: none;
@@ -647,8 +647,8 @@ function drawMarker(x, y) {
 
     const { x: xPx, y: yPx } = transformCoords(x, y);
 
-    marker.style.left = `${xPx - 5}px`;  // center the 10x10 marker
-    marker.style.top = `${yPx - 5}px`;
+    marker.style.left = `${xPx - 4}px`;  // center the 8x8 marker
+    marker.style.top = `${yPx - 4}px`;
     marker.style.display = 'block';
 }
 
@@ -685,6 +685,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Events</h4> -->
 <div class="overflow-x-auto">
+<p>Click any row below to see the location visualized on the rink diagram.</p>
     <table id="play-by-play-table" class="min-w-max table-auto border-2 border-slate-600 border-collapse default-zebra-table">
         <thead class='default-zebra-table'>
             <tr class='default-zebra-table'>

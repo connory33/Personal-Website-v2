@@ -534,7 +534,7 @@ background-color: #18314F;
 .coordinate-dot {
 	width: 10px;
 	height: 10px;
-	background-color: red;
+	background-color: #18314f;
 	position: absolute;
 	border-radius: 50%;
 	z-index: 10;
@@ -744,7 +744,7 @@ background-color: #18314F;
 }
 
 .default-selected-row {
-	background-color: rgb(133, 149, 168);
+	background-color: rgb(133, 149, 168) !important;
 }
 
 .default-zebra-table {
