@@ -335,12 +335,33 @@
               <div class="max-w-[80%] mx-auto">
               <!-- OVERALL TEAM STATS BY SEASON -->
               <div>
-                <h2 class="text-2xl text-center" style='color: <?php echo $teamColor1Contrast; ?>'>Overall Team Stats</h2>
+                <h2 class="text-2xl text-center text-white">Overall Team Stats</h2>
                 <table class='default-zebra-table overall-team-stats-table text-center'>
                   <colgroup>
+                    <col class='overall-team-stats-season'>
+                    <col class='overall-team-stats-gp'>
+                    <col class='overall-team-stats-w'>
+                    <col class='overall-team-stats-l'>
+                    <col class='overall-team-stats-otl'>
+                    <col class='overall-team-stats-pts'>
+                    <col class='overall-team-stats-t'>
+                    <col class='overall-team-stats-reg-wins'>
+                    <col class='overall-team-stats-ot-wins'>
+                    <col class='overall-team-stats-so-wins'>
+                    <col class='overall-team-stats-fo-win-pct'>
+                    <col class='overall-team-stats-sa-gp'>
+                    <col class='overall-team-stats-sf-gp'>
+                    <col class='overall-team-stats-gf'>
+                    <col class='overall-team-stats-gf-gp'>
+                    <col class='overall-team-stats-ga'>
+                    <col class='overall-team-stats-ga-gp'>
+                    <col class='overall-team-stats-pk-pct'>
+                    <col class='overall-team-stats-pt-pct'>
+                    <col class='overall-team-stats-pp-net-pct'>
+                    <col class='overall-team-stats-pp-pct'>
                   </colgroup>
-                  <thead style='background-color: <?php echo $teamColor1; ?>'>
-                    <tr>
+                  <thead style='background-color: <?php echo $teamColor1; ?>; color: <?php echo $teamColor1Contrast; ?>'>
+                    <tr style="border: 2px solid <?php echo $teamColor2; ?>">
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GP</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>W</th>
@@ -348,19 +369,19 @@
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OTL</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pts</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>T</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Reg Wins</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OT Wins</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SO Wins</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>FO Win %</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SA/GP</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SF/GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Reg W</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OT W</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SO W</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>FOW %</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SA / G</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SF / G</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF/GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF / G</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA/GP</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA / G</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PK %</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pt %</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PPNet %</th>
+                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PP Net %</th>
                       <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PP %</th>
                       
                       
@@ -381,7 +402,11 @@
                 $overallL = $row['losses'];
                 $overallOTL = $row['otLosses'];
                 $overallPts = $row['points'];
-                $overallTies = $row['ties'];
+                if ($row['ties'] == null) {
+                    $overallTies = 0;
+                } else {
+                    $overallTies = $row['ties'];
+                }
                 $overallRegWins = $row['winsInRegulation'];
                 $overallRegOTWins = $row['regulationAndOtWins'];
                 $overallSOWins = $row['winsInShootout'];
@@ -439,8 +464,8 @@
               
                   <div>
                   <br>
-                    <h2 class="text-2xl text-center" style='color: <?php echo $teamColor1Contrast; ?>'>Individual Player Stats</h2>
-                    <table class='skaters-combined-table default-zebra-table min-w-[900px] table-auto' style="border: 2px solid <?php echo $teamColor2; ?>;">
+                    <h2 class="text-2xl text-center text-white">Individual Player Stats</h2>
+                    <table class='skaters-combined-table default-zebra-table min-w-[900px]' style="border: 2px solid <?php echo $teamColor2; ?>;">
                     <colgroup>
                     <col class='skaters-combined-season'>
                     <col class='skaters-combined-name'>
@@ -456,7 +481,7 @@
                     <col class='skaters-combined-avg-shifts'>
                     <col class='skaters-combined-fo-pct'>
                       </colgroup>
-                    <thead style='background-color: <?php echo $teamColor1; ?> !important;'>
+                    <thead style='background-color: <?php echo $teamColor1; ?> !important; color: <?php echo $teamColor1Contrast; ?>'>
                             <tr data-season='$seasonWithType'>
                                 <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
                                 <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Name</th>
@@ -571,7 +596,7 @@
                     <col class='goalies-combined-so'>
                     <col class='goalies-combined-toi'>
                     </colgroup>
-                    <thead>
+                    <thead style='color: <?php echo $teamColor1Contrast; ?>'>
                             <tr style='background-color: <?php echo $teamColor1; ?>; border: 2px solid <?php echo $teamColor2; ?>; color: <?php echo $teamColor2; ?>'>
                                 <th>Season</th>
                                 <th>Name</th>
@@ -652,8 +677,7 @@
                 </div>
             </div>
             
-            <br>
-            <hr style='border-color: <?php echo $teamColor2 ?>; width: 70%; margin: auto; border-width: 2px;'>
+            
 
             <?php
             
@@ -663,48 +687,54 @@
         // Close database connection
         mysqli_close($conn);
           ?>
+          <div class='bg-slate-700'>
           <br>
-          <p class='text-black text-center font-semibold '>Select any team below to view details:</p>
-              <div class="w-2/5 mx-auto text-center footer-teams" style="text-align: center; color: black;">
-              <a href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=7'>BUF</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=20'>CGY</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=12'>CAR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=16'>CHI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=21'>COL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=29'>CBJ</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=25'>DAL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=17'>DET</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=22'>EDM</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=13'>FLA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=26'>LAK</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=30'>MIN</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=8'>MTL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=1'>NJD</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=18'>NSH</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=2'>NYI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=3'>NYR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=9'>OTT</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=4'>PHI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=5'>PIT</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=28'>SJS</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=55'>SEA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=19'>STL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=14'>TBL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=10'>TOR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=59'>UTA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=23'>VAN</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a>
-
+          <hr style='border-color: <?php echo $teamColor1 ?>; width: 70%; margin: auto; border-width: 2px;'>
+          <br>
+          
+          
+          <p class='text-white text-center font-semibold '>Select any team below to view details:</p>
+              <div class="w-2/5 mx-auto text-center footer-teams text-center">
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=7'>BUF</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=20'>CGY</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=12'>CAR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=16'>CHI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=21'>COL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=29'>CBJ</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=25'>DAL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=17'>DET</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=22'>EDM</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=13'>FLA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=26'>LAK</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=30'>MIN</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=8'>MTL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=1'>NJD</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=18'>NSH</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=2'>NYI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=3'>NYR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=9'>OTT</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=4'>PHI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=5'>PIT</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=28'>SJS</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=55'>SEA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=19'>STL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=14'>TBL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=10'>TOR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=59'>UTA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=23'>VAN</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
+              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a>
               </div>
+    
 
           <br>            
-          <hr style='border-color: <?php echo $teamColor2 ?>; width: 70%; margin: auto; border-width: 2px;'>
+          <hr style='border-color: <?php echo $teamColor1 ?>; width: 70%; margin: auto; border-width: 2px;'>
           <br>
+          </div>
           </div>
           
           

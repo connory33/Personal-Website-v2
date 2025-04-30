@@ -17,8 +17,8 @@
   </head>
  <!-- Header -->
  <?php include 'header.php'; ?>
-  <body>
-    <div class="bg-slate-700 text-white text-center">
+  <body mi>
+    <div class="bg-slate-700 text-white text-center min-h-screen">
         <br><br>
 
         <?php
@@ -31,8 +31,54 @@
         // Check if the 'game_id' is passed in the URL
         if (isset($_GET['season_id'])) {
                 $season_id = $_GET['season_id'];
+                $currentSeason = $_GET['season_id'] ?? '';
+
+                $seasons = ['19171918', '19181919', '19201921', '19211922', '19221923', '19231924', '19241925', '19251926', '19261927', '19271928',
+                '19281929', '19291930', '19301931', '19311932', '19321933', '19331934', '19341935', '19351936', '19361937', '19371938',
+                '19381939', '19391940', '19401941', '19411942', '19421943', '19431944', '19441945', '19451946', '19461947', '19471948',
+                '19481949', '19491950', '19501951', '19511952', '19521953', '19531954', '19541955', '19551956', '19561957', '19571958',
+                '19581959', '19591960', '19601961', '19611962', '19621963', '19631964', '19641965', '19651966', '19661967', '19671968',
+                '19681969', '19691970', '19701971', '19711972', '19721973', '19731974', '19741975', '19751976', '19761977', '19771978',
+                '19781979', '19791980', '19801981', '19811982', '19821983', '19831984', '19841985', '19851986', '19861987', '19871988',
+                '19881989', '19891990', '19901991', '19911992', '19921993', '19931994', '19941995', '19951996', '19961997', '19971998',
+                '19981999', '19992000', '20002001', '20012002', '20022003', '20032004', '20042005', '20052006', '20062007', '20072008',
+                '20082009', '20092010', '20102011', '20112012', '20122013', '20132014', '20142015', '20152016', '20162017', '20172018',
+                '20182019', '20192020', '20202021', '20212022', '20222023', '20232024', '20242025'];
+
+                $seasons = array_reverse($seasons); // Reverse the order of seasons to show the latest first
+            ?>
+
+ <div class="mx-auto w-fit px-6 py-4 rounded-md text-black flex items-center space-x-4 border border-slate-600 bg-slate-800">
+  <label for="seasonSelect" class="mr-2 text-white font-semibold">Select Season:</label>
+  <select id="seasonSelect" class="px-3 py-1 rounded text-black" onchange="changeSeason(this.value)">
+    <option value="">Season</option>
+    <?php foreach ($seasons as $seasonID): ?>
+                      <?php 
+                          $seasonYear1 = substr($seasonID, 0, 4);
+                          $seasonYear2 = substr($seasonID, 4, 4);
+                      ?>
+                      <option value="<?php echo $seasonID; ?>">
+                          <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
+                      </option>
+    <?php endforeach; ?>
+  </select>
+</div>
+<br>
+<hr class='w-4/5 border-white align-center mx-auto'>
 
 
+
+                
+
+                <script>
+                function changeSeason(seasonId) {
+                    if (seasonId) {
+                    window.location.href = '?season_id=' + encodeURIComponent(seasonId);
+                    }
+                }
+                </script>
+
+        <?php
                 $sql = "SELECT playoff_results.*, 
                                bottomSeedTeam.id AS bottomSeedTeamID,
                                bottomSeedTeam.fullName AS bottomSeedTeamName,
@@ -59,24 +105,10 @@
 
                 ?>
 
-                <h2 class="text-4xl font-bold text-slate-800">Playoff Results</h2><br>
-                <table class='default-zebra-table'>
-                    <thead>
-                        <tr>
-                            <th>Season</th>
-                            <th>Round</th>
-                            <th>Series</th>
-                            <th>Series Link</th>
-                            <th>Bottom Seed ID</th>
-                            <th>Bottom Seed Wins</th>
-                            <th>Top Seed ID</th>
-                            <th>Top Seed Wins</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
                 <?php
+                $rounds = [];
                 while ($row = mysqli_fetch_assoc($result)) {
+                    $rounds[$row['roundNums']][] = $row;
                     $seasonID = $row['seasonID'];
                     $roundNum = $row['roundNums'];
                     $seriesLetter = $row['seriesLetters'];
@@ -98,33 +130,53 @@
                     $topSeedTeamColor1 = $row['topSeedTeamColor1'];
                     $topSeedTeamColor2 = $row['topSeedTeamColor2'];
                 
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($seasonID) . "</td>";
-                echo "<td>" . htmlspecialchars($roundNum) . "</td>";
-                echo "<td>" . htmlspecialchars($seriesLetter) . "</td>";
-                echo "<td>" . htmlspecialchars($seriesLink) . "</td>";
-                if ($bottomSeedWins > $topSeedWins) {
-                    echo "<td class='font-bold'>" . htmlspecialchars($bottomSeedTeamName) . "</td>";
-                    echo "<td class='font-bold'>" . htmlspecialchars($bottomSeedWins) . "</td>";
-                } else {
-                    echo "<td>" . htmlspecialchars($bottomSeedTeamName) . "</td>";
-                    echo "<td>" . htmlspecialchars($bottomSeedWins) . "</td>";
-                }
-                if ($topSeedWins > $bottomSeedWins) {
-                    echo "<td class='font-bold'>" . htmlspecialchars($topSeedTeamName) . "</td>";
-                    echo "<td class='font-bold'>" . htmlspecialchars($topSeedWins) . "</td>";
-                } else {
-                    echo "<td>" . htmlspecialchars($topSeedTeamName) . "</td>";
-                    echo "<td>" . htmlspecialchars($topSeedWins) . "</td>";
-                }
 
-                echo "</tr>";
-                }
-                echo "</tbody>";
-                echo "</table>";
+        }
+        echo "<br><h2 class='text-2xl font-bold mb-4'>Playoff Bracket</h2>";
+        echo "<div class='flex justify-center gap-8 p-6 text-white'>";
+    
+        foreach ($rounds as $round => $matchups) {
+            echo "<div class='flex flex-col items-center gap-6'>";
+            // Round Label
+            echo "<div class='text-lg font-bold mb-2'>Round $round</div>";
+        
+            foreach ($matchups as $match) {
+                $bottomWins = (int)$match['bottomSeedWins'];
+                $topWins = (int)$match['topSeedWins'];
+        
+                $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-600' : '';
+                $topBold = $topWins > $bottomWins ? 'font-bold text-green-600' : '';
+        
+                echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60'>";
+                
+                // Team names and scores stacked vertically per column
+                echo "<div class='flex justify-between'>";
+                
+                echo "<div class='flex flex-col items-center w-1/2'>";
+                echo "<div class='$bottomBold text-sm'>{$match['bottomSeedTeamName']}</div>";
+                echo "<div class='$bottomBold text-lg'>{$bottomWins}</div>";
+                echo "</div>";
+        
+                echo "<div class='flex flex-col items-center w-1/2'>";
+                echo "<div class='$topBold text-sm'>{$match['topSeedTeamName']}</div>";
+                echo "<div class='$topBold text-lg'>{$topWins}</div>";
+                echo "</div>";
+        
+                echo "</div>"; // close flex row
+        
+                echo "</div>"; // close matchup box
+            }
+        
+            echo "</div>"; // close round
+        }
+        echo "</div>"; // close all rounds
+        
+        
+        
         }
 ?>
 
-
+    </div>
     </body>
+    <?php include 'footer.php'; ?>
 </html>

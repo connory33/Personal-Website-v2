@@ -513,6 +513,8 @@ background-color: #18314F;
 
 
 
+
+
 .rink-key-wrapper {
     display: flex;
     justify-content: center;
@@ -538,6 +540,14 @@ background-color: #18314F;
 	position: absolute;
 	border-radius: 50%;
 	z-index: 10;
+  }
+
+
+  #rink-image {
+	outline: 1px solid limegreen;
+  }
+  #marker {
+	outline: 1px solid yellow;
   }
   
 
@@ -774,7 +784,6 @@ background-color: #18314F;
 }
 .footer-teams a {
 	text-decoration: none;
-	color: black;
 }
 .footer-teams a:hover {
 text-decoration: underline;	
@@ -784,27 +793,27 @@ text-decoration: underline;
 /* ######################################################################### TABLE WIDTHS ######################################################################### */
 
 /* Team Overall Season Stats Table Width */
-/* .overall-team-stats-table-season { width: %;}
-.overall-team-stats-table-gp { width: %;}
-.overall-team-stats-table-w { width: %;}
-.overall-team-stats-table-l { width: %;}
-.overall-team-stats-table-otl { width: %;}
-.overall-team-stats-table-pts { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;}
-.overall-team-stats-table { width: %;} */
+.overall-team-stats-season { width: 8%;}
+.overall-team-stats-gp { width: 5%;}
+.overall-team-stats-w { width: 4%;}
+.overall-team-stats-l { width: 4%;}
+.overall-team-stats-otl { width: 4%;}
+.overall-team-stats-pts { width: 4%;}
+.overall-team-stats-t { width: 4%;}
+.overall-team-stats-reg-wins { width: 4%;}
+.overall-team-stats-ot-wins { width: 4%;}
+.overall-team-stats-so-wins { width: 4%;}
+.overall-team-stats-fo-win-pct { width: 5%;}
+.overall-team-stats-sa-gp { width: 5%;}
+.overall-team-stats-sf-gp { width: 5%;}
+.overall-team-stats-gf { width: 5%;}
+.overall-team-stats-gf-gp { width: 5%;}
+.overall-team-stats-ga { width: 5%;}
+.overall-team-stats-ga-gp { width: 5%;}
+.overall-team-stats-pk-pct { width: 5%;}
+.overall-team-stats-pt-pct { width: 5%;}
+.overall-team-stats-pp-net-pct { width: 5%;}
+.overall-team-stats-pp-pct { width: 5%;}
 
 /* Goalie Featured/Career Reg/Career Playoff Table Width */
 .goalie-player-details-gp { width: 9%; }

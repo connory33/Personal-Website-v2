@@ -230,8 +230,10 @@
                 nhl_games.gameType,
                 nhl_games.gameNumber,
                 nhl_games.season,
+                home_teams.id AS homeTeamId,
                 home_teams.fullName AS home_team_name,
                 away_teams.fullName AS away_team_name,
+                away_teams.id AS awayTeamId,
                 nhl_games.gameOutcome
                 FROM 
                 nhl_games
@@ -263,6 +265,8 @@
                     $game_date = $row['gameDate'];
                     $homeScore = $row['homeScore'];
                     $awayScore = $row['awayScore'];
+                    $homeTeamID = $row['homeTeamId'];
+                    $awayTeamID = $row['awayTeamId'];
                     $homeLogo = $row['homeLogo'];
                     $awayLogo = $row['awayLogo'];
                     $homeTeamName = $row['home_team_name'];
@@ -292,14 +296,14 @@
                     $gameDatetime = new DateTime($game_date);
                     $formatted_gameDate = $gameDatetime->format('m/d/Y');
                 
-                    echo "<div class='max-w-[90%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
+                    echo "<div class='max-w-[95%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
                     echo "<div class='flex flex-col items-center space-y-4'>"; // Removed flex-grow on the outer container
 
                     // Team logos and names
                     echo "<div class='flex items-center justify-center space-x-6'>"; // Keep the spacing but remove flex-grow
-                    echo "<img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>"; // Added max-width for logos
-                    echo "<h3 class='text-3xl font-bold text-center whitespace-nowrap'>" . htmlspecialchars($homeTeamName) . " (H) <span class='mx-2'>vs.</span> " . htmlspecialchars($awayTeamName) . " (A)</h3>";
-                    echo "<img src='" . htmlspecialchars($awayLogo) . "' alt='awayLogo' class='h-20 max-w-xs'>"; // Added max-width for logos
+                    echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($homeTeamID) . "'>" . "<img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>" . "</a>"; // Added max-width for logos
+                    echo "<a class='text-3xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($homeTeamID) . "'>" . htmlspecialchars($homeTeamName) . " (H)</a> <span class='mx-2 text-3xl'>vs.</span>" . "<a class='text-3xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($awayTeamID) . "'>" . htmlspecialchars($awayTeamName) . " (A)</a></h3>";
+                    echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($awayTeamID) . "'>" . "<img src='" . htmlspecialchars($awayLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>" . "</a>"; // Added max-width for logos
                     echo "</div>";
                     
                     // Score line
@@ -615,25 +619,45 @@
 
 </div> -->
 
-<div>
+<!-- <div>
 <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Key</h4>
 <div class='bg-gray-800 rounded-lg p-4 text-sm text-white text-left leading-6 shadow-lg w-full max-w-xs border-2 border-slate-600 mx-auto'
      style='min-height: 340px;'>
-  <p margin-top:2px; margin-bottom:2px;>
-    <strong>FO</strong> – Faceoff<br>
-    <strong>SOG</strong> – Shot on Goal<br>
-    <strong>Pen.</strong> – Penalty<br>
-    <strong>Block</strong> – Blocked Shot<br>
-    <strong>Miss</strong> – Missed Shot<br>
-    <strong>Stop</strong> – Stoppage<br>
-    <strong>Give</strong> – Giveaway<br>
-    <strong>Take</strong> – Takeaway<br>
-    <strong>D. Pen.</strong> – Delayed Penalty<br>
-    <strong>Back</strong> – Backhand<br>
+  <p margin-top:2px; margin-bottom:2px; margin-right:5px; margin-left:5px;>
+    <strong>FO</strong> – Faceoff
+    <strong>SOG</strong> – Shot on Goal
+    <strong>Pen.</strong> – Penalty
+    <strong>Block</strong> – Blocked Shot
+    <strong>Miss</strong> – Missed Shot
+    <strong>Stop</strong> – Stoppage
+    <strong>Give</strong> – Giveaway
+    <strong>Take</strong> – Takeaway
+    <strong>D. Pen.</strong> – Delayed Penalty
+    <strong>Back</strong> – Backhand
     <strong>Tip</strong> – Tip-in
   </p>
 </div>
+</div> -->
+
+<h4 class="text-2xl font-semibold mb-4 text-white text-center">Play-by-Play Key</h4>
+
+<div class="bg-gray-800 rounded-lg p-6 text-sm text-white shadow-lg border-2 border-slate-600 max-w-4xl mx-auto">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-8">
+    <p><strong>FO</strong> – Faceoff</p>
+    <p><strong>SOG</strong> – Shot on Goal</p>
+    <p><strong>Pen.</strong> – Penalty</p>
+    <p><strong>Block</strong> – Blocked Shot</p>
+    <p><strong>Miss</strong> – Missed Shot</p>
+    <p><strong>Stop</strong> – Stoppage</p>
+    <p><strong>Give</strong> – Giveaway</p>
+    <p><strong>Take</strong> – Takeaway</p>
+    <p><strong>D. Pen.</strong> – Delayed Penalty</p>
+    <p><strong>Back</strong> – Backhand</p>
+    <p><strong>Tip</strong> – Tip-in</p>
+  </div>
 </div>
+
+<br>
 
 <div class='max-w-full mx-auto text-center'>
   <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
@@ -663,9 +687,6 @@
     const rink = document.getElementById("rink-image");
 const marker = document.getElementById("marker");
 
-const rinkWidth = 600; // image width in px
-const rinkHeight = 255; // image height in px
-
 const rinkXMin = -100, rinkXMax = 100;
 const rinkYMin = -42.5, rinkYMax = 42.5;
 
@@ -674,10 +695,18 @@ function transformCoords(x, y) {
   const width = rink.clientWidth;
   const height = rink.clientHeight;
 
-  const xPx = ((x - rinkXMin) / (rinkXMax - rinkXMin)) * width;
-  const yPx = height - ((y - rinkYMin) / (rinkYMax - rinkYMin)) * height;
+  const paddingX = 0.05; // 5% padding on each side
+  const paddingY = 0.04; // 4% top and bottom
+
+  const usableWidth = width * (1 - 2 * paddingX);
+  const usableHeight = height * (1 - 2 * paddingY);
+
+  const xPx = (x - rinkXMin) / (rinkXMax - rinkXMin) * usableWidth + width * paddingX;
+  const yPx = height - ((y - rinkYMin) / (rinkYMax - rinkYMin) * usableHeight + height * paddingY);
+
   return { x: xPx, y: yPx };
 }
+
 
 
 function drawMarker(x, y) {

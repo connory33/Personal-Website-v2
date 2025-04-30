@@ -326,8 +326,9 @@
                         # Season
                         $formatted_season_1 = substr($row['season'], 0, 4);
                         $formatted_season_2 = substr($row['season'], 4);
-                        echo "<td>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
-                        echo "<td><a href='playoff_results.php?season=" . htmlspecialchars($formatted_season_1) . htmlspecialchars($formatted_season_2) . "'>" . htmlspecialchars($formatted_season_1) . "-" . htmlspecialchars($formatted_season_2) . "</a></td>";
+                        // echo "<td>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
+                        echo "<td><a href='playoff_results.php?season_id=" . htmlspecialchars($formatted_season_1) . htmlspecialchars($formatted_season_2) . "'>" 
+                        . htmlspecialchars($formatted_season_1) . "-" . htmlspecialchars($formatted_season_2) . "</a></td>";
 
                         
                         # Game Number
