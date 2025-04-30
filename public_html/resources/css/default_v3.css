@@ -760,10 +760,10 @@ background-color: #18314F;
 .default-zebra-table {
 	width: 100%;
 	border-radius: 8px;
-	border: 2px solid #e3e7eb !important;
+	/* border: 2px solid #e3e7eb !important; */
 	overflow: hidden;
 	border-collapse: collapse;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	/* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
 	

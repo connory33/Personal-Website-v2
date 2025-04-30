@@ -16,8 +16,8 @@
 
   </head>
  <!-- Header -->
- <?php include 'header.php'; ?>
-  <body mi>
+  <body>
+  <?php include 'header.php'; ?>
     <div class="bg-slate-700 text-white text-center min-h-screen">
         <br><br>
 
@@ -95,7 +95,8 @@
                         FROM playoff_results
                         LEFT JOIN nhl_teams AS bottomSeedTeam ON playoff_results.bottomSeedIDs = bottomSeedTeam.id
                         LEFT JOIN nhl_teams AS topSeedTeam ON playoff_results.topSeedIDs = topSeedTeam.id
-                        WHERE playoff_results.seasonID = '$season_id'";
+                        WHERE playoff_results.seasonID = '$season_id'
+                        GROUP BY playoff_results.roundNums, playoff_results.seriesLetters";
 
                 $result = mysqli_query($conn, $sql);
                 if (!$result) {
@@ -109,67 +110,48 @@
                 $rounds = [];
                 while ($row = mysqli_fetch_assoc($result)) {
                     $rounds[$row['roundNums']][] = $row;
-                    $seasonID = $row['seasonID'];
-                    $roundNum = $row['roundNums'];
-                    $seriesLetter = $row['seriesLetters'];
-                    $seriesLink = $row['seriesLinks'];
-                    $bottomSeedID = $row['bottomSeedIDs'];
-                    $bottomSeedWins = $row['bottomSeedWins'];
-                    $topSeedIDs = $row['topSeedIDs'];
-                    $topSeedWins = $row['topSeedWins'];
-                    $bottomSeedTeamID = $row['bottomSeedTeamID'];
-                    $bottomSeedTeamName = $row['bottomSeedTeamName'];
-                    $bottomSeedTeamTriCode = $row['bottomSeedTeamTriCode'];
-                    $bottomSeedTeamLogo = $row['bottomSeedTeamLogo'];
-                    $bottomSeedTeamColor1 = $row['bottomSeedTeamColor1'];
-                    $bottomSeedTeamColor2 = $row['bottomSeedTeamColor2'];
-                    $topSeedTeamID = $row['topSeedTeamID'];
-                    $topSeedTeamName = $row['topSeedTeamName'];
-                    $topSeedTeamTriCode = $row['topSeedTeamTriCode'];
-                    $topSeedTeamLogo = $row['topSeedTeamLogo'];
-                    $topSeedTeamColor1 = $row['topSeedTeamColor1'];
-                    $topSeedTeamColor2 = $row['topSeedTeamColor2'];
+                }
                 
-
-        }
-        echo "<br><h2 class='text-2xl font-bold mb-4'>Playoff Bracket</h2>";
-        echo "<div class='flex justify-center gap-8 p-6 text-white'>";
-    
-        foreach ($rounds as $round => $matchups) {
-            echo "<div class='flex flex-col items-center gap-6'>";
-            // Round Label
-            echo "<div class='text-lg font-bold mb-2'>Round $round</div>";
-        
-            foreach ($matchups as $match) {
-                $bottomWins = (int)$match['bottomSeedWins'];
-                $topWins = (int)$match['topSeedWins'];
-        
-                $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-600' : '';
-                $topBold = $topWins > $bottomWins ? 'font-bold text-green-600' : '';
-        
-                echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60'>";
+                // ✅ Now, only after building all rounds, render the bracket
+                echo "<br><h2 class='text-2xl font-bold mb-4'>Playoff Bracket</h2>";
+                echo "<div class='flex justify-center gap-8 p-6 text-white'>";
                 
-                // Team names and scores stacked vertically per column
-                echo "<div class='flex justify-between'>";
+                foreach ($rounds as $round => $matchups) {
+                    echo "<div class='flex flex-col items-center gap-6'>";
+                    echo "<div class='text-lg font-bold mb-2'>Round $round</div>";
                 
-                echo "<div class='flex flex-col items-center w-1/2'>";
-                echo "<div class='$bottomBold text-sm'>{$match['bottomSeedTeamName']}</div>";
-                echo "<div class='$bottomBold text-lg'>{$bottomWins}</div>";
-                echo "</div>";
-        
-                echo "<div class='flex flex-col items-center w-1/2'>";
-                echo "<div class='$topBold text-sm'>{$match['topSeedTeamName']}</div>";
-                echo "<div class='$topBold text-lg'>{$topWins}</div>";
-                echo "</div>";
-        
-                echo "</div>"; // close flex row
-        
-                echo "</div>"; // close matchup box
-            }
-        
-            echo "</div>"; // close round
-        }
-        echo "</div>"; // close all rounds
+                    foreach ($matchups as $match) {
+                        $bottomWins = (int)$match['bottomSeedWins'];
+                        $topWins = (int)$match['topSeedWins'];
+                
+                        $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-600' : '';
+                        $topBold = $topWins > $bottomWins ? 'font-bold text-green-600' : '';
+                
+                        $seriesId = $match['seasonID'] . $match['seriesLetters'];
+                        echo "<a href='series_details.php?series_id={$seriesId}' class='no-underline'>";
+                        echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 transition'>";
+                        
+                        echo "<div class='flex justify-between'>";
+                        echo "<div class='flex flex-col items-center w-1/2'>";
+                        echo "<div class='$bottomBold text-sm'>{$match['bottomSeedTeamName']}</div>";
+                        echo "<div class='$bottomBold text-lg'>{$bottomWins}</div>";
+                        echo "</div>";
+                
+                        echo "<div class='flex flex-col items-center w-1/2'>";
+                        echo "<div class='$topBold text-sm'>{$match['topSeedTeamName']}</div>";
+                        echo "<div class='$topBold text-lg'>{$topWins}</div>";
+                        echo "</div>";
+                
+                        echo "</div>"; // flex row
+                        echo "</div>"; // box
+                        echo "</a>";
+                    }
+                
+                    echo "</div>"; // round
+                }
+                
+                echo "</div>"; // all rounds
+                
         
         
         

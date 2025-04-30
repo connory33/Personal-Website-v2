@@ -16,7 +16,33 @@
 
     <nav>
       <ul class="flex flex-wrap items-center gap-4 text-sm font-medium">
-        <li><a href="nhlIndex.php" class="hover:text-blue-400">NHL DB</a></li>
+        <!-- <li><a href="nhlIndex.php" class="hover:text-blue-400">NHL DB</a></li> -->
+        <li class="relative group">
+  <a href="#" class="hover:text-blue-400">NHL DB</a>
+  
+  <!-- Main Dropdown -->
+  <ul class="absolute left-0 top-full hidden group-hover:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-20">
+    <li>
+      <a href="nhlIndex.php" class="block px-4 py-2 hover:bg-slate-700">Overview</a>
+    </li>
+    <li class="relative group">
+      <a href="#" class="block px-4 py-2 hover:bg-slate-700">Playoffs ▸</a>
+      
+      <!-- Nested Dropdown -->
+      <ul class="absolute left-full top-0 hidden group-hover:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-30">
+        <li><a href="nhlPlayoffBracket.php" class="block px-4 py-2 hover:bg-slate-700">Bracket</a></li>
+        <li><a href="nhlPlayoffSeries.php" class="block px-4 py-2 hover:bg-slate-700">Series Results</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="nhlTeams.php" class="block px-4 py-2 hover:bg-slate-700">Teams</a>
+    </li>
+    <li>
+      <a href="nhlPlayers.php" class="block px-4 py-2 hover:bg-slate-700">Players</a>
+    </li>
+  </ul>
+</li>
+
         <li><a href="nhlLinesProject.php" class="hover:text-blue-400">NHL Lines</a></li>
         <li><a href="nbaFantasyProjections.php" class="hover:text-blue-400">NBA Fantasy</a></li>
         <li><a href="maddenOptimizer.php" class="hover:text-blue-400">NFL Roster</a></li>
