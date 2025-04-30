@@ -567,17 +567,15 @@
         ?>
 
 
-<div class='rink-key-wrapper'>
+<!-- class='rink-image shadow-md object-cover border-2 border-slate-600 rounded-lg' -->
+<!-- <div class='rink-key-wrapper'>
 
-  <!-- Left: Rink Image -->
   <div class='rink-key-column'>
 
     <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
-<!--     
-    <img src='../resources/images/hockey-rink.jpg'
-         alt='Hockey Rink'
-         class='rink-image shadow-md object-cover border-2 border-slate-600 rounded-lg'
-        style='height: 340px; width: auto;'> -->
+
+
+    
 
         <div style="position: relative; display: inline-block;">
         <img src="../resources/images/hockey-rink2.jpg" id="rink-image" width="600" height="255" />
@@ -595,7 +593,6 @@
 
   </div>
 
-  <!-- Right: Legend Box -->
   <div class='rink-key-column'>
     <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Key</h4>
     <div class='bg-gray-800 rounded-lg p-4 text-sm text-white text-left leading-6 shadow-lg w-full max-w-xs border-2 border-slate-600'
@@ -616,7 +613,49 @@
     </div>
   </div>
 
+</div> -->
+
+<div>
+<h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Key</h4>
+<div class='bg-gray-800 rounded-lg p-4 text-sm text-white text-left leading-6 shadow-lg w-full max-w-xs border-2 border-slate-600 mx-auto'
+     style='min-height: 340px;'>
+  <p margin-top:2px; margin-bottom:2px;>
+    <strong>FO</strong> – Faceoff<br>
+    <strong>SOG</strong> – Shot on Goal<br>
+    <strong>Pen.</strong> – Penalty<br>
+    <strong>Block</strong> – Blocked Shot<br>
+    <strong>Miss</strong> – Missed Shot<br>
+    <strong>Stop</strong> – Stoppage<br>
+    <strong>Give</strong> – Giveaway<br>
+    <strong>Take</strong> – Takeaway<br>
+    <strong>D. Pen.</strong> – Delayed Penalty<br>
+    <strong>Back</strong> – Backhand<br>
+    <strong>Tip</strong> – Tip-in
+  </p>
 </div>
+</div>
+
+<div class='max-w-full mx-auto text-center'>
+  <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
+
+  <div class="relative inline-block w-1/2 max-w-full">
+    <img src="../resources/images/hockey-rink2.jpg" id="rink-image" class="w-full h-auto mx-auto" />
+    <div id="marker" style="
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: red;
+      border-radius: 50%;
+      display: none;
+      pointer-events: none;
+    "></div>
+  </div>
+</div>
+
+
+
+
+
 <br>
 
 
