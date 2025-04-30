@@ -513,11 +513,11 @@ background-color: #18314F;
 
 
 
-
 .rink-key-wrapper {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+	position: relative;
     gap: 5%;
     flex-wrap: wrap; /* Optional: makes it responsive on small screens */
 }
@@ -531,7 +531,15 @@ background-color: #18314F;
 }
 
 
-
+.coordinate-dot {
+	width: 10px;
+	height: 10px;
+	background-color: red;
+	position: absolute;
+	border-radius: 50%;
+	z-index: 10;
+  }
+  
 
 
 
@@ -733,6 +741,10 @@ background-color: #18314F;
 	background-color: rgb(133, 149, 168);
 	transition: 0.2s ease-in-out;
 	color: white;
+}
+
+.default-selected-row {
+	background-color: rgb(133, 149, 168);
 }
 
 .default-zebra-table {

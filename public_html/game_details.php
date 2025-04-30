@@ -351,7 +351,6 @@
                     function render_skater_table($players, $team_label, $roster_lookup) {
                         echo "<h4 class='roster-title text-2xl'>$team_label</h4>";
                         echo "<div class='roster-table-wrapper'>";
-                        // echo "<h4 class='roster-title'>$team_label</h4><br>";
                         echo "<table class='roster-table default-zebra-table'>";
                         echo "<colgroup>";
                         echo "<col class='game_details_skater_stats_name'>";
@@ -373,7 +372,6 @@
                         echo "<col class='game_details_skater_stats_takeaways'>";
                         echo "<thead class='default-zebra-table'>";
                         echo "<tr style='color: white; font-weight: bold; background-color: #1F2833' class='default-zebra-table'>";
-                        // echo "<th>ID</th>";
                         echo "<th>Name</th>";
                         echo "<th>#</th>";
                         echo "<th>Pos</th>";
@@ -434,44 +432,45 @@
                     function render_goalie_table($players, $team_label, $roster_lookup) {
                         echo "<div class='roster-table-wrapper'>";
                         echo "<table class='roster-table default-zebra-table'>";
-                        echo "<colgroup>";
-                        echo "<col class='game_details_goalie_stats_name'>";
-                        echo "<col class='game_details_goalie_stats_number'>";
-                        echo "<col class='game_details_goalie_stats_pim'>";
-                        echo "<col class='game_details_goalie_stats_toi'>";
-                        echo "<col class='game_details_goalie_stats_evenStrengthShotsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_powerPlayShotsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_shorthandedShotsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_saveShotsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_savePctg'>";
-                        echo "<col class='game_details_goalie_stats_evenStrengthGoalsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_powerPlayGoalsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_shorthandedGoalsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_goalsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_starter'>";
-                        echo "<col class='game_details_goalie_stats_shotsAgainst'>";
-                        echo "<col class='game_details_goalie_stats_saves'>";
-                        echo "<thead class='default-zebra-table'>";
-                        echo "<tr style='color: white; font-weight: bold; background-color: #1F2833' class='default-zebra-table'>"; // Added missing opening <tr> tag
-                        echo "<th>Name</th>";
-                        echo "<th>Number</th>";
-                        echo "<th>PIM</th>";
-                        echo "<th>TOI</th>";
-                        echo "<th>Even SA</th>";
-                        echo "<th>PP SA</th>";
-                        echo "<th>SH SA</th>";
-                        echo "<th>Sv SA</th>";
-                        echo "<th>Sv %</th>";
-                        echo "<th>Even GA</th>";
-                        echo "<th>PP GA</th>";
-                        echo "<th>SH GA</th>";
-                        echo "<th>GA</th>";
-                        echo "<th>Starter</th>";
-                        echo "<th>SA</th>";
-                        echo "<th>Saves</th>";
-                        echo "</tr>";
-                        echo "</thead>";
-                        echo "<tbody>";
+                            echo "<colgroup>";
+                                echo "<col class='game_details_goalie_stats_name'>";
+                                echo "<col class='game_details_goalie_stats_number'>";
+                                echo "<col class='game_details_goalie_stats_pim'>";
+                                echo "<col class='game_details_goalie_stats_toi'>";
+                                echo "<col class='game_details_goalie_stats_evenStrengthShotsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_powerPlayShotsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_shorthandedShotsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_saveShotsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_savePctg'>";
+                                echo "<col class='game_details_goalie_stats_evenStrengthGoalsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_powerPlayGoalsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_shorthandedGoalsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_goalsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_starter'>";
+                                echo "<col class='game_details_goalie_stats_shotsAgainst'>";
+                                echo "<col class='game_details_goalie_stats_saves'>";
+                            echo "</colgroup>";
+                            echo "<thead class='default-zebra-table'>";
+                                echo "<tr style='color: white; font-weight: bold; background-color: #1F2833' class='default-zebra-table'>"; // Added missing opening <tr> tag
+                                    echo "<th>Name</th>";
+                                    echo "<th>Number</th>";
+                                    echo "<th>PIM</th>";
+                                    echo "<th>TOI</th>";
+                                    echo "<th>Even SA</th>";
+                                    echo "<th>PP SA</th>";
+                                    echo "<th>SH SA</th>";
+                                    echo "<th>Sv SA</th>";
+                                    echo "<th>Sv %</th>";
+                                    echo "<th>Even GA</th>";
+                                    echo "<th>PP GA</th>";
+                                    echo "<th>SH GA</th>";
+                                    echo "<th>GA</th>";
+                                    echo "<th>Starter</th>";
+                                    echo "<th>SA</th>";
+                                    echo "<th>Saves</th>";
+                                echo "</tr>";
+                            echo "</thead>";
+                            echo "<tbody>";
                     
                         foreach ($players as $player) {
                             $player_id = $player['playerID'];
@@ -484,9 +483,7 @@
                             if ($starter == 'True') {
                                 $player_name = $player_name . " (S)";
                             }
-                            
-                            // echo $player_name;
-                    
+                                                
                             echo "<tr class='default-zebra-table'>";
                             echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
                             echo "<td>" . $player['goalie_sweaterNumber'] . "</td>";
@@ -514,21 +511,6 @@
         if (empty($home_players)) {
             echo "<p>No roster data available.</p>";
         } else {
-            // echo "<div style='display: flex; flex-direction: column; align-items: center;'>";
-        
-            // // Skaters (row with two side-by-side tables)
-            // echo "<div style='display: flex; justify-content: center; gap: 40px; margin-bottom: 40px;'>";
-            // render_skater_table($home_skaters, $home_team_name, $roster_lookup);
-            // render_skater_table($away_skaters, $away_team_name, $roster_lookup);
-            // echo "</div>";
-        
-            // // Goalies (another row with two side-by-side tables)
-            // echo "<div style='display: flex; justify-content: center; gap: 40px;'>";
-            // render_goalie_table($home_goalies, $home_team_name, $roster_lookup);
-            // render_goalie_table($away_goalies, $away_team_name, $roster_lookup);
-            // echo "</div>";
-        
-            // echo "</div>"; // close column wrapper
             echo "<br><br>";
             echo "<h4 class='text-center text-4xl'>Game Rosters & Statistics</h4>";
             echo "<div class='roster-container'>";
@@ -584,20 +566,33 @@
         if (mysqli_num_rows($plays) > 0) {
         ?>
 
-        
-<?php
 
-
-echo "
 <div class='rink-key-wrapper'>
 
   <!-- Left: Rink Image -->
   <div class='rink-key-column'>
+
     <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
+<!--     
     <img src='../resources/images/hockey-rink.jpg'
          alt='Hockey Rink'
          class='rink-image shadow-md object-cover border-2 border-slate-600 rounded-lg'
-         style='height: 340px; width: auto;'>
+        style='height: 340px; width: auto;'> -->
+
+        <div style="position: relative; display: inline-block;">
+        <img src="../resources/images/hockey-rink2.jpg" id="rink-image" width="600" height="255" />
+        <div id="marker" style="
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+            display: none;
+            pointer-events: none;
+        "></div>
+        </div>
+
+
   </div>
 
   <!-- Right: Legend Box -->
@@ -623,8 +618,69 @@ echo "
 
 </div>
 <br>
-<br>
-"; ?>
+
+
+<script>
+    const rink = document.getElementById("rink-image");
+const marker = document.getElementById("marker");
+
+const rinkWidth = 600; // image width in px
+const rinkHeight = 255; // image height in px
+
+const rinkXMin = -100, rinkXMax = 100;
+const rinkYMin = -42.5, rinkYMax = 42.5;
+
+function transformCoords(x, y) {
+  const rink = document.getElementById("rink-image");
+  const width = rink.clientWidth;
+  const height = rink.clientHeight;
+
+  const xPx = ((x - rinkXMin) / (rinkXMax - rinkXMin)) * width;
+  const yPx = height - ((y - rinkYMin) / (rinkYMax - rinkYMin)) * height;
+  return { x: xPx, y: yPx };
+}
+
+
+function drawMarker(x, y) {
+    const marker = document.getElementById('marker');
+    if (!marker) return;
+
+    const { x: xPx, y: yPx } = transformCoords(x, y);
+
+    marker.style.left = `${xPx - 5}px`;  // center the 10x10 marker
+    marker.style.top = `${yPx - 5}px`;
+    marker.style.display = 'block';
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.querySelectorAll('.play-row');
+
+    rows.forEach(row => {
+        row.addEventListener('click', function () {
+            // Remove highlight from all rows
+            rows.forEach(r => r.classList.remove('default-selected-row'));
+
+            // Add highlight to the clicked row
+            this.classList.add('default-selected-row');
+
+            // Get the x and y coordinates from the data attributes
+            const x = parseFloat(this.dataset.x);
+            const y = parseFloat(this.dataset.y);
+            
+            // Log the coordinates for debugging
+            console.log(`Marker coordinates: (${x}, ${y})`);
+
+            // Move the marker
+            drawMarker(x, y);
+        });
+    });
+});
+
+
+
+</script>
+
 
 
 <!-- <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Events</h4> -->
@@ -657,7 +713,16 @@ echo "
                     <?php
                     
                         while ($row = $plays->fetch_assoc()){
-                            echo "<tr style='color: white; border: 1px solid #bcd6e7'>";
+                            # Coordinates
+                            $formatted_coordinates = $row['xCoord'] . '/' . $row['yCoord'];
+                            // echo "<td>".$row['xCoord']."</td>";
+                            // echo "<td>".$row['yCoord']."</td>";
+
+                            # saving values for use in onclick event
+                            $xCoord = $row['xCoord'];
+                            $yCoord = $row['yCoord'];
+
+                            echo "<tr class='play-row' data-x='{$xCoord}' data-y='{$yCoord}' style='color: white; border: 1px solid #bcd6e7'>";
                             $rowClass = '';
                             // echo "<td>".$row['eventID']."</td>";
                             // echo "<td>".$row['timeInPeriod']."</td>";
@@ -707,10 +772,6 @@ echo "
                             }
                             echo "<td>".htmlspecialchars($formatted_playType)."</td>";
 
-                            # Coordinates
-                            $formatted_coordinates = $row['xCoord'] . '/' . $row['yCoord'];
-                            // echo "<td>".$row['xCoord']."</td>";
-                            // echo "<td>".$row['yCoord']."</td>";
                             echo "<td>" . $formatted_coordinates . "</td>";
 
                             # Event Team
