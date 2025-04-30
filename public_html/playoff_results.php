@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="min-h-screen">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +18,7 @@
  <!-- Header -->
   <body>
   <?php include 'header.php'; ?>
-    <div class="bg-slate-700 text-white text-center min-h-screen">
+    <div class="bg-slate-700 text-white text-center w-full">
         <br><br>
 
         <?php
@@ -31,7 +31,10 @@
         // Check if the 'game_id' is passed in the URL
         if (isset($_GET['season_id'])) {
                 $season_id = $_GET['season_id'];
-                $currentSeason = $_GET['season_id'] ?? '';
+                $currentSeason = $_GET['season_id'] ?? '20232024'; // Default if not set
+                $seasonYear1 = substr($currentSeason, 0, 4);
+                $seasonYear2 = substr($currentSeason, 4, 4);
+                
 
                 $seasons = ['19171918', '19181919', '19201921', '19211922', '19221923', '19231924', '19241925', '19251926', '19261927', '19271928',
                 '19281929', '19291930', '19301931', '19311932', '19321933', '19331934', '19341935', '19351936', '19361937', '19371938',
@@ -47,38 +50,43 @@
 
                 $seasons = array_reverse($seasons); // Reverse the order of seasons to show the latest first
             ?>
+            <!-- Bracket Header -->
+            <h2 class="text-2xl font-bold mb-4 text-white text-center">
+            Playoff Bracket (<?php echo $seasonYear1 . '-' . $seasonYear2; ?>)
+            </h2>
 
- <div class="mx-auto w-fit px-6 py-4 rounded-md text-black flex items-center space-x-4 border border-slate-600 bg-slate-800">
-  <label for="seasonSelect" class="mr-2 text-white font-semibold">Select Season:</label>
-  <select id="seasonSelect" class="px-3 py-1 rounded text-black" onchange="changeSeason(this.value)">
-    <option value="">Season</option>
-    <?php foreach ($seasons as $seasonID): ?>
-                      <?php 
-                          $seasonYear1 = substr($seasonID, 0, 4);
-                          $seasonYear2 = substr($seasonID, 4, 4);
-                      ?>
-                      <option value="<?php echo $seasonID; ?>">
-                          <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
-                      </option>
-    <?php endforeach; ?>
-  </select>
-</div>
+            <div class="mx-auto w-fit px-6 py-4 rounded-md text-black flex items-center space-x-4 border border-slate-600 bg-slate-800">
+            <label for="seasonSelect" class="mr-2 text-white font-semibold">Select Season:</label>
+            <select id="seasonSelect" class="px-3 py-1 rounded text-black" onchange="changeSeason(this.value)">
+                <option value="">Season</option>
+                <?php foreach ($seasons as $seasonID): ?>
+                <?php 
+                    $seasonYear1 = substr($seasonID, 0, 4);
+                    $seasonYear2 = substr($seasonID, 4, 4);
+                    $selected = ($seasonID === $currentSeason) ? 'selected' : '';
+                ?>
+                <!-- Bracket Header -->
+                    <h2 class="text-2xl font-bold mb-4 text-white text-center">
+                    Bracket (<?php echo $seasonYear1 . '-' . $seasonYear2; ?>)
+                    </h2>
+                <option value="<?php echo $seasonID; ?>" <?php echo $selected; ?>>
+                    <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+            </div>
 <br>
 <hr class='w-4/5 border-white align-center mx-auto'>
-
-
-
-                
-
-                <script>
-                function changeSeason(seasonId) {
-                    if (seasonId) {
-                    window.location.href = '?season_id=' + encodeURIComponent(seasonId);
-                    }
-                }
-                </script>
-
-        <?php
+            <script>
+            function changeSeason(seasonId) {
+            if (seasonId) {
+                const url = new URL(window.location.href);
+                url.searchParams.set('season_id', seasonId);
+                window.location.href = url.toString();
+            }
+            }
+            </script>
+<?php
                 $sql = "SELECT playoff_results.*, 
                                bottomSeedTeam.id AS bottomSeedTeamID,
                                bottomSeedTeam.fullName AS bottomSeedTeamName,
@@ -86,12 +94,14 @@
                                bottomSeedTeam.teamLogo AS bottomSeedTeamLogo,
                                bottomSeedTeam.teamColor1 AS bottomSeedTeamColor1,
                                bottomSeedTeam.teamColor2 AS bottomSeedTeamColor2,
+                               bottomSeedTeam.division AS bottomSeedTeamDivision,
                                topSeedTeam.id AS topSeedTeamID,
                                topSeedTeam.fullName AS topSeedTeamName,
                                topSeedTeam.triCode AS topSeedTeamTriCode,
                                topSeedTeam.teamLogo AS topSeedTeamLogo,
                                topSeedTeam.teamColor1 AS topSeedTeamColor1,
-                               topSeedTeam.teamColor2 AS topSeedTeamColor2 
+                               topSeedTeam.teamColor2 AS topSeedTeamColor2,
+                               topSeedTeam.division AS topSeedTeamDivision
                         FROM playoff_results
                         LEFT JOIN nhl_teams AS bottomSeedTeam ON playoff_results.bottomSeedIDs = bottomSeedTeam.id
                         LEFT JOIN nhl_teams AS topSeedTeam ON playoff_results.topSeedIDs = topSeedTeam.id
@@ -113,7 +123,7 @@
                 }
                 
                 // ✅ Now, only after building all rounds, render the bracket
-                echo "<br><h2 class='text-2xl font-bold mb-4'>Playoff Bracket</h2>";
+                
                 echo "<div class='flex justify-center gap-8 p-6 text-white'>";
                 
                 foreach ($rounds as $round => $matchups) {
@@ -130,15 +140,15 @@
                         $seriesId = $match['seasonID'] . $match['seriesLetters'];
                         echo "<a href='series_details.php?series_id={$seriesId}' class='no-underline'>";
                         echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 transition'>";
-                        
-                        echo "<div class='flex justify-between'>";
+                        // echo "<p>" . $match['division'] . "</p>";
+                        echo "<div class='flex justify-between w-full'>";
                         echo "<div class='flex flex-col items-center w-1/2'>";
-                        echo "<div class='$bottomBold text-sm'>{$match['bottomSeedTeamName']}</div>";
+                        echo "<div class='$bottomBold text-sm'>" . $match['bottomSeedTeamName'] . "<br>(" . $match['bottomSeedTeamDivision'] . ", ". $match['bottomSeedRanks'] . ")</div>";
                         echo "<div class='$bottomBold text-lg'>{$bottomWins}</div>";
                         echo "</div>";
                 
                         echo "<div class='flex flex-col items-center w-1/2'>";
-                        echo "<div class='$topBold text-sm'>{$match['topSeedTeamName']}</div>";
+                        echo "<div class='$topBold text-sm'>" . $match['topSeedTeamName'] . "<br>(" . $match['topSeedTeamDivision'] . ", ". $match['topSeedRanks'] . ")</div>";
                         echo "<div class='$topBold text-lg'>{$topWins}</div>";
                         echo "</div>";
                 
