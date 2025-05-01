@@ -271,7 +271,6 @@
         ?>
                         <!-- Display results in a table format -->
                         <p>Click on any team name or game ID to view additional details about the player or game.</p><br>
-                <div class="table-container shadow-md rounded-lg overflow-x-auto mx-auto">
                 <h2 class="text-4xl font-bold text-white text-center">Game Results</h2><br>
                         <!-- Search Filter Fields -->
                     <div class="mb-4">
@@ -281,8 +280,8 @@
                     <input type="text" id="searchByGameType" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Game Type">
                     <input type="text" id="searchByHomeTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Home Team">
                     <input type="text" id="searchByAwayTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Away Team">
-                    </div>
-
+    </div>
+                    <div class="table-container shadow-md rounded-lg overflow-x-auto mx-auto w-[90%]">
                     <!-- Table -->
                     <table id='games-players-summary-table' class="min-w-max table-auto default-zebra-table">
                         <colgroup>
@@ -370,12 +369,13 @@
                         </tbody>
                     </table>
                 </div>
-    <br>
+                
     <br>
         <!-- Pagination Controls -->
         <div id="pagination" class="flex justify-center flex-wrap gap-2 mt-6 text-white w-3/5 mx-auto">
         <!-- Pagination buttons will be dynamically generated -->
     </div>
+    <br>
     
 
     <?php include 'footer.php'; ?>
@@ -405,63 +405,110 @@ document.addEventListener("DOMContentLoaded", function () {
 
             paginatedData.forEach(row => {
                 const tr = document.createElement("tr");
+
+                // Build the static part of the row (values that don't depend on conditions)
                 tr.innerHTML = `
                     <td>${row.season}</td>
                     <td>${row.gameNumber}</td>
                     <td>${row.gameDate}</td>
                     <td>${row.easternStartTime}</td>
                     <td>${row.gameType}</td>
-                    <td>${row.home_team_name}</td>
-                    <td>${row.homeScore}</td>
-                    <td>${row.away_team_name}</td>
-                    <td>${row.awayScore}</td>
-                    <td><a href='game_details.php?game_id=${row.id}'>${row.id}</a></td>
                 `;
+
+                let homeScoreCell, awayScoreCell, homeTeamCell, awayTeamCell;
+
+                // Conditional logic to populate the score and team cells
+                if (row.homeScore > row.awayScore) {
+                    homeTeamCell = `<td class='font-bold'><a href='team_details.php?team_id=${row.home_team_id}'>${row.home_team_name}</a></td>`;
+                    homeScoreCell = `<td class='font-bold'>${row.homeScore}</td>`;
+                    awayTeamCell = `<td><a href='team_details.php?team_id=${row.away_team_id}'>${row.away_team_name}</a></td>`;
+                    awayScoreCell = `<td>${row.awayScore}</td>`;
+                } else if (row.homeScore < row.awayScore) {
+                    homeTeamCell = `<td><a href='team_details.php?team_id=${row.home_team_id}'>${row.home_team_name}</a></td>`;
+                    homeScoreCell = `<td>${row.homeScore}</td>`;
+                    awayTeamCell = `<td class='font-bold'><a href='team_details.php?team_id=${row.away_team_id}'>${row.away_team_name}</a></td>`;
+                    awayScoreCell = `<td class='font-bold'>${row.awayScore}</td>`;
+                } else {
+                    homeTeamCell = `<td><a href='team_details.php?team_id=${row.home_team_id}'>${row.home_team_name}</a></td>`;
+                    homeScoreCell = `<td>${row.homeScore}</td>`;
+                    awayTeamCell = `<td><a href='team_details.php?team_id=${row.away_team_id}'>${row.away_team_name}</a></td>`;
+                    awayScoreCell = `<td>${row.awayScore}</td>`;
+                }
+
+                // Add the team and score cells to the row
+                tr.innerHTML += homeTeamCell + homeScoreCell + awayTeamCell + awayScoreCell;
+
+                // Add the last column for the game ID link
+                tr.innerHTML += `<td><a href='game_details.php?game_id=${row.id}'>${row.id}</a></td>`;
+
                 tableBody.appendChild(tr);
+
             });
         }
 
         // Function to render pagination controls
         function renderPagination(data) {
-            pagination.innerHTML = ""; // Clear existing pagination controls
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
             const totalPages = Math.ceil(data.length / pageSize);
+            const maxVisiblePages = 5; // how many pages to show around the current one
 
-            // Previous button
-            if (currentPage > 1) {
-                const prevButton = document.createElement("button");
-                prevButton.textContent = "Previous";
-                prevButton.className = "btn btn-secondary";
-                prevButton.addEventListener("click", () => {
-                    currentPage--;
-                    updateTableAndPagination(data);
-                });
-                pagination.appendChild(prevButton);
+            const createButton = (text, page = null) => {
+                const btn = document.createElement("button");
+                btn.textContent = text;
+                btn.className = "px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-all";
+                if (page !== null) {
+                    btn.addEventListener("click", () => {
+                        currentPage = page;
+                        updateTableAndPagination(data);
+                    });
+                } else {
+                    btn.disabled = true;
+                    btn.classList.add("disabled");
+                }
+                return btn;
+            };
+
+            const addPageButton = (i) => {
+                const btn = createButton(i, i);
+                if (i === currentPage) btn.classList.add("active");
+                pagination.appendChild(btn);
+            };
+
+            // Always show first page
+            addPageButton(1);
+
+            let start = Math.max(2, currentPage - 1);
+            let end = Math.min(totalPages - 1, currentPage + 1);
+
+            if (currentPage <= 3) {
+                start = 2;
+                end = Math.min(4, totalPages - 1);
+            } else if (currentPage >= totalPages - 2) {
+                start = Math.max(totalPages - 3, 2);
+                end = totalPages - 1;
             }
 
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                const pageButton = document.createElement("button");
-                pageButton.textContent = i;
-                pageButton.className = `btn ${i === currentPage ? "btn-primary" : "btn-secondary"}`;
-                pageButton.addEventListener("click", () => {
-                    currentPage = i;
-                    updateTableAndPagination(data);
-                });
-                pagination.appendChild(pageButton);
+            if (start > 2) {
+                pagination.appendChild(createButton("..."));
             }
 
-            // Next button
-            if (currentPage < totalPages) {
-                const nextButton = document.createElement("button");
-                nextButton.textContent = "Next";
-                nextButton.className = "btn btn-secondary";
-                nextButton.addEventListener("click", () => {
-                    currentPage++;
-                    updateTableAndPagination(data);
-                });
-                pagination.appendChild(nextButton);
+            for (let i = start; i <= end; i++) {
+                addPageButton(i);
+            }
+
+            if (end < totalPages - 1) {
+                pagination.appendChild(createButton("..."));
+            }
+
+            // Always show last page
+            if (totalPages > 1) {
+                addPageButton(totalPages);
             }
         }
+
+
 
         function filterTable() {
             const seasonFilter = searchBySeason.value.toLowerCase();
