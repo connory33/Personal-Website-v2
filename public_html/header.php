@@ -29,10 +29,6 @@
       <a href="nhlIndex.php" class="block px-4 py-2 hover:bg-slate-700">Game / Player Search (Home)</a>
     </li>
 
-    <li>
-      <a href="playoff_results.php?season_id=20232024" class="block px-4 py-2 hover:bg-slate-700">Playoff History</a>
-    </li>
-
     <!-- Nested Submenu Trigger with a custom group -->
     <li class="relative group/teams">
       <a href="#" class="block px-4 py-2 hover:bg-slate-700">Teams ▸</a>
@@ -76,7 +72,15 @@
       </ul>
     </li>
 
+      <li>
+        <a href="playoff_results.php?season_id=20232024" class="block px-4 py-2 hover:bg-slate-700">Playoff History</a>
+      </li>
+      <li>
+        <a href="https://connoryoung.com/draft_history.php?draft_id=63" class="block px-4 py-2 hover:bg-slate-700">Draft History</a>
+      </li>
+
   </ul>
+
 </li>
 
 

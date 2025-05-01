@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <?php include 'header.php'; ?>
-<body>
+<body class='bg-slate-700'>
 
 <?php
 ini_set('display_errors', 1);
@@ -21,7 +21,10 @@ if (isset($_GET['draft_id'])) {
     $draft_id = $_GET['draft_id'];
 
     
-    $sql = "SELECT * from draft_history WHERE draftID = '$draft_id'";
+    $sql = "SELECT draft_history.*, nhl_teams.triCode as triCode from 
+            draft_history 
+            LEFT JOIN nhl_teams ON draft_history.teamID = nhl_teams.id
+            WHERE draftID = '$draft_id'";
 
     $result = mysqli_query($conn, $sql);
 
@@ -42,7 +45,8 @@ if (isset($_GET['draft_id'])) {
             'height' => $row['height'],
             'weight' => $row['weight'],
             'amateurLeague' => $row['amateurLeague'],
-            'amateurClubName' => $row['amateurClubName']
+            'amateurClubName' => $row['amateurClubName'],
+            'triCode' => $row['triCode']
         ];
     }
 
@@ -54,25 +58,80 @@ if (isset($_GET['draft_id'])) {
 }
 ?>
     <br><br>
-<div class='max-w-[80%] mx-auto'>
+<div class='max-w-[90%] mx-auto'>
+    <div class='flex flex-wrap justify-center items-center gap-2 mb-2 text-white text-sm'>
+        <a href="https://connoryoung.com/draft_history.php?draft_id=52">1979</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=16">1980</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=39">1981</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=7">1982</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=30">1983</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=54">1984</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=20">1985</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=43">1986</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=12">1987</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=34">1988</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=1">1989</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=25">1990</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=50">1991</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=15">1992</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=37">1993</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=6">1994</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=28">1995</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=53">1996</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=18">1997</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=42">1998</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=10">1999</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=33">2000</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=56">2001</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=22">2002</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=46">2003</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=13">2004</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=36">2005</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=5">2006</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=38">2007</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=3">2008</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=23">2009</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=47">2010</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=14">2011</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=41">2012</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=4">2013</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=31">2014</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=57">2015</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=19">2016</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=44">2017</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=9">2018</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=32">2019</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=58">2020</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=59">2021</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=60">2022</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=62">2023</a> |
+        <a href="https://connoryoung.com/draft_history.php?draft_id=63">2024</a>
+    </div><br>
+<h2 class="text-4xl font-bold text-white text-center">
+    Draft Picks <?php if (!empty($all_picks)) echo htmlspecialchars($all_picks[0]['draftYear']); ?>
+</h2><br>
 
     <!-- Search Filter Fields -->
-    <div class="flex justify-between items-center mb-4">
-        <input type="text" id="searchByPlayer" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Search by Player">
-        <h2 class="text-4xl font-bold text-white">Draft Picks</h2>
-        <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Search by Team">
+    <div class="flex flex-wrap justify-center items-center gap-4 mb-4">
+        <input type="text" id="searchByRound" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Round">
+        <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Team">
+        <input type="text" id="searchByPlayer" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Player">
+        <input type="text" id="searchByPosition" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Position">
+        <input type="text" id="searchByCountry" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Country">
+        <input type="text" id="searchByLeague" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Amateur League">
+        <input type="text" id="searchByClub" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Amateur Team">
     </div>
-
+<div class="overflow-x-auto">
     <!-- Table -->
-    <table class='shift-table default-zebra-table' id="draftTable">
+    <table class='shift-table default-zebra-table text-center' id="draftTable">
         <thead>
             <tr>
-                <th>Draft Year</th>
+                <!-- <th>Draft Year</th> -->
                 <th>Round</th>
-                <th>Pick in Round</th>
-                <th>Overall Pick</th>
+                <!-- <th>Pick</th> -->
+                <th>Overall</th>
                 <th>Team</th>
-                <th>Pick History</th>
+                <!-- <th>Pick History</th> -->
                 <th>Name</th>
                 <th>Position</th>
                 <th>Country</th>
@@ -87,6 +146,7 @@ if (isset($_GET['draft_id'])) {
              
         </tbody>
     </table>
+</div>
 
     <!-- Pagination Controls -->
     <div id="pagination" class="flex justify-center space-x-4 mt-6 text-white">
@@ -101,6 +161,11 @@ if (isset($_GET['draft_id'])) {
         const tableBody = document.querySelector("#draftTable tbody");
         const searchByPlayer = document.getElementById("searchByPlayer");
         const searchByTeam = document.getElementById("searchByTeam");
+        const searchByRound = document.getElementById("searchByRound");
+        const searchByClub = document.getElementById("searchByClub");
+        const searchByLeague = document.getElementById("searchByLeague");
+        const searchByPosition = document.getElementById("searchByPosition");
+        const searchByCountry = document.getElementById("searchByCountry");
         const pagination = document.getElementById("pagination");
 
         let currentPage = 1;
@@ -116,13 +181,10 @@ if (isset($_GET['draft_id'])) {
             paginatedData.forEach(row => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
-                    <td>${row.draftYear}</td>
                     <td>${row.round}</td>
-                    <td>${row.pickInRound}</td>
                     <td>${row.overallPick}</td>
-                    <td>${row.teamID}</td>
-                    <td>${row.pickHistory}</td>
-                    <td><a href="player_details.php?team_id=${row.playerID}">${row.firstName}</a></td>
+                    <td>${row.triCode}</td>
+                    <td><a href="player_details.php?player_id=${row.playerID}">${row.firstName} ${row.lastName}</a></td>
                     <td>${row.position}</td>
                     <td>${row.country}</td>
                     <td>${row.height}</td>
@@ -176,17 +238,29 @@ if (isset($_GET['draft_id'])) {
             }
         }
 
-        // Function to filter rows based on input
         function filterTable() {
             const playerFilter = searchByPlayer.value.toLowerCase();
             const teamFilter = searchByTeam.value.toLowerCase();
+            const leagueFilter = searchByLeague.value.toLowerCase();
+            const roundFilter = searchByRound.value.toLowerCase();
+            const clubFilter = searchByClub.value.toLowerCase();
+            const positionFilter = searchByPosition.value.toLowerCase();
+            const countryFilter = searchByCountry.value.toLowerCase();
 
             return allPicks.filter(row => {
-                const matchesPlayer = row.playerName.toLowerCase().includes(playerFilter);
-                const matchesTeam = row.teamTricode.toLowerCase().includes(teamFilter);
-                return matchesPlayer && matchesTeam;
+                const fullName = `${row.firstName} ${row.lastName}`.toLowerCase();
+                const matchesPlayer = fullName.includes(playerFilter);
+                const matchesTeam = row.triCode?.toLowerCase().includes(teamFilter);
+                const matchesLeague = row.amateurLeague?.toLowerCase().includes(leagueFilter);
+                const matchesRound = row.round?.toString().toLowerCase().includes(roundFilter);
+                const matchesClub = row.amateurClubName?.toLowerCase().includes(clubFilter);
+                const matchesPosition = row.position?.toLowerCase().includes(positionFilter);
+                const matchesCountry = row.country?.toLowerCase().includes(countryFilter);
+
+                return matchesPlayer && matchesTeam && matchesLeague && matchesRound && matchesClub && matchesPosition && matchesCountry;
             });
-        }
+}
+
 
         // Function to update table and pagination
         function updateTableAndPagination(data) {
@@ -207,11 +281,42 @@ if (isset($_GET['draft_id'])) {
             updateTableAndPagination(filteredData);
         });
 
+        searchByLeague.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByClub.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByRound.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByPosition.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByCountry.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+
         // Initially render all rows and pagination
         updateTableAndPagination(allPicks);
     });
 
 </script>
-
+<?php include 'footer.php'; ?>
 </body>
 </html>
