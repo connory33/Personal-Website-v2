@@ -8,10 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
     <title>Connor Young</title>
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../resources/css/album.css" rel="stylesheet">
+
     <link href="/resources/css/default_v3.css" rel="stylesheet" type="text/css" />
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -59,10 +56,6 @@
                     JOIN nhl_teams AS away_teams
                         ON nhl_games.awayTeamId = away_teams.id";
 
-            ### Pagination logic ###
-            $limit = 25; // Results per page
-            $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-            $offset = ($page - 1) * $limit;
 
             if (!empty($_GET['search_column']) && !empty($_GET['search_term'])) {
 
@@ -70,14 +63,6 @@
                 $searchTerm = mysqli_real_escape_string($conn, $_GET['search_term']);
                 $originalSearchTerm = $searchTerm;
 
-                // Get total count (for Load More logic)
-                $count_sql = "SELECT COUNT(*) as total FROM (" . preg_replace("/SELECT.+?FROM/", "SELECT 1 FROM", $sql, 1) . ") as count_table";
-                $count_result = mysqli_query($conn, $count_sql);
-                $total_rows = mysqli_fetch_assoc($count_result)['total'];
-
-                $start = $offset + 1;
-                $end = min($offset + $limit, $total_rows);
-                $total_pages = ceil($total_rows / $limit);
 
                 # get lowercase version of search term to use in mapping numeric values
                 $lowerTerm = strtolower($searchTerm);
@@ -184,7 +169,7 @@
 
                 // Add order and limit clauses
                 $sql .= " ORDER BY $sortColumn $sortOrder";
-                $sql .= " LIMIT $limit OFFSET $offset";
+                // $sql .= " LIMIT $limit OFFSET $offset";
 
                 // Execute and check query
                 $result = mysqli_query($conn, $sql) or die("Query failed: " . mysqli_error($conn));
@@ -226,13 +211,71 @@
                         </form>
                     </div>
 
-                <!-- Display results in a table format -->
-                <p>Click on any team name or game ID to view additional details about the player or game.</p><br>
+
+                    <?php
+                    while ($row = $result->fetch_assoc()){
+
+                        # Season
+                        $formatted_season_1 = substr($row['season'], 0, 4);
+                        $formatted_season_2 = substr($row['season'], 4);
+                        $formatted_season = $formatted_season_1 . "-" . $formatted_season_2;
+
+                        # Date
+                        $gameDate = $row['gameDate'];
+                        $gameDatetime = new DateTime($gameDate);
+                        $formatted_gameDate = $gameDatetime->format('m/d/Y');
+
+                        # Time
+                        $formatted_startTime = substr($row['easternStartTime'], 11, -3);
+
+                        # Game Type (i.e. Preseason, Regular Season, etc.)
+                        $gameType_num = $row['gameType'];
+                        if ($gameType_num == 1) {
+                            $gameType_text = "Pre.";
+                        } elseif ($gameType_num == 2) {
+                            $gameType_text = "Reg.";
+                        } elseif ($gameType_num == 3) {
+                            $gameType_text = "Post.";
+                        } else {
+                            $gameType_text = "Unknown";
+                        }
+
+
+                        $all_games[] = [
+                            'season' => $formatted_season,
+                            'gameNumber' => $row['gameNumber'],
+                            'gameDate' => $formatted_gameDate,
+                            'easternStartTime' => $formatted_startTime,
+                            'gameType' => $gameType_text,
+                            'home_team_id' => $row['home_team_id'],
+                            'home_team_name' => $row['home_team_name'],
+                            'homeScore' => $row['homeScore'],
+                            'away_team_id' => $row['away_team_id'],
+                            'away_team_name' => $row['away_team_name'],
+                            'awayScore' => $row['awayScore'],
+                            'id' => $row['id']
+                        ];
+
+                    } 
+                        // Pass data to JavaScript as JSON
+                        echo "<script>const allGames = " . json_encode($all_games) . ";</script>";
+
+                    } else {
+                        echo "<tr><td colspan='10' class='text-center'>No results found.</td></tr>";
+                    }
+                    
+                
+        }
+        
+                
+        ?>
+                        <!-- Display results in a table format -->
+                        <p>Click on any team name or game ID to view additional details about the player or game.</p><br>
                 <div class="table-container shadow-md rounded-lg overflow-x-auto mx-auto">
                 <h2 class="text-4xl font-bold text-white text-center">Game Results</h2><br>
                         <!-- Search Filter Fields -->
                     <div class="mb-4">
-                    <input type="text" id="searchByDate" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Season">
+                    <input type="text" id="searchBySeason" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Season">
                     <input type="text" id="searchByDate" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Date">
                     <input type="text" id="searchByStartTime" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Start Time (EST)">
                     <input type="text" id="searchByGameType" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Game Type">
@@ -323,143 +366,15 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                    <?php
-                    while ($row = $result->fetch_assoc()){
-                        echo "<tr>";
-
-                        # Season
-                        $formatted_season_1 = substr($row['season'], 0, 4);
-                        $formatted_season_2 = substr($row['season'], 4);
-                        // echo "<td>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
-                        echo "<td><a href='playoff_results.php?season_id=" . htmlspecialchars($formatted_season_1) . htmlspecialchars($formatted_season_2) . "'>" 
-                        . htmlspecialchars($formatted_season_1) . "-" . htmlspecialchars($formatted_season_2) . "</a></td>";
-
-                        
-                        # Game Number
-                        echo "<td>".$row['gameNumber']."</td>";
-
-                        # Date
-                        $gameDate = $row['gameDate'];
-                        $gameDatetime = new DateTime($gameDate);
-                        $formatted_gameDate = $gameDatetime->format('m/d/Y');
-                        echo "<td>".htmlspecialchars($formatted_gameDate)."</td>";
-
-                        # Time
-                        $formatted_startTime = substr($row['easternStartTime'], 11, -3);
-                        echo "<td>".htmlspecialchars($formatted_startTime)."</td>";
-
-                        # Game Type (i.e. Preseason, Regular Season, etc.)
-                        $gameType_num = $row['gameType'];
-                        if ($gameType_num == 1) {
-                            $gameType_text = "Pre.";
-                        } elseif ($gameType_num == 2) {
-                            $gameType_text = "Reg.";
-                        } elseif ($gameType_num == 3) {
-                            $gameType_text = "Post.";
-                        } else {
-                            $gameType_text = "Unknown";
-                        }
-                        echo "<td>".$gameType_text."</td>";
-
-                        # Home Team
-                        if ($row['homeScore']>$row['awayScore']) {
-                            echo "<td style='font-weight: bold'><a href='team_details.php?team_id={$row['home_team_id']}'>" . htmlspecialchars($row['home_team_name']) . "</a></td>";
-                            // echo "<td style='font-weight: bold'>".$row['home_team_name']."</td>";
-                            echo "<td style='font-weight: bold'>".$row['homeScore']."</td>";
-                        } else {
-                            echo "<td><a href='team_details.php?team_id={$row['home_team_id']}'>" . htmlspecialchars($row['home_team_name']) . "</a></td>";
-                            echo "<td>".$row['homeScore']."</td>";
-                        }
-                        
-                        # Away Team
-                        if ($row['homeScore']<$row['awayScore']) {
-                            echo "<td style='font-weight: bold'><a href='team_details.php?team_id={$row['away_team_id']}'>" . htmlspecialchars($row['away_team_name']) . "</a></td>";
-                            echo "<td style='font-weight: bold'>".$row['awayScore']."</td>";
-                        } else {
-                            echo "<td><a href='team_details.php?team_id={$row['away_team_id']}'>" . htmlspecialchars($row['away_team_name']) . "</a></td>";
-                            echo "<td>".$row['awayScore']."</td>";
-                        }
-
-                        # Game ID
-                        echo "<td><a href='game_details.php?game_id=" . $row['id'] . "'>" . $row['id'] . "</a></td>";
-
-                        echo "</tr>";
-                    }
-                    
-                        echo "</tbody>";
-                    echo "</table>";
-                echo "</div>";
-
-            
-                $total_pages = ceil($total_rows / $limit);
-                
-                if ($total_pages > 1) {
-                    echo "<div style='text-align:center; margin-top: 20px;'>";
-                
-                    // Previous button
-                    if ($page > 1) {
-                        $prev_page = http_build_query(array_merge($_GET, ['page' => $page - 1]));
-                        echo "<a class='btn btn-secondary' href='?" . $prev_page . "' style='margin-right: 5px'>Previous</a>";
-                    }
-                
-                    // Numbered page buttons (e.g., 1 2 3 4 5)
-                    $range = 2; // how many pages to show on each side
-                    $start = max(1, $page - $range);
-                    $end = min($total_pages, $page + $range);
-                
-                    for ($i = $start; $i <= $end; $i++) {
-                        $page_query = http_build_query(array_merge($_GET, ['page' => $i]));
-                        $btn_class = $i == $page ? 'btn btn-primary' : 'btn btn-secondary';
-                        echo "<a class='$btn_class' href='?$page_query' style='margin: 0 2px;'>$i</a>";
-                    }
-                
-                    // Next button
-                    if ($page < $total_pages) {
-                        $next_page = http_build_query(array_merge($_GET, ['page' => $page + 1]));
-                        echo "<a class='btn btn-secondary' href='?" . $next_page . "' style='margin-left: 5px'>Next</a>";
-                    }
-                
-                    echo "</div>";
-                }
-            
-
-                if ($page==1) {
-                    $next_page = $page + 1;
-                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
-                    echo "<div><a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
-                        </div>";
-                } else if ($page>1 and $page<$total_pages) {
-                    $prev_page = $page - 1;
-                    $next_page = $page + 1;
-                    $prev_page = http_build_query(array_merge($_GET, ['page' => $prev_page]));
-                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
-                    echo "<div style='text-align:center; margin-top: 20px;'>
-                        <a class='btn btn-secondary' href='?" . $prev_page . "' style='margin-right: 10px'>Previous</a>";
-                    echo "<a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
-                        </div>";
-                } else {
-                    $prev_page = $page - 1;
-                    echo "<div style='text-align:center; margin-top: 20px;'>
-                        <a class='btn btn-secondary' href='?" . $prev_page . "'>Previous</a></div>";
-                }
-
-
-                    
-
-                echo "</div>";
-                
-                
-        
-            }
-
-
-            $conn->close();
-        }
-        ?>
-
+                                        <!-- Rows will be dynamically generated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
     <br>
     <br>
+        <!-- Pagination Controls -->
+        <div id="pagination" class="flex justify-center flex-wrap gap-2 mt-6 text-white w-3/5 mx-auto">
+        <!-- Pagination buttons will be dynamically generated -->
     </div>
     
 
@@ -480,130 +395,145 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let currentPage = 1;
     const pageSize = 50;
-    let allData = [];       // All raw data
-    let filteredData = [];  // Filtered data to be paginated
-
-    // Fetch the initial table data from the DOM
-    function loadDataFromDOM() {
-        const rows = document.querySelectorAll("#games-players-summary-table tbody tr");
-        rows.forEach(row => {
-            const cells = row.querySelectorAll("td");
-            allData.push({
-                playerName: cells[0].innerText.trim(),
-                playerID: cells[0].querySelector("a")?.href.split("=").pop(),
-                shiftNumber: cells[1].innerText.trim(),
-                period: cells[2].innerText.trim(),
-                startTime: cells[3].innerText.trim(),
-                endTime: cells[4].innerText.trim(),
-                duration: cells[5].innerText.trim(),
-                teamTricode: cells[6].innerText.trim(),
-                eventDescription: cells[7].innerText.trim()
-            });
-        });
-        filteredData = [...allData];
-        renderTable(filteredData);
-        // renderPagination(filteredData);
-    }
-
-    // Render table page
+    
+    // Function to render rows dynamically
     function renderTable(data) {
-        tableBody.innerHTML = "";
-        const start = (currentPage - 1) * pageSize;
-        const end = start + pageSize;
-        const page = data.slice(start, end);
+            tableBody.innerHTML = ""; // Clear the table first
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            const paginatedData = data.slice(start, end);
 
-        page.forEach(row => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><a href="player_details.php?team_id=${row.playerID}">${row.playerName}</a></td>
-                <td>${row.shiftNumber}</td>
-                <td>${row.period}</td>
-                <td>${row.startTime}</td>
-                <td>${row.endTime}</td>
-                <td>${row.duration}</td>
-                <td>${row.teamTricode}</td>
-                <td>${row.eventDescription}</td>
-            `;
-            tableBody.appendChild(tr);
-        });
-    }
+            paginatedData.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${row.season}</td>
+                    <td>${row.gameNumber}</td>
+                    <td>${row.gameDate}</td>
+                    <td>${row.easternStartTime}</td>
+                    <td>${row.gameType}</td>
+                    <td>${row.home_team_name}</td>
+                    <td>${row.homeScore}</td>
+                    <td>${row.away_team_name}</td>
+                    <td>${row.awayScore}</td>
+                    <td><a href='game_details.php?game_id=${row.id}'>${row.id}</a></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
 
+        // Function to render pagination controls
+        function renderPagination(data) {
+            pagination.innerHTML = ""; // Clear existing pagination controls
+            const totalPages = Math.ceil(data.length / pageSize);
 
-    // Combined render
-    function updateTableAndPagination() {
-        renderTable(filteredData);
-        // renderPagination(filteredData);
-    }
-
-
-
-    // Filter handler
-    function applyFilters() {
-        const seasonFilter = searchBySeason.value.toLowerCase();
-        const dateFilter = searchByDate.value.toLowerCase();
-        const startTimeFilter = searchByStartTime.value.toLowerCase();
-        const gameTypeFilter = searchByGameType.value.toLowerCase();
-        const homeTeamFilter = searchByHomeTeam.value.toLowerCase();
-        const awayTeamFilter = searchByAwayTeam.value.toLowerCase();
-
-        filteredData = allData.filter(row => {
-            const matchPlayer = row.playerName.toLowerCase().includes(playerFilter);
-            const matchTeam = row.teamTricode.toLowerCase().includes(teamFilter);
-            return matchPlayer && matchTeam;
-        });
-
-        currentPage = 1;
-        updateTableAndPagination();
-    }
-
-    // Add input event listeners
-    searchBySeason.addEventListener("input", applyFilters);
-    searchByDate.addEventListener("input", applyFilters);
-    searchByStartTime.addEventListener("input", applyFilters);
-    searchByGameType.addEventListener("input", applyFilters);
-    searchByHomeTeam.addEventListener("input", applyFilters);
-    searchByAwayTeam.addEventListener("input", applyFilters);
-
-    // Init on page load
-    loadDataFromDOM();
-});
-</script>
-
-
-
-    <!-- JS for search filter on table -->
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // const searchByPlayerInput = document.getElementById("searchByPlayer");
-    const searchByTeamInput = document.getElementById("searchByTeam");
-    const table = document.getElementById("games-players-summary-table");
-    const rows = table.querySelectorAll("tbody tr");
-
-    function filterTable() {
-        // const playerFilter = searchByPlayerInput.value.toLowerCase();
-        const teamFilter = searchByTeamInput.value.toLowerCase();
-
-        rows.forEach(row => {
-            const playerText = row.innerText.toLowerCase();
-            const homeTeam = row.children[5]?.innerText.toLowerCase() || ""; // Home team column
-            const awayTeam = row.children[7]?.innerText.toLowerCase() || ""; // Away team column
-
-            // const matchesPlayer = !playerFilter || playerText.includes(playerFilter);
-            const matchesTeam = !teamFilter || homeTeam.includes(teamFilter) || awayTeam.includes(teamFilter);
-
-            if (matchesTeam) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
+            // Previous button
+            if (currentPage > 1) {
+                const prevButton = document.createElement("button");
+                prevButton.textContent = "Previous";
+                prevButton.className = "btn btn-secondary";
+                prevButton.addEventListener("click", () => {
+                    currentPage--;
+                    updateTableAndPagination(data);
+                });
+                pagination.appendChild(prevButton);
             }
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement("button");
+                pageButton.textContent = i;
+                pageButton.className = `btn ${i === currentPage ? "btn-primary" : "btn-secondary"}`;
+                pageButton.addEventListener("click", () => {
+                    currentPage = i;
+                    updateTableAndPagination(data);
+                });
+                pagination.appendChild(pageButton);
+            }
+
+            // Next button
+            if (currentPage < totalPages) {
+                const nextButton = document.createElement("button");
+                nextButton.textContent = "Next";
+                nextButton.className = "btn btn-secondary";
+                nextButton.addEventListener("click", () => {
+                    currentPage++;
+                    updateTableAndPagination(data);
+                });
+                pagination.appendChild(nextButton);
+            }
+        }
+
+        function filterTable() {
+            const seasonFilter = searchBySeason.value.toLowerCase();
+            const startTimeFilter = searchByStartTime.value.toLowerCase();
+            const dateFilter = searchByDate.value.toLowerCase();
+            const gameTypeFilter = searchByGameType.value.toLowerCase();
+            const homeTeamFilter = searchByHomeTeam.value.toLowerCase();
+            const awayTeamFilter = searchByAwayTeam.value.toLowerCase();
+
+            return allGames.filter(row => {
+                const matchesSeason = row.season.toLowerCase().includes(seasonFilter);
+                const matchesDate = row.gameDate.toLowerCase().includes(dateFilter);
+                const matchesStartTime = row.easternStartTime.toLowerCase().includes(startTimeFilter);
+                const matchesGameType = row.gameType.toLowerCase().includes(gameTypeFilter);
+                const matchesHomeTeam = row.home_team_name.toLowerCase().includes(homeTeamFilter);
+                const matchesAwayTeam = row.away_team_name.toLowerCase().includes(awayTeamFilter);
+                return matchesSeason && matchesDate && matchesStartTime && matchesGameType && matchesHomeTeam && matchesAwayTeam;
+            });
+}
+
+
+        // Function to update table and pagination
+        function updateTableAndPagination(data) {
+            renderTable(data);
+            renderPagination(data);
+        }
+
+        // Attach event listeners for filtering
+
+        searchBySeason.addEventListener("keyup", () => {
+            currentPage = 1; // Reset to first page on filter change
+            const filteredData = filterTable();
+            updateTableAndPagination(filteredData);
         });
-    }
 
-});
+        searchByDate.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByStartTime.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByGameType.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByHomeTeam.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+        searchByAwayTeam.addEventListener("keyup", () => {
+            currentPage = 1;
+            const filteredData = filterTable(); 
+            updateTableAndPagination(filteredData);
+        });
+
+
+        // Initially render all rows and pagination
+        updateTableAndPagination(allGames);
+    });
 </script>
-
-          <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
-          <script>
+<script>
+        //   <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
             document.getElementById('nhl-search').addEventListener('submit', function (e) {
                 const column = document.getElementById('nhl-search-column').value;
                 console.log("Search column selected:", column); // Debugging
