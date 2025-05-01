@@ -32,25 +32,45 @@ def mmss_to_seconds(mmss):
 
 
 
+# load player data
+player_data = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_players.csv")
+player_data = player_data.fillna(0)
 
-
-
-# Load your shot datapi
-data = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_PbP.csv")
+# Load your shot data
+pbp_data = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_plays.csv")
 # print(data.head(10))
-data = data.fillna(0)
+pbp_data = pbp_data.fillna(0)
 
-# Additional feature engineering like shot type, player skill, etc.
+# merge player and goalie stats into play by play data - need to do it sequentially
+# Merge shooting player stats into pbp_data
+pbp_with_shooter = pbp_data.merge(
+    player_data,
+    how='left',
+    left_on='shootingPlayerId',
+    right_on='playerId',
+    suffixes=('', '_shooter')
+)
+
+# Merge goalie stats into the result
+pbp = pbp_with_shooter.merge(
+    player_data,
+    how='left',
+    left_on='goalieInNetId',
+    right_on='playerId',
+    suffixes=('', '_goalie')
+)
+
+# Optional: drop extra playerId columns if you want
+pbp = pbp.drop(columns=['playerId', 'playerId_goalie'])
+
+pbp.to_csv("C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_plays_with_players.csv", index=False)
+
+# Preview the merged data
+print(pbp.head())
+
 
 # Target variable: 1 for goal, 0 for non-goal
-data['goal'] = np.where(data['typeDescKey'] == 'goal', 1, 0)
-
-
-
-# Plot distribution
-# sns.histplot(data=data, x='distance', hue='goal', bins=50, stat="density", common_norm=False)
-# plt.title('Shot Distance Distribution by Goal/No Goal')
-# plt.show()
+pbp_data['goal'] = np.where(pbp_data['typeDescKey'] == 'goal', 1, 0)
 
 
 ### Feature engineering ###
@@ -61,62 +81,62 @@ left_net_yCoord = 0.0
 right_net_yCoord = 0.0
 
 # Remove bad rows
-data = data[data['xCoord'] != 'No data available']
-data = data[data['yCoord'] != 'No data available']
+pbp_data = pbp_data[pbp_data['xCoord'] != 'No data available']
+pbp_data = pbp_data[pbp_data['yCoord'] != 'No data available']
 
 # Convert types
-data['xCoord'] = data['xCoord'].astype(float)
-data['yCoord'] = data['yCoord'].astype(float)
-data['duration'] = data['duration'].astype(float)  # Convert to float first if needed
+pbp_data['xCoord'] = pbp_data['xCoord'].astype(float)
+pbp_data['yCoord'] = pbp_data['yCoord'].astype(float)
+pbp_data['duration'] = pbp_data['duration'].astype(float)  # Convert to float first if needed
 # data['duration'] = data['duration'].astype(int)
 
 # Distances - correctly written
-data['distance_from_left_net'] = np.sqrt((data['xCoord'] - left_net_xCoord)**2 + (data['yCoord'] - left_net_yCoord)**2)
-data['distance_from_right_net'] = np.sqrt((data['xCoord'] - right_net_xCoord)**2 + (data['yCoord'] - right_net_yCoord)**2)
+pbp_data['distance_from_left_net'] = np.sqrt((pbp_data['xCoord'] - left_net_xCoord)**2 + (pbp_data['yCoord'] - left_net_yCoord)**2)
+pbp_data['distance_from_right_net'] = np.sqrt((pbp_data['xCoord'] - right_net_xCoord)**2 + (pbp_data['yCoord'] - right_net_yCoord)**2)
 
 # Pick the correct distance depending on side defending - NEED TO CHANGE THIS,IT'S ALWAYS ASSUMING HOME TEAM IS SHOOTING
-data['relevant_distance'] = np.where(
-    data['homeTeamDefendingSide'] == 'left',
-    data['distance_from_left_net'],
+pbp_data['relevant_distance'] = np.where(
+    pbp_data['homeTeamDefendingSide'] == 'left',
+    pbp_data['distance_from_left_net'],
     np.where(
-        data['homeTeamDefendingSide'] == 'right',
-        data['distance_from_right_net'],
+        pbp_data['homeTeamDefendingSide'] == 'right',
+        pbp_data['distance_from_right_net'],
         np.nan  # if missing or weird value
     )
 )
 
 # Also calculate "relevant_angle_num" safely
-data['relevant_angle_num'] = np.where(
-    data['homeTeamDefendingSide'] == 'left',
-    data['xCoord'] - (-89),
+pbp_data['relevant_angle_num'] = np.where(
+    pbp_data['homeTeamDefendingSide'] == 'left',
+    pbp_data['xCoord'] - (-89),
     np.where(
-        data['homeTeamDefendingSide'] == 'right',
-        89 - data['xCoord'],
+        pbp_data['homeTeamDefendingSide'] == 'right',
+        89 - pbp_data['xCoord'],
         np.nan
     )
 )
 
 # Get distance features
-data['distance'] = data['relevant_distance']
-data['angle'] = np.arccos(data['relevant_angle_num'] / data['relevant_distance'])
-data['log_distance'] = np.log1p(data['distance'])  # log transform
-data['sin_angle'] = np.sin(data['angle'])          # sin of angle
+pbp_data['distance'] = pbp_data['relevant_distance']
+pbp_data['angle'] = np.arccos(pbp_data['relevant_angle_num'] / pbp_data['relevant_distance'])
+pbp_data['log_distance'] = np.log1p(pbp_data['distance'])  # log transform
+pbp_data['sin_angle'] = np.sin(pbp_data['angle'])          # sin of angle
 
-data['homeTeamDefendingSide'] = data['homeTeamDefendingSide'].map({'left': 0, 'right': 1})
+pbp_data['homeTeamDefendingSide'] = pbp_data['homeTeamDefendingSide'].map({'left': 0, 'right': 1})
 
 # Get type of previous event
-data = data.sort_values(by=['gameID', 'eventID'])  # Use appropriate column name for event order
-data['prev_typeDescKey'] = data.groupby('gameID')['typeDescKey'].shift(1)  # Shift within each game
+pbp_data = pbp_data.sort_values(by=['gameID', 'eventID'])  # Use appropriate column name for event order
+pbp_data['prev_typeDescKey'] = pbp_data.groupby('gameID')['typeDescKey'].shift(1)  # Shift within each game
 
 # create specific feature for rebound
-data['rebound'] = np.where(data['prev_typeDescKey'] == 'shot', 1, 0)
+pbp_data['rebound'] = np.where(pbp_data['prev_typeDescKey'] == 'shot', 1, 0)
 
-data['timeRemaining'] = data['timeRemaining'].apply(mmss_to_seconds)  # Convert to seconds, leave as string so formatting works
+pbp_data['timeRemaining'] = pbp_data['timeRemaining'].apply(mmss_to_seconds)  # Convert to seconds, leave as string so formatting works
 
 # Strength state of game (5v5, 4v4, etc.)
-data['penaltyStartTime'] = np.where(data['duration'].notnull(), data['timeRemaining'], np.nan)
-data['penaltyEndTime'] = np.where(data['duration'].notnull(), data['timeRemaining'] - data['duration'], np.nan)
-data['penalty_active'] = (data['timeRemaining'] >= data['penaltyStartTime']) & (data['timeRemaining'] <= data['penaltyEndTime'])
+pbp_data['penaltyStartTime'] = np.where(pbp_data['duration'].notnull(), pbp_data['timeRemaining'], np.nan)
+pbp_data['penaltyEndTime'] = np.where(pbp_data['duration'].notnull(), pbp_data['timeRemaining'] - pbp_data['duration'], np.nan)
+pbp_data['penalty_active'] = (pbp_data['timeRemaining'] >= pbp_data['penaltyStartTime']) & (pbp_data['timeRemaining'] <= pbp_data['penaltyEndTime'])
 
 
 
@@ -147,20 +167,20 @@ def adjust_penalty_based_on_goal(row, last_goal_time):
 
 # Apply logic to adjust penalty active-ness based on goal events
 last_goal_time = None  # Track the last goal time
-data['penalty_active'] = False  # Initialize the column for tracking penalty active-ness
+pbp_data['penalty_active'] = False  # Initialize the column for tracking penalty active-ness
 
-for idx, row in data.iterrows():
+for idx, row in pbp_data.iterrows():
     # Update the penalty_active status based on the goal
-    data.at[idx, 'penalty_active'] = adjust_penalty_based_on_goal(row, last_goal_time)
+    pbp_data.at[idx, 'penalty_active'] = adjust_penalty_based_on_goal(row, last_goal_time)
     
     # If a goal is scored, update the last goal time (this will allow us to track when the goal happens)
     if row['goal'] == 1:
         last_goal_time = row['timeRemaining']  # Set the goal time
 
 # After this, you can reassign the strength column based on the adjusted penalty status
-data['strength'] = data['penalty_active'].apply(lambda x: 'PK' if x else 'EV')
+pbp_data['strength'] = pbp_data['penalty_active'].apply(lambda x: 'PK' if x else 'EV')
 
-data['penaltyType'] = np.where(data['penaltyType'], 1, 0)
+pbp_data['penaltyType'] = np.where(pbp_data['penaltyType'], 1, 0)
 
 
 
@@ -170,21 +190,21 @@ data['penaltyType'] = np.where(data['penaltyType'], 1, 0)
 # distance between prev event and current (could indicate pass)
 
 # One hot encoding for categorical variables
-for col in ['typeDescKey', 'shotType', 'penaltyType', 'prev_typeDescKey']:
-    if col in data.columns:
-        data = pd.get_dummies(data, columns=[col], drop_first=True)
+for col in ['typeDescKey', 'shotType', 'penaltyType', 'prev_typeDescKey', 'strength']:
+    if col in pbp_data.columns:
+        pbp_data = pd.get_dummies(pbp_data, columns=[col], drop_first=True)
     else:
         print(f"{col} not found in data")
 
 
 # Features 'shotType_backhand',
 features = ['xCoord', 'yCoord', 'homeTeamDefendingSide', 'distance', 'angle', 'shotType_wrist', 'shotType_snap', 'shotType_slap',  'shotType_tip-in', 'shotType_wrap-around', 
-            'log_distance', 'sin_angle', 'strength'] + \
-           [col for col in data.columns if col.startswith('prev_typeDescKey')]  # Add the one-hot encoded columns dynamically
-missing_columns = [col for col in features if col not in data.columns]
+            'log_distance', 'sin_angle'] + \
+           [col for col in pbp_data.columns if col.startswith('prev_typeDescKey')]  # Add the one-hot encoded columns dynamically
+missing_columns = [col for col in features if col not in pbp_data.columns]
 print("Missing columns:", missing_columns)
-X = data[features]
-y = data['goal']
+X = pbp_data[features]
+y = pbp_data['goal']
 
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)

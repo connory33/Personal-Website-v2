@@ -21,7 +21,7 @@
   <!-- Header -->
   <?php include 'header.php'; ?>
   <body>
-    <div class="bg-slate-700 text-white" style='align-items: flex-start'>
+    <div class="text-white" style='align-items: flex-start; background-color: #343a40'>
       <div style='margin-left: 10px; margin-right: 10px'>
         <?php
 

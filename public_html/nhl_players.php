@@ -17,7 +17,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
-<body>
+<body class='min-h-screen'>
 
   <?php include 'header.php'; ?>
 
@@ -71,7 +71,7 @@
 
             ?>
 
-      <div id="nhl-games-players-summary-content-container" class='bg-slate-700 h-screen'>
+      <div id="nhl-games-players-summary-content-container" style='background-color: #343a40'>
         <br>
         <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
 
@@ -196,16 +196,19 @@
     <script src="../js/vendor/holder.min.js"></script>
     <!-- Placed at the end of the document so the pages load faster -->
 
-    <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
-    <script>
-        document.getElementById('nhl-search').addEventListener('submit', function (e) {
-            const column = document.getElementById('nhl-search-column').value;
-            if (column === 'player') {
-            this.action = 'nhl_players.php';
-            } else {
-            this.action = 'nhl_games.php';
-            }
-        });
+          <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
+          <script>
+            document.getElementById('nhl-search').addEventListener('submit', function (e) {
+                const column = document.getElementById('nhl-search-column').value;
+                console.log("Search column selected:", column); // Debugging
+                if (column === 'player') {
+                    this.action = 'nhl_players.php';
+                    console.log("Form action set to nhl_players.php"); // Debugging
+                } else {
+                    this.action = 'nhl_games.php';
+                    console.log("Form action set to nhl_games.php"); // Debugging
+                }
+            });
     </script>
 
   </body>

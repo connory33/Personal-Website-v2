@@ -195,7 +195,7 @@
                 
                 ?>
 
-            <div id="nhl-games-players-summary-content-container" class='bg-dark'>
+            <div id="nhl-games-players-summary-content-container" style='background-color: #343a40'>
                 <br>
                 <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
 
@@ -589,6 +589,21 @@ document.addEventListener("DOMContentLoaded", function () {
     searchByTeamInput.addEventListener("input", filterTable);
 });
 </script>
+
+          <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
+          <script>
+            document.getElementById('nhl-search').addEventListener('submit', function (e) {
+                const column = document.getElementById('nhl-search-column').value;
+                console.log("Search column selected:", column); // Debugging
+                if (column === 'player') {
+                    this.action = 'nhl_players.php';
+                    console.log("Form action set to nhl_players.php"); // Debugging
+                } else {
+                    this.action = 'nhl_games.php';
+                    console.log("Form action set to nhl_games.php"); // Debugging
+                }
+            });
+    </script>
 
 
   </body>

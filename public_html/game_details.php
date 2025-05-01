@@ -20,7 +20,7 @@
  <!-- Header -->
  <?php include 'header.php'; ?>
   <body>
-    <div class="bg-slate-700 text-white text-center">
+    <div class="text-white text-center" style='background-color: #343a40'>
         <br><br>
 
         <?php
@@ -455,7 +455,7 @@
                                 echo "<col class='game_details_goalie_stats_saves'>";
                             echo "</colgroup>";
                             echo "<thead class='default-zebra-table'>";
-                                echo "<tr style='color: white; font-weight: bold; background-color: #1F2833' class='default-zebra-table'>"; // Added missing opening <tr> tag
+                                echo "<tr style='color: white; font-weight: bold;' class='default-zebra-table bg-slate-800'>"; // Added missing opening <tr> tag
                                     echo "<th>Name</th>";
                                     echo "<th>Number</th>";
                                     echo "<th>PIM</th>";

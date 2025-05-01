@@ -18,7 +18,7 @@
  <!-- Header -->
  <?php include 'header.php'; ?>
   <body>
-    <div class="bg-slate-700 text-white text-center min-h-screen">
+    <div class="text-white text-center min-h-screen" style='background-color: #343a40'>
         <br><br>
 
         <?php

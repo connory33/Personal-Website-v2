@@ -249,7 +249,7 @@
               $teamColor2Contrast = getTextColorForBackground($teamColor2);  // Contrast color for teamColor2
               ?>
               
-              <div class="full-page-content-container bg-slate-700">
+              <div class="full-page-content-container" style='background-color:#343a40'>
                   <?php
                   echo "<div style='padding-left: 10px; padding-right: 10px; padding-top: 25px'>";
                   
@@ -332,11 +332,11 @@
 </div>
 <br><br>
 
-              <div class="max-w-[80%] mx-auto">
+              <div class="max-w-[90%] mx-auto overflow-x-auto">
               <!-- OVERALL TEAM STATS BY SEASON -->
               <div>
                 <h2 class="text-2xl text-center text-white">Overall Team Stats</h2>
-                <table class='default-zebra-table overall-team-stats-table text-center'>
+                <table class='default-zebra-table overall-team-stats-table text-center min-w-[900px]'>
                   <colgroup>
                     <col class='overall-team-stats-season'>
                     <col class='overall-team-stats-gp'>
@@ -578,7 +578,7 @@
                 <br>
                 <div>
                 <div class="shadow-md rounded-lg">
-                    <table class='goalies-combined-table default-zebra-table' style='color: black; border: 2px solid <?php echo $teamColor2; ?>;'>
+                    <table class='goalies-combined-table default-zebra-table text-center min-w-[900px]' style='color: black; border: 2px solid <?php echo $teamColor2; ?>;'>
                     <colgroup>
                     <col class='goalies-combined-season'>
                     <col class='goalies-combined-name'>
@@ -675,7 +675,7 @@
                 </div>
                           </div>
                 </div>
-            </div>
+
             
             
 
@@ -687,7 +687,7 @@
         // Close database connection
         mysqli_close($conn);
           ?>
-          <div class='bg-slate-700'>
+          <div>
           <br>
           <hr style='border-color: <?php echo $teamColor1 ?>; width: 70%; margin: auto; border-width: 2px;'>
           <br>

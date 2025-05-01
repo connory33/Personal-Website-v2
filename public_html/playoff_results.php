@@ -18,7 +18,7 @@
  <!-- Header -->
   <body>
   <?php include 'header.php'; ?>
-    <div class="bg-slate-700 text-white text-center w-full">
+    <div class="text-white text-center w-full oveflow-x-auto" style='background-color: #343a40'>
         <br><br>
 
         <?php

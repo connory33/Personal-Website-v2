@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <?php include 'header.php'; ?>
-<body class='bg-slate-700'>
+<body>
 
 <?php
 ini_set('display_errors', 1);
@@ -57,6 +57,7 @@ if (isset($_GET['draft_id'])) {
     echo "<p>No game ID provided.</p>";
 }
 ?>
+<div style='background-color: #343a40'>
     <br><br>
 <div class='max-w-[90%] mx-auto'>
     <div class='flex flex-wrap justify-center items-center gap-2 mb-2 text-white text-sm'>
@@ -317,6 +318,7 @@ if (isset($_GET['draft_id'])) {
     });
 
 </script>
+</div>
 <?php include 'footer.php'; ?>
 </body>
 </html>

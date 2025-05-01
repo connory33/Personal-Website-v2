@@ -30,8 +30,8 @@
             This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
             You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
             <br><br>
-            Game and player pages feature additional details such as rosters, play-by-play, player bio info, and player stats.<br>
-            There are also team-specific pages that detail info and historical stats.
+            Search by player or game, view player detail pages with bio info and stats, team detail pages with historical rosters and stats, and game detail pages with rosters, play-by-play, and shift charts.
+            Pages also exist to view historical playoff results and draft results.<br><br>
         </p>
 
         <div class="flex justify-center items-start">
@@ -96,8 +96,9 @@
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=23'>VAN</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span class='text-slate-800'> |</span>
-        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a></p>
-
+        <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a></p><br>
+        <a class='font-semibold text-slate-800' href='https://connoryoung.com/playoff_results.php?season_id=20232024'>View historical playoff info</a><br><br>
+        <a class='font-semibold text-slate-800' href='https://connoryoung.com/draft_history.php?draft_id=63'>View historical draft info</a>
         </div>
         <br>
         <p>This database is a work in progress. For any bugs or feature requests, please reach out
