@@ -229,11 +229,16 @@
                 <!-- Display results in a table format -->
                 <p>Click on any team name or game ID to view additional details about the player or game.</p><br>
                 <div class="table-container shadow-md rounded-lg overflow-x-auto mx-auto">
+                <h2 class="text-4xl font-bold text-white text-center">Game Results</h2><br>
                         <!-- Search Filter Fields -->
-                    <div class="flex mx-auto mb-4">
-                    <h2 class="text-4xl font-bold text-white text-center">Game Results</h2><br>
-                    <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Search by Team">
-            </div>
+                    <div class="mb-4">
+                    <input type="text" id="searchByDate" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Season">
+                    <input type="text" id="searchByDate" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Date">
+                    <input type="text" id="searchByStartTime" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Start Time (EST)">
+                    <input type="text" id="searchByGameType" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Game Type">
+                    <input type="text" id="searchByHomeTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Home Team">
+                    <input type="text" id="searchByAwayTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Away Team">
+                    </div>
 
                     <!-- Table -->
                     <table id='games-players-summary-table' class="min-w-max table-auto default-zebra-table">
@@ -418,9 +423,6 @@
                     echo "</div>";
                 }
             
-                
-    
-               
 
                 if ($page==1) {
                     $next_page = $page + 1;
@@ -468,8 +470,12 @@
     <script>
 document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.querySelector("#games-players-summary-table tbody");
-    const searchByPlayer = document.getElementById("searchByPlayer");
-    const searchByTeam = document.getElementById("searchByTeam");
+    const searchBySeason = document.getElementById("searchBySeason");
+    const searchByDate = document.getElementById("searchByDate");
+    const searchByStartTime = document.getElementById("searchByStartTime");
+    const searchByGameType = document.getElementById("searchByGameType");
+    const searchByHomeTeam = document.getElementById("searchByHomeTeam");
+    const searchByAwayTeam = document.getElementById("searchByAwayTeam");
     const pagination = document.getElementById("pagination");
 
     let currentPage = 1;
@@ -533,8 +539,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Filter handler
     function applyFilters() {
-        const playerFilter = searchByPlayer.value.toLowerCase();
-        const teamFilter = searchByTeam.value.toLowerCase();
+        const seasonFilter = searchBySeason.value.toLowerCase();
+        const dateFilter = searchByDate.value.toLowerCase();
+        const startTimeFilter = searchByStartTime.value.toLowerCase();
+        const gameTypeFilter = searchByGameType.value.toLowerCase();
+        const homeTeamFilter = searchByHomeTeam.value.toLowerCase();
+        const awayTeamFilter = searchByAwayTeam.value.toLowerCase();
 
         filteredData = allData.filter(row => {
             const matchPlayer = row.playerName.toLowerCase().includes(playerFilter);
@@ -547,8 +557,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Add input event listeners
-    searchByPlayer.addEventListener("input", applyFilters);
-    searchByTeam.addEventListener("input", applyFilters);
+    searchBySeason.addEventListener("input", applyFilters);
+    searchByDate.addEventListener("input", applyFilters);
+    searchByStartTime.addEventListener("input", applyFilters);
+    searchByGameType.addEventListener("input", applyFilters);
+    searchByHomeTeam.addEventListener("input", applyFilters);
+    searchByAwayTeam.addEventListener("input", applyFilters);
 
     // Init on page load
     loadDataFromDOM();
@@ -585,8 +599,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // searchByPlayerInput.addEventListener("input", filterTable);
-    searchByTeamInput.addEventListener("input", filterTable);
 });
 </script>
 
