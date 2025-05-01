@@ -535,7 +535,7 @@
         }
         
             echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
-            echo "<br><a href='https://connoryoung.com/shift_charts.php?game_id=" . $game_id . "'>Click here to view shift charts for this game.</a><br><br>";
+            echo "<br><a class='text-bold' href='https://connoryoung.com/shift_charts.php?game_id=" . $game_id . "'>Click here to view shift charts for this game.</a><br><br>";
             echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
 
 

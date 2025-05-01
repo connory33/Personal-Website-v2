@@ -24,8 +24,8 @@
 <?php include 'header.php'; ?>
 
 <div class="nhlindex-bg-img flex items-center justify-center py-5 h-screen">  <!-- Set h-screen to take full viewport height -->
-    <div id="nhlindex-content" class="text-center max-w-6xl mx-auto flex-grow flex flex-col">  <!-- flex-grow will stretch it vertically -->
-        <h2 class="text-4xl font-bold text-slate-800">NHL Historical Database</h2><br>
+    <div id="nhlindex-content" class="text-center max-w-6xl mx-auto flex-grow flex flex-col mb-20">  <!-- flex-grow will stretch it vertically -->
+        <h2 class="text-4xl font-bold text-white">NHL Historical Database</h2><br>
         <p>
             This site serves as a repository for historical data from the National Hockey League (NHL).<br><br>
             You can search past games by season, date, game type, start time, and teams. You can also search for players by name.
@@ -62,7 +62,7 @@
         </div>
         <br>
         <div class='w-3/5 text-white text-center mx-auto'>
-          <p class='font-semibold text-slate-800'>Select any team below to view details:</p>
+          <p class='font-semibold text-white'>Select any team below to view details:</p>
           <p>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span class='text-slate-800'> |</span>
@@ -97,8 +97,8 @@
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a></p><br>
-        <a class='font-semibold text-slate-800' href='https://connoryoung.com/playoff_results.php?season_id=20232024'>View historical playoff info</a><br><br>
-        <a class='font-semibold text-slate-800' href='https://connoryoung.com/draft_history.php?draft_id=63'>View historical draft info</a>
+        <a class='font-semibold text-white hover:text-blue-700' href='https://connoryoung.com/playoff_results.php?season_id=20232024'>View historical playoff info</a><br><br>
+        <a class='font-semibold text-white hover:text-blue-700' href='https://connoryoung.com/draft_history.php?draft_id=63'>View historical draft info</a>
         </div>
         <br>
         <p>This database is a work in progress. For any bugs or feature requests, please reach out

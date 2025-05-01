@@ -77,6 +77,7 @@
                         $searchTerm = $termMap[$termLower];
                     }
 
+
                 // Convert date search term to DB format (YYYY-MM-DD)s
                 if ($searchColumn == 'gameDate') { # assuming MM/DD/YY input - BUILD OUT TO MAKE ROBUST TO OTHER INPUTS
                     $year = substr($searchTerm, 6);
@@ -182,8 +183,6 @@
 
             <div id="nhl-games-players-summary-content-container" style='background-color: #343a40'>
                 <br>
-                <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
-
                     <p class="text-lg text-center">Search again:</p>
                     <div class="flex justify-center">
                         <form id='nhl-search' method="GET" action="nhl_games.php"
@@ -209,6 +208,7 @@
                         <input type="submit" value="Search"
                             class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
                         </form>
+                
                     </div>
 
 
@@ -269,18 +269,23 @@
         
                 
         ?>
+        <br><hr class='border-white border mx-auto w-4/5'><br>
                         <!-- Display results in a table format -->
-                        <p>Click on any team name or game ID to view additional details about the player or game.</p><br>
                 <h2 class="text-4xl font-bold text-white text-center">Game Results</h2><br>
+                <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5>"; ?>
+                <p>Click on any team name or game ID to view additional details about the team/game, or filter games below.</p><br>
+
                         <!-- Search Filter Fields -->
                     <div class="mb-4">
+                    <div class='flex justify-between flex-wrap gap-4 max-w-[85%] mx-auto mt-5'>
                     <input type="text" id="searchBySeason" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Season">
                     <input type="text" id="searchByDate" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Date">
                     <input type="text" id="searchByStartTime" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Start Time (EST)">
                     <input type="text" id="searchByGameType" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Game Type">
                     <input type="text" id="searchByHomeTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Home Team">
                     <input type="text" id="searchByAwayTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Away Team">
-    </div>
+                    </div>
+                    <br>
                     <div class="table-container shadow-md rounded-lg overflow-x-auto mx-auto w-[90%]">
                     <!-- Table -->
                     <table id='games-players-summary-table' class="min-w-max table-auto default-zebra-table">
