@@ -9,15 +9,12 @@
 
     <title>Connor Young</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="/resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
     <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
-<body class='min-h-screen'>
+<body>
 
   <?php include 'header.php'; ?>
 
@@ -72,9 +69,7 @@
             ?>
 
       <div id="nhl-games-players-summary-content-container" style='background-color: #343a40'>
-        <br>
-        <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5><br>"; ?>
-
+            <br>
             <p class="text-lg text-center">Search again:</p>
 
             <div class="flex justify-center">
@@ -97,14 +92,19 @@
                         class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
               </form>
             </div>
+
+            <br><hr class='border border-white mx-auto w-4/5'><br>
+
+            <h4 class='text-4xl text-center text-white'>Player Results</h4>
             <br>
+            <?php echo "<h5 class='text-center>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5>"; ?>
             <p>Click any player ID or name to view additional details.</p>
             <br>
             <!-- Display results in a table format -->
             <div class="table-container default-zebra-table max-w-[80%] mx-auto">
                 <table id='games-players-summary-table' class='default-zebra-table mx-auto'>
-                    <thead class='default-zebra-table'>
-                        <tr class='default-zebra-table'>
+                    <thead>
+                        <tr>
                             <th>ID</th>
                             <th>Name</th>
                             <th>Height</th>
@@ -150,7 +150,7 @@
                 ?>
 
                 <?php if ($total_rows > 0): ?>
-                    <br><div style="margin-bottom: 10px;">
+                    <br><div class='mt-4'>
                         Showing results <?= $start ?>–<?= $end ?> of <?= $total_rows ?> (Page <?= $page ?> of <?= $total_pages ?>)
                     </div>
                 <?php endif; ?>
@@ -167,13 +167,13 @@
                     $next_page = $page + 1;
                     $prev_page = http_build_query(array_merge($_GET, ['page' => $prev_page]));
                     $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
-                    echo "<div style='text-align:center; margin-top: 20px;'>
-                        <a class='btn btn-secondary' href='?" . $prev_page . "' style='margin-right: 10px'>Previous</a>";
+                    echo "<div class='text-center mt-6'>
+                        <a class='btn btn-secondary' href='?" . $prev_page . "' class='mr-4'>Previous</a>";
                     echo "<a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
                         </div>";
                 } else {
                     $prev_page = $page - 1;
-                    echo "<div style='text-align:center; margin-top: 20px;'>
+                    echo "<div class='text-center mt-6'>
                         <a class='btn btn-secondary' href='?" . $prev_page . "'>Previous</a></div>";
                 }      
 

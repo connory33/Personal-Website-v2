@@ -14,9 +14,12 @@
   </head>
 
   <body>
+
     <?php include 'header.php'; ?>
-    <div class="text-white text-center w-full overflow-x-auto" style='background-color: #343a40'>
-      <br><br>
+
+    <div class='text-white text-center w-full overflow-x-auto' style='background-color: #343a40'>
+
+    <br><br>
 
       <?php
       include('db_connection.php');
@@ -113,127 +116,82 @@
           $rounds[$row['roundNums']][] = $row;
       }
 
-    //   echo "<div class='flex justify-center gap-8 p-6 text-white'>";
-    //   foreach ($rounds as $round => $matchups) {
-    //       echo "<div class='flex flex-col items-center gap-6'>";
-    //       echo "<div class='text-lg font-bold mb-2'>Round $round</div>";
+      echo "<div class='flex justify-between text-white px-4 gap-6'>";
 
-    //       foreach ($matchups as $match) {
-    //           $bottomWins = (int)$match['bottomSeedWins'];
-    //           $topWins = (int)$match['topSeedWins'];
-    //           $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-600' : '';
-    //           $topBold = $topWins > $bottomWins ? 'font-bold text-green-600' : '';
-
-    //           $seriesId = $match['seasonID'] . $match['seriesLetters'];
-
-    //           $bottomSeedDivision = $match['bottomSeedTeamDivision'] ?? 'N/A';
-    //           $topSeedDivision = $match['topSeedTeamDivision'] ?? 'N/A';
-
-    //           $eastDivisions = ['Atlantic', 'Metropolitan', 'Northeast', 'Southeast'];
-    //           $westDivisions = ['Central', 'Pacific', 'Northwest'];
-    //           if (in_array($topSeedDivision, $eastDivisions) && in_array($bottomSeedDivision, $westDivisions)) {
-    //               $topSeedConference = 'East';
-    //           } elseif (in_array($topSeedDivision, $westDivisions) && in_array($bottomSeedDivision, $eastDivisions)) {
-    //               $topSeedConference = 'West';
-    //           } else {
-    //               $topSeedConference = 'Final';
-    //           }
-
-
-
-    //           echo "<a href='series_details.php?series_id={$seriesId}' class='no-underline'>";
-    //           echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 transition'>";
-    //           echo "<div class='flex justify-between w-full'>";
-    //           echo "<div class='flex flex-col items-center w-1/2'>";
-    //           echo "<div class='$bottomBold text-sm'>" . $match['bottomSeedTeamName'] . "<br>(" . $match['bottomSeedTeamDivision'] . ", ". $match['bottomSeedRanks'] . ")</div>";
-    //           echo "<div class='$bottomBold text-lg'>{$bottomWins}</div>";
-    //           echo "</div>";
-
-    //           echo "<div class='flex flex-col items-center w-1/2'>";
-    //           echo "<div class='$topBold text-sm'>" . $match['topSeedTeamName'] . "<br>(" . $match['topSeedTeamDivision'] . ", ". $match['topSeedRanks'] . ")</div>";
-    //           echo "<div class='$topBold text-lg'>{$topWins}</div>";
-    //           echo "</div>";
-
-
-    //           echo "</div>"; // end flex row
-    //           echo "</div>"; // end matchup box
-    //           echo "</a>";
-    //       }
-
-    //       echo "</div>"; // end round column
-    //   }
-    //   echo "</div>"; // end all rounds flex container
-
-    echo "<div class='flex justify-center gap-8 p-6 text-white'>";
-    echo "<div class='flex justify-between w-full p-6 text-white'>"; 
-    // Flex container for horizontal alignment (spacing West and East)
-    echo "<p class='w-1/2 text-center'>West</p>";
-    echo "<p class='w-1/2 text-center'>East</p>";
-    echo "</div>"; // Close the flex container for East/West alignment
-    foreach ($rounds as $round => $matchups) {
-        echo "<div class='flex flex-col items-center gap-6'>";
-        echo "<div class='text-lg font-bold mb-2'>Round $round</div>";
-    
-        // Add a container div for horizontal alignment of East, West, Final
-        echo "<div class='flex justify-between w-full'>"; // Flex container for horizontal alignment
-
-    
-        foreach ($matchups as $match) {
-            $bottomWins = (int)$match['bottomSeedWins'];
-            $topWins = (int)$match['topSeedWins'];
-            $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-600' : '';
-            $topBold = $topWins > $bottomWins ? 'font-bold text-green-600' : '';
-    
-            $seriesId = $match['seasonID'] . $match['seriesLetters'];
-    
-            $bottomSeedDivision = $match['bottomSeedTeamDivision'] ?? 'N/A';
-            $topSeedDivision = $match['topSeedTeamDivision'] ?? 'N/A';
-    
-            $eastDivisions = ['Atlantic', 'Metropolitan', 'Northeast', 'Southeast'];
-            $westDivisions = ['Central', 'Pacific', 'Northwest'];
-    
-            if (in_array($topSeedDivision, $eastDivisions) && in_array($bottomSeedDivision, $westDivisions)) {
-                $topSeedConference = 'East';
-            } elseif (in_array($topSeedDivision, $westDivisions) && in_array($bottomSeedDivision, $eastDivisions)) {
-                $topSeedConference = 'West';
-            } else {
-                $topSeedConference = 'Final';
-            }
-    
-            // Set the classes based on the conference type
-            $alignmentClass = '';
-            if ($topSeedConference == 'East') {
-                $alignmentClass = 'ml-auto'; // Right alignment for East
-            } elseif ($topSeedConference == 'West') {
-                $alignmentClass = 'mr-auto'; // Left alignment for West
-            } else {
-                $alignmentClass = ''; // Center for Final
-            }
-    
-            // Open the link to series details
-            echo "<a href='series_details.php?series_id={$seriesId}' class='no-underline'>";
-            echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 transition $alignmentClass'>"; // Apply alignment class
-            echo "<div class='flex justify-between w-full'>";
-            echo "<div class='flex flex-col items-center w-1/2'>";
-            echo "<div class='$bottomBold text-sm'>" . $match['bottomSeedTeamName'] . "<br>(" . $match['bottomSeedTeamDivision'] . ", ". $match['bottomSeedRanks'] . ")</div>";
-            echo "<div class='$bottomBold text-lg'>{$bottomWins}</div>";
-            echo "</div>";
-    
-            echo "<div class='flex flex-col items-center w-1/2'>";
-            echo "<div class='$topBold text-sm'>" . $match['topSeedTeamName'] . "<br>(" . $match['topSeedTeamDivision'] . ", ". $match['topSeedRanks'] . ")</div>";
-            echo "<div class='$topBold text-lg'>{$topWins}</div>";
-            echo "</div>";
-    
-            echo "</div>"; // end flex row
-            echo "</div>"; // end matchup box
-            echo "</a>";
-        }
-        echo "</div>"; // Close the flex container for East/West/Final alignment
-    }
-    echo "</div>";
-    
-    
-
+      // Container for West bracket
+      echo "<div class='w-1/2'>";
+      echo "<h3 class='text-center text-xl font-semibold mb-4'>West</h3>";
+      foreach ($rounds as $round => $matchups) {
+          echo "<div class='mb-6'>";
+          echo "<div class='text-lg font-bold mb-2 text-center'>Round $round</div>";
+      
+          foreach ($matchups as $match) {
+              // Check if this series belongs to the West
+              $topDiv = $match['topSeedTeamDivision'] ?? '';
+              echo "Top div", $topDiv;
+              $botDiv = $match['bottomSeedTeamDivision'] ?? '';
+              echo $botDiv;
+              $westDivs = ['Pacific', 'Central', 'Northwest'];
+              if (!in_array($topDiv, $westDivs) && !in_array($botDiv, $westDivs)) continue;
+      
+              // Series info
+              $bottomWins = (int)$match['bottomSeedWins'];
+              $topWins = (int)$match['topSeedWins'];
+              $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-500' : '';
+              $topBold = $topWins > $bottomWins ? 'font-bold text-green-500' : '';
+              $seriesId = $match['seasonID'] . $match['seriesLetters'];
+      
+              echo "<a href='series_details.php?series_id={$seriesId}' class='block no-underline mb-4'>";
+              echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 mx-auto'>";
+              echo "<div class='flex justify-between'>";
+              echo "<div class='w-1/2 text-xs $bottomBold'>" . $match['bottomSeedTeamName'] . "<br>(" . $botDiv . ", " . $match['bottomSeedRanks'] . ")</div>";
+              echo "<div class='w-1/2 text-xs $topBold'>" . $match['topSeedTeamName'] . "<br>(" . $topDiv . ", " . $match['topSeedRanks'] . ")</div>";
+              echo "</div>";
+              echo "<div class='mt-2 font-semibold text-lg'><span class='$bottomBold'>{$bottomWins}</span> - <span class='$topBold'>{$topWins}</span></div>";
+              echo "</div>";
+              echo "</a>";
+          }
+          echo "</div>";
+      }
+      echo "</div>"; // End West
+      
+      // Container for East bracket
+      echo "<div class='w-1/2'>";
+      echo "<h3 class='text-center text-xl font-semibold mb-4'>East</h3>";
+      foreach ($rounds as $round => $matchups) {
+          echo "<div class='mb-6'>";
+          echo "<div class='text-lg font-bold mb-2 text-center'>Round $round</div>";
+      
+          foreach ($matchups as $match) {
+              $topDiv = $match['topSeedTeamDivision'] ?? '';
+              echo $topDiv;
+              $botDiv = $match['bottomSeedTeamDivision'] ?? '';
+              echo $botDiv;
+              $eastDivs = ['Atlantic', 'Metropolitan', 'Northeast', 'Southeast'];
+              if (!in_array($topDiv, $eastDivs) && !in_array($botDiv, $eastDivs)) continue;
+      
+              $bottomWins = (int)$match['bottomSeedWins'];
+              $topWins = (int)$match['topSeedWins'];
+              $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-500' : '';
+              $topBold = $topWins > $bottomWins ? 'font-bold text-green-500' : '';
+              $seriesId = $match['seasonID'] . $match['seriesLetters'];
+      
+              echo "<a href='series_details.php?series_id={$seriesId}' class='block no-underline mb-4'>";
+              echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 mx-auto'>";
+              echo "<div class='flex justify-between'>";
+              echo "<div class='w-1/2 text-xs $bottomBold'>" . $match['bottomSeedTeamName'] . "<br>(" . $botDiv . ", " . $match['bottomSeedRanks'] . ")</div>";
+              echo "<div class='w-1/2 text-xs $topBold'>" . $match['topSeedTeamName'] . "<br>(" . $topDiv . ", " . $match['topSeedRanks'] . ")</div>";
+              echo "</div>";
+              echo "<div class='mt-2 font-semibold text-lg'><span class='$bottomBold'>{$bottomWins}</span> - <span class='$topBold'>{$topWins}</span></div>";
+              echo "</div>";
+              echo "</a>";
+          }
+          echo "</div>";
+      }
+      echo "</div>"; // End East
+      
+      echo "</div>"; // Close entire flex container
+      
 
 
 
@@ -241,7 +199,9 @@
 
       } // end if season_id
       ?>
-    <?php include 'footer.php'; ?>
+        <?php include 'footer.php'; ?>
   </body>
+
+
 
 </html>

@@ -164,7 +164,9 @@
                 nhl_games.homeTeamId as home_team_id,
                 nhl_games.awayTeamId as away_team_id,
                 home_teams.fullName as home_team_name,
+                -- home_teams.color1 as home_team_color1,
                 away_teams.fullName as away_team_name,
+                -- away_teams.color1 as away_team_color1,
                 event_team.triCode as event_team_tricode,
                 nhl_games.gameDate,
                 nhl_games.venue,
@@ -296,18 +298,18 @@
                     $gameDatetime = new DateTime($game_date);
                     $formatted_gameDate = $gameDatetime->format('m/d/Y');
                 
-                    echo "<div class='max-w-[95%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
-                    echo "<div class='flex flex-col items-center space-y-4'>"; // Removed flex-grow on the outer container
+                    echo "<div class='w-fit max-w-[95%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
+                    echo "<div class='flex flex-col items-center space-y-4 flex-grow'>"; // Removed flex-grow on the outer container
 
                     // Team logos and names
                     echo "<div class='flex items-center justify-center space-x-6'>"; // Keep the spacing but remove flex-grow
                     echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($homeTeamID) . "'>" . "<img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>" . "</a>"; // Added max-width for logos
-                    echo "<a class='text-3xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($homeTeamID) . "'>" . htmlspecialchars($homeTeamName) . " (H)</a> <span class='mx-2 text-3xl'>vs.</span>" . "<a class='text-3xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($awayTeamID) . "'>" . htmlspecialchars($awayTeamName) . " (A)</a></h3>";
+                    echo "<a class='text-4xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($homeTeamID) . "'>" . htmlspecialchars($homeTeamName) . " (H)</a> <span class='mx-2 text-4xl'>vs.</span>" . "<a class='text-3xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($awayTeamID) . "'>" . htmlspecialchars($awayTeamName) . " (A)</a></h3>";
                     echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($awayTeamID) . "'>" . "<img src='" . htmlspecialchars($awayLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>" . "</a>"; // Added max-width for logos
                     echo "</div>";
                     
                     // Score line
-                    echo "<h3 class='text-4xl font-semibold'>" . htmlspecialchars($homeScore) . " - " . htmlspecialchars($awayScore) . " <span class='text-lg font-normal ml-2'>" . $formatted_outcome . "</span></h3>";
+                    echo "<h3 class='text-3xl font-semibold'>" . htmlspecialchars($homeScore) . " - " . htmlspecialchars($awayScore) . " <span class='text-3xl font-semibold ml-2'>" . $formatted_outcome . "</span></h3>";
                     
                     // Venue and time
                     echo "<p class='text-lg'>" . htmlspecialchars($venue) . ", " . htmlspecialchars($venueLocation) . "<br>" . htmlspecialchars($formatted_gameDate) . " " . htmlspecialchars($formatted_startTime) . " EST</p>";
@@ -376,23 +378,23 @@
                         echo "<col class='game_details_skater_stats_takeaways'>";
                         echo "<thead class='default-zebra-table'>";
                         echo "<tr style='color: white; font-weight: bold; background-color: #1F2833' class='default-zebra-table'>";
-                        echo "<th>Name</th>";
-                        echo "<th>#</th>";
-                        echo "<th>Pos</th>";
-                        echo "<th>G</th>";
-                        echo "<th>A</th>";
-                        echo "<th>P</th>";
-                        echo "<th>+/-</th>";
-                        echo "<th>PIM</th>";
-                        echo "<th>Hits</th>";
-                        echo "<th>PPG</th>";
-                        echo "<th>SOG</th>";
-                        echo "<th>FO %</th>";
-                        echo "<th>TOI</th>";
-                        echo "<th>Blocks</th>";
-                        echo "<th>Shifts</th>";
-                        echo "<th>Give</th>";
-                        echo "<th>Take</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>Name</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>#</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>Pos</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>G</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>A</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>P</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>+/-</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>PIM</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>Hits</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>PPG</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>SOG</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>FO %</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>TOI</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>Blocks</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>Shifts</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>Give</th>";
+                        echo "<th class='border border-slate-600 px-2 py-1'>Take</th>";
                         echo "</tr>";
                         echo "</thead>";
                         echo "<tbody>";
@@ -410,23 +412,23 @@
                             // $totalMissedShots = $row['total_missed_shots'] ?? 0;
                             
                             echo "<tr class='default-zebra-table'>";
-                            echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
-                            echo "<td>" . $player['skater_sweaterNumber'] . "</td>";
-                            echo "<td>" . $position . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_goals']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_assists']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_points']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_plusMinus']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_pim']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_hits']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_powerPlayGoals']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_sog']) . "</td>";
-                            echo "<td>" . htmlspecialchars($formatted_FOPctg) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_toi']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_blockedShots']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_shifts']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_giveaways']) . "</td>";
-                            echo "<td>" . htmlspecialchars($player['skater_takeaways']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['skater_sweaterNumber'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $position . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_goals']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_assists']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_points']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_plusMinus']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_pim']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_hits']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_powerPlayGoals']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_sog']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($formatted_FOPctg) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_toi']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_blockedShots']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_shifts']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_giveaways']) . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_takeaways']) . "</td>";
                             echo "</tr>";
                         }
                         echo "</tbody>";
@@ -435,7 +437,7 @@
                     
                     function render_goalie_table($players, $team_label, $roster_lookup) {
                         echo "<div class='roster-table-wrapper'>";
-                        echo "<table class='roster-table default-zebra-table'>";
+                        echo "<table class='roster-table default-zebra-table border-2 border-slate-600'>";
                             echo "<colgroup>";
                                 echo "<col class='game_details_goalie_stats_name'>";
                                 echo "<col class='game_details_goalie_stats_number'>";
@@ -454,24 +456,24 @@
                                 echo "<col class='game_details_goalie_stats_shotsAgainst'>";
                                 echo "<col class='game_details_goalie_stats_saves'>";
                             echo "</colgroup>";
-                            echo "<thead class='default-zebra-table'>";
+                            echo "<thead>";
                                 echo "<tr style='color: white; font-weight: bold;' class='default-zebra-table bg-slate-800'>"; // Added missing opening <tr> tag
-                                    echo "<th>Name</th>";
-                                    echo "<th>Number</th>";
-                                    echo "<th>PIM</th>";
-                                    echo "<th>TOI</th>";
-                                    echo "<th>Even SA</th>";
-                                    echo "<th>PP SA</th>";
-                                    echo "<th>SH SA</th>";
-                                    echo "<th>Sv SA</th>";
-                                    echo "<th>Sv %</th>";
-                                    echo "<th>Even GA</th>";
-                                    echo "<th>PP GA</th>";
-                                    echo "<th>SH GA</th>";
-                                    echo "<th>GA</th>";
-                                    echo "<th>Starter</th>";
-                                    echo "<th>SA</th>";
-                                    echo "<th>Saves</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Name</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Number</t class='border border-slate-600 px-2 py-1'h>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>PIM</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>TOI</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Even SA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>PP SA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>SH SA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Sv SA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Sv %</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Even GA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>PP GA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>SH GA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>GA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Starter</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>SA</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Saves</th>";
                                 echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
@@ -489,22 +491,22 @@
                             }
                                                 
                             echo "<tr class='default-zebra-table'>";
-                            echo "<td><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
-                            echo "<td>" . $player['goalie_sweaterNumber'] . "</td>";
-                            echo "<td>" . $player['goalie_pim'] . "</td>";
-                            echo "<td>" . $player['goalie_toi'] . "</td>";
-                            echo "<td>" . $player['goalie_evenStrengthShotsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_powerPlayShotsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_shorthandedShotsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_saveShotsAgainst'] . "</td>";
-                            echo "<td>" . $goalie_savePctg . "</td>";
-                            echo "<td>" . $player['goalie_evenStrengthGoalsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_powerPlayGoalsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_shorthandedGoalsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_goalsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_starter'] . "</td>";
-                            echo "<td>" . $player['goalie_shotsAgainst'] . "</td>";
-                            echo "<td>" . $player['goalie_saves'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_sweaterNumber'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_pim'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_toi'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_evenStrengthShotsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_powerPlayShotsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_shorthandedShotsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_saveShotsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $goalie_savePctg . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_evenStrengthGoalsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_powerPlayGoalsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_shorthandedGoalsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_goalsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_starter'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_shotsAgainst'] . "</td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'>" . $player['goalie_saves'] . "</td>";
                             echo "</tr>";
                         }
                         echo "</tbody></table></div>";
@@ -529,13 +531,13 @@
             echo "</div>";
 
             echo "</div>"; // end .roster-container
-            echo "<p style='text-align: center'>(S) indicates the starting goalie</p>";
+            echo "<p class='text-center text-sm'>(S) indicates the starting goalie</p>";
             echo "<br>";
 
         }
         
             echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
-            echo "<br><a class='text-bold' href='https://connoryoung.com/shift_charts.php?game_id=" . $game_id . "'>Click here to view shift charts for this game.</a><br><br>";
+            echo "<br><a class='font-bold' href='https://connoryoung.com/shift_charts.php?game_id=" . $game_id . "'>Click here to view shift charts for this game.</a><br><br>";
             echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
 
 
@@ -571,73 +573,6 @@
         ?>
 
 
-<!-- class='rink-image shadow-md object-cover border-2 border-slate-600 rounded-lg' -->
-<!-- <div class='rink-key-wrapper'>
-
-  <div class='rink-key-column'>
-
-    <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
-
-
-    
-
-        <div style="position: relative; display: inline-block;">
-        <img src="../resources/images/hockey-rink2.jpg" id="rink-image" width="600" height="255" />
-        <div id="marker" style="
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: red;
-            border-radius: 50%;
-            display: none;
-            pointer-events: none;
-        "></div>
-        </div>
-
-
-  </div>
-
-  <div class='rink-key-column'>
-    <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Key</h4>
-    <div class='bg-gray-800 rounded-lg p-4 text-sm text-white text-left leading-6 shadow-lg w-full max-w-xs border-2 border-slate-600'
-         style='min-height: 340px;'>
-      <p margin-top:2px; margin-bottom:2px;>
-        <strong>FO</strong> – Faceoff<br>
-        <strong>SOG</strong> – Shot on Goal<br>
-        <strong>Pen.</strong> – Penalty<br>
-        <strong>Block</strong> – Blocked Shot<br>
-        <strong>Miss</strong> – Missed Shot<br>
-        <strong>Stop</strong> – Stoppage<br>
-        <strong>Give</strong> – Giveaway<br>
-        <strong>Take</strong> – Takeaway<br>
-        <strong>D. Pen.</strong> – Delayed Penalty<br>
-        <strong>Back</strong> – Backhand<br>
-        <strong>Tip</strong> – Tip-in
-      </p>
-    </div>
-  </div>
-
-</div> -->
-
-<!-- <div>
-<h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Key</h4>
-<div class='bg-gray-800 rounded-lg p-4 text-sm text-white text-left leading-6 shadow-lg w-full max-w-xs border-2 border-slate-600 mx-auto'
-     style='min-height: 340px;'>
-  <p margin-top:2px; margin-bottom:2px; margin-right:5px; margin-left:5px;>
-    <strong>FO</strong> – Faceoff
-    <strong>SOG</strong> – Shot on Goal
-    <strong>Pen.</strong> – Penalty
-    <strong>Block</strong> – Blocked Shot
-    <strong>Miss</strong> – Missed Shot
-    <strong>Stop</strong> – Stoppage
-    <strong>Give</strong> – Giveaway
-    <strong>Take</strong> – Takeaway
-    <strong>D. Pen.</strong> – Delayed Penalty
-    <strong>Back</strong> – Backhand
-    <strong>Tip</strong> – Tip-in
-  </p>
-</div>
-</div> -->
 
 <h4 class="text-2xl font-semibold mb-4 text-white text-center">Play-by-Play Key</h4>
 
@@ -659,12 +594,16 @@
 
 <br>
 
+
+
+
 <div class='max-w-full mx-auto text-center'>
   <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
 
-  <div class="relative inline-block w-1/2 max-w-full">
+  <div class="relative inline-block w-1/2 max-w-full" id="rink-container">
     <img src="../resources/images/hockey-rink2.jpg" id="rink-image" class="w-full h-auto mx-auto" />
-    <div id="marker" style="
+    <canvas id="heatmap-canvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+    <!-- <div id="marker" style="
       position: absolute;
       width: 8px;
       height: 8px;
@@ -672,42 +611,25 @@
       border-radius: 50%;
       display: none;
       pointer-events: none;
-    "></div>
+    "></div> -->
   </div>
 </div>
 
-
-
+<div id="filters" class="text-center mt-4 flex justify-between max-w-[50%] mx-auto">
+    <label><input type="checkbox" class="shot-filter" value="goal" checked> Goals</label>
+    <label><input type="checkbox" class="shot-filter" value="missed-shot" checked> Missed Shots</label>
+    <label><input type="checkbox" class="shot-filter" value="shot-on-goal" checked> Shots on Net</label>
+    <label><input type="checkbox" class="shot-filter" value="blocked-shot" checked> Blocked Shots</label>
+    <label><input type="checkbox" class="shot-filter" value="hit" unchecked> Hits</label>
+</div>
 
 
 <br>
 
 
-<script>
-    const rink = document.getElementById("rink-image");
-const marker = document.getElementById("marker");
-
-const rinkXMin = -100, rinkXMax = 100;
-const rinkYMin = -42.5, rinkYMax = 42.5;
-
-function transformCoords(x, y) {
-  const rink = document.getElementById("rink-image");
-  const width = rink.clientWidth;
-  const height = rink.clientHeight;
-
-  const paddingX = 0.05; // 5% padding on each side
-  const paddingY = 0.04; // 4% top and bottom
-
-  const usableWidth = width * (1 - 2 * paddingX);
-  const usableHeight = height * (1 - 2 * paddingY);
-
-  const xPx = (x - rinkXMin) / (rinkXMax - rinkXMin) * usableWidth + width * paddingX;
-  const yPx = height - ((y - rinkYMin) / (rinkYMax - rinkYMin) * usableHeight + height * paddingY);
-
-  return { x: xPx, y: yPx };
-}
 
 
+<!-- <script>
 
 function drawMarker(x, y) {
     const marker = document.getElementById('marker');
@@ -745,15 +667,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-
-</script>
+</script> -->
 
 
 
 <!-- <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Events</h4> -->
 <div class="overflow-x-auto">
-<p>Click any row below to see the location visualized on the rink diagram.</p>
     <table id="play-by-play-table" class="min-w-max table-auto border-2 border-slate-600 border-collapse default-zebra-table">
         <thead class='default-zebra-table'>
             <tr class='default-zebra-table'>
@@ -780,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </thead>
         <tbody class='default-zebra-table'>
                     <?php
-                    
+                        $all_plays = [];
                         while ($row = $plays->fetch_assoc()){
                             # Coordinates
                             $formatted_coordinates = $row['xCoord'] . '/' . $row['yCoord'];
@@ -790,11 +709,25 @@ document.addEventListener('DOMContentLoaded', () => {
                             # saving values for use in onclick event
                             $xCoord = $row['xCoord'];
                             $yCoord = $row['yCoord'];
+                            $type = $row['typeDescKey'];
 
-                            echo "<tr class='play-row' data-x='{$xCoord}' data-y='{$yCoord}' style='color: white; border: 1px solid #bcd6e7'>";
-                            $rowClass = '';
-                            // echo "<td>".$row['eventID']."</td>";
-                            // echo "<td>".$row['timeInPeriod']."</td>";
+                            echo "<tr class='play-row' 
+                            data-x='{$xCoord}' 
+                            data-y='{$yCoord}' 
+                            data-typedesckey='{$type}'
+                            style='color: white; border: 1px solid #bcd6e7'>";
+                            
+
+
+                            $all_plays[] = [
+                                'x' => $xCoord,
+                                'y' => $yCoord,
+                                'typedesckey' => $type
+                            ];
+    
+
+
+
 
                             # Period/Time Remaining
                             $formatted_time = $row['period'] . ' - ' . substr($row['timeRemaining'],0,5);
@@ -974,6 +907,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             echo "</tr>";
                         }
+
+
+                    
                 echo "</tbody>";
 
                 echo "</table>";
@@ -981,7 +917,172 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 $total_pages = ceil($total_rows / $limit);
 
+
+                // Fetch all plays (no LIMIT)
+                $all_plays_query = "SELECT * FROM nhl_plays WHERE gameID = $game_id";
+                $plays_result = mysqli_query($conn, $all_plays_query);
+                $all_plays = [];
+                while ($row = mysqli_fetch_assoc($plays_result)) {
+                    $all_plays[] = $row;
+                }  
+                // print_r($all_plays);     
                 ?>
+                </div>
+                <br><br>
+                
+                <script>const allPlays = <?= json_encode($all_plays) ?>;</script>
+                <script src="https://cdn.jsdelivr.net/npm/simpleheat/simpleheat.js"></script>
+                <script>
+    const rinkXMin = -100, rinkXMax = 100;
+    const rinkYMin = -42.5, rinkYMax = 42.5;
+    const rink = document.getElementById("rink-image");
+    const heatmapCanvas = document.getElementById("heatmap-canvas");
+    const heat = simpleheat(heatmapCanvas);
+
+    const validTypes = ['shot-on-goal', 'missed-shot', 'goal', 'blocked-shot'];
+    let shotPoints = []; // Store the filtered shot points
+
+    function updateCanvasSize() {
+        heatmapCanvas.width = rink.clientWidth;
+        heatmapCanvas.height = rink.clientHeight;
+        heat.resize(); // Resize heatmap to match updated canvas dimensions
+    }
+
+    function transformCoords(x, y) {
+        const width = rink.clientWidth;
+        const height = rink.clientHeight;
+
+        const paddingX = 0.1;
+        const paddingY = 0.1;
+
+        const usableWidth = width * (1 - 2 * paddingX);
+        const usableHeight = height * (1 - 2 * paddingY);
+
+        const xPx = (x - rinkXMin) / (rinkXMax - rinkXMin) * usableWidth + width * paddingX;
+        const yPx = height - ((y - rinkYMin) / (rinkYMax - rinkYMin) * usableHeight + height * paddingY);
+
+        const clampedX = Math.max(0, Math.min(width, xPx));
+        const clampedY = Math.max(0, Math.min(height, yPx));
+
+        return [clampedX, clampedY];
+    }
+
+    function filterShotData(selectedTypes) {
+        const pointMap = new Map();
+
+        // Filter all plays by the selected shot types
+        const filteredPlays = allPlays.filter(play => selectedTypes.includes(play.typeDescKey));
+
+        // Transform and aggregate shot points
+        filteredPlays.forEach(play => {
+            const x = parseFloat(play.xCoord);
+            const y = parseFloat(play.yCoord);
+
+            if (!isNaN(x) && !isNaN(y)) {
+                const [xPx, yPx] = transformCoords(x, y);
+                const key = `${Math.round(xPx)},${Math.round(yPx)}`;
+                if (!pointMap.has(key)) {
+                    pointMap.set(key, [xPx, yPx, 1]); // Initial intensity of 1
+                } else {
+                    pointMap.get(key)[2] += 1; // Increment intensity for repeated points
+                }
+            }
+        });
+
+        // Convert pointMap values to an array and apply intensity scaling
+        return Array.from(pointMap.values()).map(point => {
+            point[2] = Math.log(point[2] + 1); // Intensity scaling
+            return point;
+        });
+    }
+
+    function updateHeatmap() {
+        // Get selected shot types from the checkboxes
+        const selectedTypes = Array.from(document.querySelectorAll('.shot-filter:checked')).map(cb => cb.value);
+
+        // Filter shot points and redraw the heatmap
+        shotPoints = filterShotData(selectedTypes);
+        drawHeatmap(shotPoints);
+    }
+
+    function drawHeatmap(points) {
+        heat.clear(); // Clears any previous data
+        heat.data(points); // Set the data to the points with intensity
+
+        const maxIntensity = Math.max(...points.map(point => point[2]), 1); // Avoid max = 0
+        heat.max(maxIntensity); // Set max intensity
+
+        heat.radius(30, 15); // Adjust radius if necessary
+        heat.gradient({
+            0.3: 'rgba(0, 0, 255, 1)',     // blue
+            0.5: 'rgba(0, 255, 0, 1)',     // lime
+            0.8: 'rgba(255, 165, 0, 1)',   // orange
+            1.0: 'rgba(255, 0, 0, 1)'      // red
+        });
+
+        heat.draw(); // Draw the heatmap
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCanvasSize();
+
+        // Initial rendering with all shot types
+        shotPoints = filterShotData(validTypes);
+        drawHeatmap(shotPoints);
+
+        // Add event listeners to filters
+        const filters = document.querySelectorAll('.shot-filter');
+        filters.forEach(filter => filter.addEventListener('change', updateHeatmap));
+    });
+
+    // Resize listener to adjust canvas size and redraw the heatmap
+    window.addEventListener('resize', () => {
+        updateCanvasSize();
+        drawHeatmap(shotPoints);
+    });
+</script>
+
+
+                <script>
+
+                document.addEventListener('DOMContentLoaded', () => {
+                updateCanvasSize();
+
+                const shotPoints = [];
+
+                const validTypes = ['shot-on-goal', 'missed-shot', 'goal', 'blocked-shot'];
+
+                const pointMap = new Map();
+
+                allPlays.forEach(play => {
+                const x = parseFloat(play.xCoord);
+                const y = parseFloat(play.yCoord);
+                const type = play.typeDescKey;
+
+                if (!isNaN(x) && !isNaN(y) && validTypes.includes(type)) {
+                    const [xPx, yPx] = transformCoords(x, y);
+                    const key = `${Math.round(xPx)},${Math.round(yPx)}`;
+                    if (!pointMap.has(key)) {
+                        pointMap.set(key, [xPx, yPx, 1]);
+                    } else {
+                        pointMap.get(key)[2] += 1;
+                    }
+                    }
+                });
+                const shotPoints = Array.from(pointMap.values());
+
+                drawHeatmap(shotPoints);
+                });
+
+                window.addEventListener('resize', () => {
+                updateCanvasSize();
+                drawHeatmap(shotPoints); // re-render after resize
+                });
+
+                </script>
+
+
+
                 <div style = 'text-align:center'>
                 <?php if ($total_rows > 0): ?>
                     <br><div style="margin-bottom: 10px;">

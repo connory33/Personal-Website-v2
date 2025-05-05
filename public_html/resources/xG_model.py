@@ -9,6 +9,9 @@ from sklearn.ensemble import RandomForestClassifier
 from datetime import timedelta
 import matplotlib.pyplot as plt
 
+pd.set_option('display.max_columns', None)  # Show all columns
+
+
 # Function to convert MM:SS to seconds, handling NaN values
 def mmss_to_seconds(mmss):
     mmss = str(mmss)  # Ensure mmss is a string
@@ -33,11 +36,11 @@ def mmss_to_seconds(mmss):
 
 
 # load player data
-player_data = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_players.csv")
+player_data = pd.read_csv("C:/users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_players.csv")
 player_data = player_data.fillna(0)
 
 # Load your shot data
-pbp_data = pd.read_csv("C:/Users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_plays.csv")
+pbp_data = pd.read_csv("C:/users/conno/OneDrive/Documents/Personal-and-NHL-Website/public_html/resources/data/nhl_plays.csv")
 # print(data.head(10))
 pbp_data = pbp_data.fillna(0)
 
@@ -127,6 +130,7 @@ pbp_data['homeTeamDefendingSide'] = pbp_data['homeTeamDefendingSide'].map({'left
 # Get type of previous event
 pbp_data = pbp_data.sort_values(by=['gameID', 'eventID'])  # Use appropriate column name for event order
 pbp_data['prev_typeDescKey'] = pbp_data.groupby('gameID')['typeDescKey'].shift(1)  # Shift within each game
+print(pbp_data['prev_typeDescKey'])
 
 # create specific feature for rebound
 pbp_data['rebound'] = np.where(pbp_data['prev_typeDescKey'] == 'shot', 1, 0)
@@ -206,6 +210,10 @@ print("Missing columns:", missing_columns)
 X = pbp_data[features]
 y = pbp_data['goal']
 
+print(X.head(10))
+print(X.describe())
+print(X.sample(1))
+
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -256,102 +264,110 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 ####################################################################### RANDOM FOREST CLASSIFIER #######################################################################
 
-# model_rf = RandomForestClassifier(class_weight='balanced', random_state=42)
-# model_rf.fit(X_train, y_train)
+model_rf = RandomForestClassifier(class_weight='balanced', random_state=42)
+model_rf.fit(X_train, y_train)
 
-# # Predictions
-# y_pred_rf = model_rf.predict(X_test)
-# y_pred_prob_rf = model_rf.predict_proba(X_test)[:, 1]
+# Predictions
+y_pred_rf = model_rf.predict(X_test)
+y_pred_prob_rf = model_rf.predict_proba(X_test)[:, 1]
 
-# # Adjust the threshold for classification
-# threshold = 0.1
-# y_pred = (y_pred_prob_rf >= threshold).astype(int)
+# Adjust the threshold for classification
+threshold = 0.1
+y_pred = (y_pred_prob_rf >= threshold).astype(int)
 
-
-# # Plot the distribution of predicted probabilities
-# plt.hist(y_pred_prob_rf, bins=50, range=(0, 1), alpha=0.75)
-# plt.title('Distribution of Predicted Probabilities')
-# plt.xlabel('Predicted Probability')
-# plt.ylabel('Frequency')
-# plt.show()
-
-# # Evaluate
-# print("Accuracy:", accuracy_score(y_test, y_pred_rf))
-# print("ROC-AUC:", roc_auc_score(y_test, y_pred_prob_rf))
-# print(confusion_matrix(y_test, y_pred_rf))
-# print(classification_report(y_test, y_pred_rf))
-
-
-
-########################################################################## XGBOOST CLASSIFIER #########################################################################
-from xgboost import XGBClassifier
-from sklearn.model_selection import GridSearchCV
-
-# Calculate class imbalance ratio
-positive_class_count = sum(y == 1)  # Number of goals
-negative_class_count = sum(y == 0)  # Number of non-goals
-
-scale_pos_weight = negative_class_count / positive_class_count
-
-params = {
-    'n_estimators': 200,              # Number of boosting rounds (trees)
-    'learning_rate': 0.05,             # Step size for each boosting round
-    'max_depth': 5,                   # Maximum depth of a tree
-    'subsample': 0.7,                 # Subsample ratio of the training set
-    'scale_pos_weight': scale_pos_weight,  # Adjust for class imbalance
-}
-
-model = XGBClassifier(**params)  # adjust scale_pos_weight based on class imbalance
-# param_grid = {
-#     'learning_rate': [0.01, 0.05, 0.1],
-#     'n_estimators': [50, 100, 200],
-#     'max_depth': [3, 5, 7],
-#     'subsample': [0.7, 0.8, 1.0],
-# }
-# grid_search = GridSearchCV(model, param_grid, scoring='roc_auc', cv=5)
-# grid_search.fit(X_train, y_train)
-
-# best_model = grid_search.best_estimator_
-# y_pred_best = best_model.predict(X_test)
-# y_pred_prob_best = best_model.predict_proba(X_test)[:, 1]
-
-# print("Best Parameters:", grid_search.best_params_)
-
-
-
-model.fit(X_train, y_train)
-
-y_pred_xg = model.predict(X_test)
-y_pred_prob_xg = model.predict_proba(X_test)[:, 1]
-
-threshold = 0.15
-y_pred_xg = (y_pred_prob_xg >= threshold).astype(int)
 
 # Plot the distribution of predicted probabilities
-plt.hist(y_pred_prob_xg, bins=50, range=(0, 1), alpha=0.75)
+plt.hist(y_pred_prob_rf, bins=50, range=(0, 1), alpha=0.75)
 plt.title('Distribution of Predicted Probabilities')
 plt.xlabel('Predicted Probability')
 plt.ylabel('Frequency')
 plt.show()
 
-print("Accuracy:", accuracy_score(y_test, y_pred_xg))
-print("ROC-AUC:", roc_auc_score(y_test, y_pred_prob_xg))
-print(confusion_matrix(y_test, y_pred_xg))
-print(classification_report(y_test, y_pred_xg))
+# Evaluate
+print("Accuracy:", accuracy_score(y_test, y_pred_rf))
+print("ROC-AUC:", roc_auc_score(y_test, y_pred_prob_rf))
+print(confusion_matrix(y_test, y_pred_rf))
+print(classification_report(y_test, y_pred_rf))
 
-# # Plot distance vs goal
-# sns.scatterplot(x='distance', y='goal', data=data)
-# plt.title('Distance vs Goal')
-# plt.xlabel('Distance')
-# plt.ylabel('Goal (1 = Goal, 0 = No Goal)')
+
+importances = model_rf.feature_importances_
+feat_names = X.columns
+plt.figure(figsize=(10, 6))
+sns.barplot(x=importances, y=feat_names)
+plt.title("Feature Importances (Random Forest)")
+plt.tight_layout()
+plt.show()
+
+
+########################################################################## XGBOOST CLASSIFIER #########################################################################
+# from xgboost import XGBClassifier
+# from sklearn.model_selection import GridSearchCV
+
+# # Calculate class imbalance ratio
+# positive_class_count = sum(y == 1)  # Number of goals
+# negative_class_count = sum(y == 0)  # Number of non-goals
+
+# scale_pos_weight = negative_class_count / positive_class_count
+
+# params = {
+#     'n_estimators': 200,              # Number of boosting rounds (trees)
+#     'learning_rate': 0.05,             # Step size for each boosting round
+#     'max_depth': 5,                   # Maximum depth of a tree
+#     'subsample': 0.7,                 # Subsample ratio of the training set
+#     'scale_pos_weight': scale_pos_weight,  # Adjust for class imbalance
+# }
+
+# model = XGBClassifier(**params)  # adjust scale_pos_weight based on class imbalance
+# # param_grid = {
+# #     'learning_rate': [0.01, 0.05, 0.1],
+# #     'n_estimators': [50, 100, 200],
+# #     'max_depth': [3, 5, 7],
+# #     'subsample': [0.7, 0.8, 1.0],
+# # }
+# # grid_search = GridSearchCV(model, param_grid, scoring='roc_auc', cv=5)
+# # grid_search.fit(X_train, y_train)
+
+# # best_model = grid_search.best_estimator_
+# # y_pred_best = best_model.predict(X_test)
+# # y_pred_prob_best = best_model.predict_proba(X_test)[:, 1]
+
+# # print("Best Parameters:", grid_search.best_params_)
+
+
+
+# model.fit(X_train, y_train)
+
+# y_pred_xg = model.predict(X_test)
+# y_pred_prob_xg = model.predict_proba(X_test)[:, 1]
+
+# threshold = 0.15
+# y_pred_xg = (y_pred_prob_xg >= threshold).astype(int)
+
+# # Plot the distribution of predicted probabilities
+# plt.hist(y_pred_prob_xg, bins=50, range=(0, 1), alpha=0.75)
+# plt.title('Distribution of Predicted Probabilities')
+# plt.xlabel('Predicted Probability')
+# plt.ylabel('Frequency')
 # plt.show()
 
-# # Plot angle vs goal
-# sns.scatterplot(x='angle', y='goal', data=data)
-# plt.title('Angle vs Goal')
-# plt.xlabel('Angle')
-# plt.ylabel('Goal (1 = Goal, 0 = No Goal)')
-# plt.show()
+# print("Accuracy:", accuracy_score(y_test, y_pred_xg))
+# print("ROC-AUC:", roc_auc_score(y_test, y_pred_prob_xg))
+# print(confusion_matrix(y_test, y_pred_xg))
+# print(classification_report(y_test, y_pred_xg))
+
+# # # Plot distance vs goal
+# # sns.scatterplot(x='distance', y='goal', data=data)
+# # plt.title('Distance vs Goal')
+# # plt.xlabel('Distance')
+# # plt.ylabel('Goal (1 = Goal, 0 = No Goal)')
+# # plt.show()
+
+# # # Plot angle vs goal
+# # sns.scatterplot(x='angle', y='goal', data=data)
+# # plt.title('Angle vs Goal')
+# # plt.xlabel('Angle')
+# # plt.ylabel('Goal (1 = Goal, 0 = No Goal)')
+# # plt.show()
 
 
 

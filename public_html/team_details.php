@@ -361,35 +361,29 @@
                     <col class='overall-team-stats-pp-pct'>
                   </colgroup>
                   <thead style='background-color: <?php echo $teamColor1; ?>; color: <?php echo $teamColor1Contrast; ?>'>
-                    <tr style="border: 2px solid <?php echo $teamColor2; ?>">
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GP</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>W</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>L</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OTL</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pts</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>T</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Reg W</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>OT W</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SO W</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>FOW %</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SA / G</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>SF / G</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GF / G</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GA / G</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PK %</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pt %</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PP Net %</th>
-                      <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>PP %</th>
-                      
-                      
-                      <!-- <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Team ID</th> -->
-                      
-                      
-                      
-                      
+                    <tr>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Season</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GP</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>W</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>L</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>OTL</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pts</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>T</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Reg W</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>OT W</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SO W</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>FOW %</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SA / G</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SF / G</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GF</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GF / G</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GA</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GA / G</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PK %</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pt %</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PP Net %</th>
+                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PP %</th>
+                  </tr>
                   </thead>
                   <tbody id='overallStatsTable'>
 
@@ -431,27 +425,27 @@
                 
 
                 echo "<tr data-season='$overallSeason'>";
-                echo "<td>" . substr($overallSeason, 0, 4) . "-" . substr($overallSeason, 4, 4) . "</td>";
-                echo "<td>" . $overallGP . "</td>";
-                echo "<td>" . $overallW . "</td>";
-                echo "<td>" . $overallL . "</td>";
-                echo "<td>" . $overallOTL . "</td>";
-                echo "<td>" . $overallPts . "</td>";
-                echo "<td>" . $overallTies . "</td>";
-                echo "<td>" . $overallRegWins . "</td>";
-                echo "<td>" . $overallOTWins . "</td>";
-                echo "<td>" . $overallSOWins . "</td>";
-                echo "<td>" . number_format($overallFOWinPct,2) . "</td>";
-                echo "<td>" . number_format($overallShotsAgainstPerGame,2) . "</td>";
-                echo "<td>" . number_format($overallShotsForPer,2) . "</td>";
-                echo "<td>" . $overallGF . "</td>";
-                echo "<td>" . number_format($overallGFper,2) . "</td>";
-                echo "<td>" . $overallGA . "</td>";
-                echo "<td>" . number_format($overallGAper,2) . "</td>";
-                echo "<td>" . number_format($overallPKPct,2) . "</td>";
-                echo "<td>" . number_format($overallPtPct,2) . "</td>";
-                echo "<td>" . number_format($overallPPNetPct,2) . "</td>";
-                echo "<td>" . number_format($overallPPPct,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . substr($overallSeason, 0, 4) . "-" . substr($overallSeason, 4, 4) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallGP . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallW . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallL . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallOTL . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallPts . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallTies . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallRegWins . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallOTWins . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallSOWins . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallFOWinPct,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallShotsAgainstPerGame,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallShotsForPer,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallGF . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallGFper,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . $overallGA . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallGAper,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallPKPct,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallPtPct,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallPPNetPct,2) . "</td>";
+                echo "<td class='border' style='border-color: $teamColor2'>" . number_format($overallPPPct,2) . "</td>";
                 echo "</tr>";
 
             }
@@ -483,19 +477,19 @@
                       </colgroup>
                     <thead style='background-color: <?php echo $teamColor1; ?> !important; color: <?php echo $teamColor1Contrast; ?>'>
                             <tr data-season='$seasonWithType'>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Season</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Name</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Pos.</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>GP</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>G</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>A</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>P</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>+/-</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Shots</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Shot %</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Avg TOI</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>Avg Shifts</th>
-                                <th style='border-bottom: 2px solid <?php echo $teamColor2; ?>'>FO %</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Season</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Name</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pos.</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GP</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>G</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>A</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>P</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>+/-</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Shots</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Shot %</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Avg TOI</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Avg Shifts</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>FO %</th>
                             </tr>
                         </thead>
                         <tbody id='skaterStatsTable'>
@@ -527,44 +521,44 @@
                                 $seasonYear2 = substr($seasonID, 4, 4);
                                 
                                 echo "<tr data-season='$seasonWithType'>"; // For filtering by season with type
-                                echo "<td>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";  // Season display
-                                echo "<td><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $playerID . "'>" . $firstName . " " . $lastName . "</a></td>";
-                                echo "<td>" . $positionDisplay . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";  // Season display
+                                echo "<td class='border' style='border-color: $teamColor2'><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $playerID . "'>" . $firstName . " " . $lastName . "</a></td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . $positionDisplay . "</td>";
                                 
                                 // Display stats if available, otherwise show dash
-                                echo "<td>" . ($row['seasonGamesPlayed'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonGoals'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonAssists'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonPoints'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonPlusMinus'] !== null && $row['seasonPlusMinus'] !== '' ? $row['seasonPlusMinus'] : "-") . "</td>";
-                                echo "<td>" . ($row['seasonShots'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonGamesPlayed'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonGoals'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonAssists'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonPoints'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonPlusMinus'] !== null && $row['seasonPlusMinus'] !== '' ? $row['seasonPlusMinus'] : "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonShots'] ?? "-") . "</td>";
                                 
                                 // Handle percentages and formatting
                                 if (isset($row['seasonShootingPct'])) {
-                                    echo "<td>" . number_format((float) $row['seasonShootingPct']*100, 1) . "</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>" . number_format((float) $row['seasonShootingPct']*100, 1) . "</td>";
                                 } else {
-                                    echo "<td>-</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>-</td>";
                                 }
                                 
                                 // Format time on ice if available
                                 if (isset($row['seasonAvgTOI'])) {
-                                    echo "<td>" . gmdate("i:s", (int) $row['seasonAvgTOI']) . "</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>" . gmdate("i:s", (int) $row['seasonAvgTOI']) . "</td>";
                                 } else {
-                                    echo "<td>-</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>-</td>";
                                 }
                                 
                                 // Format shifts
                                 if (isset($row['seasonAvgShifts'])) {
-                                    echo "<td>" . number_format((float) $row['seasonAvgShifts'], 1) . "</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>" . number_format((float) $row['seasonAvgShifts'], 1) . "</td>";
                                 } else {
-                                    echo "<td>-</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>-</td>";
                                 }
                                 
                                 // Format faceoff percentage
                                 if (isset($row['seasonFOWinPct'])) {
-                                    echo "<td>" . number_format((float) $row['seasonFOWinPct']*100, 1) . "</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>" . number_format((float) $row['seasonFOWinPct']*100, 1) . "</td>";
                                 } else {
-                                    echo "<td>-</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>-</td>";
                                 }
                                 
                                 echo "</tr>";
@@ -598,21 +592,21 @@
                     </colgroup>
                     <thead style='color: <?php echo $teamColor1Contrast; ?>'>
                             <tr style='background-color: <?php echo $teamColor1; ?>; border: 2px solid <?php echo $teamColor2; ?>; color: <?php echo $teamColor2; ?>'>
-                                <th>Season</th>
-                                <th>Name</th>
-                                <th>GP</th>
-                                <th>GS</th>
-                                <th>W</th>
-                                <th>L</th>
-                                <th>T</th>
-                                <th>OTL</th>
-                                <th>GAA</th>
-                                <th>Sv. %</th>
-                                <th>SA</th>
-                                <th>Saves</th>
-                                <th>GA</th>
-                                <th>SO</th>
-                                <th>TOI (min)</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Season</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Name</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GP</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GS</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>W</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>L</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>T</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>OTL</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GAA</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Sv. %</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SA</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Saves</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GA</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SO</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>TOI (min)</th>
                             </tr>
                         </thead>
                         <tbody id='goalieStatsTable'>
@@ -630,41 +624,41 @@
                                 $seasonYear2 = substr($seasonID, 4, 4);
                                 
                                 echo "<tr data-season='$seasonWithType'>"; // For filtering by season with type
-                                echo "<td>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";  // Season
-                                echo "<td><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $playerID . "'>" . $firstName . " " . $lastName . "</a></td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";  // Season
+                                echo "<td class='border' style='border-color: $teamColor2'><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $playerID . "'>" . $firstName . " " . $lastName . "</a></td>";
                                 
                                 // Display stats if available, otherwise show dash
-                                echo "<td>" . ($row['seasonGamesPlayed'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonGS'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonWins'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonLosses'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonTies'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonOTLosses'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonGamesPlayed'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonGS'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonWins'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonLosses'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonTies'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonOTLosses'] ?? "-") . "</td>";
                                 
                                 // Format GAA
                                 if (isset($row['seasonGAA'])) {
-                                    echo "<td>" . number_format((float) $row['seasonGAA'], 2) . "</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>" . number_format((float) $row['seasonGAA'], 2) . "</td>";
                                 } else {
-                                    echo "<td>-</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>-</td>";
                                 }
                                 
                                 // Format save percentage
                                 if (isset($row['seasonSavePct'])) {
-                                    echo "<td>" . number_format((float) $row['seasonSavePct'], 3) . "</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>" . number_format((float) $row['seasonSavePct'], 3) . "</td>";
                                 } else {
-                                    echo "<td>-</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>-</td>";
                                 }
                                 
-                                echo "<td>" . ($row['seasonSA'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonSaves'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonGA'] ?? "-") . "</td>";
-                                echo "<td>" . ($row['seasonSO'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonSA'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonSaves'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonGA'] ?? "-") . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonSO'] ?? "-") . "</td>";
                                 
                                 // Format TOI
                                 if (isset($row['seasonTOI'])) {
-                                    echo "<td>" . gmdate("i:s", (int) $row['seasonTOI']) . "</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>" . gmdate("i:s", (int) $row['seasonTOI']) . "</td>";
                                 } else {
-                                    echo "<td>-</td>";
+                                    echo "<td class='border' style='border-color: $teamColor2'>-</td>";
                                 }
                                 
                                 echo "</tr>";
