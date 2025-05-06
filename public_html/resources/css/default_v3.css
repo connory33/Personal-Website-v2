@@ -369,19 +369,19 @@ main {
 	background-color: #18314f;
 	color: white !important;
 	font-weight: bold;
-	border: 3px solid white;
+	/* border: 3px solid white; */
   }
   
   .career-subheader {
 	background-color: #18314f;
 	color: white !important;
 	font-weight: bold;
-	border: 3px solid white;
+	/* border: 3px solid white; */
 	border-left: none;
   }
   
   .career-data {
-	border: 3px solid white;
+	/* border: 3px solid white; */
 	font-weight: 600;
   }
   

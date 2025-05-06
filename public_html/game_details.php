@@ -567,14 +567,14 @@
 
         $plays_sql = "SELECT * FROM nhl_plays WHERE nhl_plays.gameID = $game_id ORDER BY nhl_plays.period, nhl_plays.timeInPeriod ASC LIMIT $offset, $limit";
         $plays = mysqli_query($conn, $plays_sql);
-        echo "<h4 class='text-center text-4xl'>Play-by-Play Events</h4><br>";
+        echo "<h4 class='text-center text-4xl'>Play-by-Play</h4><br>";
 
         if (mysqli_num_rows($plays) > 0) {
         ?>
 
 
 
-<h4 class="text-2xl font-semibold mb-4 text-white text-center">Play-by-Play Key</h4>
+<!-- <h4 class="text-2xl font-semibold mb-4 text-white text-center">Play-by-Play Key</h4> -->
 
 <div class="bg-gray-800 rounded-lg p-6 text-sm text-white shadow-lg border-2 border-slate-600 max-w-4xl mx-auto">
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-8">

@@ -569,7 +569,6 @@
                           </div>
                 <!-- GOALIES COMBINED TABLE -->
 
-                <br>
                 <div>
                 <div class="shadow-md rounded-lg">
                     <table class='goalies-combined-table default-zebra-table text-center min-w-[900px]' style='color: black; border: 2px solid <?php echo $teamColor2; ?>;'>
@@ -674,7 +673,137 @@
             
 
             <?php
-            
+            echo "<br><br>";
+            echo "<div>";
+                $draftSQL = "SELECT * FROM draft_history WHERE teamID = $team_id";
+
+                $draftResult = mysqli_query($conn, $draftSQL);
+                echo "<h3 class='text-2xl text-center text-white'>Draft Picks</h3><br>";
+                echo "<div class='team-draft-history-table-container'>";
+                echo "<table class='team-draft-history-table default-zebra-table text-center mx-auto' style='border: 2px solid $teamColor2; width: 90%;'>";
+                echo "<colgroup>";
+                    echo "<col class='draft-year'>";
+                    echo "<col class='draft-round'>";
+                    echo "<col class='draft-pick-in-round'>";
+                    echo "<col class='draft-overall-pick'>";
+                    echo "<col class='draft-player-name'>";
+                    echo "<col class='draft-player-position'>";
+                    echo "<col class='draft-player-country'>";
+                    echo "<col class='draft-player-id'>";
+                echo "</colgroup>";
+                echo "<thead style='background-color: $teamColor1; color: $teamColor1Contrast;'>";
+                echo "<tr>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Year</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Round</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Pick In Round</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Overall Pick</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Player Name</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Position</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Country</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>ID</th>";
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody id='draftHistoryTable'>";
+
+                while ($row = mysqli_fetch_assoc($draftResult)) {
+                    // print_r($row);
+                    $draftPlayerID = $row['playerId'];
+                    echo $draftPlayerID;
+                    $draftYear = $row['draftYear'];
+                    $draftRound = $row['round'];
+                    $draftPickInRound = $row['pickInRound'];
+                    $draftPickOvr = $row['overallPick'];
+                    $draftPlayerFirstName = $row['firstName'];
+                    $draftPlayerLastName = $row['lastName'];
+                    $draftPlayerName = $draftPlayerFirstName . " " . $draftPlayerLastName;
+                    $draftPlayerPosition = $row['position'];
+                    $draftPlayerCountry = $row['country'];
+
+                    echo "<tr data-season='$draftYear'>";
+                        echo "<td class='border' style='border-color: $teamColor2'>" . $draftYear . "</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>" . $draftRound . "</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>" . $draftPickInRound . "</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>" . $draftPickOvr . "</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'> ". $draftPlayerName . "</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>" . $draftPlayerPosition . "</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>" . $draftPlayerCountry . "</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>" . $draftPlayerID . "</td>";
+                    
+                    echo "</tr>";
+                }
+                echo "</tbody>";
+                echo "</table>";
+                echo "</div>";
+            echo "</div>";
+
+
+
+
+
+            ### PROSPECTS ###
+            echo "<br><br>";
+            echo "<div>";
+                $prospectSQL = "SELECT team_prospects.*, nhl_players.sweaterNumber, nhl_players.firstName, nhl_players.lastName, nhl_players.position FROM team_prospects LEFT JOIN nhl_players ON team_prospects.prospect_id=nhl_players.playerId WHERE team_id = $team_id";
+                $prospectResult = mysqli_query($conn, $prospectSQL);
+                echo "<h3 class='text-2xl text-center text-white'>Current Prospects</h3><br>";
+                echo "<div class='team-prospects-table-container'>";
+                echo "<table class='team-prospects-table default-zebra-table text-center mx-auto' style='border: 2px solid $teamColor2; width: 90%;'>";
+                echo "<colgroup>";
+                    echo "<col class='prospect-id'>";
+                    echo "<col class='prospect-name'>";
+                    // echo "<col class='prospect-position'>";
+                    // echo "<col class='prospect-age'>";
+                    // echo "<col class='prospect-height'>";
+                    // echo "<col class='prospect-weight'>";
+                    // echo "<col class='prospect-country'>";
+                echo "</colgroup>";
+                echo "<thead style='background-color: $teamColor1; color: $teamColor1Contrast;'>";
+                echo "<tr>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Prospect ID</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Name</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Number</th>";
+                    echo "<th class='border' style='border-color: $teamColor2'>Position</th>";
+                    // echo "<th class='border' style='border-color: $teamColor2'>Age</th>";
+                    // echo "<th class='border' style='border-color: $teamColor2'>Height</th>";
+                    // echo "<th class='border' style='border-color: $teamColor2'>Weight</th>";
+                    // echo "<th class='border' style='border-color: $teamColor2'>Country</th>";
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody id='prospectTable'>";
+                while ($row = mysqli_fetch_assoc($prospectResult)) {
+                    // print_r($row);
+                    $prospectID = $row['prospect_id'];
+                    $firstName = $row['firstName'];
+                    // echo 'first' . $firstName;
+                    $lastName = $row['lastName'];
+                    // echo 'last'.  $lastName;
+                    $number = $row['sweaterNumber'];
+                    $position = $row['position'];
+                    // $prospectAge = $row['age'];
+                    // $prospectHeight = $row['height'];
+                    // $prospectWeight = $row['weight'];
+                    // $prospectCountry = $row['country'];
+
+                    echo "<tr>";
+                        echo "<td class='border' style='border-color: $teamColor2'>$prospectID</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $prospectID . "'>" . $firstName . " " . $lastName . "</a></td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>$number</td>";
+                        echo "<td class='border' style='border-color: $teamColor2'>$position</td>";
+                        // echo "<td class='border' style='border-color: $teamColor2'>$prospectAge</td>";
+                        // echo "<td class='border' style='border-color: $teamColor2'>$prospectHeight</td>";
+                        // echo "<td class='border' style='border-color: $teamColor2'>$prospectWeight</td>";
+                        // echo "<td class='border' style='border-color: $teamColor2'>$prospectCountry</td>";
+
+                    echo "</tr>";
+                }
+                echo "</tbody>";
+                echo "</table>";
+                echo "</div>";
+            echo "</div>";
+
+
+
+
         } else {
             echo "<div class='container'><div class='alert alert-warning'>No team ID provided. Please select a team.</div></div>";
         }
@@ -772,6 +901,7 @@
                   const goalieRows = document.querySelectorAll('#goalieStatsTable tr');
                   const rosterRows = document.querySelectorAll('#seasonRosterTable tr');
                   const overallRows = document.querySelectorAll('#overallStatsTable tr');
+                  const draftRows = document.querySelectorAll('#draftHistoryTable tr');
 
 
                   // // Debug information
@@ -828,6 +958,17 @@
                               row.style.display = 'none'; // Hide row
                             }
                       });
+
+                      // Filter draft rows
+                      draftRows.forEach(row => {
+                            const draftYear = row.dataset.season; // Use draftYear directly
+                            const selectedYear = seasonID.substring(0, 4); // Extract the first year of the season
+                            if (draftYear === selectedYear) {
+                                row.style.display = ''; // Show row
+                            } else {
+                                row.style.display = 'none'; // Hide row
+                            }
+                        });
                   }
 
                   // Set default season to the first option in the dropdown

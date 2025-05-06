@@ -21,10 +21,12 @@ if (isset($_GET['draft_id'])) {
     $draft_id = $_GET['draft_id'];
 
     
-    $sql = "SELECT draft_history.*, nhl_teams.triCode as triCode from 
+    $sql = "SELECT draft_history.*, nhl_teams.id as team_id, nhl_teams.triCode as triCode, nhl_teams.teamLogo as logo, league_pages.* from 
             draft_history 
             LEFT JOIN nhl_teams ON draft_history.teamID = nhl_teams.id
-            WHERE draftID = '$draft_id'";
+            LEFT JOIN league_pages on draft_history.amateurLeague = league_pages.leagueName
+            WHERE draftID = '$draft_id'
+            ORDER BY round, pickInRound";
 
     $result = mysqli_query($conn, $sql);
 
@@ -46,7 +48,13 @@ if (isset($_GET['draft_id'])) {
             'weight' => $row['weight'],
             'amateurLeague' => $row['amateurLeague'],
             'amateurClubName' => $row['amateurClubName'],
-            'triCode' => $row['triCode']
+            'triCode' => $row['triCode'],
+            'logo' => $row['logo'],
+            'team_id' => $row['team_id'],
+            'playerID' => $row['playerId'],
+            'amateurLeagueName' => $row['leagueName'],
+            'amateurLeagueURL' => $row['homepageURL'],
+            'selectableRounds' => $row['selectableRounds']
         ];
     }
 
@@ -111,11 +119,11 @@ if (isset($_GET['draft_id'])) {
 <h2 class="text-4xl font-bold text-white text-center">
     Draft Picks <?php if (!empty($all_picks)) echo htmlspecialchars($all_picks[0]['draftYear']); ?>
 </h2><br>
-
+<p class='text-center text-white'>Sort by:</p><br>
     <!-- Search Filter Fields -->
     <div class="flex flex-wrap justify-center items-center gap-4 mb-4">
         <input type="text" id="searchByRound" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Round">
-        <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Team">
+        <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Team (tricode, e.g., 'NYR')">
         <input type="text" id="searchByPlayer" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Player">
         <input type="text" id="searchByPosition" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Position">
         <input type="text" id="searchByCountry" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Country">
@@ -124,22 +132,23 @@ if (isset($_GET['draft_id'])) {
     </div>
 <div class="overflow-x-auto">
     <!-- Table -->
+     <p class='text-center text-white'> Click any team logo or player name to view details.</p><br>
     <table class='shift-table default-zebra-table text-center' id="draftTable">
         <thead>
             <tr>
                 <!-- <th>Draft Year</th> -->
-                <th>Round</th>
+                <th class='border border-slate-600 px-2 py-1'>Round</th>
                 <!-- <th>Pick</th> -->
-                <th>Overall</th>
-                <th>Team</th>
+                <th class='border border-slate-600 px-2 py-1'>Overall</th>
+                <th class='border border-slate-600 px-2 py-1'>Team</th>
                 <!-- <th>Pick History</th> -->
-                <th>Name</th>
-                <th>Position</th>
-                <th>Country</th>
-                <th>Height (in.)</th>
-                <th>Weight (lbs)</th>
-                <th>Amateur League</th>
-                <th>Amateur Club Name</th>
+                <th class='border border-slate-600 px-2 py-1'>Name</th>
+                <th class='border border-slate-600 px-2 py-1'>Position</th>
+                <th class='border border-slate-600 px-2 py-1'>Country</th>
+                <th class='border border-slate-600 px-2 py-1'>Height (in.)</th>
+                <th class='border border-slate-600 px-2 py-1'>Weight (lbs)</th>
+                <th class='border border-slate-600 px-2 py-1'>Amateur League</th>
+                <th class='border border-slate-600 px-2 py-1'>Amateur Club Name</th>
             </tr>
         </thead>
         <tbody>
@@ -182,16 +191,16 @@ if (isset($_GET['draft_id'])) {
             paginatedData.forEach(row => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
-                    <td>${row.round}</td>
-                    <td>${row.overallPick}</td>
-                    <td>${row.triCode}</td>
-                    <td><a href="player_details.php?player_id=${row.playerID}">${row.firstName} ${row.lastName}</a></td>
-                    <td>${row.position}</td>
-                    <td>${row.country}</td>
-                    <td>${row.height}</td>
-                    <td>${row.weight}</td>
-                    <td>${row.amateurLeague}</td>
-                    <td>${row.amateurClubName}</td>
+                    <td class='border border-slate-600 px-2 py-1'>${row.round}</td>
+                    <td class='border border-slate-600 px-2 py-1'>${row.overallPick}</td>
+                    <td class='border border-slate-600 px-2 py-1'><a href='team_details.php?team_id=${row.team_id}'><img src="${row.logo}" style='width: 45px' class='mx-auto'></a></td>
+                    <td class='border border-slate-600 px-2 py-1'><a href="player_details.php?player_id=${row.playerID}">${row.firstName} ${row.lastName}</a></td>
+                    <td class='border border-slate-600 px-2 py-1'>${row.position}</td>
+                    <td class='border border-slate-600 px-2 py-1'>${row.country}</td>
+                    <td class='border border-slate-600 px-2 py-1'>${row.height}</td>
+                    <td class='border border-slate-600 px-2 py-1'>${row.weight}</td>
+                    <td class='border border-slate-600 px-2 py-1'><a href='${row.amateurLeagueURL}'>${row.amateurLeague}</a></td>
+                    <td class='border border-slate-600 px-2 py-1'>${row.amateurClubName}</td>
                 `;
                 tableBody.appendChild(tr);
             });

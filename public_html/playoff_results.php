@@ -17,9 +17,8 @@
 
     <?php include 'header.php'; ?>
 
-    <div class='text-white text-center w-full overflow-x-auto' style='background-color: #343a40'>
-
-    <br><br>
+    <div class='text-white text-center w-full overflow-x-auto' style='background-color: #343a40'> <!-- Open full page div -->
+      <br>
 
       <?php
       include('db_connection.php');
@@ -47,32 +46,31 @@
               '20182019', '20192020', '20202021', '20212022', '20222023', '20232024', '20242025'];
 
           $seasons = array_reverse($seasons);
-      ?>
+        ?>
+
+        <!-- Dropdown -->
+        <div class="mx-auto w-fit px-6 py-4 rounded-md text-black flex items-center space-x-4 border border-slate-600 bg-slate-800">
+          <label for="seasonSelect" class="mr-2 text-white font-semibold">Select Season:</label>
+          <select id="seasonSelect" class="px-3 py-1 rounded text-black" onchange="changeSeason(this.value)">
+            <option value="">Season</option>
+            <?php foreach ($seasons as $seasonID): 
+                $seasonYear1 = substr($seasonID, 0, 4);
+                $seasonYear2 = substr($seasonID, 4, 4);
+                $selected = ($seasonID === $currentSeason) ? 'selected' : '';
+            ?>
+              <option value="<?php echo $seasonID; ?>" <?php echo $selected; ?>>
+                <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+      <br>
+      <hr class='w-4/5 border-white align-center mx-auto'>
 
       <!-- Bracket Header -->
       <h2 class="text-2xl font-bold mb-4 text-white text-center">
         Playoff Bracket (<?php echo $seasonYear1 . '-' . $seasonYear2; ?>)
       </h2>
-
-      <!-- Dropdown -->
-      <div class="mx-auto w-fit px-6 py-4 rounded-md text-black flex items-center space-x-4 border border-slate-600 bg-slate-800">
-        <label for="seasonSelect" class="mr-2 text-white font-semibold">Select Season:</label>
-        <select id="seasonSelect" class="px-3 py-1 rounded text-black" onchange="changeSeason(this.value)">
-          <option value="">Season</option>
-          <?php foreach ($seasons as $seasonID): 
-              $seasonYear1 = substr($seasonID, 0, 4);
-              $seasonYear2 = substr($seasonID, 4, 4);
-              $selected = ($seasonID === $currentSeason) ? 'selected' : '';
-          ?>
-            <option value="<?php echo $seasonID; ?>" <?php echo $selected; ?>>
-              <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-
-      <br>
-      <hr class='w-4/5 border-white align-center mx-auto'>
 
       <script>
         function changeSeason(seasonId) {
@@ -116,43 +114,52 @@
           $rounds[$row['roundNums']][] = $row;
       }
 
-      echo "<div class='flex justify-between text-white px-4 gap-6'>";
+      echo "<div class='flex justify-between text-white px-4 gap-6'>"; // Flex container for brackets
 
-      // Container for West bracket
-      echo "<div class='w-1/2'>";
-      echo "<h3 class='text-center text-xl font-semibold mb-4'>West</h3>";
-      foreach ($rounds as $round => $matchups) {
-          echo "<div class='mb-6'>";
-          echo "<div class='text-lg font-bold mb-2 text-center'>Round $round</div>";
-      
-          foreach ($matchups as $match) {
-              // Check if this series belongs to the West
-              $topDiv = $match['topSeedTeamDivision'] ?? '';
-              echo "Top div", $topDiv;
-              $botDiv = $match['bottomSeedTeamDivision'] ?? '';
-              echo $botDiv;
-              $westDivs = ['Pacific', 'Central', 'Northwest'];
-              if (!in_array($topDiv, $westDivs) && !in_array($botDiv, $westDivs)) continue;
-      
-              // Series info
-              $bottomWins = (int)$match['bottomSeedWins'];
-              $topWins = (int)$match['topSeedWins'];
-              $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-500' : '';
-              $topBold = $topWins > $bottomWins ? 'font-bold text-green-500' : '';
-              $seriesId = $match['seasonID'] . $match['seriesLetters'];
-      
-              echo "<a href='series_details.php?series_id={$seriesId}' class='block no-underline mb-4'>";
-              echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 mx-auto'>";
-              echo "<div class='flex justify-between'>";
-              echo "<div class='w-1/2 text-xs $bottomBold'>" . $match['bottomSeedTeamName'] . "<br>(" . $botDiv . ", " . $match['bottomSeedRanks'] . ")</div>";
-              echo "<div class='w-1/2 text-xs $topBold'>" . $match['topSeedTeamName'] . "<br>(" . $topDiv . ", " . $match['topSeedRanks'] . ")</div>";
+      echo "<div class='w-1/2'>"; // Container for West bracket
+        echo "<h3 class='text-center text-xl font-semibold mb-4'>West</h3>";
+        foreach ($rounds as $round => $matchups) {
+            echo "<div class='mb-6'>";
+
+              echo "<div class='text-lg font-bold mb-2 text-center'>Round $round";
               echo "</div>";
-              echo "<div class='mt-2 font-semibold text-lg'><span class='$bottomBold'>{$bottomWins}</span> - <span class='$topBold'>{$topWins}</span></div>";
-              echo "</div>";
-              echo "</a>";
-          }
+        
+              foreach ($matchups as $match) {
+                  // Check if this series belongs to the West
+                  $topDiv = $match['topSeedTeamDivision'] ?? '';
+                  echo "Top div", $topDiv;
+                  $botDiv = $match['bottomSeedTeamDivision'] ?? '';
+                  echo $botDiv;
+                  $westDivs = ['Pacific', 'Central', 'Northwest'];
+                  if (!in_array($topDiv, $westDivs) && !in_array($botDiv, $westDivs)) continue;
+          
+                  // Series info
+                  $bottomWins = (int)$match['bottomSeedWins'];
+                  $topWins = (int)$match['topSeedWins'];
+                  $bottomBold = $bottomWins > $topWins ? 'font-bold text-green-500' : '';
+                  $topBold = $topWins > $bottomWins ? 'font-bold text-green-500' : '';
+                  $seriesId = $match['seasonID'] . $match['seriesLetters'];
+          
+                  echo "<a href='series_details.php?series_id={$seriesId}' class='block no-underline mb-4'>";
+                  echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 mx-auto'>";
+                    echo "<div class='flex justify-between'>";
+
+                      echo "<div class='w-1/2 text-xs $bottomBold'>" . $match['bottomSeedTeamName'] . "<br>(" . $botDiv . ", " . $match['bottomSeedRanks'] . ")";
+                      echo "</div>";
+
+                      echo "<div class='w-1/2 text-xs $topBold'>" . $match['topSeedTeamName'] . "<br>(" . $topDiv . ", " . $match['topSeedRanks'] . ")";
+                      echo "</div>";
+
+                    echo "</div>";
+                    
+                    echo "<div class='mt-2 font-semibold text-lg'><span class='$bottomBold'>{$bottomWins}</span> - <span class='$topBold'>{$topWins}</span>";
+                    echo "</div>";
+                    echo "</a>";
+                  echo "</div>";
+
+              }
           echo "</div>";
-      }
+        }
       echo "</div>"; // End West
       
       // Container for East bracket
@@ -177,31 +184,25 @@
               $seriesId = $match['seasonID'] . $match['seriesLetters'];
       
               echo "<a href='series_details.php?series_id={$seriesId}' class='block no-underline mb-4'>";
-              echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded shadow text-center w-60 hover:bg-slate-700 mx-auto'>";
+              echo "<div class='bg-slate-800 border border-slate-600 p-3 rounded-lg shadow text-center w-60 hover:bg-slate-700 mx-auto'>";
               echo "<div class='flex justify-between'>";
               echo "<div class='w-1/2 text-xs $bottomBold'>" . $match['bottomSeedTeamName'] . "<br>(" . $botDiv . ", " . $match['bottomSeedRanks'] . ")</div>";
               echo "<div class='w-1/2 text-xs $topBold'>" . $match['topSeedTeamName'] . "<br>(" . $topDiv . ", " . $match['topSeedRanks'] . ")</div>";
               echo "</div>";
               echo "<div class='mt-2 font-semibold text-lg'><span class='$bottomBold'>{$bottomWins}</span> - <span class='$topBold'>{$topWins}</span></div>";
-              echo "</div>";
               echo "</a>";
+              echo "</div>";
           }
           echo "</div>";
       }
       echo "</div>"; // End East
       
-      echo "</div>"; // Close entire flex container
-      
-
-
-
-
+      echo "</div>"; // Close entire flex container      
 
       } // end if season_id
       ?>
+      </div> <!-- Close full page div -->
+
         <?php include 'footer.php'; ?>
   </body>
-
-
-
 </html>

@@ -457,15 +457,6 @@
             $last5_games_saves = isset($row['goalie_saves']) ? $row['goalie_saves'] : null;
             $last5_games_savePctg = isset($row['goalie_savePctg']) ? $row['goalie_savePctg'] : null;
             $last5_games_starter = isset($row['goalie_starter']) ? $row['goalie_starter'] : null;
-            $last5_games_assists = isset($row['assists']) ? $row['assists'] : null;
-            $last5_games_points = isset($row['points']) ? $row['points'] : null;
-            $last5_games_plusMinus = isset($row['plusMinus']) ? $row['plusMinus'] : null;
-            $last5_games_pim = isset($row['pim']) ? $row['pim'] : null;
-            $last5_games_hits = isset($row['hits']) ? $row['hits'] : null;
-            $last5_games_ppg = isset($row['powerPlayGoals']) ? $row['powerPlayGoals'] : null;
-            $last5_games_sog = isset($row['sog']) ? $row['sog'] : null;
-            $last5_games_faceoffWinningPctg = isset($row['faceoffWinningPctg']) ? $row['faceoffWinningPctg'] : null;
-            $last5_games_toi = isset($row['toi']) ? $row['toi'] : null;
             echo "<tr>";
             echo "<td class='border border-slate-600 px-2 py-1'><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
             echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_team . "</td>";
@@ -478,21 +469,40 @@
               $last5_games_homeRoad = 'N/A';
             }
             echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_homeRoad . "</td>";
-            if (strtolower($position) == 'g') {
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_shotsAgainst)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_goalsAgainst)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_saves, 2)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_savePctg, 3)) . "</td>";
+
+
+            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_shotsAgainst)) . "</td>";
+            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_goalsAgainst)) . "</td>";
+            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_saves, 2)) . "</td>";
+            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_savePctg, 3)) . "</td>";
+            if ($last5_games_starter == 1) {
+              echo "<td class='border border-slate-600 px-2 py-1'>Yes</td>";
             } else {
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonGoals'])) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonAssists'])) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonPoints'])) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonPIM'])) . "</td>";
-            // echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_shotsAgainst . "</td>";
-            // echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_goalsAgainst . "</td>";
-            // echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_saves . "</td>";
-            // echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_savePctg . "</td>";
-            // echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_starter . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>No</td>";
+            }
+
+
+            // if (strtolower($position) == 'g') {
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_shotsAgainst)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_goalsAgainst)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_saves, 2)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_savePctg, 3)) . "</td>";
+            //   if ($last5_games_starter == 1) {
+            //     echo "<td class='border border-slate-600 px-2 py-1'>Yes</td>";
+            //   } else {
+            //     echo "<td class='border border-slate-600 px-2 py-1'>No</td>";
+            //   }
+            // } else {
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_goals)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_assists)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_points)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_plusMinus)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_pim)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_hits)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_ppg)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_sog)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_faceoffWinningPctg)) . "</td>";
+            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_toi)) . "</td>";
             echo "</tr>";
             }
           }
@@ -512,7 +522,7 @@
               echo "<th class='border border-slate-600 px-2 py-1'>ID</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>Team</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>Opp.</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>H / A<th>";
+              echo "<th class='border border-slate-600 px-2 py-1'>H/A<th>";
               echo "<th class='border border-slate-600 px-2 py-1'>G</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>A</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>P</th>";
@@ -541,7 +551,7 @@
               echo "<th class='border border-slate-600 px-2 py-1'>ID</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>Team</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>Opp.</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>H / A</th>";
+              echo "<th class='border border-slate-600 px-2 py-1'>H/A</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>G</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>A</th>";
               echo "<th class='border border-slate-600 px-2 py-1'>P</th>";
@@ -561,6 +571,15 @@
               $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
               $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
               $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
+              $last5_games_assists = isset($row['assists']) ? $row['assists'] : null;
+              $last5_games_points = isset($row['points']) ? $row['points'] : null;
+              $last5_games_plusMinus = isset($row['plusMinus']) ? $row['plusMinus'] : null;
+              $last5_games_pim = isset($row['pim']) ? $row['pim'] : null;
+              $last5_games_hits = isset($row['hits']) ? $row['hits'] : null;
+              $last5_games_ppg = isset($row['powerPlayGoals']) ? $row['powerPlayGoals'] : null;
+              $last5_games_sog = isset($row['sog']) ? $row['sog'] : null;
+              $last5_games_faceoffWinningPctg = isset($row['faceoffWinningPctg']) ? $row['faceoffWinningPctg'] : null;
+              $last5_games_toi = isset($row['toi']) ? $row['toi'] : null;
               echo "<tr>";
               echo "<td class='border border-slate-600 px-2 py-1'><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
               echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_team . "</td>";
@@ -574,6 +593,15 @@
               }
               echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_homeRoad . "</td>";
               echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_goals . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_assists)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_points)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_plusMinus)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_pim)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_hits)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_ppg)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_sog)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_faceoffWinningPctg)) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_toi)) . "</td>";
               
               echo "</tr>";
             }
@@ -581,7 +609,7 @@
         }
       echo "</tbody>";
       echo "</table><br><br>";
-        }
+        
       
 
 
@@ -673,7 +701,7 @@
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonShots . "</td>";
                   // echo "<td>" . $featuredSeasonShootingPct . "</td>";
                   $formatted_featuredSeasonShootingPct = $featuredSeasonShootingPct * 100;
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($formatted_featuredSeasonShootingPct, 2) . "</td>";
+                  echo "<td class='border border-slate-600 px-2 py-1'>" . round(number_format($formatted_featuredSeasonShootingPct, 2), 1) . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonPPG . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonPPPoints . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonSHG . "</td>";
@@ -751,8 +779,8 @@
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPlusMinus . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPIM . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerShots . "</td>";
-                  $formatted_regSeasonCareerShootingPct = $regSeasonCareerShootingPct * 100;
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($formatted_regSeasonCareerShootingPct, 2) . "</td>";
+                  $formatted_regSeasonCareerShootingPct = round($regSeasonCareerShootingPct * 100, 1);
+                  echo "<td class='border border-slate-600 px-2 py-1'>" . $formatted_regSeasonCareerShootingPct . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPPG . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPPPoints . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerSHG . "</td>";
@@ -829,8 +857,8 @@
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPlusMinus . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPIM . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerShots . "</td>";
-                  $formatted_playoffsCareerShootingPct = $playoffsCareerShootingPct * 100;
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($formatted_playoffsCareerShootingPct, 2) . "</td>";
+                  $formatted_playoffsCareerShootingPct = round((float)$playoffsCareerShootingPct * 100, 1);
+                  echo "<td class='border border-slate-600 px-2 py-1'>" . $formatted_playoffsCareerShootingPct . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPPG . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPPPoints . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerSHG . "</td>";
@@ -965,37 +993,37 @@
             $avgSavePct = $count > 0 ? $totalSavePct / $count : 0;
         
             echo "<tr>";
-              echo "<td colspan='4' rowspan='2' class='career-header'>Career Totals</td>";
-              echo "<td class='career-subheader'>GP</td>";
-              echo "<td class='career-subheader'>W</td>";
-              echo "<td class='career-subheader'>L</td>";
-              echo "<td class='career-subheader'>GAA</td>";
-              echo "<td class='career-subheader'>Sv %</td>";
+              echo "<td colspan='4' rowspan='2' class='career-header border-2 border-slate-600 px-2 py-1'>Career Totals</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>GP</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>W</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>L</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>GAA</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>Sv %</td>";
             echo "</tr>";
         
             echo "<tr>";
-              echo "<td class='career-data'>$totalGP</td>";
-              echo "<td class='career-data'>$totalW</td>";
-              echo "<td class='career-data'>$totalL</td>";
-              echo "<td class='career-data'>" . number_format($avgGAA, 2) . "</td>";
-              echo "<td class='career-data'>" . number_format($avgSavePct, 3) . "</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalGP</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalW</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalL</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>" . number_format($avgGAA, 2) . "</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>" . number_format($avgSavePct, 3) . "</td>";
             echo "</tr>";
         } else {
             echo "<tr>";
-              echo "<td colspan='4' rowspan='2' class='career-header'>Career Totals</td>";
-              echo "<td class='career-subheader'>GP</td>";
-              echo "<td class='career-subheader'>G</td>";
-              echo "<td class='career-subheader'>A</td>";
-              echo "<td class='career-subheader'>Pts</td>";
-              echo "<td class='career-subheader'>PIM</td>";
+              echo "<td colspan='4' rowspan='2' class='career-header border-2 border-slate-600 px-2 py-1'>Career Totals</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>GP</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>G</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>A</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>Pts</td>";
+              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>PIM</td>";
             echo "</tr>";
         
             echo "<tr>";
-              echo "<td class='career-data'>$totalGP</td>";
-              echo "<td class='career-data'>$totalG</td>";
-              echo "<td class='career-data'>$totalA</td>";
-              echo "<td class='career-data'>$totalPts</td>";
-              echo "<td class='career-data'>$totalPIM</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalGP</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalG</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalA</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalPts</td>";
+              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalPIM</td>";
             echo "</tr>";
         }
 
