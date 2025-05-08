@@ -1,0 +1,3 @@
+[submodule "public_html/public_html/projects/nhl-db"]
+	path = public_html/public_html/projects/nhl-db
+	url = https://github.com/connory33/nhl-db.git
