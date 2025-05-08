@@ -44,3 +44,17 @@
     width: 100%;
     background-color: #f8f5f0;
 }
+
+.golfers-table th.sort-asc {
+  border-top: 4px solid #4ade80; /* Green border on top */
+  border-bottom: none;
+}
+
+.golfers-table th.sort-desc {
+  border-bottom: 4px solid #4ade80; /* Green border on bottom */
+  border-top: none;
+}
+
+.golfers-table th:hover {
+  background-color: rgba(74, 222, 128, 0.1); /* light green background on hover */
+}
