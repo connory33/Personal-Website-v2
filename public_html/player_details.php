@@ -33,10 +33,12 @@
           if (isset($_GET['player_id'])) {
               $player_id = $_GET['player_id'];
 
-              $sql = "SELECT nhl_player_details.*, nhl_teams.teamLogo, nhl_teams.fullName AS fullTeamName
+              $sql = "SELECT nhl_player_details.*, nhl_teams.teamLogo, nhl_teams.fullName AS fullTeamName,
+                      nhl_contracts.*
                       FROM nhl_player_details
                       LEFT JOIN nhl_teams ON nhl_player_details.currentTeamId = nhl_teams.id
-                      WHERE playerID=$player_id";
+                      LEFT JOIN nhl_contracts ON nhl_player_details.playerID = nhl_contracts.playerId
+                      WHERE nhl_player_details.playerID=$player_id";
               $playerInfo = mysqli_query($conn, $sql);
 
             ##### Iterate through all player results and assign data to variables #####
@@ -109,11 +111,23 @@
                   $draftPickInRound = $row['draftPickInRound'];
                   $draftOverall = $row['draftOverall'];
                 }
-                if ($row['inHHOF']) {
-                  $inHHOF = '<b>In HOF:</b> Yes';
-                } else {
-                  $inHHOF = '<b>In HOF:</b> No';
-                }
+                // if ($row['inHHOF']) {
+                //   $inHHOF = '<b>In HOF:</b> Yes';
+                // } else {
+                //   $inHHOF = '<b>In HOF:</b> No';
+                // }
+
+                $contractSignedDate = $row['Signed Date'];
+                $contractStartSeason = $row['Start Season'];
+                $contractEndSeason = $row['End Season'];
+                $contractLength = $row['Years'];
+                $contractValue = $row['Total Value'];
+                $capHit = $row['Cap Hit'];
+                $signingBonus = $row['Signing Bonus'];
+                $baseSalary = $row['Base Salary'];
+                $performanceBonus = $row['Performance Bonus'];
+                $contractTerms = $row['Terms'];
+
 
                 # checks if a value (i.e. # of assists) is an empty string and changes to 0 if so
                 if (!function_exists('fillEmptyStats')) {
@@ -267,7 +281,7 @@
               if ($active == 'Yes') {
                 echo "<p style='color: #4CAF50; margin-left: 20px; margin-top: 20px' class='font-medium text-2xl'>Active - " . $player_id . "</p>";
               } else {
-                echo "<p style='color: red; font-weight: bold; margin-left: 20px; margin-top: 20px'>Not Active - " . $player_id . "</p>";
+                echo "<p style='color: #e63946 ; margin-left: 20px; margin-top: 20px' class='font-medium text-2xl'>Not Active - " . $player_id . "</p>";
               }
             echo "</div>";
             // Right side: Headshot and logo
@@ -330,7 +344,7 @@
                 " (#" . $draftOverall . " Ovr.) (" . $draftTeam . ")</p>";
               }
           
-              echo "<p>" . $inHHOF . "</p>";
+              // echo "<p>" . $inHHOF . "</p>";
           
               if (!empty($awardNames)) {
                 $awardNamesArray = json_decode(str_replace("'", '"', $awardNames), true);
@@ -357,6 +371,29 @@
                   echo "<p><b>Awards:</b> None</p>";
               }
           
+              if ($contractSignedDate != '') {
+                echo "<p><b>Contract Info: </b>Signed " . $contractSignedDate . " for " . $contractLength . 
+                " years @ cap hit of " . $capHit . " - (" . $contractValue . " total)</p>";
+
+                // $contractSignedDate = $row['Signed Date'];
+                // $contractStartSeason = $row['Start Season'];
+                // $contractEndSeason = $row['End Season'];
+                // $contractLength = $row['Years'];
+                // $contractValue = $row['Total Value'];
+                // $capHit = $row['Cap Hit'];
+                // $signingBonus = $row['Signing Bonus'];
+                // $baseSalary = $row['Base Salary'];
+                // $performanceBonus = $row['Performance Bonus'];
+                // $contractTerms = $row['Terms'];
+
+
+
+
+
+
+              } else {
+                echo "<p>No active contract</p>";
+              }
             echo "</div>"; // close bio-body
           echo "</div>"; // close bio-box
           
@@ -510,7 +547,7 @@
         } else {
           if (mysqli_num_rows($last5GameInfo) == 0) {
             # Skaters
-            echo "<table class='player-stats-table default-zebra-table text-center'>";
+            echo "<table class='player-stats-table default-zebra-table text-center mt-10'>";
             echo "<colgroup>";
             echo "<col class='last-5-games-id'>";
             echo "<col class='last-5-games-team'>";
@@ -539,7 +576,7 @@
               echo "<td colspan='15' class='text-center border border-slate-600 px-2 py-1'>No data available.</td>";
               echo "</tr>";
           } else {
-            echo "<table class='goalie-stats-table default-zebra-table text-center'>";
+            echo "<table class='goalie-stats-table default-zebra-table text-center mt-10'>";
             echo "<colgroup>";
             echo "<col class='last-5-games-id'>";
             echo "<col class='last-5-games-team'>";
@@ -608,7 +645,7 @@
           }
         }
       echo "</tbody>";
-      echo "</table><br><br>";
+      echo "</table><br>";
         
       
 
@@ -779,7 +816,7 @@
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPlusMinus . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPIM . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerShots . "</td>";
-                  $formatted_regSeasonCareerShootingPct = round($regSeasonCareerShootingPct * 100, 1);
+                  $formatted_regSeasonCareerShootingPct = round((float)$regSeasonCareerShootingPct * 100, 1);
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $formatted_regSeasonCareerShootingPct . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPPG . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPPPoints . "</td>";
@@ -816,8 +853,8 @@
                   echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerGP</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerWins</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerLosses</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($playoffsCareerGAA,2) . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($playoffsCareerSavePct,3) . "</td>";
+                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format((float)$playoffsCareerGAA,2) . "</td>";
+                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format((float)$playoffsCareerSavePct,3) . "</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerSO</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerTies</td>";
                   echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerGS</td>";

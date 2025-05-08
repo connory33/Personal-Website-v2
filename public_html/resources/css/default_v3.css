@@ -688,6 +688,225 @@ main {
 }
 
 
+/* .playoff-grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(12, auto);
+    grid-gap: 10px;
+    align-items: center;
+    justify-items: center;
+
+    grid-template-areas:
+        "seriesE . . . . . . seriesA"
+        "seriesE seriesK seriesK seriesK seriesI seriesI seriesI seriesA"
+        "seriesF seriesK seriesK seriesK seriesI seriesI seriesI seriesB"
+        "seriesF . . . . . . seriesB"
+        ". . . seriesO seriesO . . ."
+        "seriesN seriesN seriesN seriesO seriesO seriesM seriesM seriesM"
+        "seriesN seriesN seriesN seriesO seriesO seriesM seriesM seriesM"
+        ". . . seriesO seriesO . . ."
+        "seriesG . . . . . . seriesC"
+        "seriesG seriesL seriesL seriesL seriesJ seriesJ seriesJ seriesC"
+        "seriesH seriesL seriesL seriesL seriesJ seriesJ seriesJ seriesD"
+        "seriesH . . . . . . seriesD";
+}
+
+.seriesA { grid-area: seriesA; }
+.seriesB { grid-area: seriesB; }
+.seriesC { grid-area: seriesC; }
+.seriesD { grid-area: seriesD; }
+.seriesE { grid-area: seriesE; }
+.seriesF { grid-area: seriesF; }
+.seriesG { grid-area: seriesG; }
+.seriesH { grid-area: seriesH; }
+.seriesI { grid-area: seriesI; }
+.seriesJ { grid-area: seriesJ; }
+.seriesK { grid-area: seriesK; }
+.seriesL { grid-area: seriesL; }
+.seriesM { grid-area: seriesM; }
+.seriesN { grid-area: seriesN; }
+.seriesO { grid-area: seriesO; } */
+
+.playoff-grid-container {
+    display: grid;
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto;
+    gap: 15px;
+}
+
+/* Region headers */
+.region-header {
+    grid-column: span 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 15px 0;
+}
+
+.west-header {
+    grid-column: 1 / 2;
+}
+
+.east-header {
+    grid-column: 5 / 6;
+}
+
+/* Round headers */
+.round-header {
+    grid-row: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.r1-west { grid-column: 1 / 2; }
+.r2-west { grid-column: 2 / 3; }
+.r3-west { grid-column: 3 / 4; grid-row: 2; }
+.final { grid-column: 3 / 4; grid-row: 4; }
+.r3-east { grid-column: 3 / 4; grid-row: 6; }
+.r2-east { grid-column: 4 / 5; }
+.r1-east { grid-column: 5 / 6; }
+
+/* Series positioning */
+.seriesA, .seriesB, .seriesC, .seriesD,
+.seriesE, .seriesF, .seriesG, .seriesH {
+    margin-bottom: 30px;
+}
+
+/* First round (West) */
+.seriesA { grid-column: 1 / 2; grid-row: 2; }
+.seriesB { grid-column: 1 / 2; grid-row: 3; }
+.seriesC { grid-column: 1 / 2; grid-row: 5; }
+.seriesD { grid-column: 1 / 2; grid-row: 6; }
+
+/* Second round (West) */
+.seriesI { grid-column: 2 / 3; grid-row: 2 / 4; }
+.seriesJ { grid-column: 2 / 3; grid-row: 5 / 7; }
+
+/* Third round (West) */
+.seriesM { grid-column: 3 / 4; grid-row: 3 / 5; }
+
+/* First round (East) */
+.seriesE { grid-column: 5 / 6; grid-row: 2; }
+.seriesF { grid-column: 5 / 6; grid-row: 3; }
+.seriesG { grid-column: 5 / 6; grid-row: 5; }
+.seriesH { grid-column: 5 / 6; grid-row: 6; }
+
+/* Second round (East) */
+.seriesK { grid-column: 4 / 5; grid-row: 2 / 4; }
+.seriesL { grid-column: 4 / 5; grid-row: 5 / 7; }
+
+/* Third round (East) */
+.seriesN { grid-column: 3 / 4; grid-row: 5 / 7; }
+
+/* Final */
+.seriesO { 
+    grid-column: 3 / 4; 
+    grid-row: 4; 
+    margin: 10px auto;
+}
+
+/* Series boxes styling */
+.series-box {
+    border-radius: 6px;
+    padding: 12px;
+    width: 100%;
+    max-width: 250px;
+    min-height: 120px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+/* Format for teams in a series */
+.team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.team-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.team-info {
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.series-score {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Lines connecting series */
+.connector-line {
+    position: absolute;
+    background-color: #666;
+}
+
+/* Final styling */
+.final-header {
+    grid-column: 3 / 4;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin: 10px 0;
+    border-bottom: 2px solid #888;
+    padding-bottom: 5px;
+}
+
+.champion-trophy {
+    max-width: 100px;
+    margin: 0 auto 15px auto;
+    display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .playoff-grid-container {
+        width: 98%;
+        grid-gap: 8px;
+    }
+    
+    .series-box {
+        padding: 8px;
+        min-height: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .playoff-grid-container {
+        grid-template-columns: 1fr;
+        overflow-x: auto;
+    }
+    
+    .region-header, .round-header {
+        grid-column: 1;
+    }
+    
+    .seriesA, .seriesB, .seriesC, .seriesD,
+    .seriesE, .seriesF, .seriesG, .seriesH,
+    .seriesI, .seriesJ, .seriesK, .seriesL,
+    .seriesM, .seriesN, .seriesO {
+        grid-column: 1;
+        margin-bottom: 15px;
+    }
+}
+
+
+
+
 /* ADDING GENERAL CLASSES HERE TO AVOID DUPLICATION OF CLASSES ON MULTIPLE DIFFERENT TABLES */
 /* ####################################################################### RE-USABLE TABLE STYLES ######################################################################### */
 
@@ -946,6 +1165,19 @@ main {
 .player-season-by-season-stats-a { width: 7%; }
 .player-season-by-season-stats-pts { width: 7%; }
 .player-season-by-season-stats-pim { width: 7%; }
+
+
+/* Playoff Series Results Table */
+.gameNumDate-playoff-series-table { width: 20%;}
+.homeTricode-playoff-series-table { width: 7%;}
+.homeLogo-playoff-series-table { width: 6%;}
+.homeScore-playoff-series-table { width: 5%;}
+.gameStatus-playoff-series-table { width: 10%;}
+.awayScore-playoff-series-table { width: 5%;}
+.awayLogo-playoff-series-table { width: 6%;}
+.awayTricode-playoff-series-table { width: 7%;}
+.seriesStatus-playoff-series-table { width: 20%;}
+.gameCenter-playoff-series-table { width: 14%;}
 
 /* ################################################################ MOBILE RESPONSIVENESS ################################################################# */
 

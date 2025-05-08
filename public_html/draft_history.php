@@ -121,7 +121,7 @@ if (isset($_GET['draft_id'])) {
 </h2><br>
 <p class='text-center text-white'>Sort by:</p><br>
     <!-- Search Filter Fields -->
-    <div class="flex flex-wrap justify-center items-center gap-4 mb-4">
+    <div class="flex flex-wrap justify-center items-center gap-4 mb-4 max-w-[75%] mx-auto">
         <input type="text" id="searchByRound" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Round">
         <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Team (tricode, e.g., 'NYR')">
         <input type="text" id="searchByPlayer" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Player">
