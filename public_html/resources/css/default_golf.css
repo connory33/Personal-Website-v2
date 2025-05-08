@@ -1,0 +1,46 @@
+/* classes for alternating row colors and hover effects */
+.default-zebra-table td {
+	color: black;
+    padding: 8px;
+}
+
+.default-zebra-table th {
+	text-align: center;
+	font-weight: 600;
+    padding: 8px;
+}
+
+.default-zebra-table tbody tr:nth-child(even) {
+	background-color: #e3e7eb;
+}
+.default-zebra-table tbody tr:nth-child(odd) {
+	background-color: #c5c6c7;
+}
+.default-zebra-table tbody tr:hover {
+	background-color: rgb(133, 149, 168);
+	transition: 0.2s ease-in-out;
+	color: white;
+}
+
+.default-zebra-table thead {
+	overflow: hidden;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+    background-color: #04471C
+}
+
+.default-selected-row {
+	background-color: rgb(133, 149, 168) !important;
+}
+
+.default-zebra-table {
+	width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+	border-collapse: collapse;
+}
+
+.full-page-container{
+    width: 100%;
+    background-color: #f8f5f0;
+}

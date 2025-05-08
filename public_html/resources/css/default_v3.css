@@ -109,10 +109,10 @@ rgb(182, 71, 71) - red line red
 }
 
 /* sets background color for Bootstrap's default footer class */
-.bg-body-tertiary {
+/* .bg-body-tertiary {
 	background-color: #2f333b;
 	color: white;
-}
+} */
 
 /* Prevent horizontal scrolling on mobile */
 body {
@@ -170,6 +170,7 @@ main {
 	overflow: hidden;
 	display: flex;
 	justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .containedImage img {

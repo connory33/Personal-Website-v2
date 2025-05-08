@@ -1,17 +1,5 @@
 <header class="text-white shadow bg-slate-800">
   <div class="mx-auto w-full px-4 py-3 flex justify-between items-center">
-    <!-- Logo & Title -->
-    <div class="flex items-center space-x-4">
-      <a href="https://connoryoung.com" class="flex items-center space-x-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-          <circle cx="12" cy="13" r="4" />
-        </svg>
-        <strong>CY</strong>
-      </a>
-      <p><a href="https://connoryoung.com" class="hover:text-blue-400 hidden md:inline">Home</a></p>
-      <p><a href="aboutMe.php" class="hover:text-blue-400 hidden md:inline">About Me</a></p>
-    </div>
 
     <!-- Hamburger Icon -->
     <button id="mobile-menu-toggle" class="md:hidden focus:outline-none">
@@ -20,8 +8,29 @@
       </svg>
     </button>
 
+    
     <!-- Nav Menu -->
     <nav id="nav-menu" class="hidden md:flex flex-col md:flex-row md:items-center gap-4 mt-4 md:mt-0 text-sm font-medium w-full md:w-auto">
+
+    <p><a href="https://connoryoung.com" class="hover:text-blue-400 hidden md:inline">Home</a></p>
+    <p><a href="aboutMe.php" class="hover:text-blue-400 hidden md:inline">About Me</a></p>
+    <!-- Golf DB Dropdown -->
+    <div class="relative group">
+        <a href="#" class="hover:text-blue-400 flex items-center space-x-1">
+          <span>Golf DB</span>
+          <svg class="w-3 h-3 text-white group-hover:text-blue-400 transition" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.084l3.71-3.854a.75.75 0 011.08 1.04l-4.25 4.417a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+          </svg>
+        </a>
+        <ul class="absolute hidden group-hover:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-20 flex flex-col">
+          <a href="https://connoryoung.com/golfers.php" class="block px-4 py-2 hover:bg-slate-700">Golfers</a>
+          <a href="https://connoryoung.com/events.php" class="block px-4 py-2 hover:bg-slate-700">Event Schedules</a>
+        </ul>
+      </div>
+
+
+
+
       <!-- NHL DB dropdown -->
       <div class="relative group">
         <a href="#" class="hover:text-blue-400 flex items-center space-x-1">
@@ -31,7 +40,7 @@
           </svg>
         </a>
 
-        <!-- Dropdown -->
+        <!-- Nested team Dropdown -->
         <ul class="absolute hidden group-hover:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-20 flex flex-col">
           <li><a href="nhlIndex.php" class="block px-4 py-2 hover:bg-slate-700">Game / Player Search (Home)</a></li>
           <li class="relative group/teams">
@@ -77,17 +86,29 @@
           <li><a href="playoff_results.php?season_id=20232024" class="block px-4 py-2 hover:bg-slate-700">Playoff History</a></li>
           <li><a href="https://connoryoung.com/draft_history.php?draft_id=63" class="block px-4 py-2 hover:bg-slate-700">Draft History</a></li>
         </ul>
-      </div>
 
-      <!-- Other links -->
-      <a href="nhlLinesProject.php" class="hover:text-blue-400">NHL Lines</a>
-      <a href="nbaFantasyProjections.php" class="hover:text-blue-400">NBA Fantasy</a>
-      <a href="maddenOptimizer.php" class="hover:text-blue-400">NFL Roster</a>
-      <a href="seniorDesign.php" class="hover:text-blue-400">Sr. Design</a>
-      <a href="autonomousRobot.php" class="hover:text-blue-400">Robot</a>
-      <a href="thermistorCleaner.php" class="hover:text-blue-400">Thermistor</a>
-      <a href="waterPump.php" class="hover:text-blue-400">Water Pump</a>
-      <a href="planterBoxes.php" class="hover:text-blue-400">Planter Boxes</a>
+        </div>
+
+        <!-- Past Projects dropdown -->
+        <div class="relative group">
+        <a href="#" class="hover:text-blue-400 flex items-center space-x-1">
+          <span>Past Projects</span>
+          <svg class="w-3 h-3 text-white group-hover:text-blue-400 transition" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.084l3.71-3.854a.75.75 0 011.08 1.04l-4.25 4.417a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+          </svg>
+        </a>
+        <ul class="absolute hidden group-hover:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-20 flex flex-col">
+          <a href="nhlLinesProject.php" class="block px-4 py-2 hover:bg-slate-700">NHL Lines</a>
+          <a href="nbaFantasyProjections.php" class="block px-4 py-2 hover:bg-slate-700">NBA Fantasy</a>
+          <a href="maddenOptimizer.php" class="block px-4 py-2 hover:bg-slate-700">NFL Roster</a>
+          <a href="seniorDesign.php" class="block px-4 py-2 hover:bg-slate-700">Sr. Design</a>
+          <a href="autonomousRobot.php" class="block px-4 py-2 hover:bg-slate-700">Robot</a>
+          <a href="thermistorCleaner.php" class="block px-4 py-2 hover:bg-slate-700">Thermistor</a>
+          <a href="waterPump.php" class="block px-4 py-2 hover:bg-slate-700">Water Pump</a>
+          <a href="planterBoxes.php" class="block px-4 py-2 hover:bg-slate-700">Planter Boxes</a>
+        </ul>
+        </div>
+      
     </nav>
   </div>
 
