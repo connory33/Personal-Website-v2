@@ -1,7 +1,6 @@
-[submodule "public_html/public_html/projects/nhl-db"]
-	path = public_html/public_html/projects/nhl-db
-	url = https://github.com/connory33/nhl-db.git
-
 [submodule "public_html/projects/golf-db"]
 	path = public_html/projects/golf-db
 	url = https://github.com/connory33/golf-db.git
+[submodule "public_html/projects/nhl-db"]
+	path = public_html/projects/nhl-db
+	url = https://github.com/connory33/nhl-db.git
