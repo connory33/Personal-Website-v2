@@ -258,6 +258,10 @@ main {
   #games-players-summary-table tr {
 	color: black;
 }
+
+#games-players-summary-table {
+    zoom: .8;
+}
   
   /* sort arrow styling */
   .sort-arrows a {

@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Connor Young</title>
+    <title>Game Details</title>
 
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
@@ -293,6 +293,8 @@
                     }
                     else if ($game_outcome == 'OT') {
                         $formatted_outcome = "(OT)";
+                    } else if ($game_outcome == 'SO') {
+                        $formatted_outcome = "(SO)";
                     }
 
                     $gameDatetime = new DateTime($game_date);
@@ -1090,28 +1092,77 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 <?php endif; ?>
 
-                <?php
+<!-- Replace your empty pagination div with this PHP-based pagination -->
+<div id="pagination" class="flex justify-center items-center mt-4 gap-2">
+    <?php if ($total_pages > 1): ?>
+        <!-- Previous page button -->
+        <?php if ($page > 1): ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page - 1])) ?>" 
+               class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-all">
+                &lt;
+            </a>
+        <?php else: ?>
+            <span class="px-4 py-2 bg-gray-400 text-white rounded opacity-50 cursor-not-allowed">&lt;</span>
+        <?php endif; ?>
 
-                if ($page==1) {
-                    $next_page = $page + 1;
-                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
-                    echo "<div><a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
-                        </div>";
-                } else if ($page>1 and $page<$total_pages) {
-                    $prev_page = $page - 1;
-                    $next_page = $page + 1;
-                    $prev_page = http_build_query(array_merge($_GET, ['page' => $prev_page]));
-                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
-                    echo "<div style='text-align:center; margin-top: 20px;'>
-                        <a class='btn btn-secondary' href='?" . $prev_page . "' style='margin-right: 10px'>Previous</a>";
-                    echo "<a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
-                        </div>";
-                } else {
-                    $prev_page = $page - 1;
-                    echo "<div style='text-align:center; margin-top: 20px;'>
-                        <a class='btn btn-secondary' href='?" . $prev_page . "'>Previous</a></div>";
-                }
+        <!-- First page -->
+        <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" 
+           class="px-4 py-2 <?= $page == 1 ? 'bg-blue-600' : 'bg-gray-600' ?> text-white rounded hover:bg-gray-500 transition-all">
+            1
+        </a>
+
+        <!-- Ellipsis if needed -->
+        <?php if ($page > 3): ?>
+            <span class="px-4 py-2">...</span>
+        <?php endif; ?>
+
+        <!-- Page numbers around current page -->
+        <?php 
+        $start = max(2, $page - 1);
+        $end = min($total_pages - 1, $page + 1);
         
+        if ($page <= 3) {
+            $start = 2;
+            $end = min(4, $total_pages - 1);
+        } elseif ($page >= $total_pages - 2) {
+            $start = max($total_pages - 3, 2);
+            $end = $total_pages - 1;
+        }
+        
+        for ($i = $start; $i <= $end; $i++): 
+        ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>" 
+               class="px-4 py-2 <?= $page == $i ? 'bg-blue-600' : 'bg-gray-600' ?> text-white rounded hover:bg-gray-500 transition-all">
+                <?= $i ?>
+            </a>
+        <?php endfor; ?>
+
+        <!-- Ellipsis if needed -->
+        <?php if ($end < $total_pages - 1): ?>
+            <span class="px-4 py-2">...</span>
+        <?php endif; ?>
+
+        <!-- Last page (if more than 1 page) -->
+        <?php if ($total_pages > 1): ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $total_pages])) ?>" 
+               class="px-4 py-2 <?= $page == $total_pages ? 'bg-blue-600' : 'bg-gray-600' ?> text-white rounded hover:bg-gray-500 transition-all">
+                <?= $total_pages ?>
+            </a>
+        <?php endif; ?>
+
+        <!-- Next page button -->
+        <?php if ($page < $total_pages): ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page + 1])) ?>" 
+               class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-all">
+                &gt;
+            </a>
+        <?php else: ?>
+            <span class="px-4 py-2 bg-gray-400 text-white rounded opacity-50 cursor-not-allowed">&gt;</span>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
+                
+        <?php
 
             mysqli_close($conn);
             

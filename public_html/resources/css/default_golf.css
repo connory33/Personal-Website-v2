@@ -1,19 +1,19 @@
 /* classes for alternating row colors and hover effects */
-.default-zebra-table td {
+.default-zebra-table td, .scoreboard-table td {
 	color: black;
     padding: 8px;
 }
 
-.default-zebra-table th {
+.default-zebra-table th, .scoreboard-table th {
 	text-align: center;
 	font-weight: 600;
     padding: 8px;
 }
 
-.default-zebra-table tbody tr:nth-child(even) {
+.default-zebra-table tbody tr:nth-child(even), .scoreboard-table tbody tr:nth-child(even) {
 	background-color: #e3e7eb;
 }
-.default-zebra-table tbody tr:nth-child(odd) {
+.default-zebra-table tbody tr:nth-child(odd), .scoreboard-table tbody tr:nth-child(odd) {
 	background-color: #c5c6c7;
 }
 .default-zebra-table tbody tr:hover {
@@ -22,7 +22,7 @@
 	color: white;
 }
 
-.default-zebra-table thead {
+.default-zebra-table thead, .scoreboard-table thead {
 	overflow: hidden;
 	border-top-right-radius: 8px;
 	border-top-left-radius: 8px;
@@ -33,7 +33,7 @@
 	background-color: rgb(133, 149, 168) !important;
 }
 
-.default-zebra-table {
+.default-zebra-table, .scoreboard-table {
 	width: 100%;
 	border-radius: 8px;
 	overflow: hidden;
@@ -45,16 +45,28 @@
     background-color: #f8f5f0;
 }
 
-.golfers-table th.sort-asc {
+.golfers-table th.sort-asc, .scoreboard-table th.sort-asc {
   border-top: 4px solid #4ade80; /* Green border on top */
   border-bottom: none;
 }
 
-.golfers-table th.sort-desc {
+.golfers-table th.sort-desc, .scoreboard-table th.sort-desc {
   border-bottom: 4px solid #4ade80; /* Green border on bottom */
   border-top: none;
 }
 
-.golfers-table th:hover {
+.golfers-table th:hover, .scoreboard-table th:hover {
   background-color: rgba(74, 222, 128, 0.1); /* light green background on hover */
 }
+
+/* Scoreboard table on event details page */
+.scoreboard-player { width: 14%;}
+.scoreboard-finish { width: 12%;}
+.scoreboard-total-score { width: 12%;}
+.scoreboard-to-par-total { width: 12%;}
+.scoreboard-sg-ott { width: 9%;}
+.scoreboard-sg-app { width: 9%;}
+.scoreboard-sg-arg { width: 9%;}
+.scoreboard-sg-putt { width: 9%;}
+.scoreboard-sg-t2g { width: 9%;}
+.scoreboard-sg-total { width: 9%;}

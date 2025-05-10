@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
-    <title>Connor Young</title>
+    <title>NHL Games</title>
 
     <link href="/resources/css/default_v3.css" rel="stylesheet" type="text/css" />
     <!-- Tailwind -->
@@ -33,8 +33,8 @@
                 'gameDate' => 'nhl_games.gameDate',
                 'home_team_name' => 'home_teams.fullName',
                 'away_team_name' => 'away_teams.fullName',
-                'home_score' => 'nhl_games.homeScore',
-                'away_score' => 'nhl_games.awayScore',
+                'homeScore' => 'nhl_games.homeScore',
+                'awayScore' => 'nhl_games.awayScore',
                 'game_id' => 'nhl_games.id'
             ];
             
@@ -183,7 +183,6 @@
 
             <div id="nhl-games-players-summary-content-container" style='background-color: #343a40'>
                 <br>
-                    <p class="text-lg text-center">Search again:</p>
                     <div class="flex justify-center">
                         <form id='nhl-search' method="GET" action="nhl_games.php"
                             class="backdrop-blur-sm px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-4xl nhl-search-column">
@@ -273,7 +272,8 @@
                         <!-- Display results in a table format -->
                 <h2 class="text-4xl font-bold text-white text-center">Game Results</h2><br>
                 <?php echo "<h5 style='text-align: center'>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5>"; ?>
-                <p>Click on any team name or game ID to view additional details about the team/game, or filter games below.</p><br>
+                <br>
+                <p>Click on any team name or game ID to view additional details about the team/game, or filter games below. Click column headers to sort.</p><br>
 
                         <!-- Search Filter Fields -->
                     <div class="mb-4">
@@ -288,7 +288,7 @@
                     <br>
                     <div class="table-container shadow-md rounded-lg overflow-x-auto mx-auto w-[90%]">
                     <!-- Table -->
-                    <table id='games-players-summary-table' class="min-w-max table-auto default-zebra-table">
+                    <table id='games-players-summary-table' class="default-zebra-table w-full">
                         <colgroup>
                         <col class="games-players-summary-col-season">
                         <col class="games-players-summary-col-gameNumber">
@@ -301,72 +301,45 @@
                         <col class="games-players-summary-col-awayScore">
                         <col class="games-players-summary-col-id">
                         </colgroup>
+
                         <thead class='default-zebra-table'>
                             <tr class='default-zebra-table'>
-                                <th>Season<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=season&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=season&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
-                                <th>Game #<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameNumber&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameNumber&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
-                                <th>Date<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameDate&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameDate&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
-                                <th>Start (EST)<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=easternStartTime&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=easternStartTime&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
-                                <th>Game Type<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameType&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=gameType&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
-                                <th>Home Team<br>
-                                    <span class='sort-arrows'>
-                                        <a href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=home_team_name&sort_order=asc'>△</a><a href='?search_column=" . urlencode($searchColumn)
-                                        . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=home_team_name&sort_order=desc'>▽</a>
-                                    </span>
-                                </th>
-                                <th>Home Score<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=homeScore&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=homeScore&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
-                                <th>Away Team<br>
-                                    <span class='sort-arrows'>
-                                        <a href='?search_column=" . urlencode($searchColumn) . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=away_team_name&sort_order=asc' class="text-xs">△</a><a href='?search_column=" . urlencode($searchColumn)
-                                        . "&search_term=" . urlencode($searchTerm)
-                                        . "&sort_by=away_team_name&sort_order=desc' class="text-xs">▽</a>
-                                    </span>
-                                </th>
-                                <th>Away Score<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=awayScore&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=awayScore&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
-                                <th>Game ID<br>
-                                <span class='sort-arrows'>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=id&sort_order=asc' class="text-xs">△</a>
-                                    <a href='?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=id&sort_order=desc' class="text-xs">▽</a>
-                                </span>
-                                </th>
+                                <?php foreach ([
+                                    'season' => 'Season',
+                                    'gameNumber' => 'Game #',
+                                    'gameDate' => 'Date',
+                                    'easternStartTime' => 'Start (EST)',
+                                    'gameType' => 'Game Type',
+                                    'home_team_name' => 'Home Team',
+                                    'homeScore' => 'Home Score',
+                                    'away_team_name' => 'Away Team',
+                                    'awayScore' => 'Away Score',
+                                    'game_id' => 'Game ID'
+                                ] as $columnName => $displayName): ?>
+                                    <?php
+                                    $isActive = ($requestedSortColumn == $columnName);
+                                    $isAscending = ($sortOrder == 'ASC');
+                                    $nextSortOrder = ($isActive && $isAscending) ? 'desc' : 'asc';
+                                    
+                                    // Use inline styles to ensure they take effect
+                                    $style = '';
+                                    if ($isActive) {
+                                        if ($isAscending) {
+                                            $style = 'border-top: 2px solid #2563eb;'; // blue-600 equivalent
+                                        } else {
+                                            $style = 'border-bottom: 2px solid #2563eb;'; // blue-600 equivalent
+                                        }
+                                    }
+                                    ?>
+                                    
+                                    <th style="<?= $style ?>" class="relative">
+                                        <a href="?search_column=<?= urlencode($searchColumn) ?>&search_term=<?= urlencode($searchTerm) ?>&sort_by=<?= $columnName ?>&sort_order=<?= $nextSortOrder ?>" 
+                                        class="block w-full h-full p-2">
+                                            <?= $displayName ?>
+                                            
+                                        </a>
+                                    </th>
+                                <?php endforeach; ?>
                             </tr>
                         </thead>
                         <tbody>
