@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Connor Young</title>
+    <title>NHL Dashboard</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 

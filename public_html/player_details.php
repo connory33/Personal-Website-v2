@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Connor Young</title>
+    <title>Player Details</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 

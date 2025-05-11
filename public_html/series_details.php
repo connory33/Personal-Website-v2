@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Connor Young</title>
+    <title>Series Details</title>
 
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
@@ -65,13 +65,13 @@
             // Logos positioned to the left and right
             echo "<div class='absolute top-1/2 left-4 transform -translate-y-1/2'>";
             echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($row['homeTeamId']) . "'>";
-            echo "<img src='" . htmlspecialchars($row['homeLogo']) . "' alt='Home Logo' class='h-[130px]'>";
+            echo "<img src='" . htmlspecialchars($row['homeLogo']) . "' alt='Home Logo' class='h-[90px]'>";
             echo "</a>";
             echo "</div>";
 
             echo "<div class='absolute top-1/2 right-4 transform -translate-y-1/2'>";
             echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($row['awayTeamId']) . "'>";
-            echo "<img src='" . htmlspecialchars($row['awayLogo']) . "' alt='Away Logo' class='h-[130px]'>";
+            echo "<img src='" . htmlspecialchars($row['awayLogo']) . "' alt='Away Logo' class='h-[90px]'>";
             echo "</a>";
             echo "</div>";
 
@@ -188,7 +188,7 @@
             }
 
             echo "<tr>";
-            echo "<td><a href='https://connoryoung.com/game_details.php?game_id={$gameID}'>" . "Game " . $count . "<br>" . $formattedGameDate . "</a></td>";
+            echo "<td><a class='hover:underline' href='https://connoryoung.com/game_details.php?game_id={$gameID}'>" . "Game " . $count . "<br>" . $formattedGameDate . "</a></td>";
             
             echo "<td><a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($homeTeamID) . "'>" . $homeTeamTriCode . " (H)</a></td>";
             echo "<td><a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($homeTeamID) . "'>";

@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>Connor Young</title>
+    <title>NHL DB</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
@@ -97,6 +97,8 @@
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span class='text-slate-800'> |</span>
         <a style='color: white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a></p><br>
+        <a class='font-semibold text-white hover:text-blue-700' href='https://connoryoung.com/nhl_players.php'>View all players</a><br><br>
+        <a class='font-semibold text-white hover:text-blue-700' href='https://connoryoung.com/nhl_games.php'>View all games</a><br><br>
         <a class='font-semibold text-white hover:text-blue-700' href='https://connoryoung.com/playoff_results.php?season_id=20232024'>View historical playoff info</a><br><br>
         <a class='font-semibold text-white hover:text-blue-700' href='https://connoryoung.com/draft_history.php?draft_id=63'>View historical draft info</a>
         </div>
