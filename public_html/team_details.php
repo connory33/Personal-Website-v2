@@ -1,62 +1,52 @@
 
 <?php include('db_connection.php'); ?>
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="../../../../favicon.ico">
 
-        <title>Connor Young</title>
+<?php
 
-        <!-- Bootstrap core CSS -->
-        <!-- <link href="../resources/css/bootstrap.min.css" rel="stylesheet"> -->
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+// Check if the 'team_id' is passed in the URL
+if (isset($_GET['team_id'])) {
+    $team_id = $_GET['team_id'];
 
-        <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
+    // Query for getting overall season stats for the team
+    $overallSQL = "SELECT * FROM team_overall_stats_by_season WHERE teamId = $team_id ORDER BY season_id DESC";
+    $overallStatsResult = mysqli_query($conn, $overallSQL);
 
-        <script src="https://cdn.tailwindcss.com"></script>
+    $teamSQL = "SELECT * FROM nhl_teams WHERE id = $team_id";
+    $teamResult = mysqli_query($conn, $teamSQL);
+    $teamRow = mysqli_fetch_assoc($teamResult);
+    $teamName = $teamRow['fullName'];
+    $teamLogo = $teamRow['teamLogo'];
 
-    </head>
-    <body>
-<!-- Header -->
-<?php include 'header.php'; ?>
+    ?>
 
-        <?php
+    <!doctype html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="">
+            <meta name="author" content="">
+            <link rel="icon" href=<?php echo $teamLogo ?>>
+            <title>Team Details: <?php echo $teamName ?></title>
+            <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
+            <script src="https://cdn.tailwindcss.com"></script>
+        </head>
+        <body>
+            <header>
+                <?php include 'header.php'; ?>
+            </header>
 
-          ini_set('display_errors', 1);
-          ini_set('display_startup_errors', 1);
-          error_reporting(E_ALL);
-
-    ########## GET ALL TEAM DATA TO USE FOR THE PAGE ##########
-
-        // $teamColors = [
-        //   "ANA" => ['#F47A38', '#B9975B', '#C1C6C8', '#000']
-        // ]
-
-          // Check if the 'team_id' is passed in the URL
-          if (isset($_GET['team_id'])) {
-            $team_id = $_GET['team_id'];
-
-            // Query for getting overall season stats for the team
-            $overallSQL = "SELECT * FROM team_overall_stats_by_season WHERE teamId = $team_id ORDER BY season_id DESC";
-            $overallStatsResult = mysqli_query($conn, $overallSQL);
-
-            // Combined query for skaters (forwards and defensemen)
+                                                                                <!-- COMBINED QUERY FOR SKATERS -->
+            <?php
             // Step 1: Create the temp_forwards table
             $sql1 = "
             CREATE TEMPORARY TABLE temp_forwards AS
             SELECT 
-                team_season_rosters.team_id,
-                nhl_teams.triCode,
-                team_season_rosters.season,
-                nhl_players.position,
-                exploded_forwards.player_id,
-                nhl_players.firstName,
-                nhl_players.lastName
+                team_season_rosters.team_id, nhl_teams.triCode, team_season_rosters.season, nhl_players.position, exploded_forwards.player_id, nhl_players.firstName, nhl_players.lastName
             FROM team_season_rosters
             JOIN JSON_TABLE(team_season_rosters.forwards, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_forwards
                 ON 1=1
@@ -70,13 +60,7 @@
             $sql2 = "
             CREATE TEMPORARY TABLE temp_defensemen AS
             SELECT 
-                team_season_rosters.team_id,
-                nhl_teams.triCode,
-                team_season_rosters.season,
-                nhl_players.position,
-                exploded_defensemen.player_id,
-                nhl_players.firstName,
-                nhl_players.lastName
+                team_season_rosters.team_id, nhl_teams.triCode, team_season_rosters.season, nhl_players.position, exploded_defensemen.player_id, nhl_players.firstName, nhl_players.lastName
             FROM team_season_rosters
             JOIN JSON_TABLE(team_season_rosters.defensemen, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_defensemen
                 ON 1=1
@@ -98,38 +82,17 @@
             // Step 4: Run the main query to fetch the results
             $sql4 = "
             SELECT 
-                temp_roster.team_id,
-                teams.triCode,
-                temp_roster.position,
-                temp_roster.player_id,
-                temp_roster.firstName,
-                temp_roster.lastName,
-                temp_roster.season,
-                CONCAT(temp_roster.season, '-2') as seasonWithType,
-                teams.id,
-                teams.fullName,
-                teams.teamLogo,
-                teams.teamColor1,
-                teams.teamColor2,
-                teams.teamColor3,
-                teams.teamColor4,
-                teams.teamColor5,
-                stats.seasonGamesPlayed,
-                stats.seasonGoals,
-                stats.seasonAssists,
-                stats.seasonPoints, 
-                stats.seasonPlusMinus,
-                stats.seasonShots,
-                stats.seasonShootingPct,
-                stats.seasonAvgTOI,
-                stats.seasonAvgShifts,
-                stats.seasonFOWinPct
+                temp_roster.team_id, teams.triCode, temp_roster.position, temp_roster.player_id, temp_roster.firstName, temp_roster.lastName, temp_roster.season, 
+                CONCAT(temp_roster.season, '-2') as seasonWithType, teams.id, teams.fullName, teams.teamLogo, teams.teamColor1, teams.teamColor2, teams.teamColor3, 
+                teams.teamColor4, teams.teamColor5, stats.seasonGamesPlayed, stats.seasonGoals, stats.seasonAssists, stats.seasonPoints,  stats.seasonPlusMinus, 
+                stats.seasonShots, stats.seasonShootingPct, stats.seasonAvgTOI, stats.seasonAvgShifts, stats.seasonFOWinPct, nhl_contracts.capHit
             FROM temp_roster AS temp_roster
             LEFT JOIN nhl_teams AS teams ON teams.id = temp_roster.team_id
             LEFT JOIN team_season_stats AS stats 
                 ON stats.teamID = temp_roster.team_id 
                 AND stats.playerID = temp_roster.player_id 
                 AND CONCAT(temp_roster.season, '-2') = stats.seasonID
+            LEFT JOIN nhl_contracts ON nhl_contracts.playerID = temp_roster.player_id
             ORDER BY temp_roster.season DESC, temp_roster.lastName
             ";
             $result_skaters_combined = mysqli_query($conn, $sql4);
@@ -139,18 +102,14 @@
             mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_defensemen");
             mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_roster");
 
-  
+
+            // Combined query for goalies
             // Step 1: Create the temp_goalies table
             $sql1 = "
             CREATE TEMPORARY TABLE temp_goalies AS
             SELECT 
-                team_season_rosters.team_id,
-                nhl_teams.triCode,
-                team_season_rosters.season,
-                CAST('goalie' AS VARCHAR(10)) AS position,
-                exploded_goalies.player_id,
-                nhl_players.firstName,
-                nhl_players.lastName
+                team_season_rosters.team_id, nhl_teams.triCode, team_season_rosters.season, CAST('goalie' AS VARCHAR(10)) AS position, exploded_goalies.player_id,
+                nhl_players.firstName, nhl_players.lastName
             FROM team_season_rosters
             JOIN JSON_TABLE(team_season_rosters.goalies, '$[*]' COLUMNS(player_id INT PATH '$')) AS exploded_goalies
                 ON 1=1
@@ -160,9 +119,9 @@
             ";
 
             mysqli_query($conn, $sql1);
-  
-  
-            // Step 4: Run the main query to fetch the results
+
+
+            // Step 2: Run the main query to fetch the results
             $sql4 = "
             SELECT 
             teams.triCode,
@@ -192,152 +151,280 @@
             stats.seasonSaves,
             stats.seasonGA,
             stats.seasonSO,
-            stats.seasonTOI
+            stats.seasonTOI,
+            nhl_contracts.capHit
             FROM temp_goalies
             LEFT JOIN nhl_teams AS teams ON teams.id = temp_goalies.team_id
             LEFT JOIN team_season_stats AS stats 
                 ON stats.teamID = temp_goalies.team_id 
                 AND stats.playerID = temp_goalies.player_id 
                 AND CONCAT(temp_goalies.season, '-2') = stats.seasonID
+            LEFT JOIN nhl_contracts ON nhl_contracts.playerID = temp_goalies.player_id
             ORDER BY temp_goalies.season DESC, temp_goalies.lastName
             ";
             $result_goalies_combined = mysqli_query($conn, $sql4);
-  
+
             // Step 6: Drop temporary tables after use
             mysqli_query($conn, "DROP TEMPORARY TABLE IF EXISTS temp_goalies");
-              
-            // $result_skaters_combined = mysqli_query($conn, $skaters_combined_sql);
-            // $result_goalies_combined = mysqli_query($conn, $goalies_combined_sql);
-
-              
-            // $result_skaters = mysqli_query($conn, $skaters_sql);
-            // $result_goalies = mysqli_query($conn, $goalies_sql);
-            // $result_rosters = mysqli_query($conn, $rosters_sql);
 
             if (!$result_skaters_combined) {
-              die("Query failed: " . mysqli_error($conn));
-          } elseif (mysqli_num_rows($result_skaters_combined) == 0) {
-              echo "No players found for this team.";
-          } else {
-              // Fetch the row to get the team logo and build header
-              $team = mysqli_fetch_assoc($result_skaters_combined);
+                die("Query failed: " . mysqli_error($conn));
+            } elseif (mysqli_num_rows($result_skaters_combined) == 0) {
+                echo "No players found for this team.";
+            } else {
+                // Fetch the row to get the team logo and build header
+                $team = mysqli_fetch_assoc($result_skaters_combined);
 
-              $teamColor1 = $team['teamColor1'];
-              $teamColor2 = $team['teamColor2'];
-              $teamColor3 = $team['teamColor3'];
-              $teamColor4 = $team['teamColor4'];
-              $teamColor5 = $team['teamColor5'];
-              
-
-              function getTextColorForBackground($bgColorHex) {
-                  // Remove the hash if present
-                  $bgColorHex = ltrim($bgColorHex, '#');
-                  
-                  // Split into R, G, B
-                  $r = hexdec(substr($bgColorHex, 0, 2));
-                  $g = hexdec(substr($bgColorHex, 2, 2));
-                  $b = hexdec(substr($bgColorHex, 4, 2));
-                  
-                  // Calculate luminance (brightness)
-                  $brightness = ($r * 299 + $g * 587 + $b * 114) / 1000;
-                  
-                  // Return black or white depending on brightness
-                  return ($brightness > 128) ? '#000000' : '#FFFFFF';
-              }
-              
-              $teamColor1Contrast = getTextColorForBackground($teamColor1);  // Contrast color for teamColor1
-              $teamColor2Contrast = getTextColorForBackground($teamColor2);  // Contrast color for teamColor2
-              ?>
-              
-              <div class="full-page-content-container" style='background-color:#343a40'>
-                  <?php
-                  echo "<div style='padding-left: 10px; padding-right: 10px; padding-top: 25px'>";
-                  
-                  // Flexbox for player name/number/active/id and headshot/team logo - aligns them side-by-side
-                  echo "<div class='team-header' style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; 
-                        border: 2px solid $teamColor1; padding-left: 15px; padding-right: 15px; padding-top: 10px; padding-bottom: 10px; 
-                        background-color: $teamColor2; border-radius: 10px; width: 70%; margin: auto;'>";
-              
-                  // Left side: Team Name
-                  echo "<div>";
-                  
-                  // Set the text color dynamically based on background contrast
-                  echo "<h1 class='text-2xl' style='margin-top: 3px; color: $teamColor2Contrast;'>Team Details: </h1>";
-                  echo "<h1 class='text-4xl' style='color: $teamColor2Contrast'>" . $team['fullName'] . "</h1>";
-                  echo "</div>";
-              
-                  // Right side: Team Logo
-                  $teamLogo = $team['teamLogo'];
-                  echo "<div style='display: flex; align-items: center; gap: 5px'>";
-                  if ($teamLogo != 'false' && $teamLogo != '' && $teamLogo != 'N/A') {
-                      echo "<img src='" . htmlspecialchars($teamLogo) . "' alt='team logo' style='height: 120px'>";
-                  } else {
-                      echo "<p>No Logo</p>"; // Add fallback message if no logo
-                  }
-                  echo "</div>";
-              
-                  echo "</div>"; // Close team-header div
-                  echo "</div>"; // Close padding div
+                $teamColor1 = $team['teamColor1'];
+                $teamColor2 = $team['teamColor2'];
+                $teamColor3 = $team['teamColor3'];
+                $teamColor4 = $team['teamColor4'];
+                $teamColor5 = $team['teamColor5'];
                 
-              
-              mysqli_data_seek($result_skaters_combined, 0); // Reset the result pointer to the first row
+
+                function getTextColorForBackground($bgColorHex) {
+                    // Remove the hash if present
+                    $bgColorHex = ltrim($bgColorHex, '#');
+                    
+                    // Split into R, G, B
+                    $r = hexdec(substr($bgColorHex, 0, 2));
+                    $g = hexdec(substr($bgColorHex, 2, 2));
+                    $b = hexdec(substr($bgColorHex, 4, 2));
+                    
+                    // Calculate luminance (brightness)
+                    $brightness = ($r * 299 + $g * 587 + $b * 114) / 1000;
+                    
+                    // Return black or white depending on brightness
+                    return ($brightness > 128) ? '#000000' : '#FFFFFF';
+                }
+                
+                $teamColor1Contrast = getTextColorForBackground($teamColor1);  // Contrast color for teamColor1
+                $teamColor2Contrast = getTextColorForBackground($teamColor2);  // Contrast color for teamColor2
+                ?>
+                
+                <div class="full-page-content-container" style='background-color:#343a40'>
+                <div class="max-w-5xl mx-auto">
+                    <br><br>
+                    <!-- Team Header with Enhanced Styling -->
+                            <div class="team-header flex justify-between items-center mb-8 p-6" 
+                                style="background: linear-gradient(135deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); 
+                                        border: 2px solid <?php echo $teamColor2; ?>;">
+                        
+                                <!-- Left side: Team Name -->
+                                <div class="flex flex-col">
+                                    <h3 class="text-xl font-medium mb-1" style="color: <?php echo $teamColor1Contrast; ?>; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">Team Details</h3>
+                                    <h1 class="text-4xl font-bold" style="color: <?php echo $teamColor1Contrast; ?>; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                                        <?php echo $team['fullName']; ?>
+                                    </h1>
+                                </div>
+                        
+                                <!-- Right side: Team Logo -->
+                                <div class="team-logo-container p-2">
+                                    <?php
+                                    $teamLogo = $team['teamLogo'];
+                                    if ($teamLogo != 'false' && $teamLogo != '' && $teamLogo != 'N/A') {
+                                        echo "<img src='" . htmlspecialchars($teamLogo) . "' alt='Team Logo' class='h-32 w-auto'>";
+                                    } else {
+                                        echo "<p class='text-lg font-medium'>No Logo Available</p>"; 
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+
+            
+                
+            <?php  
+                mysqli_data_seek($result_skaters_combined, 0); // Reset the result pointer to the first row
                 }
 
-              // Step 1: Get all unique seasons for the dropdown
-              $seasons = [];
-              // Get seasons from skaters
-              mysqli_data_seek($result_skaters_combined, 0);
-              while ($row = mysqli_fetch_assoc($result_skaters_combined)) {
-                  $seasonID = $row['season'];
-                  $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
-                  if (!in_array($seasonWithType, $seasons)) {
-                      $seasons[] = $seasonWithType;
-                  }
-              }
-              
-              // Get seasons from goalies
-              mysqli_data_seek($result_goalies_combined, 0);
-              while ($row = mysqli_fetch_assoc($result_goalies_combined)) {
-                  $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
-                  if (!in_array($seasonWithType, $seasons)) {
-                      $seasons[] = $seasonWithType;
-                  }
-              }
-              
-              rsort($seasons); // Sort seasons in descending order to show the latest season first
-              ?>
-              <br><br>
+                // Step 1: Get all unique seasons for the dropdown
+                $seasons = [];
+                // Get seasons from skaters
+                mysqli_data_seek($result_skaters_combined, 0);
+                while ($row = mysqli_fetch_assoc($result_skaters_combined)) {
+                    $seasonID = $row['season'];
+                    $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
+                    if (!in_array($seasonWithType, $seasons)) {
+                        $seasons[] = $seasonWithType;
+                    }
+                }
+                
+                // Get seasons from goalies
+                mysqli_data_seek($result_goalies_combined, 0);
+                while ($row = mysqli_fetch_assoc($result_goalies_combined)) {
+                    $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
+                    if (!in_array($seasonWithType, $seasons)) {
+                        $seasons[] = $seasonWithType;
+                    }
+                }
+                
+                rsort($seasons); // Sort seasons in descending order to show the latest season first
+                ?>
 
-              <!-- Step 2: Add Dropdown for Season Selection -->
-              <div class="mx-auto w-fit px-6 py-4 border rounded-md text-black flex items-center space-x-4"
-                  style="border: 2px solid <?php echo $teamColor2; ?>; background-color: <?php echo $teamColor1; ?>;">
+                <!-- AWARDS TABLES -->
+                <?php 
+        // Expanded query to include all four trophy types
+        $sql = "SELECT * FROM season_awards 
+            WHERE stanleyCupWinnerID = $team_id 
+            OR presidentsTrophyWinnerID = $team_id";
 
-                  <label for="seasonDropdown" class="text-base flex" style='color: <?php echo $teamColor1Contrast; ?>; margin-right: 10px;'>
-                  Filter by Season: 
-                  </label>
+        $awardsResult = mysqli_query($conn, $sql);
 
-              <select id="seasonDropdown" class="border rounded px-3 py-2 text-base"
-                      style="border-color: <?php echo $teamColor2; ?>;" onchange="updateSeason()">
-                  <?php foreach ($seasons as $seasonID): ?>
-                      <?php 
-                          $seasonYear1 = substr($seasonID, 0, 4);
-                          $seasonYear2 = substr($seasonID, 4, 4);
-                      ?>
-                      <option value="<?php echo $seasonID; ?>">
-                          <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
-                      </option>
-                  <?php endforeach; ?>
-              </select>
+        // Initialize arrays to store different types of awards by season
+        $stanleyCups = [];
+        $presidentsTrophies = [];
+        $messierTrophies = [];
+        $richardTrophies = [];
 
-</div>
-<br><br>
+        // Process the results
+        if ($awardsResult && mysqli_num_rows($awardsResult) > 0) {
+        while ($award = mysqli_fetch_assoc($awardsResult)) {
+            $season = $award['seasonID']; // Assuming you have a 'season' column
+            
+            // Sort the awards into their respective arrays
+            if ($award['stanleyCupWinnerID'] == $team_id) {
+                $stanleyCups[] = $season;
+            }
+            if ($award['presidentsTrophyWinnerID'] == $team_id) {
+                $presidentsTrophies[] = $season;
+            }
+        }
+        }
 
-              <div class="max-w-[90%] mx-auto overflow-x-auto">
-              <!-- OVERALL TEAM STATS BY SEASON -->
-              <div>
-                <h2 class="text-2xl text-center text-white">Overall Team Stats</h2>
+        // Helper function to format season IDs like "20222023" to "2022-23"
+        function formatSeason($seasonId) {
+        if (strlen($seasonId) == 8) {
+        $year1 = substr($seasonId, 0, 4);
+        $year2 = substr($seasonId, 4, 4);
+        return $year1 . "-" . substr($year2, 2, 2);
+        }
+        return $seasonId;
+        }
+        ?>
+
+        <?php 
+        // Query for just Stanley Cup and Presidents' Trophy
+        $sql = "SELECT * FROM season_awards 
+            WHERE stanleyCupWinnerID = $team_id 
+            OR presidentsTrophyWinnerID = $team_id";
+
+        $awardsResult = mysqli_query($conn, $sql);
+
+        // Initialize arrays to store different types of awards by season
+        $stanleyCups = [];
+        $presidentsTrophies = [];
+
+        // Process the results
+        if ($awardsResult && mysqli_num_rows($awardsResult) > 0) {
+        while ($award = mysqli_fetch_assoc($awardsResult)) {
+            // Check if season column exists, otherwise use year or seasonId
+            $season = $award['seasonID'];
+            
+            // Sort the awards into their respective arrays
+            if ($award['stanleyCupWinnerID'] == $team_id) {
+                $stanleyCups[] = $season;
+            }
+            if ($award['presidentsTrophyWinnerID'] == $team_id) {
+                $presidentsTrophies[] = $season;
+            }
+        }
+        }
+        ?>
+
+        <!-- Sleek Awards Display UI -->
+        <div class="team-awards-section my-6">
+        <h2 class="text-xl font-bold mb-3">Team Achievements</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Stanley Cup -->
+        <div class="rounded-lg p-4 border shadow-lg" style="background: linear-gradient(60deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); border-color: <?php echo $teamColor1; ?>">
+            <div class="flex items-center mb-3">
+        <img src="../resources/images/stanley_cup.png" alt="Stanley Cup" class="h-14 mr-3 object-contain">
+        <h3 class="text-lg font-semibold">Stanley Cup</h3>
+        </div>
+
+        <?php if (count($stanleyCups) > 0): ?>
+        <div class="award-seasons flex flex-wrap gap-1.5">
+            <?php foreach ($stanleyCups as $season): ?>
+            <span class="px-2.5 py-0.5 text-white rounded-full text-xs" style='background-color: <?php echo $teamColor2; ?>; color: <?php echo $teamColor2Contrast; ?>;'>
+                <?php echo formatSeason($season); ?>
+            </span>
+            <?php endforeach; ?>
+        </div>
+        <p class="mt-2 text-sm text-gray-400">
+            <?php echo count($stanleyCups); ?> time<?php echo count($stanleyCups) > 1 ? 's' : ''; ?> champion
+        </p>
+        <?php else: ?>
+        <p class="text-sm text-gray-400">No Stanley Cup championships</p>
+        <?php endif; ?>
+        </div>
+
+        <!-- Presidents' Trophy -->
+        <div class="rounded-lg p-4 border shadow-lg" style="background: linear-gradient(60deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); border-color: <?php echo $teamColor1; ?>">
+            <div class="flex items-center mb-3">
+        <img src="../resources/images/prestrophy.png" alt="Presidents' Trophy" class="h-14 mr-3 object-contain">
+        <h3 class="text-lg font-semibold">Presidents' Trophy</h3>
+        </div>
+
+        <?php if (count($presidentsTrophies) > 0): ?>
+        <div class="award-seasons flex flex-wrap gap-1.5">
+            <?php foreach ($presidentsTrophies as $season): ?>
+            <span class="px-2.5 py-0.5 rounded-full text-xs" style='background-color: <?php echo $teamColor2; ?>; color: <?php echo $teamColor2Contrast; ?>;'>
+                <?php echo formatSeason($season); ?>
+            </span>
+            <?php endforeach; ?>
+        </div>
+        <p class="mt-2 text-sm text-gray-400">
+            <?php echo count($presidentsTrophies); ?> regular season title<?php echo count($presidentsTrophies) > 1 ? 's' : ''; ?>
+        </p>
+        <?php else: ?>
+        <p class="text-sm text-gray-400">No Presidents' Trophy wins</p>
+        <?php endif; ?>
+        </div>
+        </div>
+        </div>
+        <div class="divider" style="background: linear-gradient(to right, rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1), 
+                                                                rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.6), 
+                                                                rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1));"></div>
+        <br>
+                <h2 class="section-title text-2xl font-bold text-center mb-6 text-white">Season Statistics</h2>
+
+
+                <!-- Step 2: Add Dropdown for Season Selection -->
+                <div class="season-filter-container max-w-md mx-auto mb-10 p-4 flex items-center justify-between"
+                        style="background: linear-gradient(180deg, rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.2) 0%, 
+                                                                rgba(<?php echo hexdec(substr($teamColor2, 1, 2)); ?>, <?php echo hexdec(substr($teamColor2, 3, 2)); ?>, <?php echo hexdec(substr($teamColor2, 5, 2)); ?>, 0.3) 100%);
+                                border: 1px solid <?php echo $teamColor2; ?>;">
+                        <label for="seasonDropdown" class="text-white font-medium" style="color: <?php echo $teamColor1Contrast; ?>">
+                            Filter by Season:
+                        </label>
+        <select id="seasonDropdown" 
+                class="ml-4 appearance-none w-48 px-4 py-2 pr-10 rounded text-white font-medium" 
+                style="color: white; border-color: <?php echo $teamColor2; ?>; background-color: rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.7);"
+                onchange="updateSeason()">
+            <?php foreach ($seasons as $seasonID): ?>
+                <?php 
+                    $seasonYear1 = substr($seasonID, 0, 4);
+                    $seasonYear2 = substr($seasonID, 4, 4);
+                ?>
+                <option style="color: white; background-color: rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.9);" 
+                        value="<?php echo $seasonID; ?>">
+                    <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+                    </div>
+                        </div>
+
+                                    
+
+                <div class="max-w-[90%] mx-auto overflow-x-auto">
+                <!-- OVERALL TEAM STATS BY SEASON -->
+                <div>
+                <!-- <h2 class="section-title text-2xl font-bold text-center mb-6 text-white">Overall Team Stats</h2> -->
+                <h2 class="text-xl font-bold mb-3">Overall Team Stats</h2>
                 <table class='default-zebra-table overall-team-stats-table text-center min-w-[900px]'>
-                  <colgroup>
+                    <colgroup>
                     <col class='overall-team-stats-season'>
                     <col class='overall-team-stats-gp'>
                     <col class='overall-team-stats-w'>
@@ -359,36 +446,36 @@
                     <col class='overall-team-stats-pt-pct'>
                     <col class='overall-team-stats-pp-net-pct'>
                     <col class='overall-team-stats-pp-pct'>
-                  </colgroup>
-                  <thead style='background-color: <?php echo $teamColor1; ?>; color: <?php echo $teamColor1Contrast; ?>'>
+                    </colgroup>
+                    <thead style="background: linear-gradient(90deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); color: <?php echo $teamColor1Contrast; ?>">
                     <tr>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Season</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GP</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>W</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>L</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>OTL</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pts</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>T</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Reg W</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>OT W</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SO W</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>FOW %</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SA / G</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SF / G</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GF</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GF / G</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GA</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GA / G</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PK %</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pt %</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PP Net %</th>
-                      <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PP %</th>
-                  </tr>
-                  </thead>
-                  <tbody id='overallStatsTable'>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Season</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GP</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>W</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>L</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>OTL</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pts</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>T</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Reg W</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>OT W</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SO W</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>FOW %</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SA / G</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>SF / G</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GF</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GF / G</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GA</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GA / G</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PK %</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pt %</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PP Net %</th>
+                        <th class='border' style='border-color: <?php echo $teamColor2; ?>'>PP %</th>
+                    </tr>
+                    </thead>
+                    <tbody id='overallStatsTable'>
 
-              <?php
-              while ($row = mysqli_fetch_assoc($overallStatsResult)) {
+                <?php
+                while ($row = mysqli_fetch_assoc($overallStatsResult)) {
                 
                 $overallSeason = $row['season_id'];
                 $overallGP = $row['gamesPlayed'];
@@ -452,18 +539,21 @@
 
             ?>
                 </tbody>
-              </table>
-              </div>
+                </table>
+                </div>
+
                 <!-- SKATERS COMBINED TABLE -->
-              
-                  <div>
-                  <br>
-                    <h2 class="text-2xl text-center text-white">Individual Player Stats</h2>
+                
+                    <div>
+                    <br>
+                    <!-- <h2 class="section-title text-2xl font-bold text-center mb-6 text-white">Individual Player Stats</h2> -->
+                    <h2 class="text-xl font-bold mb-3">Individual Player Stats</h2>
                     <table class='skaters-combined-table default-zebra-table min-w-[900px]' style="border: 2px solid <?php echo $teamColor2; ?>;">
                     <colgroup>
                     <col class='skaters-combined-season'>
                     <col class='skaters-combined-name'>
                     <col class='skaters-combined-position'>
+                    <col class='skaters-combined-cap-hit'>
                     <col class='skaters-combined-gp'>
                     <col class='skaters-combined-g'>
                     <col class='skaters-combined-a'>
@@ -474,12 +564,13 @@
                     <col class='skaters-combined-avg-toi'>
                     <col class='skaters-combined-avg-shifts'>
                     <col class='skaters-combined-fo-pct'>
-                      </colgroup>
-                    <thead style='background-color: <?php echo $teamColor1; ?> !important; color: <?php echo $teamColor1Contrast; ?>'>
+                        </colgroup>
+                    <thead style="background: linear-gradient(90deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); color: <?php echo $teamColor1Contrast; ?>">
                             <tr data-season='$seasonWithType'>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Season</th>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Name</th>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Pos.</th>
+                                <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Cap Hit</th>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GP</th>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>G</th>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>A</th>
@@ -515,6 +606,20 @@
                                 } else {
                                     $positionDisplay = $position; // Keep original value if not a forward or defenseman
                                 }
+
+                                // Format cap hit
+                                $capHit = $row['capHit'];
+                                if ($capHit == null || $capHit == '') {
+                                    $capHit = "-"; // Show dash if cap hit is zero or negative
+
+                                } else {
+                                    $capHit = substr($capHit, 1); // Remove first character (e.g., $)
+                                    $capHit = floatval(str_replace(',', '', $capHit)); // Remove commas and convert to float
+
+                                
+                                    $capHit = number_format($capHit / 1000000, 2); // Convert to millions and format
+                                }
+
                                 
                                 // Extract season years for display
                                 $seasonYear1 = substr($seasonID, 0, 4);
@@ -524,6 +629,7 @@
                                 echo "<td class='border' style='border-color: $teamColor2'>" . $seasonYear1 . "-" . $seasonYear2 . "</td>";  // Season display
                                 echo "<td class='border' style='border-color: $teamColor2'><a style='color:rgb(15, 63, 152)' href='player_details.php?player_id=" . $playerID . "'>" . $firstName . " " . $lastName . "</a></td>";
                                 echo "<td class='border' style='border-color: $teamColor2'>" . $positionDisplay . "</td>";
+                                echo "<td class='border' style='border-color: $teamColor2'>" . $row['capHit'] . "</td>"; // Salary display
                                 
                                 // Display stats if available, otherwise show dash
                                 echo "<td class='border' style='border-color: $teamColor2'>" . ($row['seasonGamesPlayed'] ?? "-") . "</td>";
@@ -566,7 +672,8 @@
                             ?>
                         </tbody>
                     </table>
-                          </div>
+                            </div>
+
                 <!-- GOALIES COMBINED TABLE -->
 
                 <div>
@@ -589,8 +696,8 @@
                     <col class='goalies-combined-so'>
                     <col class='goalies-combined-toi'>
                     </colgroup>
-                    <thead style='color: <?php echo $teamColor1Contrast; ?>'>
-                            <tr style='background-color: <?php echo $teamColor1; ?>; border: 2px solid <?php echo $teamColor2; ?>; color: <?php echo $teamColor2; ?>'>
+                    <thead style="background: linear-gradient(90deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); color: <?php echo $teamColor1Contrast; ?>">
+                <tr style='border: 2px solid <?php echo $teamColor2; ?>;'> <!-- Removed the background-color and color properties -->
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Season</th>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>Name</th>
                                 <th class='border' style='border-color: <?php echo $teamColor2; ?>'>GP</th>
@@ -666,9 +773,11 @@
                         </tbody>
                     </table>
                 </div>
-                          </div>
+                            </div>
                 </div>
-
+        <div class="divider" style="background: linear-gradient(to right, rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1), 
+                                                                rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.6), 
+                                                                rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1));"></div>
             
             
 
@@ -678,7 +787,7 @@
                 $draftSQL = "SELECT * FROM draft_history WHERE teamID = $team_id";
 
                 $draftResult = mysqli_query($conn, $draftSQL);
-                echo "<h3 class='text-2xl text-center text-white'>Draft Picks</h3><br>";
+                echo "<h3 class='section-title text-2xl font-bold text-center mb-6 text-white'>Draft Picks</h3><br>";
                 echo "<div class='team-draft-history-table-container'>";
                 echo "<table class='team-draft-history-table default-zebra-table text-center mx-auto' style='border: 2px solid $teamColor2; width: 90%;'>";
                 echo "<colgroup>";
@@ -691,8 +800,8 @@
                     echo "<col class='draft-player-country'>";
                     echo "<col class='draft-player-id'>";
                 echo "</colgroup>";
-                echo "<thead style='background-color: $teamColor1; color: $teamColor1Contrast;'>";
-                echo "<tr>";
+                echo "<thead style='background: linear-gradient(90deg, $teamColor1 0%, $teamColor2 100%); color: $teamColor1Contrast'>";
+                echo "<tr style='border: 2px solid <?php echo $teamColor2; ?>;'>"; 
                     echo "<th class='border' style='border-color: $teamColor2'>Year</th>";
                     echo "<th class='border' style='border-color: $teamColor2'>Round</th>";
                     echo "<th class='border' style='border-color: $teamColor2'>Pick In Round</th>";
@@ -706,9 +815,7 @@
                 echo "<tbody id='draftHistoryTable'>";
 
                 while ($row = mysqli_fetch_assoc($draftResult)) {
-                    // print_r($row);
                     $draftPlayerID = $row['playerId'];
-                    echo $draftPlayerID;
                     $draftYear = $row['draftYear'];
                     $draftRound = $row['round'];
                     $draftPickInRound = $row['pickInRound'];
@@ -735,9 +842,11 @@
                 echo "</table>";
                 echo "</div>";
             echo "</div>";
-
-
-
+        ?>
+        <div class="divider" style="background: linear-gradient(to right, rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1), 
+                                                                rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.6), 
+                                                                rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1));"></div>
+        <?php
 
 
             ### PROSPECTS ###
@@ -745,7 +854,7 @@
             echo "<div>";
                 $prospectSQL = "SELECT team_prospects.*, nhl_players.sweaterNumber, nhl_players.firstName, nhl_players.lastName, nhl_players.position FROM team_prospects LEFT JOIN nhl_players ON team_prospects.prospect_id=nhl_players.playerId WHERE team_id = $team_id";
                 $prospectResult = mysqli_query($conn, $prospectSQL);
-                echo "<h3 class='text-2xl text-center text-white'>Current Prospects</h3><br>";
+                echo "<h3 class='section-title text-2xl font-bold text-center mb-6 text-white'>Current Prospects</h3><br>";
                 echo "<div class='team-prospects-table-container'>";
                 echo "<table class='team-prospects-table default-zebra-table text-center mx-auto' style='border: 2px solid $teamColor2; width: 90%;'>";
                 echo "<colgroup>";
@@ -757,8 +866,8 @@
                     // echo "<col class='prospect-weight'>";
                     // echo "<col class='prospect-country'>";
                 echo "</colgroup>";
-                echo "<thead style='background-color: $teamColor1; color: $teamColor1Contrast;'>";
-                echo "<tr>";
+                echo "<thead style='background: linear-gradient(90deg, $teamColor1 0%, $teamColor2 100%); color: $teamColor1Contrast'>";
+                echo "<tr style='border: 2px solid <?php echo $teamColor2; ?>;'>"; 
                     echo "<th class='border' style='border-color: $teamColor2'>Prospect ID</th>";
                     echo "<th class='border' style='border-color: $teamColor2'>Name</th>";
                     echo "<th class='border' style='border-color: $teamColor2'>Number</th>";
@@ -809,69 +918,32 @@
         }
         // Close database connection
         mysqli_close($conn);
-          ?>
-          <div>
-          <br>
-          <hr style='border-color: <?php echo $teamColor1 ?>; width: 70%; margin: auto; border-width: 2px;'>
-          <br>
-          
-          
-          <p class='text-white text-center font-semibold '>Select any team below to view details:</p>
-              <div class="w-2/5 mx-auto text-center footer-teams text-center">
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=24'>ANA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=53'>ARI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=6'>BOS</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=7'>BUF</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=20'>CGY</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=12'>CAR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=16'>CHI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=21'>COL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=29'>CBJ</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=25'>DAL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=17'>DET</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=22'>EDM</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=13'>FLA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=26'>LAK</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=30'>MIN</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=8'>MTL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=1'>NJD</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=18'>NSH</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=2'>NYI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=3'>NYR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=9'>OTT</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=4'>PHI</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=5'>PIT</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=28'>SJS</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=55'>SEA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=19'>STL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=14'>TBL</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=10'>TOR</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=59'>UTA</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=23'>VAN</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=54'>VGK</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=52'>WPG</a><span style='color: <?php echo $teamColor1; ?>'> |</span>
-              <a class='text-white' href='https://connoryoung.com/team_details.php?team_id=15'>WSH</a>
-              </div>
-    
+            ?>
 
-          <br>            
-          <hr style='border-color: <?php echo $teamColor1 ?>; width: 70%; margin: auto; border-width: 2px;'>
-          <br>
-          </div>
-          </div>
-          
-          
-      
-          <?php include 'footer.php'; ?>
-        
-            <!-- Bootstrap core JavaScript
-            ================================================== -->
-            <!-- Placed at the end of the document so the pages load faster -->
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
-            <script src="../js/vendor/popper.min.js"></script>
-            <script src="../js/bootstrap.min.js"></script>
-            <script src="../js/vendor/holder.min.js"></script>
+            <div>
+            <br>
+            <div class="divider" style="background: linear-gradient(to right, rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>,
+                    <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1), rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>,
+                    <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.6), rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, 
+                    <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1));"></div>
+
+                <div class="container mx-auto px-4">
+                    <?php include 'team_links_footer.php'; ?>
+                </div>      
+
+                <div class="divider" style="background: linear-gradient(to right, rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>,
+                    <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1), rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>,
+                    <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.6), rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, 
+                    <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.1));"></div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            
+            
+
+            <?php include 'footer.php'; ?>
+
             <script>
                 // Make sure the DOM is fully loaded before running the script
                 document.addEventListener("DOMContentLoaded", function() {
@@ -893,74 +965,61 @@
                     // Add event listener for the dropdown change
                     document.getElementById("seasonDropdown").addEventListener("change", updateSeason);
                 });
-            </script>
-            <script>
-                  document.addEventListener('DOMContentLoaded', function () {
-                  const dropdown = document.getElementById('seasonDropdown');
-                  const skaterRows = document.querySelectorAll('#skaterStatsTable tr');
-                  const goalieRows = document.querySelectorAll('#goalieStatsTable tr');
-                  const rosterRows = document.querySelectorAll('#seasonRosterTable tr');
-                  const overallRows = document.querySelectorAll('#overallStatsTable tr');
-                  const draftRows = document.querySelectorAll('#draftHistoryTable tr');
 
+                    document.addEventListener('DOMContentLoaded', function () {
+                    const dropdown = document.getElementById('seasonDropdown');
+                    const skaterRows = document.querySelectorAll('#skaterStatsTable tr');
+                    const goalieRows = document.querySelectorAll('#goalieStatsTable tr');
+                    const rosterRows = document.querySelectorAll('#seasonRosterTable tr');
+                    const overallRows = document.querySelectorAll('#overallStatsTable tr');
+                    const draftRows = document.querySelectorAll('#draftHistoryTable tr');
 
-                  // // Debug information
-                  // console.log('Season dropdown:', dropdown ? dropdown.value : 'Not found');
-                  // console.log('Skater rows found:', skaterRows.length);
-                  // console.log('Goalie rows found:', goalieRows.length);
-                  // console.log('Roster rows found:', rosterRows.length);
+                    // Function to filter rows by season
+                    function filterTableBySeason(seasonID) {
+                        console.log("Filtering by season:", seasonID);
 
-                  // // Debug data attributes
-                  // console.log('Skater seasons:', Array.from(skaterRows).map(row => row.dataset.season).filter(Boolean));
-                  // console.log('Goalie seasons:', Array.from(goalieRows).map(row => row.dataset.season).filter(Boolean));
-                  // console.log('Roster seasons:', Array.from(rosterRows).map(row => row.dataset.season).filter(Boolean));
+                        const baseSeasonID = seasonID.split('-')[0]; // "20242025-2" becomes "20242025" - needed for roster table filtering
 
-                  // Function to filter rows by season
-                  function filterTableBySeason(seasonID) {
-                      console.log("Filtering by season:", seasonID);
-
-                      const baseSeasonID = seasonID.split('-')[0]; // "20242025-2" becomes "20242025" - needed for roster table filtering
-
-                      // Filter skater rows
-                      skaterRows.forEach(row => {
-                          if (row.dataset.season === seasonID) {
-                              row.style.display = ''; // Show row
-                          } else {
-                              row.style.display = 'none'; // Hide row
-                          }
-                      });
-                      
-                      // Filter goalie rows
-                      goalieRows.forEach(row => {
-                          if (row.dataset.season === seasonID || row.classList.contains('no-data-row')) {
-                              row.style.display = ''; // Show row
-                          } else {
-                              row.style.display = 'none'; // Hide row
-                          }
-                      });
-
-                      // Filter roster rows
-                      rosterRows.forEach(row => {
-                          if (row.dataset.season === seasonID || row.dataset.season === baseSeasonID) {
-                              row.style.display = ''; // Show row
-                              alert(row.dataset.season);
-                          } else {
-                              row.style.display = 'none'; // Hide row
-                              
-                          }
-                      });
-
-                      // Filter overall rows
-                      overallRows.forEach(row => {
-                          if (row.dataset.season === seasonID || row.dataset.season === baseSeasonID) {
-                            row.style.display = ''; // Show row
-                          } else {
-                              row.style.display = 'none'; // Hide row
+                        // Filter skater rows
+                        skaterRows.forEach(row => {
+                            if (row.dataset.season === seasonID) {
+                                row.style.display = ''; // Show row
+                            } else {
+                                row.style.display = 'none'; // Hide row
                             }
-                      });
+                        });
+                        
+                        // Filter goalie rows
+                        goalieRows.forEach(row => {
+                            if (row.dataset.season === seasonID || row.classList.contains('no-data-row')) {
+                                row.style.display = ''; // Show row
+                            } else {
+                                row.style.display = 'none'; // Hide row
+                            }
+                        });
 
-                      // Filter draft rows
-                      draftRows.forEach(row => {
+                        // Filter roster rows
+                        rosterRows.forEach(row => {
+                            if (row.dataset.season === seasonID || row.dataset.season === baseSeasonID) {
+                                row.style.display = ''; // Show row
+                                alert(row.dataset.season);
+                            } else {
+                                row.style.display = 'none'; // Hide row
+                                
+                            }
+                        });
+
+                        // Filter overall rows
+                        overallRows.forEach(row => {
+                            if (row.dataset.season === seasonID || row.dataset.season === baseSeasonID) {
+                            row.style.display = ''; // Show row
+                            } else {
+                                row.style.display = 'none'; // Hide row
+                            }
+                        });
+
+                        // Filter draft rows
+                        draftRows.forEach(row => {
                             const draftYear = row.dataset.season; // Use draftYear directly
                             const selectedYear = seasonID.substring(0, 4); // Extract the first year of the season
                             if (draftYear === selectedYear) {
@@ -969,25 +1028,25 @@
                                 row.style.display = 'none'; // Hide row
                             }
                         });
-                  }
+                    }
 
-                  // Set default season to the first option in the dropdown
-                  if (dropdown) {
-                      const defaultSeason = dropdown.value;
-                      console.log("Setting default season:", defaultSeason);
-                      filterTableBySeason(defaultSeason);
+                    // Set default season to the first option in the dropdown
+                    if (dropdown) {
+                        const defaultSeason = dropdown.value;
+                        console.log("Setting default season:", defaultSeason);
+                        filterTableBySeason(defaultSeason);
 
-                      // Add event listener to dropdown
-                      dropdown.addEventListener('change', function () {
-                          console.log("Dropdown changed to:", this.value);
-                          filterTableBySeason(this.value);
-                      });
-                  } else {
-                      console.error("Season dropdown not found!");
-                  }
+                        // Add event listener to dropdown
+                        dropdown.addEventListener('change', function () {
+                            console.log("Dropdown changed to:", this.value);
+                            filterTableBySeason(this.value);
+                        });
+                    } else {
+                        console.error("Season dropdown not found!");
+                    }
 
-                      // Handle season selection change
-    document.getElementById('seasonDropdown').addEventListener('change', function () {
+                        // Handle season selection change
+        document.getElementById('seasonDropdown').addEventListener('change', function () {
         const selectedSeason = this.value;
         const seasonYear1 = selectedSeason.substring(0, 4); // Extract first 4 digits
         const seasonYear2 = selectedSeason.substring(4, 8); // Extract last 4 digits
@@ -998,8 +1057,8 @@
 
         // Optionally, you can add logic here to load data dynamically or filter table rows
         // based on the selected season.
-    });
-              });
-                          </script>
+        });
+                });
+                            </script>
     </body>
 </html>
