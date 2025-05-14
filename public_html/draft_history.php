@@ -66,60 +66,39 @@ if (isset($_GET['draft_id'])) {
 }
 ?>
 <div style='background-color: #343a40'>
-    <br><br>
-<div class='max-w-[90%] mx-auto'>
-    <div class='flex flex-wrap justify-center items-center gap-2 mb-2 text-white text-sm'>
-        <a href="https://connoryoung.com/draft_history.php?draft_id=52">1979</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=16">1980</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=39">1981</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=7">1982</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=30">1983</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=54">1984</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=20">1985</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=43">1986</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=12">1987</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=34">1988</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=1">1989</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=25">1990</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=50">1991</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=15">1992</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=37">1993</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=6">1994</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=28">1995</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=53">1996</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=18">1997</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=42">1998</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=10">1999</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=33">2000</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=56">2001</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=22">2002</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=46">2003</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=13">2004</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=36">2005</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=5">2006</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=38">2007</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=3">2008</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=23">2009</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=47">2010</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=14">2011</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=41">2012</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=4">2013</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=31">2014</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=57">2015</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=19">2016</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=44">2017</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=9">2018</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=32">2019</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=58">2020</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=59">2021</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=60">2022</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=62">2023</a> |
-        <a href="https://connoryoung.com/draft_history.php?draft_id=63">2024</a>
-    </div><br>
-<h2 class="text-4xl font-bold text-white text-center">
+<br>
+<h1 class="page-title text-center">
     Draft Picks <?php if (!empty($all_picks)) echo htmlspecialchars($all_picks[0]['draftYear']); ?>
-</h2><br>
-<p class='text-center text-white'>Sort by:</p><br>
+</h1><br>
+
+<div class="season-selector w-full max-w-xs mx-auto">
+  <label for="season-select" class="block text-sm font-medium">Change Season</label>
+  <div class="relative">
+    <select id="season-select" class="rounded cursor-pointer transition-colors w-full appearance-none pr-8">
+      <?php
+      // Determine the current year from the data if available
+      $current_draft_year = !empty($all_picks) ? $all_picks[0]['draftYear'] : date("Y");
+      
+      // Generate options for years with available data
+      $current_year = date("Y");
+      for ($i = 0; $i < 46; $i++) {
+        $year = $current_year - $i;
+        // Only include years that we have in our mapping (1979-2024)
+        if ($year >= 1979 && $year <= $current_year) {
+          $selected = ($year == $current_draft_year) ? "selected" : "";
+          echo "<option value='$year' $selected>$year</option>";
+        }
+      }
+      ?>
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="white" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+      </svg>
+    </div>
+  </div>
+</div>
+<br>
     <!-- Search Filter Fields -->
     <div class="flex flex-wrap justify-center items-center gap-4 mb-4 max-w-[75%] mx-auto">
         <input type="text" id="searchByRound" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Round">
@@ -130,9 +109,8 @@ if (isset($_GET['draft_id'])) {
         <input type="text" id="searchByLeague" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Amateur League">
         <input type="text" id="searchByClub" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Amateur Team">
     </div>
-<div class="overflow-x-auto">
+<div class="overflow-x-auto w-[90%] mx-auto">
     <!-- Table -->
-     <p class='text-center text-white'> Click any team logo or player name to view details.</p><br>
     <table class='shift-table default-zebra-table text-center' id="draftTable">
         <thead>
             <tr>
@@ -324,6 +302,70 @@ if (isset($_GET['draft_id'])) {
 
         // Initially render all rows and pagination
         updateTableAndPagination(allPicks);
+    });
+
+    // <!-- JavaScript for season selection -->
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Define the mapping from season to draft_id
+        const seasonToDraftId = {
+            '2024': 63,
+            '2023': 62,
+            '2022': 60,
+            '2021': 59,
+            '2020': 58,
+            '2019': 32,
+            '2018': 9,
+            '2017': 44,
+            '2016': 19,
+            '2015': 57,
+            '2014': 31,
+            '2013': 4,
+            '2012': 41,
+            '2011': 14,
+            '2010': 47,
+            '2009': 23,
+            '2008': 3,
+            '2007': 38,
+            '2006': 5,
+            '2005': 36,
+            '2004': 13,
+            '2003': 46,
+            '2002': 22,
+            '2001': 56,
+            '2000': 33,
+            '1999': 10,
+            '1998': 42,
+            '1997': 18,
+            '1996': 53,
+            '1995': 28,
+            '1994': 6,
+            '1993': 37,
+            '1992': 15,
+            '1991': 50,
+            '1990': 25,
+            '1989': 1,
+            '1988': 34,
+            '1987': 12,
+            '1986': 43,
+            '1985': 20,
+            '1984': 54,
+            '1983': 30,
+            '1982': 7,
+            '1981': 39,
+            '1980': 16,
+            '1979': 52
+        };
+
+        const seasonSelect = document.getElementById('season-select');
+        if (seasonSelect) {
+            seasonSelect.addEventListener('change', function() {
+            const draftId = seasonToDraftId[this.value];
+            if (draftId) {
+                window.location.href = `draft_history.php?draft_id=${draftId}`;
+            }
+            });
+        }
     });
 
 </script>
