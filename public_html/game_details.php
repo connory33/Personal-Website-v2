@@ -1,29 +1,89 @@
-<!-- TEMPLATE FOR GAME DETAIL PAGES - GETS ID SELECTED ON GAMES PAGE AND USES IT TO QUERY DATABASE FOR ADDITIONAL GAME DETAILS -->
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../resources/images/stick_icon.png">
 
-    <title>Game Details</title>
+  <title>Game Details</title>
 
+  <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
+  <style>
+    /* Dashboard-specific styles */
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-gap: 1rem;
+      width: 100%;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .dashboard-card {
+      background: linear-gradient(to bottom, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9));
+      border: 1px solid rgba(69, 162, 158, 0.4);
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      overflow: hidden;
+    }
+    
+    .header-card { grid-column: span 12; }
+    .shot-chart-card { grid-column: span 8; }
+    .pbp-key-card { grid-column: span 4; }
+    .roster-card { grid-column: span 12; }
+    .pbp-card { grid-column: span 12; }
+    
+    @media (max-width: 1200px) {
+      .shot-chart-card { grid-column: span 12; }
+      .pbp-key-card { grid-column: span 12; }
+    }
 
-       <script src="https://cdn.tailwindcss.com"></script>
+    .roster-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .roster-tab {
+      padding: 0.5rem 1rem;
+      background: rgba(31, 41, 55, 0.6);
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .roster-tab.active {
+      background: linear-gradient(to right, #3b82f6, #2563eb);
+    }
+    
+    .roster-content {
+      display: none;
+    }
+    
+    .roster-content.active {
+      display: block;
+    }
 
-  </head>
- <!-- Header -->
- <?php include 'header.php'; ?>
-  <body>
-    <div class="text-white text-center" style='background-color: #343a40'>
-        <br><br>
+    .card-header {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(69, 162, 158, 0.4);
+    }
+  </style>
+</head>
 
-        <?php
+<body>
+  <!-- Include header -->
+  <?php include 'header.php'; ?>
+
+          <?php
         include('db_connection.php');
 
         ini_set('display_errors', 1);
@@ -164,9 +224,11 @@
                 nhl_games.homeTeamId as home_team_id,
                 nhl_games.awayTeamId as away_team_id,
                 home_teams.fullName as home_team_name,
-                -- home_teams.color1 as home_team_color1,
+                home_teams.teamColor1 as home_team_color1,
+                home_teams.teamColor2 as home_team_color2,
                 away_teams.fullName as away_team_name,
-                -- away_teams.color1 as away_team_color1,
+                away_teams.teamColor1 as away_team_color1,
+                away_teams.teamColor2 as away_team_color2,
                 event_team.triCode as event_team_tricode,
                 nhl_games.gameDate,
                 nhl_games.venue,
@@ -213,6 +275,10 @@
 
                 if ($row !== null && isset($row['gameDate'])) {
                     $game_date = $row['gameDate'];
+                    $homeTeamColor1 = $row['home_team_color1'];
+                    $homeTeamColor2 = $row['home_team_color2'];
+                    $awayTeamColor1 = $row['away_team_color1'];
+                    $awayTeamColor2 = $row['away_team_color2'];
                 } else {
                     $game_data = '';
                 }
@@ -299,46 +365,60 @@
 
                     $gameDatetime = new DateTime($game_date);
                     $formatted_gameDate = $gameDatetime->format('m/d/Y');
-                
-                    echo "<div class='w-fit max-w-[95%] mx-auto bg-slate-800 text-white py-6 px-4 rounded-lg shadow-lg mb-8 border-2 border-slate-600'>";
-                    echo "<div class='flex flex-col items-center space-y-4 flex-grow'>"; // Removed flex-grow on the outer container
-
-                    // Team logos and names
-                    echo "<div class='flex items-center justify-center space-x-6'>"; // Keep the spacing but remove flex-grow
-                    echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($homeTeamID) . "'>" . "<img src='" . htmlspecialchars($homeLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>" . "</a>"; // Added max-width for logos
-                    echo "<a class='text-4xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($homeTeamID) . "'>" . htmlspecialchars($homeTeamName) . " (H)</a> <span class='mx-2 text-4xl'>vs.</span>" . "<a class='text-3xl font-bold text-center whitespace-nowrap' href='https://connoryoung.com/team_details.php?team_id=>" . htmlspecialchars($awayTeamID) . "'>" . htmlspecialchars($awayTeamName) . " (A)</a></h3>";
-                    echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($awayTeamID) . "'>" . "<img src='" . htmlspecialchars($awayLogo) . "' alt='homeLogo' class='h-20 max-w-xs'>" . "</a>"; // Added max-width for logos
-                    echo "</div>";
-                    
-                    // Score line
-                    echo "<h3 class='text-3xl font-semibold'>" . htmlspecialchars($homeScore) . " - " . htmlspecialchars($awayScore) . " <span class='text-3xl font-semibold ml-2'>" . $formatted_outcome . "</span></h3>";
-                    
-                    // Venue and time
-                    echo "<p class='text-lg'>" . htmlspecialchars($venue) . ", " . htmlspecialchars($venueLocation) . "<br>" . htmlspecialchars($formatted_gameDate) . " " . htmlspecialchars($formatted_startTime) . " EST</p>";
-                    
-                    // Season and game info
-                    echo "<p class='text-base italic'>" . $formatted_season . " " . $gameType_text . " - Game Number " . $gameNum . "</p>";
-                    
-                    echo "</div>"; // flex-col container
-                    echo "</div>"; // banner wrapper
-                    
-                    
-                    echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
-
-                
                 }
 
-                    // echo "<p>Test</p> " . print_r($rosters_result);
+?>
 
+  <div class="bg-slate-900 text-white py-4">
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+      
+      <!-- Game Header Card -->
+      <div class="dashboard-card header-card">
+        <div class='flex items-center justify-center space-x-8'>
+          <!-- Home Team -->
+          <a href='team_details.php?team_id=<?= htmlspecialchars($homeTeamID) ?>' class='flex flex-col items-center gap-2'>
+            <img src='<?= htmlspecialchars($homeLogo) ?>' alt='<?= htmlspecialchars($homeTeamName) ?>' class='team-logo h-24 w-auto'>
+            <span class='team-name text-xl'><?= htmlspecialchars($homeTeamName) ?> (H)</span>
+          </a>
+          
+          <!-- VS -->
+          <div class='flex flex-col items-center'>
+            <div class='score-display my-2'>
+              <?= htmlspecialchars($homeScore) ?> - <?= htmlspecialchars($awayScore) ?>
+            </div>
+            <span class='game-outcome ml-2 text-xl'><?= $formatted_outcome ?></span>
+            <div class="mt-2 text-center text-sm">
+              <p><?= htmlspecialchars($venue) ?>, <?= htmlspecialchars($venueLocation) ?></p>
+              <p><?= htmlspecialchars($formatted_gameDate) ?> <?= htmlspecialchars($formatted_startTime) ?> EST</p>
+              <p class="text-base italic"><?= $formatted_season ?> <?= $gameType_text ?> - Game <?= $gameNum ?></p>
+            </div>
+          </div>
+          
+          <!-- Away Team -->
+          <a href='team_details.php?team_id=<?= htmlspecialchars($awayTeamID) ?>' class='flex flex-col items-center gap-2'>
+            <img src='<?= htmlspecialchars($awayLogo) ?>' alt='<?= htmlspecialchars($awayTeamName) ?>' class='team-logo h-24 w-auto'>
+            <span class='team-name text-xl'><?= htmlspecialchars($awayTeamName) ?> (A)</span>
+          </a>
+        </div>
+        
+        <!-- Shift Chart Link -->
+        <div class="text-center mt-4">
+          <a href='shift_charts.php?game_id=<?= $game_id ?>' class="shift-charts-link inline-flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            View Shift Charts
+          </a>
+        </div>
+      </div>
 
-
-                    ###################################### ROSTER TABLES #####################################
-                    
-                    $home_players = [];
+            <!-- Roster Card with Tabs -->
+<?php
+      $home_players = [];
                     $away_players = [];
 
                     while ($row = mysqli_fetch_assoc($rosters_result)) {
-                        // print_r($row);
                         if ($row['teamID'] == $row['homeTeamID']) {
                             $home_players[] = $row;
                             $home_team_name = $row['fullName'];
@@ -356,9 +436,9 @@
                     $away_goalies = array_filter($away_players, fn($p) => $p['goalie_position'] !== null && $p['goalie_position'] !== '');
 
 
-                    function render_skater_table($players, $team_label, $roster_lookup) {
-                        echo "<h4 class='roster-title text-2xl'>$team_label</h4>";
-                        echo "<div class='roster-table-wrapper'>";
+                    function render_skater_table($players, $team_label, $roster_lookup, $teamColor) {
+                        echo "<h4 class='mb-2.5 text-2xl' style='color:$teamColor'>$team_label</h4>";
+                        echo "<div class='w-full overflow-x-auto'>";
                         echo "<table class='roster-table default-zebra-table'>";
                         echo "<colgroup>";
                         echo "<col class='game_details_skater_stats_name'>";
@@ -513,43 +593,80 @@
                         }
                         echo "</tbody></table></div>";
                     }
-                    
-
-        }
-        if (empty($home_players)) {
-            echo "<p>No roster data available.</p>";
-        } else {
-            echo "<br><br>";
-            echo "<h4 class='text-center text-4xl'>Game Rosters & Statistics</h4>";
-            echo "<div class='roster-container'>";
-            echo "<div class='team-column'>";
-            render_skater_table($home_skaters, $home_team_name, $roster_lookup);
-            render_goalie_table($home_goalies, $home_team_name, $roster_lookup);
-            echo "</div>";
-
-            echo "<div class='team-column'>";
-            render_skater_table($away_skaters, $away_team_name, $roster_lookup);
-            render_goalie_table($away_goalies, $away_team_name, $roster_lookup);
-            echo "</div>";
-
-            echo "</div>"; // end .roster-container
-            echo "<p class='text-center text-sm'>(S) indicates the starting goalie</p>";
-            echo "<br>";
-
-        }
+                    ?>
+      <div class="dashboard-card roster-card">
+        <h2 class="card-header">Game Rosters & Statistics</h2>
         
-            echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
-            echo "<br><a class='font-bold' href='https://connoryoung.com/shift_charts.php?game_id=" . $game_id . "'>Click here to view shift charts for this game.</a><br><br>";
-            echo "<hr style='width:80%; background-color:white' class='mx-auto'>";
-
-
-        ?>
-
-        <br><br>
-
-
-<!-- -------------------------------------------- PLAY-BY-PLAY --------------------------------------- -->
-        <?php
+        <div class="roster-tabs">
+          <div class="roster-tab active" data-team="home">Home Team</div>
+          <div class="roster-tab" data-team="away">Away Team</div>
+        </div>
+        
+        <div class="roster-content active" id="home-roster">
+          <?php render_skater_table($home_skaters, $home_team_name, $roster_lookup, 'white' ); ?>
+          <?php render_goalie_table($home_goalies, $home_team_name, $roster_lookup); ?>
+        </div>
+        
+        <div class="roster-content" id="away-roster">
+          <?php render_skater_table($away_skaters, $away_team_name, $roster_lookup, 'white'); ?>
+          <?php render_goalie_table($away_goalies, $away_team_name, $roster_lookup); ?>
+        </div>
+        
+        <p class="text-center text-sm mt-2">(S) indicates the starting goalie</p>
+      </div>
+      
+      <!-- Shot Chart Card -->
+      <div class="dashboard-card shot-chart-card">
+        <h2 class="card-header">Shot Chart</h2>
+        <div class="rink-container relative">
+          <img src="../resources/images/hockey-rink2.jpg" id="rink-image" class="rink-image" />
+          <canvas id="heatmap-canvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+        </div>
+        <div id="filters" class="filter-controls max-w-xl play-by-play-key mt-4 flex flex-wrap justify-center gap-3">
+          <label class="filter-label">
+            <input type="checkbox" class="shot-filter filter-checkbox" value="goal" checked> 
+            <span>Goals</span>
+          </label>
+          <label class="filter-label">
+            <input type="checkbox" class="shot-filter filter-checkbox" value="missed-shot" checked> 
+            <span>Missed Shots</span>
+          </label>
+          <label class="filter-label">
+            <input type="checkbox" class="shot-filter filter-checkbox" value="shot-on-goal" checked> 
+            <span>SOG</span>
+          </label>
+          <label class="filter-label">
+            <input type="checkbox" class="shot-filter filter-checkbox" value="blocked-shot" checked> 
+            <span>Blocks</span>
+          </label>
+          <label class="filter-label">
+            <input type="checkbox" class="shot-filter filter-checkbox" value="hit"> 
+            <span>Hits</span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Play-by-Play Key Card -->
+      <div class="dashboard-card pbp-key-card">
+        <h2 class="card-header">Play-by-Play Key</h2>
+        <div class="grid grid-cols-2 md:grid-cols-2 gap-y-3 gap-x-5">
+          <p><strong class="text-blue-300">FO</strong> – Faceoff</p>
+          <p><strong class="text-blue-300">SOG</strong> – Shot on Goal</p>
+          <p><strong class="text-blue-300">Pen.</strong> – Penalty</p>
+          <p><strong class="text-blue-300">Block</strong> – Blocked Shot</p>
+          <p><strong class="text-blue-300">Miss</strong> – Missed Shot</p>
+          <p><strong class="text-blue-300">Stop</strong> – Stoppage</p>
+          <p><strong class="text-blue-300">Give</strong> – Giveaway</p>
+          <p><strong class="text-blue-300">Take</strong> – Takeaway</p>
+          <p><strong class="text-blue-300">D. Pen.</strong> – Delayed Penalty</p>
+          <p><strong class="text-blue-300">Back</strong> – Backhand</p>
+          <p><strong class="text-blue-300">Tip</strong> – Tip-in</p>
+        </div>
+      </div>
+      
+      
+      <!-- Play-by-Play Card -->
+<?php
         ### Pagination logic ###
         $limit = 25; // Results per page
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -569,115 +686,14 @@
 
         $plays_sql = "SELECT * FROM nhl_plays WHERE nhl_plays.gameID = $game_id ORDER BY nhl_plays.period, nhl_plays.timeInPeriod ASC LIMIT $offset, $limit";
         $plays = mysqli_query($conn, $plays_sql);
-        echo "<h4 class='text-center text-4xl'>Play-by-Play</h4><br>";
-
-        if (mysqli_num_rows($plays) > 0) {
         ?>
-
-
-
-<!-- <h4 class="text-2xl font-semibold mb-4 text-white text-center">Play-by-Play Key</h4> -->
-
-<div class="bg-gray-800 rounded-lg p-6 text-sm text-white shadow-lg border-2 border-slate-600 max-w-4xl mx-auto">
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-8">
-    <p><strong>FO</strong> – Faceoff</p>
-    <p><strong>SOG</strong> – Shot on Goal</p>
-    <p><strong>Pen.</strong> – Penalty</p>
-    <p><strong>Block</strong> – Blocked Shot</p>
-    <p><strong>Miss</strong> – Missed Shot</p>
-    <p><strong>Stop</strong> – Stoppage</p>
-    <p><strong>Give</strong> – Giveaway</p>
-    <p><strong>Take</strong> – Takeaway</p>
-    <p><strong>D. Pen.</strong> – Delayed Penalty</p>
-    <p><strong>Back</strong> – Backhand</p>
-    <p><strong>Tip</strong> – Tip-in</p>
-  </div>
-</div>
-
-<br>
-
-
-
-
-<div class='max-w-full mx-auto text-center'>
-  <h4 class='text-2xl font-semibold mb-4 text-white'>Rink Diagram / Coordinates</h4>
-
-  <div class="relative inline-block w-1/2 max-w-full" id="rink-container">
-    <img src="../resources/images/hockey-rink2.jpg" id="rink-image" class="w-full h-auto mx-auto" />
-    <canvas id="heatmap-canvas" class="absolute top-0 left-0 w-full h-full"></canvas>
-    <!-- <div id="marker" style="
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: red;
-      border-radius: 50%;
-      display: none;
-      pointer-events: none;
-    "></div> -->
-  </div>
-</div>
-
-<div id="filters" class="text-center mt-4 flex justify-between max-w-[50%] mx-auto">
-    <label><input type="checkbox" class="shot-filter" value="goal" checked> Goals</label>
-    <label><input type="checkbox" class="shot-filter" value="missed-shot" checked> Missed Shots</label>
-    <label><input type="checkbox" class="shot-filter" value="shot-on-goal" checked> Shots on Net</label>
-    <label><input type="checkbox" class="shot-filter" value="blocked-shot" checked> Blocked Shots</label>
-    <label><input type="checkbox" class="shot-filter" value="hit" unchecked> Hits</label>
-</div>
-
-
-<br>
-
-
-
-
-<!-- <script>
-
-function drawMarker(x, y) {
-    const marker = document.getElementById('marker');
-    if (!marker) return;
-
-    const { x: xPx, y: yPx } = transformCoords(x, y);
-
-    marker.style.left = `${xPx - 4}px`;  // center the 8x8 marker
-    marker.style.top = `${yPx - 4}px`;
-    marker.style.display = 'block';
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const rows = document.querySelectorAll('.play-row');
-
-    rows.forEach(row => {
-        row.addEventListener('click', function () {
-            // Remove highlight from all rows
-            rows.forEach(r => r.classList.remove('default-selected-row'));
-
-            // Add highlight to the clicked row
-            this.classList.add('default-selected-row');
-
-            // Get the x and y coordinates from the data attributes
-            const x = parseFloat(this.dataset.x);
-            const y = parseFloat(this.dataset.y);
-            
-            // Log the coordinates for debugging
-            console.log(`Marker coordinates: (${x}, ${y})`);
-
-            // Move the marker
-            drawMarker(x, y);
-        });
-    });
-});
-
-</script> -->
-
-
-
-<!-- <h4 class='text-2xl font-semibold mb-4 text-white'>Play-by-Play Events</h4> -->
-<div class="overflow-x-auto">
-    <table id="play-by-play-table" class="min-w-max table-auto border-2 border-slate-600 border-collapse default-zebra-table">
-        <thead class='default-zebra-table'>
-            <tr class='default-zebra-table'>
+      
+      <div class="dashboard-card pbp-card">
+        <h2 class="card-header">Play-by-Play</h2>
+        <div class="overflow-x-auto">
+          <table id="play-by-play-table" class="min-w-max table-auto border-2 border-slate-600 border-collapse default-zebra-table">
+            <thead class='default-zebra-table'>
+              <tr class='default-zebra-table'>
                 <th class='pbp-col-time-left border-2 border-slate-600'>Per. Time Left</th>
                 <th class='pbp-col-type border-2 border-slate-600'>Type</th>
                 <th class='pbp-col-coords border-2 border-slate-600'>Coords.</th>
@@ -697,10 +713,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <th class='pbp-col-penalty border-2 border-slate-600'>Penalty</th>
                 <th class='pbp-col-committer border-2 border-slate-600'>Committer</th>
                 <th class='pbp-col-drawer border-2 border-slate-600'>Drawer</th>
-            </tr>
-        </thead>
-        <tbody class='default-zebra-table'>
-                    <?php
+              </tr>
+            </thead>
+            <tbody class='default-zebra-table'>
+              <!-- Your existing PHP code to output table rows -->
+              <?php
+               
                         $all_plays = [];
                         while ($row = $plays->fetch_assoc()){
                             # Coordinates
@@ -909,191 +927,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             echo "</tr>";
                         }
+              ?>
+            </tbody>
+          </table>
+        </div>
 
-
-                    
-                echo "</tbody>";
-
-                echo "</table>";
-
-
-                $total_pages = ceil($total_rows / $limit);
-
-
-                // Fetch all plays (no LIMIT)
-                $all_plays_query = "SELECT * FROM nhl_plays WHERE gameID = $game_id";
-                $plays_result = mysqli_query($conn, $all_plays_query);
-                $all_plays = [];
-                while ($row = mysqli_fetch_assoc($plays_result)) {
-                    $all_plays[] = $row;
-                }  
-                // print_r($all_plays);     
-                ?>
-                </div>
-                <br><br>
-                
-                <script>const allPlays = <?= json_encode($all_plays) ?>;</script>
-                <script src="https://cdn.jsdelivr.net/npm/simpleheat/simpleheat.js"></script>
-                <script>
-    const rinkXMin = -100, rinkXMax = 100;
-    const rinkYMin = -42.5, rinkYMax = 42.5;
-    const rink = document.getElementById("rink-image");
-    const heatmapCanvas = document.getElementById("heatmap-canvas");
-    const heat = simpleheat(heatmapCanvas);
-
-    const validTypes = ['shot-on-goal', 'missed-shot', 'goal', 'blocked-shot'];
-    let shotPoints = []; // Store the filtered shot points
-
-    function updateCanvasSize() {
-        heatmapCanvas.width = rink.clientWidth;
-        heatmapCanvas.height = rink.clientHeight;
-        heat.resize(); // Resize heatmap to match updated canvas dimensions
-    }
-
-    function transformCoords(x, y) {
-        const width = rink.clientWidth;
-        const height = rink.clientHeight;
-
-        const paddingX = 0.1;
-        const paddingY = 0.1;
-
-        const usableWidth = width * (1 - 2 * paddingX);
-        const usableHeight = height * (1 - 2 * paddingY);
-
-        const xPx = (x - rinkXMin) / (rinkXMax - rinkXMin) * usableWidth + width * paddingX;
-        const yPx = height - ((y - rinkYMin) / (rinkYMax - rinkYMin) * usableHeight + height * paddingY);
-
-        const clampedX = Math.max(0, Math.min(width, xPx));
-        const clampedY = Math.max(0, Math.min(height, yPx));
-
-        return [clampedX, clampedY];
-    }
-
-    function filterShotData(selectedTypes) {
-        const pointMap = new Map();
-
-        // Filter all plays by the selected shot types
-        const filteredPlays = allPlays.filter(play => selectedTypes.includes(play.typeDescKey));
-
-        // Transform and aggregate shot points
-        filteredPlays.forEach(play => {
-            const x = parseFloat(play.xCoord);
-            const y = parseFloat(play.yCoord);
-
-            if (!isNaN(x) && !isNaN(y)) {
-                const [xPx, yPx] = transformCoords(x, y);
-                const key = `${Math.round(xPx)},${Math.round(yPx)}`;
-                if (!pointMap.has(key)) {
-                    pointMap.set(key, [xPx, yPx, 1]); // Initial intensity of 1
-                } else {
-                    pointMap.get(key)[2] += 1; // Increment intensity for repeated points
-                }
-            }
-        });
-
-        // Convert pointMap values to an array and apply intensity scaling
-        return Array.from(pointMap.values()).map(point => {
-            point[2] = Math.log(point[2] + 1); // Intensity scaling
-            return point;
-        });
-    }
-
-    function updateHeatmap() {
-        // Get selected shot types from the checkboxes
-        const selectedTypes = Array.from(document.querySelectorAll('.shot-filter:checked')).map(cb => cb.value);
-
-        // Filter shot points and redraw the heatmap
-        shotPoints = filterShotData(selectedTypes);
-        drawHeatmap(shotPoints);
-    }
-
-    function drawHeatmap(points) {
-        heat.clear(); // Clears any previous data
-        heat.data(points); // Set the data to the points with intensity
-
-        const maxIntensity = Math.max(...points.map(point => point[2]), 1); // Avoid max = 0
-        heat.max(maxIntensity); // Set max intensity
-
-        heat.radius(30, 15); // Adjust radius if necessary
-        heat.gradient({
-            0.3: 'rgba(0, 0, 255, 1)',     // blue
-            0.5: 'rgba(0, 255, 0, 1)',     // lime
-            0.8: 'rgba(255, 165, 0, 1)',   // orange
-            1.0: 'rgba(255, 0, 0, 1)'      // red
-        });
-
-        heat.draw(); // Draw the heatmap
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        updateCanvasSize();
-
-        // Initial rendering with all shot types
-        shotPoints = filterShotData(validTypes);
-        drawHeatmap(shotPoints);
-
-        // Add event listeners to filters
-        const filters = document.querySelectorAll('.shot-filter');
-        filters.forEach(filter => filter.addEventListener('change', updateHeatmap));
-    });
-
-    // Resize listener to adjust canvas size and redraw the heatmap
-    window.addEventListener('resize', () => {
-        updateCanvasSize();
-        drawHeatmap(shotPoints);
-    });
-</script>
-
-
-                <script>
-
-                document.addEventListener('DOMContentLoaded', () => {
-                updateCanvasSize();
-
-                const shotPoints = [];
-
-                const validTypes = ['shot-on-goal', 'missed-shot', 'goal', 'blocked-shot'];
-
-                const pointMap = new Map();
-
-                allPlays.forEach(play => {
-                const x = parseFloat(play.xCoord);
-                const y = parseFloat(play.yCoord);
-                const type = play.typeDescKey;
-
-                if (!isNaN(x) && !isNaN(y) && validTypes.includes(type)) {
-                    const [xPx, yPx] = transformCoords(x, y);
-                    const key = `${Math.round(xPx)},${Math.round(yPx)}`;
-                    if (!pointMap.has(key)) {
-                        pointMap.set(key, [xPx, yPx, 1]);
-                    } else {
-                        pointMap.get(key)[2] += 1;
-                    }
-                    }
-                });
-                const shotPoints = Array.from(pointMap.values());
-
-                drawHeatmap(shotPoints);
-                });
-
-                window.addEventListener('resize', () => {
-                updateCanvasSize();
-                drawHeatmap(shotPoints); // re-render after resize
-                });
-
-                </script>
-
-
-
-                <div style = 'text-align:center'>
-                <?php if ($total_rows > 0): ?>
-                    <br><div style="margin-bottom: 10px;">
-                        Showing results <?= $start ?>–<?= $end ?> of <?= $total_rows ?> (Page <?= $page ?> of <?= $total_pages ?>)
-                    </div>
-                <?php endif; ?>
-
-<!-- Replace your empty pagination div with this PHP-based pagination -->
-<div id="pagination" class="flex justify-center items-center mt-4 gap-2">
+        
+        
+        <!-- Pagination -->
+        <div id="pagination" class="flex justify-center items-center mt-4 gap-2">
     <?php if ($total_pages > 1): ?>
         <!-- Previous page button -->
         <?php if ($page > 1): ?>
@@ -1161,29 +1003,161 @@ document.addEventListener('DOMContentLoaded', () => {
         <?php endif; ?>
     <?php endif; ?>
 </div>
-                
-        <?php
+      </div>
+      
 
-            mysqli_close($conn);
-            
-        } else {
-                echo "<br><p style='text-align: center'>No play-by-play data available for this game.</p>";
-        }
-        ?>
-            <br>
-        </div>
-
-        <?php include 'footer.php'; ?>
-
+      <?php
+// Fetch ALL plays for the heatmap (no LIMIT)
+$all_plays_query = "SELECT * FROM nhl_plays WHERE gameID = $game_id";
+$plays_result = mysqli_query($conn, $all_plays_query);
+$all_plays = [];
+while ($row = mysqli_fetch_assoc($plays_result)) {
+    $all_plays[] = [
+        'x' => $row['xCoord'],
+        'y' => $row['yCoord'],
+        'typedesckey' => $row['typeDescKey']
+    ];
+}?>
     </div>
+  </div>
+        
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/vendor/holder.min.js"></script>
-  </body>
+
+
+  <?php 
+        } else {
+            echo "<p>No game ID provided.</p>";
+        }
+ ?>
+
+  <!-- Roster Tab Switching Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.roster-tab');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          this.classList.add('active');
+          
+          // Hide all content
+          const contents = document.querySelectorAll('.roster-content');
+          contents.forEach(c => c.classList.remove('active'));
+          
+          // Show selected content
+          const team = this.getAttribute('data-team');
+          document.getElementById(`${team}-roster`).classList.add('active');
+        });
+      });
+    });
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/simpleheat/simpleheat.js"></script>
+<script>
+    const allPlays = <?= json_encode($all_plays) ?>;
+    const rinkXMin = -100, rinkXMax = 100;
+    const rinkYMin = -42.5, rinkYMax = 42.5;
+    const rink = document.getElementById("rink-image");
+    const heatmapCanvas = document.getElementById("heatmap-canvas");
+    const heat = simpleheat(heatmapCanvas);
+    
+    let shotPoints = []; // Declare this globally so resize can access it
+    
+    function updateCanvasSize() {
+        heatmapCanvas.width = rink.clientWidth;
+        heatmapCanvas.height = rink.clientHeight;
+        heat.resize();
+    }
+    
+    function transformCoords(x, y) {
+        const width = rink.clientWidth;
+        const height = rink.clientHeight;
+        
+        const paddingX = 0.1;
+        const paddingY = 0.1;
+        
+        const usableWidth = width * (1 - 2 * paddingX);
+        const usableHeight = height * (1 - 2 * paddingY);
+        
+        const xPx = (x - rinkXMin) / (rinkXMax - rinkXMin) * usableWidth + width * paddingX;
+        const yPx = height - ((y - rinkYMin) / (rinkYMax - rinkYMin) * usableHeight + height * paddingY);
+        
+        return [Math.max(0, Math.min(width, xPx)), Math.max(0, Math.min(height, yPx))];
+    }
+    
+    function filterShotData(selectedTypes) {
+        const pointMap = new Map();
+        
+        allPlays.forEach(play => {
+            const x = parseFloat(play.x);
+            const y = parseFloat(play.y);
+            const type = play.typedesckey;
+            
+            if (!isNaN(x) && !isNaN(y) && selectedTypes.includes(type)) {
+                const [xPx, yPx] = transformCoords(x, y);
+                const key = `${Math.round(xPx)},${Math.round(yPx)}`;
+                
+                if (!pointMap.has(key)) {
+                    pointMap.set(key, [xPx, yPx, 1]);
+                } else {
+                    pointMap.get(key)[2] += 1;
+                }
+            }
+        });
+        
+        return Array.from(pointMap.values()).map(point => {
+            point[2] = Math.log(point[2] + 1);
+            return point;
+        });
+    }
+    
+    function updateHeatmap() {
+        const selectedTypes = Array.from(document.querySelectorAll('.shot-filter:checked')).map(cb => cb.value);
+        shotPoints = filterShotData(selectedTypes);
+        drawHeatmap(shotPoints);
+    }
+    
+    function drawHeatmap(points) {
+        heat.clear();
+        heat.data(points);
+        
+        const maxIntensity = Math.max(...points.map(point => point[2]), 1);
+        heat.max(maxIntensity);
+        
+        heat.radius(30, 15);
+        heat.gradient({
+            0.3: 'rgba(0, 0, 255, 0.7)',
+            0.5: 'rgba(0, 255, 0, 0.7)',
+            0.8: 'rgba(255, 165, 0, 0.7)',
+            1.0: 'rgba(255, 0, 0, 0.7)'
+        });
+        
+        heat.draw();
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCanvasSize();
+        
+        // Initialize with all valid shot types
+        const validTypes = ['shot-on-goal', 'missed-shot', 'goal', 'blocked-shot', 'hit'];
+        const filters = document.querySelectorAll('.shot-filter');
+        filters.forEach(filter => filter.addEventListener('change', updateHeatmap));
+        
+        // Initial render
+        updateHeatmap();
+    });
+    
+    window.addEventListener('resize', () => {
+        updateCanvasSize();
+        drawHeatmap(shotPoints);
+    });
+</script>
+
+</div> <!-- Close dashboard-container -->
+            </div>
+<?php include 'footer.php'; ?>
+</body>
 </html>
