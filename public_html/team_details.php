@@ -124,35 +124,10 @@ if (isset($_GET['team_id'])) {
             // Step 2: Run the main query to fetch the results
             $sql4 = "
             SELECT 
-            teams.triCode,
-            temp_goalies.position,
-            temp_goalies.player_id,
-            temp_goalies.firstName,
-            temp_goalies.lastName,
-            temp_goalies.season,
-            CONCAT(temp_goalies.season, '-2') as seasonWithType,
-            teams.id,
-            teams.fullName,
-            teams.teamLogo,
-            teams.teamColor1,
-            teams.teamColor2,
-            teams.teamColor3,
-            teams.teamColor4,
-            teams.teamColor5,
-            stats.seasonGamesPlayed,
-            stats.seasonGS,
-            stats.seasonWins,
-            stats.seasonLosses,
-            stats.seasonTies,
-            stats.seasonOTLosses,
-            stats.seasonGAA,
-            stats.seasonSavePct,
-            stats.seasonSA,
-            stats.seasonSaves,
-            stats.seasonGA,
-            stats.seasonSO,
-            stats.seasonTOI,
-            nhl_contracts.capHit
+                teams.triCode, temp_goalies.position, temp_goalies.player_id, temp_goalies.firstName, temp_goalies.lastName, temp_goalies.season, 
+                CONCAT(temp_goalies.season, '-2') as seasonWithType, teams.id, teams.fullName, teams.teamLogo, teams.teamColor1, teams.teamColor2, teams.teamColor3, 
+                teams.teamColor4, teams.teamColor5, stats.seasonGamesPlayed, stats.seasonGS, stats.seasonWins, stats.seasonLosses, stats.seasonTies, stats.seasonOTLosses, 
+                stats.seasonGAA, stats.seasonSavePct, stats.seasonSA, stats.seasonSaves, stats.seasonGA, stats.seasonSO, stats.seasonTOI, nhl_contracts.capHit
             FROM temp_goalies
             LEFT JOIN nhl_teams AS teams ON teams.id = temp_goalies.team_id
             LEFT JOIN team_season_stats AS stats 
@@ -175,13 +150,12 @@ if (isset($_GET['team_id'])) {
                 // Fetch the row to get the team logo and build header
                 $team = mysqli_fetch_assoc($result_skaters_combined);
 
+                // Team Colors - get team colors and contrast colors for text
                 $teamColor1 = $team['teamColor1'];
                 $teamColor2 = $team['teamColor2'];
                 $teamColor3 = $team['teamColor3'];
                 $teamColor4 = $team['teamColor4'];
                 $teamColor5 = $team['teamColor5'];
-                
-
                 function getTextColorForBackground($bgColorHex) {
                     // Remove the hash if present
                     $bgColorHex = ltrim($bgColorHex, '#');
@@ -197,72 +171,50 @@ if (isset($_GET['team_id'])) {
                     // Return black or white depending on brightness
                     return ($brightness > 128) ? '#000000' : '#FFFFFF';
                 }
-                
-                $teamColor1Contrast = getTextColorForBackground($teamColor1);  // Contrast color for teamColor1
-                $teamColor2Contrast = getTextColorForBackground($teamColor2);  // Contrast color for teamColor2
+                $teamColor1Contrast = getTextColorForBackground($teamColor1);
+                $teamColor2Contrast = getTextColorForBackground($teamColor2);
                 ?>
                 
-                <div class="full-page-content-container" style='background-color:#343a40'>
-                <div class="max-w-5xl mx-auto">
-                    <br><br>
-                    <!-- Team Header with Enhanced Styling -->
-                            <div class="team-header flex justify-between items-center mb-8 p-6" 
-                                style="background: linear-gradient(135deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); 
-                                        border: 2px solid <?php echo $teamColor2; ?>;">
-                        
-                                <!-- Left side: Team Name -->
-                                <div class="flex flex-col">
-                                    <h3 class="text-xl font-medium mb-1" style="color: <?php echo $teamColor1Contrast; ?>; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">Team Details</h3>
-                                    <h1 class="text-4xl font-bold" style="color: <?php echo $teamColor1Contrast; ?>; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                                        <?php echo $team['fullName']; ?>
-                                    </h1>
-                                </div>
-                        
-                                <!-- Right side: Team Logo -->
-                                <div class="team-logo-container p-2">
-                                    <?php
-                                    $teamLogo = $team['teamLogo'];
-                                    if ($teamLogo != 'false' && $teamLogo != '' && $teamLogo != 'N/A') {
-                                        echo "<img src='" . htmlspecialchars($teamLogo) . "' alt='Team Logo' class='h-32 w-auto'>";
-                                    } else {
-                                        echo "<p class='text-lg font-medium'>No Logo Available</p>"; 
-                                    }
-                                    ?>
-                                </div>
+
+                                                                    <!-- Full Page Content Container with Dark Background -->
+                                                        
+                <div class="full-page-content-container" style='background-color:#343a40'> <!-- Open div for full page dark background -->
+                    <div class="max-w-7xl mx-auto"> <!-- Open div for centered container for content -->
+                        <br><br>
+
+                                                                                    <!-- Team Header -->
+                        <div class="team-header flex justify-between items-center mb-8 p-6" 
+                            style="background: linear-gradient(135deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); 
+                                    border: 2px solid <?php echo $teamColor2; ?>;">
+                    
+                            <!-- Left side: Team Name -->
+                            <div class="flex flex-col">
+                                <h3 class="text-xl font-medium mb-1" style="color: <?php echo $teamColor1Contrast; ?>; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">Team Details</h3>
+                                <h1 class="text-4xl font-bold" style="color: <?php echo $teamColor1Contrast; ?>; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                                    <?php echo $team['fullName']; ?>
+                                </h1>
                             </div>
+                    
+                            <!-- Right side: Team Logo -->
+                            <div class="team-logo-container p-2">
+                                <?php
+                                $teamLogo = $team['teamLogo'];
+                                if ($teamLogo != 'false' && $teamLogo != '' && $teamLogo != 'N/A') {
+                                    echo "<img src='" . htmlspecialchars($teamLogo) . "' alt='Team Logo' class='h-32 w-auto'>";
+                                } else {
+                                    echo "<p class='text-lg font-medium'>No Logo Available</p>"; 
+                                }
+                                ?>
+                            </div>
+                        </div>
 
-            
-                
-            <?php  
-                mysqli_data_seek($result_skaters_combined, 0); // Reset the result pointer to the first row
-                }
+                        <?php  
+                        mysqli_data_seek($result_skaters_combined, 0);
+                        } // end else for check if final query failed
+              
 
-                // Step 1: Get all unique seasons for the dropdown
-                $seasons = [];
-                // Get seasons from skaters
-                mysqli_data_seek($result_skaters_combined, 0);
-                while ($row = mysqli_fetch_assoc($result_skaters_combined)) {
-                    $seasonID = $row['season'];
-                    $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
-                    if (!in_array($seasonWithType, $seasons)) {
-                        $seasons[] = $seasonWithType;
-                    }
-                }
-                
-                // Get seasons from goalies
-                mysqli_data_seek($result_goalies_combined, 0);
-                while ($row = mysqli_fetch_assoc($result_goalies_combined)) {
-                    $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
-                    if (!in_array($seasonWithType, $seasons)) {
-                        $seasons[] = $seasonWithType;
-                    }
-                }
-                
-                rsort($seasons); // Sort seasons in descending order to show the latest season first
-                ?>
-
-                <!-- AWARDS TABLES -->
-                <?php 
+                                                                                        // AWARDS TABLES
+             
         // Expanded query to include all four trophy types
         $sql = "SELECT * FROM season_awards 
             WHERE stanleyCupWinnerID = $team_id 
@@ -273,8 +225,6 @@ if (isset($_GET['team_id'])) {
         // Initialize arrays to store different types of awards by season
         $stanleyCups = [];
         $presidentsTrophies = [];
-        $messierTrophies = [];
-        $richardTrophies = [];
 
         // Process the results
         if ($awardsResult && mysqli_num_rows($awardsResult) > 0) {
@@ -332,12 +282,12 @@ if (isset($_GET['team_id'])) {
         ?>
 
         <!-- Sleek Awards Display UI -->
-        <div class="team-awards-section my-6">
+        <div class="my-6">
         <h2 class="text-xl font-bold mb-3">Team Achievements</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Stanley Cup -->
-        <div class="rounded-lg p-4 border shadow-lg" style="background: linear-gradient(60deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); border-color: <?php echo $teamColor1; ?>">
+        <div class="w-full rounded-lg p-4 border shadow-lg" style="background: linear-gradient(60deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); border-color: <?php echo $teamColor1; ?>">
             <div class="flex items-center mb-3">
         <img src="../resources/images/stanley_cup.png" alt="Stanley Cup" class="h-14 mr-3 object-contain">
         <h3 class="text-lg font-semibold">Stanley Cup</h3>
@@ -351,16 +301,16 @@ if (isset($_GET['team_id'])) {
             </span>
             <?php endforeach; ?>
         </div>
-        <p class="mt-2 text-sm text-gray-400">
+        <p class="mt-2 text-sm">
             <?php echo count($stanleyCups); ?> time<?php echo count($stanleyCups) > 1 ? 's' : ''; ?> champion
         </p>
         <?php else: ?>
-        <p class="text-sm text-gray-400">No Stanley Cup championships</p>
+        <p class="text-sm">No Stanley Cup championships</p>
         <?php endif; ?>
         </div>
 
         <!-- Presidents' Trophy -->
-        <div class="rounded-lg p-4 border shadow-lg" style="background: linear-gradient(60deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); border-color: <?php echo $teamColor1; ?>">
+        <div class="w-full rounded-lg p-4 border shadow-lg" style="background: linear-gradient(60deg, <?php echo $teamColor1; ?> 0%, <?php echo $teamColor2; ?> 100%); border-color: <?php echo $teamColor1; ?>">
             <div class="flex items-center mb-3">
         <img src="../resources/images/prestrophy.png" alt="Presidents' Trophy" class="h-14 mr-3 object-contain">
         <h3 class="text-lg font-semibold">Presidents' Trophy</h3>
@@ -374,11 +324,11 @@ if (isset($_GET['team_id'])) {
             </span>
             <?php endforeach; ?>
         </div>
-        <p class="mt-2 text-sm text-gray-400">
+        <p class="mt-2 text-sm">
             <?php echo count($presidentsTrophies); ?> regular season title<?php echo count($presidentsTrophies) > 1 ? 's' : ''; ?>
         </p>
         <?php else: ?>
-        <p class="text-sm text-gray-400">No Presidents' Trophy wins</p>
+        <p class="text-sm">No Presidents' Trophy wins</p>
         <?php endif; ?>
         </div>
         </div>
@@ -390,6 +340,31 @@ if (isset($_GET['team_id'])) {
                 <h2 class="section-title text-2xl font-bold text-center mb-6 text-white">Season Statistics</h2>
 
 
+                
+                                                                                    <!-- Dropdown for Season Selection -->
+            <?php
+                // Step 1: Get all unique seasons for the dropdown
+                $seasons = [];
+                // Get seasons from skaters
+                mysqli_data_seek($result_skaters_combined, 0);
+                while ($row = mysqli_fetch_assoc($result_skaters_combined)) {
+                    $seasonID = $row['season'];
+                    $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
+                    if (!in_array($seasonWithType, $seasons)) {
+                        $seasons[] = $seasonWithType;
+                    }
+                }
+                // Get seasons from goalies
+                mysqli_data_seek($result_goalies_combined, 0);
+                while ($row = mysqli_fetch_assoc($result_goalies_combined)) {
+                    $seasonWithType = $row['seasonWithType']; // Format: 20242025-2
+                    if (!in_array($seasonWithType, $seasons)) {
+                        $seasons[] = $seasonWithType;
+                    }
+                }
+                rsort($seasons);
+            ?>
+
                 <!-- Step 2: Add Dropdown for Season Selection -->
                 <div class="season-filter-container max-w-md mx-auto mb-10 p-4 flex items-center justify-between"
                         style="background: linear-gradient(180deg, rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.2) 0%, 
@@ -398,21 +373,21 @@ if (isset($_GET['team_id'])) {
                         <label for="seasonDropdown" class="text-white font-medium" style="color: <?php echo $teamColor1Contrast; ?>">
                             Filter by Season:
                         </label>
-        <select id="seasonDropdown" 
-                class="ml-4 appearance-none w-48 px-4 py-2 pr-10 rounded text-white font-medium" 
-                style="color: white; border-color: <?php echo $teamColor2; ?>; background-color: rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.7);"
-                onchange="updateSeason()">
-            <?php foreach ($seasons as $seasonID): ?>
-                <?php 
-                    $seasonYear1 = substr($seasonID, 0, 4);
-                    $seasonYear2 = substr($seasonID, 4, 4);
-                ?>
-                <option style="color: white; background-color: rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.9);" 
-                        value="<?php echo $seasonID; ?>">
-                    <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+                        <select id="seasonDropdown" 
+                                class="ml-4 appearance-none w-48 px-4 py-2 pr-10 rounded text-white font-medium" 
+                                style="color: white; border-color: <?php echo $teamColor2; ?>; background-color: rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.7);"
+                                onchange="updateSeason()">
+                            <?php foreach ($seasons as $seasonID): ?>
+                                <?php 
+                                    $seasonYear1 = substr($seasonID, 0, 4);
+                                    $seasonYear2 = substr($seasonID, 4, 4);
+                                ?>
+                                <option style="color: white; background-color: rgba(<?php echo hexdec(substr($teamColor1, 1, 2)); ?>, <?php echo hexdec(substr($teamColor1, 3, 2)); ?>, <?php echo hexdec(substr($teamColor1, 5, 2)); ?>, 0.9);" 
+                                        value="<?php echo $seasonID; ?>">
+                                    <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                         </div>
 

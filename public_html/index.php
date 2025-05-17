@@ -24,7 +24,7 @@
           <h1 class="text-6xl font-bold" style="color: #18314f">Connor Young</h1>
           <p class="mt-6">
             <a
-              href="resources/ConnorYoung_Resume_Apr2025.pdf"
+              href="resources/ConnorYoung_Resume_May2025.pdf"
               download
               class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded shadow hover:bg-blue-700 transition">
               Download Resume
@@ -38,14 +38,18 @@
       <div class="bg-white border shadow rounded-lg p-6 text-left hover:shadow-lg hover:bg-gray-100 transition duration-300">
             <h3 class="text-xl font-bold mb-2">Golf Database</h3>
             <p class="text-sm text-gray-600 mb-4">Newer project, description TBD</p>
-            <a href="golfIndex.php" class="text-blue-600 hover:underline">View Project →</a>
+            <a href="golfIndex.php" class="text-blue-600 hover:underline">View Active Project →</a>
+            <br>
+            <a href="golfDBProject.php" class="text-blue-600 hover:underline">Learn More (coming soon) →</a>
           </div>
         
 
         <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">NHL Database</h3>
               <p class="text-sm text-gray-600 mb-4">More mature project, description TBD</p>
-              <a href="nhlIndex.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="nhlIndex.php" class="text-blue-600 hover:underline">View Active Project →</a>
+              <br>
+              <a href="nhlDBProject.php" class="text-blue-600 hover:underline">Learn More →</a>
         </div>
       </div>
 
@@ -59,56 +63,56 @@
           <div class="bg-white border shadow rounded-lg p-6 text-left">
             <h3 class="text-xl font-bold mb-2">NHL Line Analysis</h3>
             <p class="text-sm text-gray-600 mb-4">This was an analysis and investigation into the usage and dependency of different NHL teams on their various "lines" of forwards.</p>
-            <a href="nhlLinesProject.php" class="text-blue-600 hover:underline">View Project →</a>
+            <a href="nhlLinesProject.php" class="text-blue-600 hover:underline">Learn More →</a>
           </div>
         
 
             <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">NBA Fantasy Projection</h3>
               <p class="text-sm text-gray-600 mb-4">This project compared the efficacy of various machine learning models in predicting fantasy scores for NBA players.</p>
-              <a href="nbaFantasyProjections.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="nbaFantasyProjections.php" class="text-blue-600 hover:underline">Learn More →</a>
             </div>
   
 
             <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">NFL Roster Optimizer</h3>
               <p class="text-sm text-gray-600 mb-4">This was a fun exercise in roster optimization using Madden ratings and Excel's evolutionary solver.</p>
-              <a href="maddenOptimizer.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="maddenOptimizer.php" class="text-blue-600 hover:underline">Learn More →</a>
             </div>
 
 
             <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">Senior Design Project</h3>
               <p class="text-sm text-gray-600 mb-4">Check back for a new project coming soon!</p>
-              <a href="seniorDesignProject.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="seniorDesignProject.php" class="text-blue-600 hover:underline">Learn More →</a>
             </div>
       
 
             <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">Autonomous Robot</h3>
               <p class="text-sm text-gray-600 mb-4">This project used circuits, Arduino, and bit-level C code to build an autonomous robot for a cube-clearing competition.</p>
-              <a href="autonomousRobot.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="autonomousRobot.php" class="text-blue-600 hover:underline">Learn More →</a>
             </div>
         
 
             <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">Thermistor Cleaner</h3>
               <p class="text-sm text-gray-600 mb-4">This partner project involved creating a commercial-ready cleaning device using rapid prototyping techniques.</p>
-              <a href="thermistorCleaner.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="thermistorCleaner.php" class="text-blue-600 hover:underline">Learn More →</a>
             </div>
         
 
             <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">Water Pump</h3>
               <p class="text-sm text-gray-600 mb-4">This group project involved design and manufacturing of a mechanical pump capable of moving 1L of water per minute.</p>
-              <a href="waterPump.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="waterPump.php" class="text-blue-600 hover:underline">Learn More →</a>
             </div>
 
 
             <div class="bg-white border shadow rounded-lg p-6 text-left">
               <h3 class="text-xl font-bold mb-2">Planter Boxes</h3>
               <p class="text-sm text-gray-600 mb-4">This was my Eagle Scout Project for the Menlo Park VA Hospital. I led 10+ scouts for 100+ total man-hours.</p>
-              <a href="planterBoxes.php" class="text-blue-600 hover:underline">View Project →</a>
+              <a href="planterBoxes.php" class="text-blue-600 hover:underline">Learn More →</a>
             </div>
         
           </div>

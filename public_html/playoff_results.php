@@ -11,123 +11,9 @@
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      /* Custom bracket styles - will override your default styles */
-      .playoff-grid-container {
-        display: grid;
-        width: 90%;
-        max-width: 2000px;
-        margin: 0 auto;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: repeat(13, .8fr);
-        grid-template-rows: repeat(8, .6fr);
-        /* gap: 15px; */
-        /* padding: 20px 0; */
-      }
-
-      /* Round headers */
-      .round-header {
-        text-align: center;
-        font-weight: bold;
-        font-size: 1.2rem;
-        padding: 10px 0;
-        margin-bottom: 10px;
-        border-radius: 8px;
-      }
-
-      /* Conference labels */
-      .conference-label {
-        grid-row: 1;
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 10px 0;
-        text-decoration: underline;
-      }
-
-      .west-label { grid-column: 1 / 4; }
-      .east-label { grid-column: 5 / 8; }
-      
-      /* Round header positioning */
-      .r1-west { grid-column: 1; grid-row: 2; }
-      .r2-west { grid-column: 2; grid-row: 2; }
-      .r3-west { grid-column: 3; grid-row: 2; }
-      .final { grid-column: 4; grid-row: 3; }
-      .r3-east { grid-column: 5; grid-row: 2; }
-      .r2-east { grid-column: 6; grid-row: 2; }
-      .r1-east { grid-column: 7; grid-row: 2; }
-
-      /* Series positioning - first round */
-      .seriesA { grid-column: 1; grid-row: 3; }
-      .seriesB { grid-column: 1; grid-row: 5; }
-      .seriesC { grid-column: 1; grid-row: 7; }
-      .seriesD { grid-column: 1; grid-row: 9; }
-      .seriesE { grid-column: 7; grid-row: 3; }
-      .seriesF { grid-column: 7; grid-row: 5; }
-      .seriesG { grid-column: 7; grid-row: 7; }
-      .seriesH { grid-column: 7; grid-row: 9; }
-
-      /* Series positioning - second round */
-      .seriesI { grid-column: 2; grid-row: 4; }
-      .seriesJ { grid-column: 2; grid-row: 8; }
-      .seriesK { grid-column: 6; grid-row: 4; }
-      .seriesL { grid-column: 6; grid-row: 8; }
-
-      /* Series positioning - third round */
-      .seriesM { grid-column: 3; grid-row: 6; }
-      .seriesN { grid-column: 5; grid-row: 6; }
-
-      /* Final positioning */
-      .seriesO { grid-column: 4; grid-row: 4; scale: 1.2; }
-
-      /* Series styling */
-      .series-box {
-        width: 200px;
-        border: 1px solid #475569;
-        border-radius: 8px;
-        padding: 10px;
-        background-color: #1e293b;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: all 0.2s ease;
-      }
-
-      .series-box:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        background-color: #334155;
-      }
-
-      /* Champion display */
-      .champion-container {
-        grid-column: 4;
-        grid-row: 5/7;
-        text-align: center;
-        margin-top: 20px;
-        scale: 1.2;
-      }
-
-      .champion-trophy {
-        width: 130px;
-        height: auto;
-        margin: 0 auto 10px;
-        display: block;
-        margin-top: 10px;
-      }
-
-      /* Responsive adjustments */
-      @media (max-width: 1200px) {
-        .playoff-grid-container {
-          width: 100%;
-          overflow-x: auto;
-        }
-      }
-    </style>
   </head>
 
-  <body class="flex flex-col min-h-screen" style='background-color: #343a40'>
+  <body class="flex flex-col" style='background-color: #343a40'>
     
     <!-- Header -->
     <?php include 'header.php'; ?>
@@ -167,32 +53,38 @@
       ?>
 
       <div class="container mx-auto px-4 py-6">
-        <h1 class="text-3xl font-bold text-center mt-4 mb-6">NHL Playoff Bracket</h1>
+        <h1 class="text-4xl font-bold text-center mt-4 mb-8 text-white drop-shadow-md">NHL Playoff Bracket</h1>
         
         <!-- Season navigation with dropdown -->
-        <div class="flex justify-center mb-6">
-          <div class="w-full max-w-xs">
-            <label for="season-select" class="block text-sm font-medium mb-1">Change Season</label>
-            <select id="season-select" class="bg-gray-700 text-white py-2 px-4 rounded w-full cursor-pointer hover:bg-gray-600 transition-colors">
-              <option value="">Select Season</option>
-              <?php
-              foreach ($seasons as $seasonID): 
-                $seasonYear1 = substr($seasonID, 0, 4);
-                $seasonYear2 = substr($seasonID, 4, 4);
-                $selected = ($seasonID === $currentSeason) ? 'selected' : '';
-              ?>
-                <option value="<?php echo $seasonID; ?>" <?php echo $selected; ?>>
-                  <?php echo $seasonYear1 . "-" . $seasonYear2; ?>
-                </option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-        </div>
+  <div class="season-selector w-full max-w-xs mx-auto">
+    <label for="season-select" class="block text-sm font-medium">Change Season</label>
+    <div class="relative">
+      <select id="season-select" class="rounded cursor-pointer transition-colors w-full appearance-none pr-8">
+        <?php
+        // Generate options for last 25 seasons
+        $current_year = date("Y");
+        for ($i = 0; $i < 108; $i++) {
+          $year = $current_year - $i;
+          $option_season_id = ($year - 1) . $year;
+          $option_display = ($year - 1) . "-" . $year;
+          $selected = ($option_season_id == $season_id) ? 'selected' : '';
+          echo "<option value='$option_season_id' $selected>$option_display</option>";
+        }
+        ?>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="white" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <hr class="border-2 border-slate-600 w-[90%] mb-6 mx-auto text-center">
+        <hr class="border-2 border-slate-600 w-[90%] mb-8 mx-auto opacity-50">
 
-        <!-- Bracket Header and Content -->
-        <div>
+        <!-- Bracket Content -->
+        <div class="bracket-container">
           
           <?php
           // Improved SQL query - remove the GROUP BY to get all series
@@ -246,7 +138,7 @@
               // Start playoff grid container
               echo "<div class='playoff-grid-container'>";
 
-                // Add conference labels
+              // Add conference labels 
               echo "<div class='conference-label west-label'>Western Conference</div>";
               echo "<div class='conference-label east-label'>Eastern Conference</div>";
 
@@ -254,11 +146,12 @@
               echo "<div class='round-header r1-west'>Round 1</div>";
               echo "<div class='round-header r2-west'>Round 2</div>";
               echo "<div class='round-header r3-west'>Conference Final</div>";
-              echo "<div class='round-header final mt-20 text-2xl'>Stanley Cup Final</div>";
               echo "<div class='round-header r3-east'>Conference Final</div>";
               echo "<div class='round-header r2-east'>Round 2</div>";
               echo "<div class='round-header r1-east'>Round 1</div>";
               
+              // Add Stanley Cup Final header
+              echo "<div class='stanley-cup-header'>Stanley Cup Final</div>";
 
               // Process series by round
               
@@ -352,8 +245,6 @@
               if (!empty($cupFinal)) {
                   $match = $cupFinal[0];
                   outputSeriesBox($match, 'seriesO');
-                  // Scale the series box for the final
-                    echo "<style>.seriesO { width: 300px; }</style>";
                   
                   // Display champion if series is complete
                   $bottomWins = (int)$match['bottomSeedWins'];

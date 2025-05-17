@@ -1,4 +1,3 @@
-<!-- TEMPLATE FOR GAME DETAIL PAGES - GETS ID SELECTED ON GAMES PAGE AND USES IT TO QUERY DATABASE FOR ADDITIONAL GAME DETAILS -->
 <?php include('db_connection.php'); ?>
 
 <!doctype html>
@@ -17,10 +16,12 @@
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
+
   </head>
+    <body>
   <!-- Header -->
   <?php include 'header.php'; ?>
-  <body>
+
     <div class="text-white" style='align-items: flex-start; background-color: #343a40'>
       <div style='margin-left: 10px; margin-right: 10px'>
         <?php
@@ -28,7 +29,10 @@
           ini_set('display_errors', 1);
           ini_set('display_startup_errors', 1);
           error_reporting(E_ALL);
-    ########## GET ALL PLAYER DATA TO USE FOR THE PAGE ##########
+
+
+                                                              ########## GET ALL PLAYER DATA TO USE FOR THE PAGE ##########
+
           // Check if the 'game_id' is passed in the URL
           if (isset($_GET['player_id'])) {
               $player_id = $_GET['player_id'];
@@ -111,18 +115,13 @@
                   $draftPickInRound = $row['draftPickInRound'];
                   $draftOverall = $row['draftOverall'];
                 }
-                // if ($row['inHHOF']) {
-                //   $inHHOF = '<b>In HOF:</b> Yes';
-                // } else {
-                //   $inHHOF = '<b>In HOF:</b> No';
-                // }
 
                 $contractSignedDate = $row['Signed Date'];
                 $contractStartSeason = $row['Start Season'];
                 $contractEndSeason = $row['End Season'];
                 $contractLength = $row['Years'];
                 $contractValue = $row['Total Value'];
-                $capHit = $row['Cap Hit'];
+                $capHit = $row['capHit'];
                 $signingBonus = $row['Signing Bonus'];
                 $baseSalary = $row['Base Salary'];
                 $performanceBonus = $row['Performance Bonus'];
@@ -270,139 +269,308 @@
             
             // echo $last5GameSQL;
           echo "<br>";
+        ?>
 
-    ########## DISPLAY ALL RESULTS ##########
 
-        ### Flexbox for player name/number/active/id and headshot/team logo - aligns them side-by-side ###
-          echo "<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;'>";
-            // Left side: Name and status
-            echo "<div>";
-              echo "<h1 class='text-4xl' style='margin-left: 20px; margin-top: 20px'>" . $name . " #" . $sweaterNumber . "</h1>";
-              if ($active == 'Yes') {
-                echo "<p style='color: #4CAF50; margin-left: 20px; margin-top: 20px' class='font-medium text-2xl'>Active - " . $player_id . "</p>";
-              } else {
-                echo "<p style='color: #e63946 ; margin-left: 20px; margin-top: 20px' class='font-medium text-2xl'>Not Active - " . $player_id . "</p>";
-              }
-            echo "</div>";
-            // Right side: Headshot and logo
-            echo "<div style='display: flex; align-items: center; gap: 5px;'>";
-              if ($badgesLogos != 'false' and $badgesLogos != '') {
-                echo "<img src='" . htmlspecialchars($badgesLogos) . "' alt='badge logo' style='height: 110px; margin-right: 15px'>";
-              } else {
-                echo "<p></p>";
-              }
-              if ($headshot != 'false' and $headshot != '' and $headshot != 'N/A') {
-                echo "<img src='" . htmlspecialchars($headshot) . "' alt='headshot' style='height: 120px; margin-right: 15px; border-radius: 8px'>";
-              } else {
-                echo "<p></p>";
-              }
+                                                                       <!-- ########## DISPLAY ALL RESULTS ########## -->
 
-              if ($teamLogo != 'false' and $teamLogo != '' and $teamLogo != 'N/A') {
-                echo "<a href='https://connoryoung.com/team_details.php?team_id=" . htmlspecialchars($teamID) . "'>" 
-                . "<img src='" . htmlspecialchars($teamLogo) . "' alt='team logo' style='height: 120px; margin-right: 15px'>"
-                . "</a>";
-                          } else {
-                echo "<p></p>";
-              }
-            echo "</div>";
-          echo "</div>";
 
+                  <!-- Player Header Section -->
+          <div class="player-header-container">
+            <!-- Left side: Name and status -->
+            <div class="player-header-info">
+              <h1 class="player-name"><?php echo $name; ?> #<?php echo $sweaterNumber; ?></h1>
+              <?php if ($active == 'Yes') { ?>
+                <p class="text-[1.25rem] font-medium text-emerald-500 mt-2 bg-emerald-500/15 px-4 py-1 rounded border border-emerald-500/30">Active - <?php echo $player_id; ?></p>
+              <?php } else { ?>
+                <p class="text-[1.25rem] font-medium text-red-500 mt-2 bg-red-500/15 px-4 py-1 rounded border border-red-500/30">Not Active - <?php echo $player_id; ?></p>
+              <?php } ?>
+            </div>
+            
+            <!-- Right side: Images -->
+            <div class="player-images">
+              <?php if ($badgesLogos != 'false' && $badgesLogos != '') { ?>
+                <img src="<?php echo htmlspecialchars($badgesLogos); ?>" alt="badge logo" style="height: 110px;">
+              <?php } ?>
+              
+              <?php if ($headshot != 'false' && $headshot != '' && $headshot != 'N/A') { ?>
+                <img src="<?php echo htmlspecialchars($headshot); ?>" alt="headshot" style="height: 120px; border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);">
+              <?php } ?>
+              
+              <?php if ($teamLogo != 'false' && $teamLogo != '' && $teamLogo != 'N/A') { ?>
+                <div class='transition-transform duration-300 ease-in-out hover:scale-105'>
+                <a href="https://connoryoung.com/team_details.php?team_id=<?php echo htmlspecialchars($teamID); ?>">
+                  <img src="<?php echo htmlspecialchars($teamLogo); ?>" alt="team logo" style="height: 120px;">
+                </a>
+                </div>
+              <?php } ?>
+            </div>
+          </div>
+                <br>
+          <?php
               // echo "<p>Current Team: " . $teamName . " <img src='" . htmlspecialchars($teamLogo) . "' alt='N/A' style='height: 65px;'></p>";
           
 
         ### Flexbox for hero image and player bio box ###
-          echo "<div class='hero-bio-container gap-20'>";
-            
-              // Left side: Hero image container
-            echo "<div lg:basis-[60%] justify-center>";
-            echo "<img style = 'border: 1px solid #bcd6e7' src='" . htmlspecialchars($heroImage) . "' alt='heroImage' class='hero-bio-image'>";
-            echo "</div>";
+          echo "<div class='hero-bio-container gap-5'>";
+                      
 
-            // Right side: Bio box container
-            echo "<div class='bio-box'>";
-            echo "<h4 class='bio-header'>Player Bio</h4>";
-          
-            echo "<div class='bio-body mr-4'>";
-          
-              echo "<p><b>Height:</b> " . $heightIn . " / " . $heightCm . " cm</p>";
-              echo "<p><b>Weight:</b> " . $weightLb . " lbs / " . $weightKg . " kg</p>";
-              echo "<p><b>Birthdate:</b> " . $birthDate . "</p>";
-          
+              // Bio box container
+              echo "<div class='bio-box'>";
+              echo "<div class='bio-header'>";
+              echo "<span>Player Bio</span>";
+              if ($position == 'G') {
+                  $position = 'Goalie';
+              } else if ($position == 'D') {
+                  $position = 'Defense';
+              } else if ($position == 'C') {
+                $position = 'Center';
+              } else if ($position == 'RW') {
+                  $position = 'Right Wing';
+              } else if ($position == 'LW') {
+                  $position = 'Left Wing';
+              }
+              echo "<span class='player-position'>" . $position . "</span>";
+              echo "</div>";
+
+              // Highlight section
+              echo "<div class='bio-highlights'>";
+
+              // Age calculation
+              $birthDateObj = new DateTime($birthDate);
+              $today = new DateTime();
+              $age = $today->diff($birthDateObj)->y;
+
+              echo "<div class='bio-highlight-item'>";
+              echo "<div class='bio-highlight-label'>Age</div>";
+              echo "<div class='bio-highlight-value'>" . $age . "</div>";
+              echo "</div>";
+
+              echo "<div class='bio-highlight-item'>";
+              echo "<div class='bio-highlight-label'>Height</div>";
+              echo "<div class='bio-highlight-value'>" . $heightIn . "</div>";
+              echo "</div>";
+
+              echo "<div class='bio-highlight-item'>";
+              echo "<div class='bio-highlight-label'>Weight</div>";
+              echo "<div class='bio-highlight-value'>" . $weightLb . " lbs</div>";
+              echo "</div>";
+
+              echo "<div class='bio-highlight-item'>";
+              echo "<div class='bio-highlight-label'>Shoots/Catches</div>";
+              echo "<div class='bio-highlight-value'>" . $shootsCatches . "</div>";
+              echo "</div>";
+
+              echo "</div>"; // close bio-highlights
+
+              echo "<div class='bio-body'>";
+
+              // Personal Info Section
+              echo "<div class='bio-section'>";
+              echo "<h5 class='bio-section-title'>Personal Information</h5>";
+              echo "<p><b>Birthdate:</b> <span>" . $birthDate . "</span></p>";
+
               if ($birthStateProvince == '') {
-                echo "<p><b>Birthplace:</b> " . $birthCity . " (" . $birthCountry . ")</p>";
+                  echo "<p><b>Birthplace:</b> <span>" . $birthCity . " (" . $birthCountry . ")</span></p>";
               } else {
-                echo "<p><b>Birthplace:</b> " . $birthCity . ", " . $birthStateProvince . " (" . $birthCountry . ")</p>";
+                  echo "<p><b>Birthplace:</b> <span>" . $birthCity . ", " . $birthStateProvince . " (" . $birthCountry . ")</span></p>";
               }
-          
-              echo "<p><b>Shoots/catches:</b> " . $shootsCatches . "</p>";
-              echo "<p><b>Position:</b> " . $position . "</p>";
-          
+              echo "</div>";
+
+              // Draft Info Section
+              echo "<div class='bio-section'>";
+              echo "<h5 class='bio-section-title'>Draft Information</h5>";
               if ($draftYear == 'N/A') {
-                echo "<p><b>Draft Info:</b> Undrafted</p>";
+                  echo "<p><b>Status:</b> <span>Undrafted</span></p>";
               } else {
-                echo "<p><b>Draft Info:</b> " . $draftYear . " Rd. " . $draftRound . " Pick " . $draftPickInRound .
-                " (#" . $draftOverall . " Ovr.) (" . $draftTeam . ")</p>";
+                  echo "<p><b>Year:</b> <span>" . $draftYear . "</span></p>";
+                  echo "<p><b>Team:</b> <span>" . $draftTeam . "</span></p>";
+                  echo "<p><b>Round/Pick:</b> <span>Round " . $draftRound . ", Pick " . $draftPickInRound . " (#" . $draftOverall . " Overall)</span></p>";
               }
-          
-              // echo "<p>" . $inHHOF . "</p>";
-          
+              echo "</div>";
+
+              // Awards Section
               if (!empty($awardNames)) {
-                $awardNamesArray = json_decode(str_replace("'", '"', $awardNames), true);
-                $awardSeasonsArray = json_decode(str_replace("'", '"', $awardSeasons), true);
-          
-                if (is_array($awardNamesArray) && is_array($awardSeasonsArray)) {
-                  echo "<div class='awards mt-6'><b>Awards:</b>";
-                    for ($i = 0; $i < count($awardNamesArray); $i++) {
-                        $award = $awardNamesArray[$i];
-                        $seasonsRaw = $awardSeasonsArray[$i];
-          
-                        $formattedSeasons = array_map(function($s) {
-                            return substr($s, 0, 4) . "–" . substr($s, 4);
-                        }, $seasonsRaw);
-          
-                        $seasonString = implode(", ", $formattedSeasons);
-                        echo "<p mt-2>" . $award . " (" . $seasonString . ")</p>";
-                    }
-                  echo "</div>";
-                } else {
-                    echo "<p><b>Awards:</b> None</p>";
-                }
-              } else {
-                  echo "<p><b>Awards:</b> None</p>";
+                  $awardNamesArray = json_decode(str_replace("'", '"', $awardNames), true);
+                  $awardSeasonsArray = json_decode(str_replace("'", '"', $awardSeasons), true);
+
+                  if (is_array($awardNamesArray) && is_array($awardSeasonsArray) && count($awardNamesArray) > 0) {
+                      echo "<div class='bio-section'>";
+                      echo "<h5 class='bio-section-title'>Awards & Achievements</h5>";
+                      echo "<div class='awards'>";
+                      for ($i = 0; $i < count($awardNamesArray); $i++) {
+                          $award = $awardNamesArray[$i];
+                          $seasonsRaw = $awardSeasonsArray[$i];
+
+                          $formattedSeasons = array_map(function($s) {
+                              return substr($s, 0, 4) . "-" . substr($s, 4, 2);
+                          }, $seasonsRaw);
+
+                          $seasonString = implode(", ", $formattedSeasons);
+                          echo "<p><b>•</b> <span>" . $award . " (" . $seasonString . ")</span></p>";
+                      }
+                      echo "</div>";
+                      echo "</div>";
+                  }
               }
-          
-              if ($contractSignedDate != '') {
-                echo "<p><b>Contract Info: </b>Signed " . $contractSignedDate . " for " . $contractLength . 
-                " years @ cap hit of " . $capHit . " - (" . $contractValue . " total)</p>";
 
-                // $contractSignedDate = $row['Signed Date'];
-                // $contractStartSeason = $row['Start Season'];
-                // $contractEndSeason = $row['End Season'];
-                // $contractLength = $row['Years'];
-                // $contractValue = $row['Total Value'];
-                // $capHit = $row['Cap Hit'];
-                // $signingBonus = $row['Signing Bonus'];
-                // $baseSalary = $row['Base Salary'];
-                // $performanceBonus = $row['Performance Bonus'];
-                // $contractTerms = $row['Terms'];
+              echo "</div>"; // close bio-body
+              echo "</div>"; // close bio-box
+
+              // HERO IMAGE
+              echo "<div justify-center>";
+                          echo "<img style = 'border: 1px solid #bcd6e7' src='" . htmlspecialchars($heroImage) . "' alt='heroImage' class='hero-bio-image'>";
+              echo "</div>";
 
 
+// CONTRACT CARD
+if ($contractSignedDate != '') {
+    echo '<div class="contract-card mt-8 max-w-4xl">';
 
+    $century = substr($contractSignedDate,-4,2);
+    $contractStartSeasonStart = substr($contractStartSeason,0,2);
+    $contractStartSeasonEnd = substr($contractStartSeason,3,2);
+    $contractStartSeason = $century . $contractStartSeasonStart . "-" . $century . $contractStartSeasonEnd;
+    $endSeasonEnd = (int)$contractEndSeason;
+    $endSeasonStart = $endSeasonEnd - 1;
+    $contractEndSeason = $endSeasonStart . "-" . $endSeasonEnd;
 
+    function tooltipSpan($label, $description) {
+          return "<span class='relative group cursor-help'>
+            <span>$label</span>
+            <span class='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-gray-800 text-white text-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 whitespace-nowrap'>
+              $description
+            </span>
+          </span>";
+        }
 
-
-              } else {
-                echo "<p>No active contract</p>";
-              }
-            echo "</div>"; // close bio-body
-          echo "</div>"; // close bio-box
-          
-
+    // Contract Card Header
+    echo '<div class="contract-header bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white p-4 rounded-t-lg flex justify-between items-center">';
+    echo '<h3 class="text-xl font-bold">Current Contract</h3>';
+    echo '<span class="text-sm bg-[#343a40] py-1 px-3 rounded-full">' . $contractStartSeason . '  -  ' . $contractEndSeason . '</span>';
+    echo '</div>';
+    
+    // Contract Summary Section
+    echo '<div class="bg-[#202428] p-5 shadow-inner border-b border-gray-700">';
+    echo '<div class="grid grid-cols-3 gap-4 text-center">';
+    
+    // Cap Hit Display
+    echo '<div class="bg-[#2c3237] p-3 rounded-lg shadow-sm hover:bg-[#343a40]">';
+    echo '<div class="text-sm text-gray-400 font-medium">' . tooltipspan("Cap Hit", "Amount of team salary cap used this season") . '</div>';
+    echo '<div class="text-xl font-bold text-white">' . $capHit . '</div>';
+    echo '</div>';
+    
+    // Contract Length Display
+    echo '<div class="bg-[#2c3237] p-3 rounded-lg shadow-sm hover:bg-[#343a40]">';
+    echo '<div class="text-sm text-gray-400 font-medium">Term Length</div>';
+    echo '<div class="text-xl font-bold text-white">' . $contractLength . ' Years</div>';
+    echo '</div>';
+    
+    // Total Value Display
+    echo '<div class="bg-[#2c3237] p-3 rounded-lg shadow-sm hover:bg-[#343a40]">';
+    echo '<div class="text-sm text-gray-400 font-medium">Total Value</div>';
+    echo '<div class="text-xl font-bold text-white">' . $contractValue . '</div>';
+    echo '</div>';
+    
+    echo '</div>'; // Close grid
+    echo '</div>'; // Close summary section
+    
+    // Contract Details Section
+    echo '<div class="bg-[#292e33] p-5 rounded-b-lg shadow-md text-white">';
+    
+    // Two column layout for details
+    echo '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
+    
+    // Left Column - Dates and Signing Info
+    echo '<div>';
+    echo '<h4 class="text-lg font-semibold text-white mb-3 border-b border-gray-700 pb-2">Contract Timeline</h4>';
+    
+    echo '<div class="flex justify-between mb-2">';
+    echo '<span class="text-gray-400">Signed Date:</span>';
+    echo '<span class="font-medium text-gray-200">' . $contractSignedDate . '</span>';
+    echo '</div>';
+    
+    echo '<div class="flex justify-between mb-2">';
+    echo '<span class="text-gray-400">Start Season:</span>';
+    echo '<span class="font-medium text-gray-200">' . $contractStartSeason . '</span>';
+    echo '</div>';
+    
+    echo '<div class="flex justify-between mb-2">';
+    echo '<span class="text-gray-400">End Season:</span>';
+    echo '<span class="font-medium text-gray-200">' . $contractEndSeason . '</span>';
+    echo '</div>';
+    
+    echo '</div>'; // Close left column
+    
+    // Right Column - Financial Breakdown
+    echo '<div>';
+    echo '<h4 class="text-lg font-semibold text-white mb-3 border-b border-gray-700 pb-2">Financial Breakdown</h4>';
+    
+    echo '<div class="flex justify-between mb-2">';
+    echo '<span class="text-gray-400">Base Salary:</span>';
+    echo '<span class="font-medium text-gray-200">' . $baseSalary . '</span>';
+    echo '</div>';
+    
+    if ($signingBonus != '' && $signingBonus != '0') {
+        echo '<div class="flex justify-between mb-2">';
+        echo '<span class="text-gray-400">Signing Bonus:</span>';
+        echo '<span class="font-medium text-gray-200">' . $signingBonus . '</span>';
+        echo '</div>';
+    } else {
+        echo '<div class="flex justify-between mb-2">';
+        echo '<span class="text-gray-400">Signing Bonus:</span>';
+        echo '<span class="font-medium text-gray-200">N/A</span>';
+        echo '</div>';
+    }
+    
+    if ($performanceBonus != '' && $performanceBonus != '0') {
+        echo '<div class="flex justify-between mb-2">';
+        echo '<span class="text-gray-400">Performance Bonus:</span>';
+        echo '<span class="font-medium text-gray-200">' . $performanceBonus . '</span>';
+        echo '</div>';
+    } else {
+        echo '<div class="flex justify-between mb-2">';
+        echo '<span class="text-gray-400">Performance Bonus:</span>';
+        echo '<span class="font-medium text-gray-200">N/A</span>';
+        echo '</div>';
+    }
+    
+    echo '</div>'; // Close right column
+    
+    echo '</div>'; // Close grid
+    
+    // Contract Terms (if available)
+    if ($contractTerms != '') {
+        echo '<div class="mt-5 pt-4 border-t border-gray-700">';
+        echo '<h4 class="text-lg font-semibold text-white mb-2">Contract Terms</h4>';
+        echo '<p class="text-gray-300">' . $contractTerms . '</p>';
+        echo '</div>';
+    } else {
+        echo '<div class="mt-5 pt-4 border-t border-gray-700">';
+        echo '<h4 class="text-lg font-semibold text-white mb-2">Contract Terms</h4>';
+        echo '<p class="text-gray-300">No special terms or conditions.</p>';
+        echo '</div>';
+    }
+    
+    echo '</div>'; // Close details section
+    
+    echo '</div>'; // Close contract card
+} else {
+    // No contract information available
+    echo '<div class="bg-[#292e33] rounded-lg p-6 text-center mt-8 mx-auto max-w-4xl">';
+    echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+    echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />';
+    echo '</svg>';
+    echo '<h3 class="text-xl font-semibold text-gray-200">No Active Contract</h3>';
+    echo '<p class="text-gray-400 mt-2">This player does not currently have an active contract on record.</p>';
+    echo '</div>';
+}
 
           echo "</div><br><br>";
 
       ########################################################################## Stat Tables ##################################################################
 
+      echo "<div class='stats-container'>";
         // Start OUTER WRAPPER
         echo "<div class='flex flex-col lg:flex-row gap-10'>";
 
@@ -410,7 +578,7 @@
         echo "<div class='flex flex-col lg:basis-[45%]'>";
 
         ### Last 5 Games ###  
-        echo "<h3 class='text-center text-2xl text-white'>Last 5 Games Statistics</h3>";
+        echo "<h3 class='stats-title'>Last 5 Games Statistics</h3>";
           # Goalies
         if (strtolower($position) == 'g') {
           if (mysqli_num_rows($last5GameInfo) == 0) {
@@ -519,27 +687,6 @@
             }
 
 
-            // if (strtolower($position) == 'g') {
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_shotsAgainst)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_goalsAgainst)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_saves, 2)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_savePctg, 3)) . "</td>";
-            //   if ($last5_games_starter == 1) {
-            //     echo "<td class='border border-slate-600 px-2 py-1'>Yes</td>";
-            //   } else {
-            //     echo "<td class='border border-slate-600 px-2 py-1'>No</td>";
-            //   }
-            // } else {
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_goals)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_assists)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_points)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_plusMinus)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_pim)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_hits)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_ppg)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_sog)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_faceoffWinningPctg)) . "</td>";
-            //   echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_toi)) . "</td>";
             echo "</tr>";
             }
           }
@@ -653,12 +800,12 @@
           ### Featured Season Stats ###
           $formatted_featuredSeason_1 = substr($featuredSeason, 0, 4);
           $formatted_featuredSeason_2 = substr($featuredSeason, 4);
-        echo "<h3 class='text-center text-2xl text-white'>Featured Season Statistics (" .
+        echo "<h3 class='stats-title'>Featured Season Statistics (" .
          $formatted_featuredSeason_1 . "-" . $formatted_featuredSeason_2 . ")</h3>";
         
         if (strtolower($position) == 'g') {
             // GOALIE STATS BLOCK
-            echo "<table class='goalie-stats-table default-zebra-table'>";
+            echo "<table class='goalie-stats-table default-zebra-table text-center'>";
             echo "<colgroup>";
             echo "<col class='goalie-player-details-gp>";
             echo "<col class='goalie-player-details-w'>";
@@ -708,7 +855,7 @@
 
             } else {
               // SKATER STATS BLOCK
-              echo "<table class='player-stats-table default-zebra-table'>";
+              echo "<table class='player-stats-table default-zebra-table text-center'>";
                 echo "<thead>";
                 echo "<tr>";
                 echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GP</th>";
@@ -751,10 +898,10 @@
              }
 
         ### Career Regular Season Stats ###
-            echo "<h3 class='text-center text-2xl text-white'>Career Regular Season Statistics</h3>";
+            echo "<h3 class='stats-title'>Career Regular Season Statistics</h3>";
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
-              echo "<table class='goalie-stats-table default-zebra-table'>";
+              echo "<table class='goalie-stats-table default-zebra-table text-center'>";
                 echo "<thead>";
                 echo "<tr>";
                   echo "<th class='border border-slate-600 px-2 py-1'>GP</td>";
@@ -788,7 +935,7 @@
               echo "</table><br><br>";
             } else {
               // SKATER STATS BLOCK
-              echo "<table class='player-stats-table default-zebra-table'>";
+              echo "<table class='player-stats-table default-zebra-table text-center'>";
                 echo "<thead>";
                 echo "<tr>";
                 echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GP</th>";
@@ -829,10 +976,10 @@
               echo "</table><br><br>";
             }
         ### Career Playoff Stats ###
-            echo "<h3 class='text-center text-2xl text-white'>Career Playoff Statistics</h3>";
+            echo "<h3 class='stats-title'>Career Playoff Statistics</h3>";
             if (strtolower($position) == 'g') {
               // GOALIE STATS BLOCK
-              echo "<table class='goalie-stats-table default-zebra-table'>";
+              echo "<table class='goalie-stats-table default-zebra-table text-center'>";
               echo "<thead>";
                 echo "<tr>";
                   echo "<th class='border border-slate-600 px-2 py-1'>GP</td>";
@@ -866,7 +1013,7 @@
               echo "</table><br><br>";
             } else {
               // SKATER STATS BLOCK
-              echo "<table class='player-stats-table default-zebra-table'>";
+              echo "<table class='player-stats-table default-zebra-table text-center'>";
                 echo "<thead>";
                 echo "<tr>";
                   echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GP</th>";
@@ -924,8 +1071,8 @@
                              ORDER BY seasonSeason ASC";
           $seasonStats = mysqli_query($conn, $seasonStatsSQL);
 
-          echo "<h3 class='text-center text-2xl'>Season-by-Season Statistics</h3>";
-          echo "<table class='player-season-by-season-stats-table default-zebra-table w-full'>";
+          echo "<h3 class='stats-title'>Season-by-Season Statistics</h3>";
+          echo "<table class='player-season-by-season-stats-table default-zebra-table w-full text-center'>";
           echo "<colgroup>";
             echo "<col class='season-by-season-season'>";
             echo "<col class='season-by-season-league'>";
@@ -978,8 +1125,8 @@
               echo "<tr>";
               $formatted_season_1 = substr($row['seasonSeason'], 0, 4);
               $formatted_season_2 = substr($row['seasonSeason'], 4);
-              echo "<td class='border border-slate-600 px-2 py-1'>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($row['seasonLeagueAbbrev']) . "</td>";
+              echo "<td class='border border-slate-600 px-2 py-1 text-center'>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
+              echo "<td class='border border-slate-600 px-2 py-1 text-center'>" . htmlspecialchars($row['seasonLeagueAbbrev']) . "</td>";
               echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($row['seasonTeamName']) . "</td>";
               $gameType_num = $row['seasonGameTypeId'];
                   if ($gameType_num == 1) {
@@ -1029,7 +1176,7 @@
             $avgGAA = $count > 0 ? $totalGAA / $count : 0;
             $avgSavePct = $count > 0 ? $totalSavePct / $count : 0;
         
-            echo "<tr>";
+            echo "<tr class='border-2 border-top border-slate-600'>";
               echo "<td colspan='4' rowspan='2' class='career-header border-2 border-slate-600 px-2 py-1'>Career Totals</td>";
               echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>GP</td>";
               echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>W</td>";
@@ -1070,10 +1217,11 @@
 
           echo "</div>"; // END RIGHT COLUMN
           echo "</div>"; // END OUTER WRAPPER
+          echo "</div>"; // END PLAYER STATS DIV
 
 
         ?>
-        <br><br><br><br><br>
+        <br><br>
 
       </div>
 
@@ -1082,13 +1230,5 @@
     
     <?php include 'footer.php'; ?>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/vendor/holder.min.js"></script>
   </body>
 </html>

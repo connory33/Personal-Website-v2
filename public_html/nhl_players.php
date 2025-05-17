@@ -2,214 +2,592 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
-
-    <title>Connor Young</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHL Players Database</title>
     <link href="/resources/css/default_v3.css" rel="stylesheet" type="text/css" />
-
     <script src="https://cdn.tailwindcss.com"></script>
-
-</head>
-<body>
-
-  <?php include 'header.php'; ?>
-
-
-        <?php
-        include('db_connection.php');
-
-        ini_set('display_errors', 1); error_reporting(E_ALL);
-
-
-        if (!empty($_GET['search_column']) && !empty($_GET['search_term'])) {
-            // $searchTerm = $_POST['search_term'];
-            $searchColumn = mysqli_real_escape_string($conn, $_GET['search_column']);
-            $searchTerm = mysqli_real_escape_string($conn, $_GET['search_term']);
-            $originalSearchTerm = $searchTerm;
-
-            $sql = "SELECT nhl_players.*, nhl_teams.triCode as currentTeamAbbrev
-                FROM
-                    nhl_players
-                LEFT JOIN nhl_teams on nhl_players.currentTeamID = nhl_teams.id
-                WHERE 
-                    firstName LIKE '%$searchTerm%' 
-                    OR lastName LIKE '%$searchTerm%'";
-
-            // Pagination setup
-            $limit = 25; // Results per page
-            $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-            $offset = ($page - 1) * $limit;
-
-            // Get total count (for Load More logic)
-            $count_sql = "SELECT COUNT(*) as total FROM (" . preg_replace("/SELECT.+?FROM/", "SELECT 1 FROM", $sql, 1) . ") as count_table";
-            $count_result = mysqli_query($conn, $count_sql);
-            $total_rows = mysqli_fetch_assoc($count_result)['total'];
-
-            $start = $offset + 1;
-            $end = min($offset + $limit, $total_rows);
-            $total_pages = ceil($total_rows / $limit);
-
-            $sql .= " LIMIT $limit OFFSET $offset";
-
-            // Execute the query, check if successful and if results were found
-            $result = mysqli_query($conn, $sql);
-
-            if (!$result) {
-                die("Query failed: " . mysqli_error($conn));
-            }
-                        
-            if (mysqli_num_rows($result) == 0) {
-                print("No results found.<br><br>");
-            }
-
-            ?>
-
-      <div id="nhl-games-players-summary-content-container" style='background-color: #343a40'>
-            <br>
-            <p class="text-lg text-center">Search again:</p>
-
-            <div class="flex justify-center">
-              <form id="nhl-search" method="GET" action="nhl_games.php" class="backdrop-blur-sm px-4 sm:px-6 py-4 rounded-lg flex flex-col sm:flex-row gap-4
-                items-stretch sm:items-center w-full max-w-4xl">
-                      <select name="search_column" id="nhl-search-column" class='w-full sm:w-auto flex-1 bg-white text-black text-sm rounded-md border border-gray-300
-                      px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'>
-                          <option value="season">Season</option>
-                          <option value="gameDate">Game Date</option>
-                          <option value="easternStartTime">Start Time</option>
-                          <option value="gameType">Game Type</option>
-                          <option value="team">Team</option>
-                          <option value="homeTeamId">Home Team</option>
-                          <option value="awayTeamId">Away Team</option>
-                          <option value="player">Player Name</option>
-                      </select>
-                      <input  type="text" name="search_term" id="search-term" placeholder="Enter search term" required class="w-full sm:flex-2 text-black px-3 py-2
-                      rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      <input type="submit" value="Search"
-                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition-colors duration-200 cursor-pointer">
-              </form>
-            </div>
-
-            <br><hr class='border border-white mx-auto w-4/5'><br>
-
-            <h4 class='text-4xl text-center text-white'>Player Results</h4>
-            <br>
-            <?php echo "<h5 class='text-center>" . $total_rows . " results found where " . $searchColumn . " = '" . $originalSearchTerm . "'</h5>"; ?>
-            <p>Click any player ID or name to view additional details.</p>
-            <br>
-            <!-- Display results in a table format -->
-            <div class="table-container default-zebra-table max-w-[80%] mx-auto">
-                <table id='games-players-summary-table' class='default-zebra-table mx-auto'>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Height</th>
-                            <th>Weight</th>
-                            <th>Birthdate</th>
-                            <th>Country</th>
-                            <th>Shoots / Catches </th>
-                            <th>Number</th>
-                            <th>Team</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php
-                        while ($row = $result->fetch_assoc()){
-                            echo "<tr>";
-                                echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>" . $row['playerId'] . "</td>";
-                                echo "<td><a href='player_details.php?player_id=" . $row['playerId'] . "'" . "</a>" . $row['firstName'] . ' ' . $row['lastName'] . "</td>";
-                                echo "<td>" . $row['heightInInches'] . " in/" . $row['heightInCentimeters'] . " cm</td>";
-                                echo "<td>" . $row['weightInPounds'] . " lbs/" . $row['weightInKilograms'] . " kg</td>";
-                                echo "<td>" . date('m/d/Y', strtotime($row['birthDate'])) . "</td>";
-                                echo "<td>" . $row['birthCountry'] . "</td>";
-                                echo "<td>" . $row['shootsCatches'] . "</td>";
-                                
-                                if ($row['sweaterNumber'] == '') {
-                                    echo "<td>-</td>";
-                                } else {
-                                    echo "<td>" . $row['sweaterNumber'] . "</td>";
-                                }
-                                if ($row['currentTeamAbbrev'] == '') {
-                                    echo "<td>-</td>";
-                                } else {
-                                    echo "<td>" . $row['currentTeamAbbrev'] . "</td>";
-                                }
-                        echo "</tr>";
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nhl: {
+                            dark: '#131A24',
+                            darkblue: '#1C2333',
+                            medium: '#263044',
+                            accent: '#00E6FF',
+                            accent2: '#45CC8F',
+                            text: '#FFFFFF',
+                            muted: '#8A97B1'
                         }
-                    echo "</tbody>";
-                echo "</table>";
-            echo "</div>";
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'inner-highlight': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #131A24;
+            color: #FFFFFF;
+        }
+        
+        .bg-gradient-nhl {
+            background: linear-gradient(180deg, #1C2333 0%, #131A24 100%);
+        }
+        
+        .filter-input:focus {
+            border-color: #00E6FF;
+            box-shadow: 0 0 0 3px rgba(0, 230, 255, 0.3);
+            outline: none;
+        }
+        
+        .pagination-button {
+            transition: all 0.2s ease;
+        }
+        
+        .pagination-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .table-container {
+            scrollbar-width: thin;
+            scrollbar-color: #45CC8F #263044;
+        }
+        
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #1C2333;
+            border-radius: 10px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #45CC8F;
+            border-radius: 10px;
+        }
+        
+        .players-table th {
+            position: sticky;
+            top: 0;
+            background-color: #1C2333;
+            z-index: 10;
+        }
+        
+        .players-table tr:hover td {
+            background-color: rgba(0, 230, 255, 0.05);
+        }
+        
+        /* Animation for page loading */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        
+        /* Table borders */
+        .border-cell {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .filters-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Fix for alternating row colors */
+        .players-table tr:nth-child(odd) {
+            background-color: #1C2333 !important;
+        }
+        
+        .players-table tr:nth-child(even) {
+            background-color: rgba(38, 48, 68, 0.3) !important;
+        }
+    </style>
+</head>
 
-            $total_pages = ceil($total_rows / $limit);
+<?php include 'header.php'; ?>
 
-                ?>
+<body class="bg-nhl-dark">
 
+<?php
+include('db_connection.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Initialize the WHERE clause
+$where_conditions = array();
+
+// Get filter parameters - these will be used by both the form and the query
+$filter_name = isset($_GET['filter_name']) ? mysqli_real_escape_string($conn, $_GET['filter_name']) : '';
+$filter_team = isset($_GET['filter_team']) ? mysqli_real_escape_string($conn, $_GET['filter_team']) : '';
+$filter_hand = isset($_GET['filter_hand']) ? mysqli_real_escape_string($conn, $_GET['filter_hand']) : '';
+$filter_country = isset($_GET['filter_country']) ? mysqli_real_escape_string($conn, $_GET['filter_country']) : '';
+$filter_status = isset($_GET['filter_status']) ? $_GET['filter_status'] : '';
+$filter_number = isset($_GET['filter_number']) ? mysqli_real_escape_string($conn, $_GET['filter_number']) : '';
+$filter_weight_min = isset($_GET['filter_weight_min']) ? (int)$_GET['filter_weight_min'] : '';
+$filter_weight_max = isset($_GET['filter_weight_max']) ? (int)$_GET['filter_weight_max'] : '';
+$search_term = isset($_GET['search_term']) ? mysqli_real_escape_string($conn, $_GET['search_term']) : '';
+
+// Base SQL query for counting and retrieving data
+$base_sql = "SELECT nhl_players.*, nhl_teams.triCode as currentTeamAbbrev, nhl_teams.teamLogo as teamLogo
+            FROM nhl_players
+            LEFT JOIN nhl_teams on nhl_players.currentTeamID = nhl_teams.id";
+
+// Apply search term if provided
+if (!empty($search_term)) {
+    $where_conditions[] = "(firstName LIKE '%$search_term%' 
+                    OR lastName LIKE '%$search_term%'
+                    OR CONCAT(firstName, ' ', lastName) LIKE '%$search_term%')";
+}
+
+// Apply filters
+if (!empty($filter_name)) {
+    $where_conditions[] = "(firstName LIKE '%$filter_name%' 
+                    OR lastName LIKE '%$filter_name%'
+                    OR CONCAT(firstName, ' ', lastName) LIKE '%$filter_name%')";
+}
+
+if (!empty($filter_team)) {
+    $where_conditions[] = "(nhl_teams.triCode LIKE '%$filter_team%')";
+}
+
+if (!empty($filter_hand)) {
+    $where_conditions[] = "(shootsCatches LIKE '%$filter_hand%')";
+}
+
+if (!empty($filter_country)) {
+    $where_conditions[] = "(birthCountry LIKE '%$filter_country%')";
+}
+
+if ($filter_status === 'active') {
+    $check_query = "SELECT DISTINCT isActive FROM nhl_players WHERE isActive IS NOT NULL AND isActive != '' LIMIT 5";
+    $check_result = mysqli_query($conn, $check_query);
+    if (!$check_result) {
+        // debug_sql("Error checking isActive values: " . mysqli_error($conn));
+    } else {
+        $active_values = [];
+        while ($check_row = mysqli_fetch_assoc($check_result)) {
+            $active_values[] = $check_row['isActive'];
+        }
+        // debug_sql("isActive distinct values: " . implode(", ", $active_values));
+        
+        // First try with default
+        $where_conditions[] = "isActive = 'True'";
+    }
+} elseif ($filter_status === 'inactive') {
+    $where_conditions[] = "isActive = 'False'";
+}
+
+if (!empty($filter_number)) {
+    $where_conditions[] = "sweaterNumber = '$filter_number'";
+}
+
+if (!empty($filter_weight_min)) {
+    $where_conditions[] = "weightInPounds >= $filter_weight_min";
+}
+
+if (!empty($filter_weight_max)) {
+    $where_conditions[] = "weightInPounds <= $filter_weight_max";
+}
+
+// Combine all WHERE conditions
+if (!empty($where_conditions)) {
+    $base_sql .= " WHERE " . implode(" AND ", $where_conditions);
+}
+
+// Order the results
+$base_sql .= " ORDER BY nhl_players.playerID DESC";
+
+// Count total rows for pagination
+$count_sql = "SELECT COUNT(*) as total FROM (" . $base_sql . ") as count_table";
+$count_result = mysqli_query($conn, $count_sql);
+$total_rows = mysqli_fetch_assoc($count_result)['total'];
+
+// Pagination setup
+$limit = 25; // Results per page
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$offset = ($page - 1) * $limit;
+$total_pages = ceil($total_rows / $limit);
+
+// Get paginated results
+$sql = $base_sql . " LIMIT $limit OFFSET $offset";
+$result = mysqli_query($conn, $sql);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+
+// Calculate pagination range
+$start = $offset + 1;
+$end = min($offset + $limit, $total_rows);
+?>
+
+<!-- Main content -->
+<div class="bg-gradient-nhl py-8 px-4 animate-fade-in">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
+                NHL Players Database
+            </h1>
+            <p class="text-nhl-muted text-lg">
+                Search and browse current and former NHL players
+            </p>
+        </div>
+        
+        <!-- Search Form Section (like Season Selector in draft) -->
+        <div class="max-w-xs mx-auto mb-8">
+            <!-- <label for="search-term" class="block text-sm font-medium text-nhl-muted mb-2">Player Search</label> -->
+            <form id="nhl-search" method="GET" action="nhl_players.php" class="relative">
+                <input type="hidden" name="search_column" value="player">
+                <input 
+                    id="search-term" 
+                    name="search_term" 
+                    type="text" 
+                    placeholder="Enter player name" 
+                    value="<?= htmlspecialchars($search_term) ?>"
+                    class="block w-full rounded-lg border-0 py-3 pl-4 pr-10 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent text-lg font-medium"
+                >
+                <button type="submit" class="absolute inset-y-0 right-0 flex items-center px-3 text-nhl-accent">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                
+                <!-- Keep any existing filter parameters when searching -->
+                <?php if (!empty($filter_name)): ?>
+                    <input type="hidden" name="filter_name" value="<?= htmlspecialchars($filter_name) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_team)): ?>
+                    <input type="hidden" name="filter_team" value="<?= htmlspecialchars($filter_team) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_hand)): ?>
+                    <input type="hidden" name="filter_hand" value="<?= htmlspecialchars($filter_hand) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_country)): ?>
+                    <input type="hidden" name="filter_country" value="<?= htmlspecialchars($filter_country) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_status)): ?>
+                    <input type="hidden" name="filter_status" value="<?= htmlspecialchars($filter_status) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_number)): ?>
+                    <input type="hidden" name="filter_number" value="<?= htmlspecialchars($filter_number) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_weight_min)): ?>
+                    <input type="hidden" name="filter_weight_min" value="<?= htmlspecialchars($filter_weight_min) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_weight_max)): ?>
+                    <input type="hidden" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>">
+                <?php endif; ?>
+            </form>
+            <a href="nhl_games.php" class="text-sm mb-4 text-center text-nhl-accent hover:text-nhl-accent/80">Search games instead</a>
+        </div>
+
+
+
+        <!-- Filters Section (matching draft page) -->
+        <div class="mb-8 bg-nhl-darkblue rounded-xl p-6 shadow-lg shadow-inner-highlight border border-nhl-medium/50">
+            <h2 class="text-xl font-semibold text-white mb-4">Filter Players</h2>
+            
+            <form id="filter-form" method="GET" action="nhl_players.php">
+                <!-- Keep search term if it exists -->
+                <?php if (!empty($search_term)): ?>
+                    <input type="hidden" name="search_term" value="<?= htmlspecialchars($search_term) ?>">
+                <?php endif; ?>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 filters-container">
+                    <div>
+                        <label for="filter_name" class="block text-sm font-medium text-nhl-muted mb-1">Player Name</label>
+                        <input type="text" id="filter_name" name="filter_name" value="<?= htmlspecialchars($filter_name) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. Connor">
+                    </div>
+                    <div>
+                        <label for="filter_team" class="block text-sm font-medium text-nhl-muted mb-1">Team</label>
+                        <input type="text" id="filter_team" name="filter_team" value="<?= htmlspecialchars($filter_team) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. NYR">
+                    </div>
+                    <div>
+                        <label for="filter_hand" class="block text-sm font-medium text-nhl-muted mb-1">Shoots/Catches</label>
+                        <input type="text" id="filter_hand" name="filter_hand" value="<?= htmlspecialchars($filter_hand) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. L">
+                    </div>
+                    <div>
+                        <label for="filter_country" class="block text-sm font-medium text-nhl-muted mb-1">Country</label>
+                        <input type="text" id="filter_country" name="filter_country" value="<?= htmlspecialchars($filter_country) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. CAN">
+                    </div>
+                    <div>
+                        <label for="filter_status" class="block text-sm font-medium text-nhl-muted mb-1">Status</label>
+                        <select id="filter_status" name="filter_status" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200">
+                            <option value="" <?= $filter_status === '' ? 'selected' : '' ?>>All Players</option>
+                            <option value="active" <?= $filter_status === 'active' ? 'selected' : '' ?>>Active</option>
+                            <option value="inactive" <?= $filter_status === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filter_number" class="block text-sm font-medium text-nhl-muted mb-1">Jersey Number</label>
+                        <input type="text" id="filter_number" name="filter_number" value="<?= htmlspecialchars($filter_number) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 99">
+                    </div>
+                    <div>
+                        <label for="filter_weight" class="block text-sm font-medium text-nhl-muted mb-1">Weight (lbs)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="filter_weight_min" name="filter_weight_min" value="<?= htmlspecialchars($filter_weight_min) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="Min">
+                            <input type="text" id="filter_weight_max" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <button type="submit" id="applyFilters" class="w-full rounded-lg bg-nhl-accent text-nhl-dark py-2 px-4 font-medium transition-all duration-200 border border-nhl-accent hover:bg-nhl-accent/90">
+                            Apply Filters
+                        </button>
+                        <a href="nhl_players.php" class="w-full text-center rounded-lg bg-nhl-medium hover:bg-nhl-accent/20 py-2 px-4 text-white font-medium transition-all duration-200 border border-nhl-accent/30">
+                            Clear All
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Information -->
+        <div class="text-white text-sm mb-3 flex justify-between items-center">
+            <span id="resultsInfo">
                 <?php if ($total_rows > 0): ?>
-                    <br><div class='mt-4'>
-                        Showing results <?= $start ?>–<?= $end ?> of <?= $total_rows ?> (Page <?= $page ?> of <?= $total_pages ?>)
+                    Showing players <?= $start ?> to <?= $end ?> of <?= $total_rows ?>
+                <?php else: ?>
+                    No players match your search criteria
+                <?php endif; ?>
+            </span>
+            <span id="pageInfo">
+                <?php if ($total_pages > 0): ?>
+                    Page <?= $page ?> of <?= $total_pages ?>
+                <?php endif; ?>
+            </span>
+        </div>
+
+        <!-- Players Table -->
+        <div class="bg-nhl-darkblue rounded-xl shadow-lg p-1 mb-6 table-container overflow-x-auto border border-nhl-medium/50">
+            <table id="playersTable" class="players-table w-full text-left">
+                <thead>
+                    <tr class="text-nhl-accent text-sm uppercase border-b border-nhl-medium/50">
+                        <th class="px-3 py-3 rounded-tl-lg">ID</th>
+                        <th class="px-3 py-3">Name</th>
+                        <th class="px-3 py-3">Height</th>
+                        <th class="px-3 py-3">Weight</th>
+                        <th class="px-3 py-3">Birthdate</th>
+                        <th class="px-3 py-3">Country</th>
+                        <th class="px-3 py-3">Shoots/Catches</th>
+                        <th class="px-3 py-3">Active</th>
+                        <th class="px-3 py-3">Number</th>
+                        <th class="px-3 py-3 rounded-tr-lg">Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($total_rows === 0): ?>
+                        <tr class="bg-nhl-darkblue">
+                            <td colspan="10" class="px-6 py-8 text-center text-nhl-muted italic">No players match your filter criteria.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php 
+                        $row_index = 0;
+                        while ($row = mysqli_fetch_assoc($result)): 
+                            $row_class = $row_index % 2 === 0 ? "bg-nhl-darkblue" : "bg-nhl-medium/30";
+                            $row_index++;
+                        ?>
+                            <tr class="<?= $row_class ?> border-b border-nhl-medium/20 <?= $row['isActive'] ? 'border-l-4 border-nhl-accent2' : '' ?>">
+                                <td class="px-3 py-2.5 font-semibold">
+                                    <a href="player_details.php?player_id=<?= $row['playerId'] ?>" class="hover:text-nhl-accent transition-colors">
+                                        <?= $row['playerId'] ?>
+                                    </a>
+                                </td>
+                                <td class="px-3 py-2.5 font-medium">
+                                    <a href="player_details.php?player_id=<?= $row['playerId'] ?>" class="hover:text-nhl-accent transition-colors">
+                                        <?= $row['firstName'] . ' ' . $row['lastName'] ?>
+                                    </a>
+                                </td>
+                                <td class="px-3 py-2.5"><?= $row['heightInInches'] ?? '-' ?> in / <?= $row['heightInCentimeters'] ?? '-' ?> cm</td>
+                                <td class="px-3 py-2.5"><?= $row['weightInPounds'] ?? '-' ?> lbs / <?= $row['weightInKilograms'] ?? '-' ?> kg</td>
+                                <td class="px-3 py-2.5"><?= $row['birthDate'] ? date('m/d/Y', strtotime($row['birthDate'])) : '-' ?></td>
+                                <td class="px-3 py-2.5"><?= $row['birthCountry'] ?? '-' ?></td>
+                                <td class="px-3 py-2.5"><?= $row['shootsCatches'] ?? '-' ?></td>
+                                <td class="px-3 py-2.5">
+                                    <?= $row['isActive'] == 'True' ? 
+                                        '<span class="inline-block px-2 py-0.5 bg-nhl-accent2/20 text-nhl-accent2 rounded text-xs font-medium">Yes</span>' : 
+                                        '<span class="inline-block px-2 py-0.5 bg-nhl-muted/20 text-nhl-muted rounded text-xs font-medium">No</span>' 
+                                    ?>
+                                </td>
+                                <td class="px-3 py-2.5"><?= $row['sweaterNumber'] ?: '-' ?></td>
+                                <td class="px-3 py-2.5">
+                                    <?php if (!empty($row['teamLogo'])): ?>
+                                        <a href="team_details.php?team_id=<?= $row['currentTeamID'] ?? '' ?>" class="block w-8 h-8 mx-auto transition-transform hover:scale-110">
+                                            <img src="<?= htmlspecialchars($row['teamLogo']) ?>" alt="<?= htmlspecialchars($row['currentTeamAbbrev'] ?? '') ?>" class="w-full h-full object-contain">
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-nhl-muted">-</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Server-side Pagination Controls -->
+        <?php if ($total_pages > 1): ?>
+            <div class="flex flex-wrap justify-center gap-2 mt-6 pb-8">
+                <!-- First page button -->
+                <?php if ($page > 1): ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M9.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                <?php else: ?>
+                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M9.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
                     </div>
                 <?php endif; ?>
 
+                <!-- Previous page button -->
+                <?php if ($page > 1): ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page - 1])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                <?php else: ?>
+                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Page numbers -->
                 <?php
-
-                if ($page==1) {
-                    $next_page = $page + 1;
-                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
-                    echo "<div><a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
-                        </div>";
-                } else if ($page>1 and $page<$total_pages) {
-                    $prev_page = $page - 1;
-                    $next_page = $page + 1;
-                    $prev_page = http_build_query(array_merge($_GET, ['page' => $prev_page]));
-                    $advance_page = http_build_query(array_merge($_GET, ['page' => $next_page]));
-                    echo "<div class='text-center mt-6'>
-                        <a class='btn btn-secondary' href='?" . $prev_page . "' class='mr-4'>Previous</a>";
-                    echo "<a class='btn btn-secondary' href='?" . $advance_page . "'>Next</a>
-                        </div>";
-                } else {
-                    $prev_page = $page - 1;
-                    echo "<div class='text-center mt-6'>
-                        <a class='btn btn-secondary' href='?" . $prev_page . "'>Previous</a></div>";
-                }      
-
-            $conn->close();
-        }
-        ?>
-      <br>
-      <br>
-      </div>
-
-      <?php include 'footer.php'; ?>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/vendor/holder.min.js"></script>
-    <!-- Placed at the end of the document so the pages load faster -->
-
-          <!-- JS for search form, allowing player to access nhl_players.php and others to nhl_games.php -->
-          <script>
-            document.getElementById('nhl-search').addEventListener('submit', function (e) {
-                const column = document.getElementById('nhl-search-column').value;
-                console.log("Search column selected:", column); // Debugging
-                if (column === 'player') {
-                    this.action = 'nhl_players.php';
-                    console.log("Form action set to nhl_players.php"); // Debugging
-                } else {
-                    this.action = 'nhl_games.php';
-                    console.log("Form action set to nhl_games.php"); // Debugging
+                $start_page = max(1, $page - 2);
+                $end_page = min($total_pages, $start_page + 4);
+                
+                if ($end_page - $start_page < 4) {
+                    $start_page = max(1, $end_page - 4);
                 }
-            });
-    </script>
+                
+                // Show ellipsis before page numbers if needed
+                if ($start_page > 1): 
+                ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" 
+                    class="pagination-button flex items-center justify-center w-10 h-10 rounded <?= 1 === $page ? 'bg-nhl-accent text-nhl-darkblue font-bold' : 'bg-nhl-medium text-white shadow hover:bg-nhl-accent/20' ?>">
+                        1
+                    </a>
+                    <?php if ($start_page > 2): ?>
+                        <span class="flex items-center justify-center w-10 h-10 text-nhl-muted">...</span>
+                    <?php endif; ?>
+                <?php endif; ?>
+                
+                <!-- Number buttons -->
+                <?php for ($i = $start_page; $i <= $end_page; $i++): ?>
+                    <?php if ($i !== 1 && $i !== $total_pages): ?>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>" 
+                        class="pagination-button flex items-center justify-center w-10 h-10 rounded <?= $i === $page ? 'bg-nhl-accent text-nhl-darkblue font-bold' : 'bg-nhl-medium text-white shadow hover:bg-nhl-accent/20' ?>">
+                            <?= $i ?>
+                        </a>
+                    <?php endif; ?>
+                <?php endfor; ?>
+                
+                <!-- Show ellipsis after page numbers if needed -->
+                <?php if ($end_page < $total_pages): ?>
+                    <?php if ($end_page < $total_pages - 1): ?>
+                        <span class="flex items-center justify-center w-10 h-10 text-nhl-muted">...</span>
+                    <?php endif; ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $total_pages])) ?>" 
+                    class="pagination-button flex items-center justify-center w-10 h-10 rounded <?= $total_pages === $page ? 'bg-nhl-accent text-nhl-darkblue font-bold' : 'bg-nhl-medium text-white shadow hover:bg-nhl-accent/20' ?>">
+                        <?= $total_pages ?>
+                    </a>
+                <?php endif; ?>
 
-  </body>
+                <!-- Next page button -->
+                <?php if ($page < $total_pages): ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page + 1])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                <?php else: ?>
+                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Last page button -->
+                <?php if ($page < $total_pages): ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $total_pages])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 6.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-3.293a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                <?php else: ?>
+                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 6.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-3.293a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Visual feedback when user clicks Apply Filters button
+        const filterForm = document.getElementById('filter-form');
+        const applyFilters = document.getElementById('applyFilters');
+        
+        if (filterForm && applyFilters) {
+            applyFilters.addEventListener('click', function() {
+                applyFilters.classList.add('bg-nhl-accent2');
+                applyFilters.classList.add('border-nhl-accent2');
+                setTimeout(() => {
+                    filterForm.submit();
+                }, 200);
+            });
+        }
+        
+        // Visual feedback for search submission
+        const searchForm = document.getElementById('nhl-search');
+        if (searchForm) {
+            searchForm.addEventListener('submit', function() {
+                const searchInput = document.getElementById('search-term');
+                searchInput.classList.add('ring-nhl-accent2');
+                setTimeout(() => {
+                    searchInput.classList.remove('ring-nhl-accent2');
+                }, 200);
+            });
+        }
+    });
+</script>
+
+<?php include 'footer.php'; ?>
+</body>
 </html>
