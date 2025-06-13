@@ -23,7 +23,7 @@ startTime = []; endTime = []; duration = []; teamAbbrev = []; teamId = []; teamN
 detailCode = []; eventDescription = []; eventNumber = []; hexValue = []
 
 count=0
-for game_id in gameID_list[-3000:-2000]:
+for game_id in gameID_list[-500:]:
     # set game code to current game and pull JSON
     if count % 100 == 0:
         print(f"Processed {count} games.")

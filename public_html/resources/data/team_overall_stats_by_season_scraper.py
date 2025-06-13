@@ -45,7 +45,7 @@ winsInRegulation = []
 winsInShootout = []
 
 base_url= 'https://api.nhle.com/stats/rest/en/team/summary?sort=shotsForPerGame&cayenneExp=seasonId='
-
+count = 0
 for season in seasons:
     try:
         url = f"{base_url}{season}"
@@ -53,7 +53,10 @@ for season in seasons:
         if response.status_code == 404:
             print("Page not found (404).")
         else:
-            print("Page found.")
+            count += 1
+            if count % 50 == 0:
+                print(count)
+            # print("Page found.")
             response = requests.get(url)
             data = response.json()
 
@@ -102,14 +105,14 @@ for season in seasons:
 team_overall_stats_df = pd.DataFrame([season_id, faceoffWinPct, gamesPlayed, goalsAgainst, goalsAgainstPerGame,
                goalsFor, goalsForPerGame, losses, otLosses, penaltyKillNetPct,
                penaltyKillPct, pointPct, points, powerPlayNetPct, powerPlayPct,
-               regulationAndOtWins, seasonId, shotsAgainstPerGame, shotsForPerGame,
+               regulationAndOtWins, shotsAgainstPerGame, shotsForPerGame,
                teamId, ties, wins, winsInRegulation, winsInShootout]).transpose()
 
 # Set the column names
 team_overall_stats_df.columns = ['season_id', 'faceoffWinPct', 'gamesPlayed', 'goalsAgainst', 'goalsAgainstPerGame',
                'goalsFor', 'goalsForPerGame', 'losses', 'otLosses', 'penaltyKillNetPct',
                'penaltyKillPct', 'pointPct', 'points', 'powerPlayNetPct', 'powerPlayPct',
-               'regulationAndOtWins', 'seasonId', 'shotsAgainstPerGame', 'shotsForPerGame',
+               'regulationAndOtWins', 'shotsAgainstPerGame', 'shotsForPerGame',
                'teamId', 'ties', 'wins', 'winsInRegulation', 'winsInShootout']
 
 # Print the DataFrame to check the data

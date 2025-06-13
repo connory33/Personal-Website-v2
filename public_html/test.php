@@ -55,40 +55,11 @@
       background: rgba(31, 41, 55, 0.6);
       border-radius: 0.5rem;
       cursor: pointer;
-      border: 1px solid rgba(69, 162, 158, 0.4);
     }
     
     .roster-tab.active {
-      /* background: linear-gradient(to right, #3b82f6, #2563eb); */
-      background: linear-gradient(to right, rgba(69, 162, 158, 0.2), rgba(102, 252, 241, 0.1));
-      /* border: 1px solid rgba(69, 162, 158, 0.4); */
-      color: #66FCF1;
+      background: linear-gradient(to right, #3b82f6, #2563eb);
     }
-
-    .roster-tab:hover {
-    background: linear-gradient(to right, rgba(69, 162, 158, 0.3), rgba(102, 252, 241, 0.2));
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-} 
-
-    .shift-charts-link {
-    /* display: inline-block; */
-    background: linear-gradient(to right, rgba(69, 162, 158, 0.2), rgba(102, 252, 241, 0.1));
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid rgba(69, 162, 158, 0.4);
-    /* font-weight: 600; */
-    text-decoration: none;
-    /* color: #66FCF1; */
-    /* transition: all 0.3s ease; */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 1rem auto;
-}
-
-.shift-charts-link:hover {
-    background: linear-gradient(to right, rgba(69, 162, 158, 0.3), rgba(102, 252, 241, 0.2));
-    /* transform: translateY(-2px); */
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
     
     .roster-content {
       display: none;
@@ -101,8 +72,8 @@
     .card-header {
       font-size: 1.25rem;
       font-weight: 600;
-      margin-bottom: 0.4rem;
-      padding-bottom: 0.25rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
       border-bottom: 1px solid rgba(69, 162, 158, 0.4);
     }
   </style>
@@ -404,29 +375,42 @@
       
       <!-- Game Header Card -->
       <div class="dashboard-card header-card">
-        <div class='flex items-center justify-between space-x-8'>
+        <div class='flex items-center justify-center space-x-8'>
           <!-- Home Team -->
           <a href='team_details.php?team_id=<?= htmlspecialchars($homeTeamID) ?>' class='flex flex-col items-center gap-2'>
             <img src='<?= htmlspecialchars($homeLogo) ?>' alt='<?= htmlspecialchars($homeTeamName) ?>' class='team-logo h-24 w-auto'>
             <span class='team-name text-xl'><?= htmlspecialchars($homeTeamName) ?> (H)</span>
           </a>
-          <p class='text-7xl font-bold'><?= htmlspecialchars($homeScore) ?></p>
-
-          <!-- <div class='flex flex-col items-center'> -->
-            <div class="mt-2 text-center text-sm">
-              <p class="text-xl"><?= htmlspecialchars($venue) ?>, <?= htmlspecialchars($venueLocation) ?></p><br>
-              <p class="text-xl"><?= htmlspecialchars($formatted_gameDate) ?> <?= htmlspecialchars($formatted_startTime) ?> EST</p><br>
-              <p class="text-base italic text-2xl"><?= $formatted_season ?> <?= $gameType_text ?> - Game <?= $gameNum ?></p>
+          
+          <!-- VS -->
+          <div class='flex flex-col items-center'>
+            <div class='score-display my-2'>
+              <?= htmlspecialchars($homeScore) ?> - <?= htmlspecialchars($awayScore) ?>
             </div>
+            <span class='game-outcome ml-2 text-xl'><?= $formatted_outcome ?></span>
+            <div class="mt-2 text-center text-sm">
+              <p><?= htmlspecialchars($venue) ?>, <?= htmlspecialchars($venueLocation) ?></p>
+              <p><?= htmlspecialchars($formatted_gameDate) ?> <?= htmlspecialchars($formatted_startTime) ?> EST</p>
+              <p class="text-base italic"><?= $formatted_season ?> <?= $gameType_text ?> - Game <?= $gameNum ?></p>
+            </div>
+          </div>
           
           <!-- Away Team -->
-           <p class='text-7xl font-bold'><?= htmlspecialchars($awayScore) ?></p>
           <a href='team_details.php?team_id=<?= htmlspecialchars($awayTeamID) ?>' class='flex flex-col items-center gap-2'>
             <img src='<?= htmlspecialchars($awayLogo) ?>' alt='<?= htmlspecialchars($awayTeamName) ?>' class='team-logo h-24 w-auto'>
             <span class='team-name text-xl'><?= htmlspecialchars($awayTeamName) ?> (A)</span>
           </a>
         </div>
         
+        <!-- Shift Chart Link -->
+        <div class="text-center mt-4">
+          <a href='shift_charts.php?game_id=<?= $game_id ?>' class="shift-charts-link inline-flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            View Shift Charts
+          </a>
+        </div>
       </div>
 
             <!-- Roster Card with Tabs -->
@@ -453,9 +437,9 @@
 
 
                     function render_skater_table($players, $team_label, $roster_lookup, $teamColor) {
-                        echo "<h4 class='mb-2.5 text-2xl text-center'>$team_label</h4>";
+                        echo "<h4 class='mb-2.5 text-2xl' style='color:$teamColor'>$team_label</h4>";
                         echo "<div class='w-full overflow-x-auto'>";
-                        echo "<table class='roster-table default-zebra-table mx-auto text-center' style='zoom: 0.9'>";
+                        echo "<table class='roster-table default-zebra-table'>";
                         echo "<colgroup>";
                         echo "<col class='game_details_skater_stats_name'>";
                         echo "<col class='game_details_skater_stats_number'>";
@@ -510,7 +494,7 @@
                             // $totalMissedShots = $row['total_missed_shots'] ?? 0;
                             
                             echo "<tr class='default-zebra-table'>";
-                            echo "<td class='border border-slate-600 px-2 py-1 text-left'><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
+                            echo "<td class='border border-slate-600 px-2 py-1'><a style='color:navy' href='player_details.php?player_id=" . htmlspecialchars($player_id) ."'>$player_name</a></td>";
                             echo "<td class='border border-slate-600 px-2 py-1'>" . $player['skater_sweaterNumber'] . "</td>";
                             echo "<td class='border border-slate-600 px-2 py-1'>" . $position . "</td>";
                             echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($player['skater_goals']) . "</td>";
@@ -535,7 +519,7 @@
                     
                     function render_goalie_table($players, $team_label, $roster_lookup) {
                         echo "<div class='roster-table-wrapper'>";
-                        echo "<table class='roster-table default-zebra-table border-2 border-slate-600 mx-auto text-center' style='zoom: 0.9'>";
+                        echo "<table class='roster-table default-zebra-table border-2 border-slate-600'>";
                             echo "<colgroup>";
                                 echo "<col class='game_details_goalie_stats_name'>";
                                 echo "<col class='game_details_goalie_stats_number'>";
@@ -556,7 +540,7 @@
                             echo "</colgroup>";
                             echo "<thead>";
                                 echo "<tr style='color: white; font-weight: bold;' class='default-zebra-table bg-slate-800'>"; // Added missing opening <tr> tag
-                                    echo "<th class='border border-slate-600 px-2 py-1 text-left'>Name</th>";
+                                    echo "<th class='border border-slate-600 px-2 py-1'>Name</th>";
                                     echo "<th class='border border-slate-600 px-2 py-1'>Number</t class='border border-slate-600 px-2 py-1'h>";
                                     echo "<th class='border border-slate-600 px-2 py-1'>PIM</th>";
                                     echo "<th class='border border-slate-600 px-2 py-1'>TOI</th>";
@@ -611,26 +595,23 @@
                     }
                     ?>
       <div class="dashboard-card roster-card">
-        <div class='flex justify-between items-center' style='border-bottom: 1px solid rgba(69, 162, 158, 0.4);'>
-                <h2 class="card-header" style='border: none !important'>Game Rosters & Statistics</h2>
-                
-                <div class="roster-tabs">
-                <div class="roster-tab active" data-team="home">Home Team</div>
-                <div class="roster-tab" data-team="away">Away Team</div>
-                </div>
+        <h2 class="card-header">Game Rosters & Statistics</h2>
+        
+        <div class="roster-tabs">
+          <div class="roster-tab active" data-team="home">Home Team</div>
+          <div class="roster-tab" data-team="away">Away Team</div>
         </div>
-        <br>
         
         <div class="roster-content active" id="home-roster">
-          <?php render_skater_table($home_skaters, $homeTeamName, $roster_lookup, 'white' ); ?>
-          <?php render_goalie_table($home_goalies, $homeTeamName, $roster_lookup); ?>
+          <?php render_skater_table($home_skaters, $home_team_name, $roster_lookup, 'white' ); ?>
+          <?php render_goalie_table($home_goalies, $home_team_name, $roster_lookup); ?>
         </div>
         
         <div class="roster-content" id="away-roster">
-          <?php render_skater_table($away_skaters, $awayTeamName, $roster_lookup, 'white'); ?>
-          <?php render_goalie_table($away_goalies, $awayTeamName, $roster_lookup); ?>
+          <?php render_skater_table($away_skaters, $away_team_name, $roster_lookup, 'white'); ?>
+          <?php render_goalie_table($away_goalies, $away_team_name, $roster_lookup); ?>
         </div>
-
+        
         <p class="text-center text-sm mt-2">(S) indicates the starting goalie</p>
       </div>
       
@@ -703,38 +684,16 @@
 
         
 
-        $plays_sql = "SELECT * FROM nhl_plays WHERE nhl_plays.gameID = $game_id ORDER BY nhl_plays.period, nhl_plays.timeInPeriod ASC";
+        $plays_sql = "SELECT * FROM nhl_plays WHERE nhl_plays.gameID = $game_id ORDER BY nhl_plays.period, nhl_plays.timeInPeriod ASC LIMIT $offset, $limit";
         $plays = mysqli_query($conn, $plays_sql);
         ?>
       
       <div class="dashboard-card pbp-card">
-
-        <div class='flex justify-between items-center' style='border-bottom: 1px solid rgba(69, 162, 158, 0.4);'>
-                <h2 class="card-header" style='border: none !important'>Play-by-Play</h2>
-                
-                <div class="shift-chart-link">
-                <a href='shift_charts.php?game_id=<?= $game_id ?>' class="shift-charts-link inline-flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    View Shift Charts
-                </a>
-                </div>
-        </div>
-<br>
-
-
-            <!-- Search Filter Fields -->
-    <div class="flex flex-wrap justify-center items-center gap-4 mb-4 max-w-[75%] mx-auto">
-        <input type="text" id="searchByType" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Type (e.g., 'goal')">
-        <input type="text" id="searchByTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Team (tricode, e.g., 'NYR')">
-        <input type="text" id="searchByShotType" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Shot Type">
-        <input type="text" id="searchByPenalty" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Penalty">
-    </div>
+        <h2 class="card-header">Play-by-Play</h2>
         <div class="overflow-x-auto">
-          <table id="play-by-play-table" class="table-auto border-2 border-slate-600 border-collapse">
-            <thead>
-              <tr>
+          <table id="play-by-play-table" class="min-w-max table-auto border-2 border-slate-600 border-collapse default-zebra-table">
+            <thead class='default-zebra-table'>
+              <tr class='default-zebra-table'>
                 <th class='pbp-col-time-left border-2 border-slate-600'>Per. Time Left</th>
                 <th class='pbp-col-type border-2 border-slate-600'>Type</th>
                 <th class='pbp-col-coords border-2 border-slate-600'>Coords.</th>
@@ -756,10 +715,10 @@
                 <th class='pbp-col-drawer border-2 border-slate-600'>Drawer</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class='default-zebra-table'>
               <!-- Your existing PHP code to output table rows -->
               <?php
-            // ALL PLAYS DATA FOR HEATMAP
+               
                         $all_plays = [];
                         while ($row = $plays->fetch_assoc()){
                             # Coordinates
@@ -785,12 +744,14 @@
                                 'y' => $yCoord,
                                 'typedesckey' => $type
                             ];
+    
+
 
 
 
                             # Period/Time Remaining
                             $formatted_time = $row['period'] . ' - ' . substr($row['timeRemaining'],0,5);
-                            // echo "<td>".$formatted_time."</td>";
+                            echo "<td>".$formatted_time."</td>";
 
                             // echo "<td>".$row['situationCode']."</td>";
                             // echo "<td>".$row['typeCode']."</td>";
@@ -799,14 +760,63 @@
                                 $rowClass = 'goal-row';
                             }
 
+                            # Play Type
+                            // echo "<td>".$row['typeDescKey']."</td>";
+                            $playType = $row['typeDescKey'];
+                            if ($playType == 'period-start') {
+                                $formatted_playType = 'Per. Start';
+                            } else if ($playType == 'faceoff') {
+                                $formatted_playType = 'FO';
+                            } else if ($playType == 'hit') {
+                                $formatted_playType = 'Hit';
+                            } else if ($playType == 'shot-on-goal') {
+                                $formatted_playType = 'SOG';
+                            } else if ($playType == 'goal') {
+                                $formatted_playType = 'Goal';
+                            } else if ($playType == 'stoppage') {
+                                $formatted_playType = 'Stop';
+                            } else if ($playType == 'giveaway') {
+                                $formatted_playType = 'Give';
+                            } else if ($playType == 'takeaway') {
+                                $formatted_playType = 'Takea';
+                            } else if ($playType == 'blocked-shot') {
+                                $formatted_playType = 'Block';
+                            } else if ($playType == 'missed-shot') {
+                                $formatted_playType = 'Miss';
+                            } else if ($playType == 'penalty') {
+                                $formatted_playType = 'Pen.';
+                            } else if ($playType == 'delayed-penalty') {
+                                $formatted_playType = 'D. Pen.';
+                            } else if ($playType == 'period-end') {
+                                $formatted_playType = 'Per. End';
+                            } else {
+                                $formatted_playType = $playType;
+                            }
+                            echo "<td>".htmlspecialchars($formatted_playType)."</td>";
+
+                            echo "<td>" . $formatted_coordinates . "</td>";
+
+                            # Event Team
+                            echo "<td>".($row['event_team_tricode'] ?? 'N/A')."</td>";
+
+                            # Faceoffs
                             $faceoff_winner_id = $row['faceoffWinnerId'];
                             $faceoff_winner_name = isset($roster_lookup[$faceoff_winner_id]) ? $roster_lookup[$faceoff_winner_id] : 'Unknown';
+                            echo "<td>".htmlspecialchars($faceoff_winner_name)."</td>";
+                            
                             $faceoff_loser_id = $row['faceoffLoserId'];
                             $faceoff_loser_name = isset($roster_lookup[$faceoff_loser_id]) ? $roster_lookup[$faceoff_loser_id] : 'Unknown';
+                            echo "<td>".htmlspecialchars($faceoff_loser_name)."</td>";
+
+                            # Hits
                             $hitter_id = $row['hittingPlayerId'];
                             $hitter_name = isset($roster_lookup[$hitter_id]) ? $roster_lookup[$hitter_id] : 'Unknown';
                             $hittee_id = $row['hitteePlayerId'];
                             $hittee_name = isset($roster_lookup[$hittee_id]) ? $roster_lookup[$hittee_id] : 'Unknown';
+                            echo "<td>".htmlspecialchars($hitter_name)."</td>";
+                            echo "<td>".htmlspecialchars($hittee_name)."</td>";
+                            
+                            # Shot Type
                             $formatted_shotType = ucfirst($row['shotType']);
                             if ($formatted_shotType == 'Backhand') {
                                 $formatted_shotType = 'Back';
@@ -817,10 +827,21 @@
                             } else {
                                 $formatted_shotType = $formatted_shotType;
                             }
+                            
+                            echo "<td>".htmlspecialchars($formatted_shotType)."</td>";
+
+                            # Shooting Player
                             $shooter_id = $row['shootingPlayerId'];
                             $shooter_name = isset($roster_lookup[$shooter_id]) ? $roster_lookup[$shooter_id] : 'Unknown';
+                            echo "<td>".htmlspecialchars($shooter_name)."</td>";
+
+                            # Goalie
                             $goalie_id = $row['goalieInNetId'];
                             $goalie_name = isset($roster_lookup[$goalie_id]) ? $roster_lookup[$goalie_id] : 'Unknown';
+                            echo "<td>".htmlspecialchars($goalie_name)."</td>";
+
+                            // echo "<td>".$row['awaySOG']."</td>";
+                            // echo "<td>".$row['homeSOG']."</td>";
 
                             # Reason
                             $reason = $row['reason'];
@@ -859,27 +880,27 @@
                             } else {
                                 $formatted_reason = '-';
                             }
-                            // echo "<td>".$formatted_reason."</td>";
+                            echo "<td>".$formatted_reason."</td>";
 
                             # Takeaway/Giveaway Player
                             $take_give_id = $row['takeawayGiveawayPlayerId'];
                             $take_give_name = isset($roster_lookup[$take_give_id]) ? $roster_lookup[$take_give_id] : 'Unknown';
-                            // echo "<td>".htmlspecialchars($take_give_name)."</td>";
+                            echo "<td>".htmlspecialchars($take_give_name)."</td>";
 
                             # Shot Blocker
                             $blocker_id = $row['blockingPlayerId'];
                             $blocker_name = isset($roster_lookup[$blocker_id]) ? $roster_lookup[$blocker_id] : 'Unknown';
-                            // echo "<td>".htmlspecialchars($blocker_name)."</td>";
+                            echo "<td>".htmlspecialchars($blocker_name)."</td>";
 
                             # Scorer
                             $scorer_id = $row['scoringPlayerId'];
                             $scorer_name = isset($roster_lookup[$scorer_id]) ? $roster_lookup[$scorer_id] : 'Unknown';
-                            // echo "<td>".htmlspecialchars($scorer_name)."</td>";
+                            echo "<td>".htmlspecialchars($scorer_name)."</td>";
 
                             # Assister
                             $assister_id = $row['assist1PlayerId'];
                             $assister_name = isset($roster_lookup[$assister_id]) ? $roster_lookup[$assister_id] : 'Unknown';
-                            // echo "<td>".htmlspecialchars($assister_name)."</td>";
+                            echo "<td>".htmlspecialchars($assister_name)."</td>";
 
                             # Score
                             // echo "<td>".$row['awayScore']."</td>";
@@ -895,152 +916,95 @@
                             } else {
                                 $formatted_severity = 'ERROR';
                             }
-                            // echo "<td>" . $row['penaltyType'] . ' ' . $formatted_severity . "</td>";
+                            echo "<td>" . $row['penaltyType'] . ' ' . $formatted_severity . "</td>";
                             $committer_id = $row['committerId'];
                             $committer_name = isset($roster_lookup[$committer_id]) ? $roster_lookup[$committer_id] : 'Unknown';
                             $drawer_id = $row['drawerId'];
                             $drawer_name = isset($roster_lookup[$drawer_id]) ? $roster_lookup[$drawer_id] : 'Unknown';
-                            // echo "<td>".htmlspecialchars($committer_name)."</td>";
-                            // echo "<td>".htmlspecialchars($drawer_name)."</td>";
-
-                            
+                            echo "<td>".htmlspecialchars($committer_name)."</td>";
+                            echo "<td>".htmlspecialchars($drawer_name)."</td>";
                             
 
                             echo "</tr>";
-
                         }
               ?>
-
-
-                        <!-- GET ALL DATA FOR FILTERING -->
-              <script>
-const allPlays = <?php 
-    // Re-query to get all play data for JavaScript
-    mysqli_data_seek($plays, 0);
-    $plays_data = [];
-    while ($row = mysqli_fetch_assoc($plays)) {
-        $formatted_time = $row['period'] . ' - ' . substr($row['timeRemaining'],0,5);
-        $playType = $row['typeDescKey'];
-        // Format play type (your existing logic)
-        $formatted_playType = $playType == 'period-start' ? 'Per. Start' : 
-                             ($playType == 'faceoff' ? 'FO' : 
-                             ($playType == 'hit' ? 'Hit' : 
-                             ($playType == 'shot-on-goal' ? 'SOG' : 
-                             ($playType == 'goal' ? 'Goal' : 
-                             ($playType == 'stoppage' ? 'Stop' : 
-                             ($playType == 'giveaway' ? 'Give' : 
-                             ($playType == 'takeaway' ? 'Takea' : 
-                             ($playType == 'blocked-shot' ? 'Block' : 
-                             ($playType == 'missed-shot' ? 'Miss' : 
-                             ($playType == 'penalty' ? 'Pen.' : 
-                             ($playType == 'delayed-penalty' ? 'D. Pen.' : 
-                             ($playType == 'period-end' ? 'Per. End' : $playType))))))))))));
-        
-        // Format reason
-        $reason = $row['reason'];
-        if ($reason == 'wide-right') {
-            $formatted_reason = 'Wide right';
-        } else if ($reason == 'high-and-wide-right') {
-            $formatted_reason = 'High / wide right';
-        } else if ($reason == 'wide-left') {
-            $formatted_reason = 'Wide left';
-        } else if ($reason == 'high-and-wide-left') {
-            $formatted_reason = 'High / wide left';
-        } else if ($reason == 'puck-frozen') {
-            $formatted_reason = 'Puck frozen';
-        } else if ($reason == 'goalie-stopped-after-sog') {
-            $formatted_reason = 'Goalie freeze';
-        } else if ($reason == 'tv-timeout') {
-            $formatted_reason = 'TV';
-        } else if ($reason == 'hit-crossbar') {
-            $formatted_reason = 'Crossbar';
-        } else if ($reason == 'above-crossbar') {
-            $formatted_reason = 'Over net';
-        } else if ($reason == 'hit-right-post') {
-            $formatted_reason = 'Right post';
-        } else if ($reason == 'hit-left-post') {
-            $formatted_reason = 'Left post';
-        } else if ($reason == 'puck-in-netting' || $reason == 'puck-in-benches' || $reason == 'puck-in-penalty-benches') {
-            $formatted_reason = 'Out of play';
-        } else if ($reason == 'player-injury') {
-            $formatted_reason = 'Injury';
-        } else if ($reason == 'offside') {
-            $formatted_reason = 'Offside';
-        } else if ($reason == 'icing') {
-            $formatted_reason = 'Icing';
-        } else if ($reason == 'hand-pass') {
-            $formatted_reason = 'Hand pass';
-        } else {
-            $formatted_reason = '-';
-        }
-        
-        // Format penalty
-        if ($row['penaltySeverity'] == 'MIN') {
-            $formatted_penalty = $row['penaltyType'] . ' (2)';
-        } else if ($row['penaltySeverity'] == 'MAJ') {
-            $formatted_penalty = $row['penaltyType'] . ' (4)';
-        } else if (empty($row['penaltySeverity'])) {
-            $formatted_penalty = '-';
-        } else {
-            $formatted_penalty = $row['penaltyType'] . ' ' . $row['penaltySeverity'];
-        }
-        
-        // Format shot type
-        $formatted_shotType = ucfirst($row['shotType']);
-        if ($formatted_shotType == 'Backhand') {
-            $formatted_shotType = 'Back';
-        } else if ($formatted_shotType == 'Tip-in') {
-            $formatted_shotType = 'Tip';
-        } else if ($formatted_shotType == ''){
-            $formatted_shotType = '-';
-        }
-        
-        $plays_data[] = [
-            'formatted_time' => $formatted_time,
-            'formatted_playType' => $formatted_playType,
-            'formatted_coordinates' => $row['xCoord'] . '/' . $row['yCoord'],
-            'event_team_tricode' => $row['eventOwnerTeamId'] ? $team_tricode_lookup[$row['eventOwnerTeamId']] : 'N/A',
-            'typeDescKey' => $row['typeDescKey'],
-            'faceoff_winner_name' => isset($roster_lookup[$row['faceoffWinnerId']]) ? $roster_lookup[$row['faceoffWinnerId']] : '-',
-            'faceoff_loser_name' => isset($roster_lookup[$row['faceoffLoserId']]) ? $roster_lookup[$row['faceoffLoserId']] : '-',
-            'hitter_name' => isset($roster_lookup[$row['hittingPlayerId']]) ? $roster_lookup[$row['hittingPlayerId']] : '-',
-            'hittee_name' => isset($roster_lookup[$row['hitteePlayerId']]) ? $roster_lookup[$row['hitteePlayerId']] : '-',
-            'formatted_shotType' => $formatted_shotType,
-            'shooter_name' => isset($roster_lookup[$row['shootingPlayerId']]) ? $roster_lookup[$row['shootingPlayerId']] : '-',
-            'goalie_name' => isset($roster_lookup[$row['goalieInNetId']]) ? $roster_lookup[$row['goalieInNetId']] : '-',
-            'formatted_reason' => $formatted_reason,
-            'take_give_name' => isset($roster_lookup[$row['takeawayGiveawayPlayerId']]) ? $roster_lookup[$row['takeawayGiveawayPlayerId']] : '-',
-            'blocker_name' => isset($roster_lookup[$row['blockingPlayerId']]) ? $roster_lookup[$row['blockingPlayerId']] : '-',
-            'scorer_name' => isset($roster_lookup[$row['scoringPlayerId']]) ? $roster_lookup[$row['scoringPlayerId']] : '-',
-            'assister_name' => isset($roster_lookup[$row['assist1PlayerId']]) ? $roster_lookup[$row['assist1PlayerId']] : '-',
-            'formatted_penalty' => $formatted_penalty,
-            'committer_name' => isset($roster_lookup[$row['committerId']]) ? $roster_lookup[$row['committerId']] : '-',
-            'drawer_name' => isset($roster_lookup[$row['drawerId']]) ? $roster_lookup[$row['drawerId']] : '-',
-            
-            // Store original values for filtering
-            'xCoord' => $row['xCoord'],
-            'yCoord' => $row['yCoord'],
-            'shotType' => $row['shotType'] ?? '',
-            'penaltyType' => $row['penaltyType'] ?? '',
-            'event_team_tricode' => $row['eventOwnerTeamId'] ? $team_tricode_lookup[$row['eventOwnerTeamId']] : ''
-        ];
-    }
-    
-    echo json_encode($plays_data);
-?>
-</script>
             </tbody>
           </table>
         </div>
 
         
         
-        <!-- Pagination OLD BLOCK CAN GO HERE -->
-            <div id="pagination" class="flex justify-center space-x-4 mt-6 text-white">
-        <!-- Pagination buttons will be dynamically generated -->
-    </div>
-    <br>
+        <!-- Pagination -->
+        <div id="pagination" class="flex justify-center items-center mt-4 gap-2">
+    <?php if ($total_pages > 1): ?>
+        <!-- Previous page button -->
+        <?php if ($page > 1): ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page - 1])) ?>" 
+               class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-all">
+                &lt;
+            </a>
+        <?php else: ?>
+            <span class="px-4 py-2 bg-gray-400 text-white rounded opacity-50 cursor-not-allowed">&lt;</span>
+        <?php endif; ?>
+
+        <!-- First page -->
+        <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" 
+           class="px-4 py-2 <?= $page == 1 ? 'bg-blue-600' : 'bg-gray-600' ?> text-white rounded hover:bg-gray-500 transition-all">
+            1
+        </a>
+
+        <!-- Ellipsis if needed -->
+        <?php if ($page > 3): ?>
+            <span class="px-4 py-2">...</span>
+        <?php endif; ?>
+
+        <!-- Page numbers around current page -->
+        <?php 
+        $start = max(2, $page - 1);
+        $end = min($total_pages - 1, $page + 1);
+        
+        if ($page <= 3) {
+            $start = 2;
+            $end = min(4, $total_pages - 1);
+        } elseif ($page >= $total_pages - 2) {
+            $start = max($total_pages - 3, 2);
+            $end = $total_pages - 1;
+        }
+        
+        for ($i = $start; $i <= $end; $i++): 
+        ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>" 
+               class="px-4 py-2 <?= $page == $i ? 'bg-blue-600' : 'bg-gray-600' ?> text-white rounded hover:bg-gray-500 transition-all">
+                <?= $i ?>
+            </a>
+        <?php endfor; ?>
+
+        <!-- Ellipsis if needed -->
+        <?php if ($end < $total_pages - 1): ?>
+            <span class="px-4 py-2">...</span>
+        <?php endif; ?>
+
+        <!-- Last page (if more than 1 page) -->
+        <?php if ($total_pages > 1): ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $total_pages])) ?>" 
+               class="px-4 py-2 <?= $page == $total_pages ? 'bg-blue-600' : 'bg-gray-600' ?> text-white rounded hover:bg-gray-500 transition-all">
+                <?= $total_pages ?>
+            </a>
+        <?php endif; ?>
+
+        <!-- Next page button -->
+        <?php if ($page < $total_pages): ?>
+            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page + 1])) ?>" 
+               class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-all">
+                &gt;
+            </a>
+        <?php else: ?>
+            <span class="px-4 py-2 bg-gray-400 text-white rounded opacity-50 cursor-not-allowed">&gt;</span>
+        <?php endif; ?>
+    <?php endif; ?>
 </div>
+      </div>
+      
 
       <?php
 // Fetch ALL plays for the heatmap (no LIMIT)
@@ -1091,214 +1055,9 @@ while ($row = mysqli_fetch_assoc($plays_result)) {
     });
   </script>
 
-
-<!-- PBP FILTERING SCRIPTS -->
- <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const tableBody = document.querySelector("#play-by-play-table tbody");
-    const searchByType = document.getElementById("searchByType");
-    const searchByTeam = document.getElementById("searchByTeam");
-    const searchByShotType = document.getElementById("searchByShotType");
-    const searchByPenalty = document.getElementById("searchByPenalty");
-    const pagination = document.getElementById("pagination");
-
-    let currentPage = 1;
-    const pageSize = 50; // Number of rows per page
-
-        console.log("Total plays in dataset:", allPlays.length);
-
-
-    // Function to render rows dynamically
-    function renderTable(data) {
-        tableBody.innerHTML = ""; // Clear the table first
-        const start = (currentPage - 1) * pageSize;
-        const end = start + pageSize;
-        const paginatedData = data.slice(start, end);
-
-        paginatedData.forEach(row => {
-            const tr = document.createElement("tr");
-            tr.className = "play-row";
-            if (row.typeDescKey === "goal") {
-                tr.className += " goal-row";
-            }
-            
-            // Add data attributes for visualization if needed
-            if (row.xCoord && row.yCoord) {
-                tr.setAttribute("data-x", row.xCoord);
-                tr.setAttribute("data-y", row.yCoord);
-                tr.setAttribute("data-typedesckey", row.typeDescKey);
-            }
-            
-            tr.style.color = "white";
-            tr.style.border = "1px solid #bcd6e7";
-
-            // Create cells with proper styling
-            tr.innerHTML = `
-                <td class='pbp-col-time-left border-2 border-slate-600'>${row.formatted_time || '-'}</td>
-                <td class='pbp-col-type border-2 border-slate-600'>${row.formatted_playType || '-'}</td>
-                <td class='pbp-col-coords border-2 border-slate-600'>${row.formatted_coordinates || '-'}</td>
-                <td class='pbp-col-team border-2 border-slate-600'>${row.event_team_tricode || '-'}</td>
-                <td class='pbp-col-fo-winner border-2 border-slate-600'>${row.faceoff_winner_name || '-'}</td>
-                <td class='pbp-col-fo-loser border-2 border-slate-600'>${row.faceoff_loser_name || '-'}</td>
-                <td class='pbp-col-hitter border-2 border-slate-600'>${row.hitter_name || '-'}</td>
-                <td class='pbp-col-hittee border-2 border-slate-600'>${row.hittee_name || '-'}</td>
-                <td class='pbp-col-shot-type border-2 border-slate-600'>${row.formatted_shotType || '-'}</td>
-                <td class='pbp-col-shooter border-2 border-slate-600'>${row.shooter_name || '-'}</td>
-                <td class='pbp-col-goalie border-2 border-slate-600'>${row.goalie_name || '-'}</td>
-                <td class='pbp-col-reason border-2 border-slate-600'>${row.formatted_reason || '-'}</td>
-                <td class='pbp-col-take-give border-2 border-slate-600'>${row.take_give_name || '-'}</td>
-                <td class='pbp-col-blocker border-2 border-slate-600'>${row.blocker_name || '-'}</td>
-                <td class='pbp-col-scorer border-2 border-slate-600'>${row.scorer_name || '-'}</td>
-                <td class='pbp-col-primary-assister border-2 border-slate-600'>${row.assister_name || '-'}</td>
-                <td class='pbp-col-penalty border-2 border-slate-600'>${row.formatted_penalty || '-'}</td>
-                <td class='pbp-col-committer border-2 border-slate-600'>${row.committer_name || '-'}</td>
-                <td class='pbp-col-drawer border-2 border-slate-600'>${row.drawer_name || '-'}</td>
-            `;
-            tableBody.appendChild(tr);
-        });
-    }
-
-    // Function to render pagination controls
-    function renderPagination(data) {
-        pagination.innerHTML = ""; // Clear existing pagination controls
-        const totalPages = Math.ceil(data.length / pageSize);
-        
-        if (totalPages <= 1) {
-            // No need for pagination if there's only one page
-            return;
-        }
-
-        // Previous button
-        if (currentPage > 1) {
-            const prevButton = document.createElement("button");
-            prevButton.textContent = "Previous";
-            prevButton.className = "px-3 py-1 bg-blue-600 text-white rounded mr-2";
-            prevButton.addEventListener("click", () => {
-                currentPage--;
-                updateTableAndPagination(data);
-            });
-            pagination.appendChild(prevButton);
-        }
-
-        // Page numbers - only show up to 5 pages with ellipsis
-        const startPage = Math.max(1, currentPage - 2);
-        const endPage = Math.min(totalPages, startPage + 4);
-
-        // First page if we're showing ellipsis
-        if (startPage > 1) {
-            const firstButton = document.createElement("button");
-            firstButton.textContent = "1";
-            firstButton.className = "px-3 py-1 bg-slate-700 text-white rounded mx-1";
-            firstButton.addEventListener("click", () => {
-                currentPage = 1;
-                updateTableAndPagination(data);
-            });
-            pagination.appendChild(firstButton);
-            
-            if (startPage > 2) {
-                const ellipsis = document.createElement("span");
-                ellipsis.textContent = "...";
-                ellipsis.className = "px-2 text-white";
-                pagination.appendChild(ellipsis);
-            }
-        }
-
-        // Page numbers
-        for (let i = startPage; i <= endPage; i++) {
-            const pageButton = document.createElement("button");
-            pageButton.textContent = i;
-            pageButton.className = i === currentPage 
-                ? "px-3 py-1 bg-blue-600 text-white rounded mx-1" 
-                : "px-3 py-1 bg-slate-700 text-white rounded mx-1";
-            pageButton.addEventListener("click", () => {
-                currentPage = i;
-                updateTableAndPagination(data);
-            });
-            pagination.appendChild(pageButton);
-        }
-
-        // Last page if needed
-        if (endPage < totalPages) {
-            if (endPage < totalPages - 1) {
-                const ellipsis = document.createElement("span");
-                ellipsis.textContent = "...";
-                ellipsis.className = "px-2 text-white";
-                pagination.appendChild(ellipsis);
-            }
-            
-            const lastButton = document.createElement("button");
-            lastButton.textContent = totalPages;
-            lastButton.className = "px-3 py-1 bg-slate-700 text-white rounded mx-1";
-            lastButton.addEventListener("click", () => {
-                currentPage = totalPages;
-                updateTableAndPagination(data);
-            });
-            pagination.appendChild(lastButton);
-        }
-
-        // Next button
-        if (currentPage < totalPages) {
-            const nextButton = document.createElement("button");
-            nextButton.textContent = "Next";
-            nextButton.className = "px-3 py-1 bg-blue-600 text-white rounded ml-2";
-            nextButton.addEventListener("click", () => {
-                currentPage++;
-                updateTableAndPagination(data);
-            });
-            pagination.appendChild(nextButton);
-        }
-    }
-
-    function filterTable() {
-        const typeFilter = searchByType.value.toLowerCase();
-        const teamFilter = searchByTeam.value.toLowerCase();
-        const shotTypeFilter = searchByShotType.value.toLowerCase();
-        const penaltyFilter = searchByPenalty.value.toLowerCase();
-
-        return allPlays.filter(row => {
-            const matchesType = !typeFilter || (row.typeDescKey && row.typeDescKey.toLowerCase().includes(typeFilter));
-            const matchesTeam = !teamFilter || (row.event_team_tricode && row.event_team_tricode.toLowerCase().includes(teamFilter));
-            const matchesShotType = !shotTypeFilter || (row.shotType && row.shotType.toLowerCase().includes(shotTypeFilter));
-            const matchesPenalty = !penaltyFilter || (row.penaltyType && row.penaltyType.toLowerCase().includes(penaltyFilter));
-
-            return matchesType && matchesTeam && matchesShotType && matchesPenalty;
-        });
-    }
-
-    // Function to update table and pagination
-    function updateTableAndPagination(data) {
-        renderTable(data);
-        renderPagination(data);
-        
-        // Add a counter to show how many results were found
-        const resultCount = document.createElement("div");
-        resultCount.className = "mt-2 text-center text-white";
-        resultCount.textContent = `Showing ${Math.min(data.length, pageSize)} of ${data.length} results`;
-        pagination.appendChild(resultCount);
-    }
-
-    // Attach event listeners for filtering
-    const filterInputs = [searchByType, searchByTeam, searchByShotType, searchByPenalty];
-    filterInputs.forEach(input => {
-        input.addEventListener("input", () => {
-            currentPage = 1; // Reset to first page on filter change
-            const filteredData = filterTable();
-            updateTableAndPagination(filteredData);
-        });
-    });
-
-    // Initially render all rows and pagination
-    updateTableAndPagination(allPlays);
-});
-</script>
-
-
-
-<!-- HEATMAP SCRIPTS -->
-
 <script src="https://cdn.jsdelivr.net/npm/simpleheat/simpleheat.js"></script>
 <script>
-    const heatmapPlays = <?= json_encode($all_plays) ?>;
+    const allPlays = <?= json_encode($all_plays) ?>;
     const rinkXMin = -100, rinkXMax = 100;
     const rinkYMin = -42.5, rinkYMax = 42.5;
     const rink = document.getElementById("rink-image");
@@ -1332,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function filterShotData(selectedTypes) {
         const pointMap = new Map();
         
-        heatmapPlays.forEach(play => {
+        allPlays.forEach(play => {
             const x = parseFloat(play.x);
             const y = parseFloat(play.y);
             const type = play.typedesckey;

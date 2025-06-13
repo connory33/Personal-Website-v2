@@ -131,23 +131,10 @@ pd.set_option('display.max_rows', None)
 draftYearList = ['2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008']
 categories = ['1', '2', '3', '4']
 
-draftYears = []
-categoryID = []
-# rankings
-lastName = []
-firstName = []
-position = []
-shootsCatches = []
-heightIn = []
-weightLbs = []
-lastClub = []
-lastLeague = []
-birthDate = []
-birthCity = []
-birthStateProvince = []
-birthCountry = []
-midtermRank = []
-finalRank = []
+draftYears = []; categoryID = []; lastName = []; firstName = []; position = [];
+shootsCatches = []; heightIn = []; weightLbs = []; lastClub = []; lastLeague = [];
+birthDate = []; birthCity = []; birthStateProvince = []; birthCountry = [];
+midtermRank = []; finalRank = []
 
 base_url = "https://api-web.nhle.com/v1/draft/rankings/"
 

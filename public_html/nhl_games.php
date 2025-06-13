@@ -77,15 +77,15 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
         'away_team_name' => 'away_teams.fullName',
         'homeScore' => 'nhl_games.homeScore',
         'awayScore' => 'nhl_games.awayScore',
-        'game_id' => 'nhl_games.id',
+        'id' => 'nhl_games.id',
         'season' => 'nhl_games.season',
         'gameNumber' => 'nhl_games.gameNumber',
         'easternStartTime' => 'nhl_games.easternStartTime',
         'gameType' => 'nhl_games.gameType'
     ];
     
-    $requestedSortColumn = $_GET['sort_by'] ?? 'game_id';
-    $sortColumn = isset($sortColumnMap[$requestedSortColumn]) ? $sortColumnMap[$requestedSortColumn] : 'nhl_games.game_id';
+    $requestedSortColumn = $_GET['sort_by'] ?? 'id';
+    $sortColumn = isset($sortColumnMap[$requestedSortColumn]) ? $sortColumnMap[$requestedSortColumn] : 'nhl_games.id';
     $sortOrder = (isset($_GET['sort_order']) && strtolower($_GET['sort_order']) === 'asc') ? 'ASC' : 'DESC';
     
     $sql .= " ORDER BY $sortColumn $sortOrder";
@@ -165,11 +165,36 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
-    <title>NHL Games</title>
+    <title>NHL Games Database</title>
     <link href="/resources/css/default_v3.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nhl: {
+                            dark: '#131A24',
+                            darkblue: '#1C2333',
+                            medium: '#263044',
+                            accent: '#00E6FF',
+                            accent2: '#45CC8F',
+                            text: '#FFFFFF',
+                            muted: '#8A97B1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'inner-highlight': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
   </head>
-  <body>
+  <body class='bg-nhl-dark'>
 <!-- Header -->
 <?php include 'header.php'; ?>
 
@@ -198,11 +223,11 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                 'away_team_name' => 'away_teams.fullName',
                 'homeScore' => 'nhl_games.homeScore',
                 'awayScore' => 'nhl_games.awayScore',
-                'game_id' => 'nhl_games.id'
+                'id' => 'nhl_games.id'
             ];
             
-            $requestedSortColumn = $_GET['sort_by'] ?? 'game_id';
-            $sortColumn = isset($sortColumnMap[$requestedSortColumn]) ? $sortColumnMap[$requestedSortColumn] : 'nhl_games.game_id';
+            $requestedSortColumn = $_GET['sort_by'] ?? 'id';
+            $sortColumn = isset($sortColumnMap[$requestedSortColumn]) ? $sortColumnMap[$requestedSortColumn] : 'nhl_games.id';
             $sortOrder = (isset($_GET['sort_order']) && strtolower($_GET['sort_order']) === 'asc') ? 'ASC' : 'DESC';
     
 
@@ -232,8 +257,8 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                         'playoffs' => 3, 'postseason' => 3, 'post' => 3,
                         'reg' => 3, 'ot' => 4, 'so' => 5
                     ];
-                    if (isset($termMap[$lowerTerm])) {
-                        $searchTerm = $termMap[$termLower];
+                    if (isset($gameType_duration_map[$lowerTerm])) {
+                        $searchTerm = $gameType_duration_map[$lowerTerm];
                     }
 
 
@@ -358,37 +383,57 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                 }
                 
                 ?>
+<div class='mx-auto'>
+<div class="py-8 px-4 animate-fade-in">
+    <div class="max-w-[1770px]">
+        <!-- Header Section -->
+         <div class='flex justify-between'>
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
+                NHL Games Database
+            </h1>
+            <p class="text-nhl-muted text-lg">
+                Search and browse future and past NHL games
+            </p>
+        </div>
 
-            <div class='page-container' style='background-color: #343a40'>
-                <div class="page-header mb-4 text-center">
-                <h1 class="page-title">NHL Games Database</h1>
-                <p class="text-gray-300">Search and browse future and past NHL games</p>
+                <div class="w-full max-w-md"> <!-- wider and responsive -->
+                    <form id="nhl-search" method="GET" action="nhl_games.php" class="relative">
+                    <div class="flex space-x-4">
+                        <!-- Dropdown -->
+                        <select name="search_column" id="nhl-search-column"
+                        class="w-40 rounded-lg border-0 py-3 pl-4 pr-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent text-lg font-medium appearance-none">
+                        <option value="season">Season</option>
+                        <option value="gameDate">Game Date</option>
+                        <option value="easternStartTime">Start Time</option>
+                        <option value="gameType">Game Type</option>
+                        <option value="team" selected>Team</option>
+                        <option value="homeTeamId">Home Team</option>
+                        <option value="awayTeamId">Away Team</option>
+                        </select>
+
+                        <!-- Input and Search Button -->
+                        <div class="relative flex-1"> <!-- flex-1 lets it fill remaining space -->
+                        <input type="text" name="search_term" id="search-term" placeholder="Search for game"
+                            class="w-full rounded-lg border-0 py-3 pl-4 pr-10 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent text-lg font-medium"
+                            required>
+                        <button type="submit" class="absolute inset-y-0 right-0 flex items-center px-3 text-nhl-accent">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        </div>
+                    </div>
+                    </form>
+                <div class='text-right'>
+                    <a href="nhl_players.php"
+                    class="text-sm mt-2 inline-block text-nhl-accent hover:text-nhl-accent/80 ml-2">Search players instead</a>
+            </div>
+                </div>
                 </div>
 
-
-
-                    <div class="search-container w-[85%] mx-auto">
-                              <form id="nhl-search" method="GET" action="nhl_games.php" class="search-form">
-        <select name="search_column" id="nhl-search-column" class="w-full sm:w-48">
-            <option value="season">Season</option>
-            <option value="gameDate">Game Date</option>
-            <option value="easternStartTime">Start Time</option>
-            <option value="gameType">Game Type</option>
-            <option value="team" selected>Team</option>
-            <option value="homeTeamId">Home Team</option>
-            <option value="awayTeamId">Away Team</option>
-            <option value="player">Player Name</option>
-        </select>
-        <input type="text" name="search_term" id="search-term" placeholder="Search for game" required class="w-full sm:flex-1">
-        <button type="submit" class="search-button">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          Search
-        </button>
-      </form>
-                
-                    </div>
 
 
                     <?php
@@ -444,25 +489,57 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                     
                 
         }
-        
-                
-        ?>
+
+
+        ?><br>
+
                     
-                    <br>
 
 
-                    <div class="results-container shadow-md rounded-lg overflow-x-auto mx-auto w-[90%]">
-      <div class="mb-4">
-                    <div class='flex justify-between flex-wrap gap-4 max-w-[85%] mx-auto mt-5'>
-                    <input type="text" id="searchBySeason" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Season">
-                    <input type="text" id="searchByDate" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Date">
-                    <input type="text" id="searchByStartTime" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Start Time (EST)">
-                    <input type="text" id="searchByGameType" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Game Type">
-                    <input type="text" id="searchByHomeTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Home Team">
-                    <input type="text" id="searchByAwayTeam" class="filter-input border rounded px-3 py-2 text-black" style='border: 2px solid #1F2833' placeholder="Away Team">
+                    <!-- Filters Section (matching draft page) -->
+                    <div class="mb-8 bg-nhl-darkblue rounded-xl p-6 shadow-lg shadow-inner-highlight border border-nhl-medium/50">
+                        <h2 class="text-xl font-semibold text-white mb-4">Filter Players</h2>
+                        
+                        <form id="filter-form" method="GET" action="nhl_players.php">
+                            <!-- Keep search term if it exists -->
+                            <?php if (!empty($search_term)): ?>
+                                <input type="hidden" name="search_term" value="<?= htmlspecialchars($search_term) ?>">
+                            <?php endif; ?>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 filters-container">
+                                <div>
+                    <label for="searchBySeason" class="block text-sm font-medium text-nhl-muted mb-1">Season</label>
+                    <input type="text" id="searchBySeason" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 20222023">
+                    </div>
+                    <div>
+                    <label for="searchByDate" class="block text-sm font-medium text-nhl-muted mb-1">Date</label>
+                    <input type="text" id="searchByDate" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 4/22/2024">
+                    </div>
+                    <div>
+                    <label for="searchByStartTime" class="block text-sm font-medium text-nhl-muted mb-1">Start Time (EST)</label>
+                    <input type="text" id="searchByStartTime" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 21:30">
+                    </div>
+                    <div>
+                    <label for="searchByGameType" class="block text-sm font-medium text-nhl-muted mb-1">Game Type</label>
+                    <input type="text" id="searchByGameType" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. Reg, Post">
+                    </div>
+                    <div>
+                    <label for="searchByHomeTeam" class="block text-sm font-medium text-nhl-muted mb-1">Home Team</label>
+                    <input type="text" id="searchByHomeTeam" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. San Jose Sharks, SJS">
+                    </div>
+                    <div>
+                    <label for="searchByAwayTeam" class="block text-sm font-medium text-nhl-muted mb-1">Away Team</label>
+                    <input type="text" id="searchByAwayTeam" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. Chicago Blackhawks, CHI">
+                    </div>
+                            </div>
+                        </form>
                     </div>
                     <br>
+
                     <!-- Table -->
+
+                             <div class="bg-nhl-darkblue rounded-xl shadow-lg p-1 mb-6 table-container overflow-x-auto border border-nhl-medium/50">
+
                     <table id='games-players-summary-table' class="players-table">
                         <colgroup>
                         <col class="games-players-summary-col-season">
@@ -520,6 +597,7 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                         </tbody>
                     </table>
                 </div>
+                </div>
                 
     <br>
         <!-- Pagination Controls -->
@@ -527,8 +605,9 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
             <!-- Pagination buttons will be dynamically generated by JavaScript -->
         </div>
     <br>
-                                </div>
-                                </div>
+                               </div>
+</div>
+
 
     <?php include 'footer.php'; ?>
 

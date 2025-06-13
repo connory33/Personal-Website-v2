@@ -13,17 +13,105 @@
     <title>Player Details</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nhl: {
+                            dark: '#131A24',
+                            darkblue: '#1C2333',
+                            medium: '#263044',
+                            accent: '#00E6FF',
+                            accent2: '#45CC8F',
+                            text: '#FFFFFF',
+                            muted: '#8A97B1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'inner-highlight': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
 
     <link href="../resources/css/default_v3.css" rel="stylesheet" type="text/css" />
 
 
+
   </head>
-    <body>
+    <body class="bg-nhl-dark text-nhl-text font-sans antialiased">
   <!-- Header -->
   <?php include 'header.php'; ?>
 
-    <div class="text-white" style='align-items: flex-start; background-color: #343a40'>
+    <div class="py-8 px-4 animate-fade-in">
+    <div class="max-w-[1770px] mx-auto">
+    <div class="text-white">
       <div style='margin-left: 10px; margin-right: 10px'>
+        <div class='flex justify-between'>
+        <div>
+            <h1 class="text-4xl font-bold text-white mt-4 tracking-tight">
+                Player Details
+            </h1>
+        </div>
+        
+        <!-- Search Form Section (like Season Selector in draft) -->
+        <div class="max-w-xs mb-8">
+            <form id="nhl-search" method="GET" action="nhl_players.php" class="relative">
+                <input type="hidden" name="search_column" value="player">
+                <input 
+                    id="search-term" 
+                    name="search_term" 
+                    type="text" 
+                    placeholder="Enter player name" 
+                    value="<?= htmlspecialchars($search_term) ?>"
+                    class="block w-full rounded-lg border-0 py-3 pl-4 pr-10 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent text-lg font-medium"
+                >
+                <button type="submit" class="absolute inset-y-0 right-0 flex items-center px-3 text-nhl-accent">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                
+                <!-- Keep any existing filter parameters when searching -->
+                <?php if (!empty($filter_name)): ?>
+                    <input type="hidden" name="filter_name" value="<?= htmlspecialchars($filter_name) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_team)): ?>
+                    <input type="hidden" name="filter_team" value="<?= htmlspecialchars($filter_team) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_hand)): ?>
+                    <input type="hidden" name="filter_hand" value="<?= htmlspecialchars($filter_hand) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_country)): ?>
+                    <input type="hidden" name="filter_country" value="<?= htmlspecialchars($filter_country) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_status)): ?>
+                    <input type="hidden" name="filter_status" value="<?= htmlspecialchars($filter_status) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_number)): ?>
+                    <input type="hidden" name="filter_number" value="<?= htmlspecialchars($filter_number) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_weight_min)): ?>
+                    <input type="hidden" name="filter_weight_min" value="<?= htmlspecialchars($filter_weight_min) ?>">
+                <?php endif; ?>
+                <?php if (!empty($filter_weight_max)): ?>
+                    <input type="hidden" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>">
+                <?php endif; ?>
+            </form>
+            <div class="text-right mt-1 mr-1">
+    <a href="nhl_games.php" class="text-sm text-nhl-accent hover:text-nhl-accent/80">Search games instead</a>
+</div>
+
+        </div>
+        </div> <!-- End flex justify-between -->
+                </div>
+                </div>
+                </div>
         <?php
 
           ini_set('display_errors', 1);
@@ -37,12 +125,12 @@
           if (isset($_GET['player_id'])) {
               $player_id = $_GET['player_id'];
 
-              $sql = "SELECT nhl_player_details.*, nhl_teams.teamLogo, nhl_teams.fullName AS fullTeamName,
+              $sql = "SELECT nhl_players.*, nhl_teams.teamLogo, nhl_teams.fullName AS fullTeamName,
                       nhl_contracts.*
-                      FROM nhl_player_details
-                      LEFT JOIN nhl_teams ON nhl_player_details.currentTeamId = nhl_teams.id
-                      LEFT JOIN nhl_contracts ON nhl_player_details.playerID = nhl_contracts.playerId
-                      WHERE nhl_player_details.playerID=$player_id";
+                      FROM nhl_players
+                      LEFT JOIN nhl_teams ON nhl_players.currentTeamId = nhl_teams.id
+                      LEFT JOIN nhl_contracts ON nhl_players.playerID = nhl_contracts.playerId
+                      WHERE nhl_players.playerID=$player_id";
               $playerInfo = mysqli_query($conn, $sql);
 
             ##### Iterate through all player results and assign data to variables #####
@@ -84,7 +172,7 @@
                 if ($row['heightInCentimeters']) {
                   $heightCm = $row['heightInCentimeters'];
                 } else {
-                  $heightCm = intval($heightIn*2.54);
+                  $heightCm = intval((int)$heightIn*2.54);
                 }
                 if ($row['weightInPounds']) {
                   $weightLb = $row['weightInPounds'];
@@ -276,10 +364,16 @@
 
 
                   <!-- Player Header Section -->
-          <div class="player-header-container">
+          <div class="player-header-container max-w-7xl">
             <!-- Left side: Name and status -->
             <div class="player-header-info">
-              <h1 class="player-name"><?php echo $name; ?> #<?php echo $sweaterNumber; ?></h1>
+              <?php if ($sweaterNumber != '') {
+                echo "<h1 class='player-name'>" . $name . " #" . $sweaterNumber . "</h1>";
+              } else {
+                echo "<h1 class='player-name'>" . $name . "</h1>";
+              } ?>
+              
+              
               <?php if ($active == 'Yes') { ?>
                 <p class="text-[1.25rem] font-medium text-emerald-500 mt-2 bg-emerald-500/15 px-4 py-1 rounded border border-emerald-500/30">Active - <?php echo $player_id; ?></p>
               <?php } else { ?>
@@ -310,122 +404,21 @@
           <?php
               // echo "<p>Current Team: " . $teamName . " <img src='" . htmlspecialchars($teamLogo) . "' alt='N/A' style='height: 65px;'></p>";
           
+// Begin improved layout container
+echo "<div class='player-profile-container mx-auto max-w-7xl'>";
 
-        ### Flexbox for hero image and player bio box ###
-          echo "<div class='hero-bio-container gap-5'>";
-                      
+// Top section with hero image and contract in a side-by-side grid
+echo "<div class='grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8'>";
 
-              // Bio box container
-              echo "<div class='bio-box'>";
-              echo "<div class='bio-header'>";
-              echo "<span>Player Bio</span>";
-              if ($position == 'G') {
-                  $position = 'Goalie';
-              } else if ($position == 'D') {
-                  $position = 'Defense';
-              } else if ($position == 'C') {
-                $position = 'Center';
-              } else if ($position == 'RW') {
-                  $position = 'Right Wing';
-              } else if ($position == 'LW') {
-                  $position = 'Left Wing';
-              }
-              echo "<span class='player-position'>" . $position . "</span>";
-              echo "</div>";
+// Hero image takes up 3/5 of the space on larger screens
+echo "<div class='lg:col-span-3 flex items-center justify-center'>";
+echo "<img src='" . htmlspecialchars($heroImage) . "' alt='heroImage' class='w-full max-h-[500px] object-cover object-center rounded-lg shadow-lg border border-[#45A29E]'>";
+echo "</div>";
 
-              // Highlight section
-              echo "<div class='bio-highlights'>";
-
-              // Age calculation
-              $birthDateObj = new DateTime($birthDate);
-              $today = new DateTime();
-              $age = $today->diff($birthDateObj)->y;
-
-              echo "<div class='bio-highlight-item'>";
-              echo "<div class='bio-highlight-label'>Age</div>";
-              echo "<div class='bio-highlight-value'>" . $age . "</div>";
-              echo "</div>";
-
-              echo "<div class='bio-highlight-item'>";
-              echo "<div class='bio-highlight-label'>Height</div>";
-              echo "<div class='bio-highlight-value'>" . $heightIn . "</div>";
-              echo "</div>";
-
-              echo "<div class='bio-highlight-item'>";
-              echo "<div class='bio-highlight-label'>Weight</div>";
-              echo "<div class='bio-highlight-value'>" . $weightLb . " lbs</div>";
-              echo "</div>";
-
-              echo "<div class='bio-highlight-item'>";
-              echo "<div class='bio-highlight-label'>Shoots/Catches</div>";
-              echo "<div class='bio-highlight-value'>" . $shootsCatches . "</div>";
-              echo "</div>";
-
-              echo "</div>"; // close bio-highlights
-
-              echo "<div class='bio-body'>";
-
-              // Personal Info Section
-              echo "<div class='bio-section'>";
-              echo "<h5 class='bio-section-title'>Personal Information</h5>";
-              echo "<p><b>Birthdate:</b> <span>" . $birthDate . "</span></p>";
-
-              if ($birthStateProvince == '') {
-                  echo "<p><b>Birthplace:</b> <span>" . $birthCity . " (" . $birthCountry . ")</span></p>";
-              } else {
-                  echo "<p><b>Birthplace:</b> <span>" . $birthCity . ", " . $birthStateProvince . " (" . $birthCountry . ")</span></p>";
-              }
-              echo "</div>";
-
-              // Draft Info Section
-              echo "<div class='bio-section'>";
-              echo "<h5 class='bio-section-title'>Draft Information</h5>";
-              if ($draftYear == 'N/A') {
-                  echo "<p><b>Status:</b> <span>Undrafted</span></p>";
-              } else {
-                  echo "<p><b>Year:</b> <span>" . $draftYear . "</span></p>";
-                  echo "<p><b>Team:</b> <span>" . $draftTeam . "</span></p>";
-                  echo "<p><b>Round/Pick:</b> <span>Round " . $draftRound . ", Pick " . $draftPickInRound . " (#" . $draftOverall . " Overall)</span></p>";
-              }
-              echo "</div>";
-
-              // Awards Section
-              if (!empty($awardNames)) {
-                  $awardNamesArray = json_decode(str_replace("'", '"', $awardNames), true);
-                  $awardSeasonsArray = json_decode(str_replace("'", '"', $awardSeasons), true);
-
-                  if (is_array($awardNamesArray) && is_array($awardSeasonsArray) && count($awardNamesArray) > 0) {
-                      echo "<div class='bio-section'>";
-                      echo "<h5 class='bio-section-title'>Awards & Achievements</h5>";
-                      echo "<div class='awards'>";
-                      for ($i = 0; $i < count($awardNamesArray); $i++) {
-                          $award = $awardNamesArray[$i];
-                          $seasonsRaw = $awardSeasonsArray[$i];
-
-                          $formattedSeasons = array_map(function($s) {
-                              return substr($s, 0, 4) . "-" . substr($s, 4, 2);
-                          }, $seasonsRaw);
-
-                          $seasonString = implode(", ", $formattedSeasons);
-                          echo "<p><b>•</b> <span>" . $award . " (" . $seasonString . ")</span></p>";
-                      }
-                      echo "</div>";
-                      echo "</div>";
-                  }
-              }
-
-              echo "</div>"; // close bio-body
-              echo "</div>"; // close bio-box
-
-              // HERO IMAGE
-              echo "<div justify-center>";
-                          echo "<img style = 'border: 1px solid #bcd6e7' src='" . htmlspecialchars($heroImage) . "' alt='heroImage' class='hero-bio-image'>";
-              echo "</div>";
-
-
-// CONTRACT CARD
+// Contract card takes up 2/5 of the space on larger screens
+echo "<div class='lg:col-span-2'>";
 if ($contractSignedDate != '') {
-    echo '<div class="contract-card mt-8 max-w-4xl">';
+    echo '<div class="contract-card w-full h-full rounded-lg overflow-hidden shadow-xl border border-[#45A29E] flex flex-col">';
 
     $century = substr($contractSignedDate,-4,2);
     $contractStartSeasonStart = substr($contractStartSeason,0,2);
@@ -436,16 +429,16 @@ if ($contractSignedDate != '') {
     $contractEndSeason = $endSeasonStart . "-" . $endSeasonEnd;
 
     function tooltipSpan($label, $description) {
-          return "<span class='relative group cursor-help'>
-            <span>$label</span>
-            <span class='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-gray-800 text-white text-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 whitespace-nowrap'>
-              $description
-            </span>
-          </span>";
-        }
+        return "<span class='relative group cursor-help'>
+          <span>$label</span>
+          <span class='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-gray-800 text-white text-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 whitespace-nowrap'>
+            $description
+          </span>
+        </span>";
+    }
 
     // Contract Card Header
-    echo '<div class="contract-header bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white p-4 rounded-t-lg flex justify-between items-center">';
+    echo '<div class="contract-header bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white p-4 flex justify-between items-center">';
     echo '<h3 class="text-xl font-bold">Current Contract</h3>';
     echo '<span class="text-sm bg-[#343a40] py-1 px-3 rounded-full">' . $contractStartSeason . '  -  ' . $contractEndSeason . '</span>';
     echo '</div>';
@@ -475,8 +468,8 @@ if ($contractSignedDate != '') {
     echo '</div>'; // Close grid
     echo '</div>'; // Close summary section
     
-    // Contract Details Section
-    echo '<div class="bg-[#292e33] p-5 rounded-b-lg shadow-md text-white">';
+    // Contract Details Section - with flex-grow to fill the space
+    echo '<div class="bg-[#292e33] p-5 shadow-md text-white flex-grow overflow-y-auto">';
     
     // Two column layout for details
     echo '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
@@ -557,7 +550,7 @@ if ($contractSignedDate != '') {
     echo '</div>'; // Close contract card
 } else {
     // No contract information available
-    echo '<div class="bg-[#292e33] rounded-lg p-6 text-center mt-8 mx-auto max-w-4xl">';
+    echo '<div class="bg-[#292e33] rounded-lg p-6 text-center mx-auto border border-[#45A29E] h-full flex flex-col justify-center">';
     echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">';
     echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />';
     echo '</svg>';
@@ -565,670 +558,816 @@ if ($contractSignedDate != '') {
     echo '<p class="text-gray-400 mt-2">This player does not currently have an active contract on record.</p>';
     echo '</div>';
 }
+echo "</div>"; // close contract container column
+echo "</div>"; // close top grid section
 
-          echo "</div><br><br>";
+// Bio box section (full width)
+echo "<div class='bio-box w-full rounded-lg overflow-hidden shadow-xl border border-[#45A29E] mb-8'>";
+echo "<div class='bio-header bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white px-4 py-3 flex justify-between items-center'>";
+echo "<span class='text-lg font-bold'>Player Bio</span>";
+if ($position == 'G') {
+    $position = 'Goalie';
+} else if ($position == 'D') {
+    $position = 'Defense';
+} else if ($position == 'C') {
+    $position = 'Center';
+} else if ($position == 'R') {
+    $position = 'Right Wing';
+} else if ($position == 'L') {
+    $position = 'Left Wing';
+}
+echo "<span class='player-position bg-[#343a40] py-1 px-3 rounded-full text-sm'>" . $position . "</span>";
+echo "</div>";
+
+// Highlight section styled as cards in a 4-column grid
+echo "<div class='bio-highlights bg-[#202428] grid grid-cols-2 sm:grid-cols-4 gap-3 p-4'>";
+
+// Age calculation
+$birthDateObj = new DateTime($birthDate);
+$today = new DateTime();
+$age = $today->diff($birthDateObj)->y;
+
+echo "<div class='bio-highlight-item bg-[#2c3237] p-3 rounded-lg text-center'>";
+echo "<div class='bio-highlight-label text-sm text-gray-400 font-medium'>Age</div>";
+echo "<div class='bio-highlight-value text-xl font-bold text-white'>" . $age . "</div>";
+echo "</div>";
+
+echo "<div class='bio-highlight-item bg-[#2c3237] p-3 rounded-lg text-center'>";
+echo "<div class='bio-highlight-label text-sm text-gray-400 font-medium'>Height</div>";
+echo "<div class='bio-highlight-value text-xl font-bold text-white'>" . $heightIn . "</div>";
+echo "</div>";
+
+echo "<div class='bio-highlight-item bg-[#2c3237] p-3 rounded-lg text-center'>";
+echo "<div class='bio-highlight-label text-sm text-gray-400 font-medium'>Weight</div>";
+echo "<div class='bio-highlight-value text-xl font-bold text-white'>" . $weightLb . " lbs</div>";
+echo "</div>";
+
+echo "<div class='bio-highlight-item bg-[#2c3237] p-3 rounded-lg text-center'>";
+echo "<div class='bio-highlight-label text-sm text-gray-400 font-medium'>Shoots/Catches</div>";
+if ($shootsCatches == 'L') {
+    $shootsCatches = 'Left';
+} else if ($shootsCatches == 'R') {
+    $shootsCatches = 'Right';
+} else {
+    $shootsCatches = 'Unknown';
+}
+echo "<div class='bio-highlight-value text-xl font-bold text-white'>" . $shootsCatches . "</div>";
+echo "</div>";
+
+echo "</div>"; // close bio-highlights
+
+// Bio body with 3-column grid on larger screens
+echo "<div class='bio-body bg-[#292e33] p-5 text-white grid grid-cols-1 md:grid-cols-3 gap-8'>";
+
+// Personal Info Section
+echo "<div class='bio-section'>";
+echo "<h5 class='bio-section-title text-lg font-semibold mb-2 border-b border-gray-700 pb-1'>Personal Information</h5>";
+echo "<div class='space-y-2'>";
+echo "<p class='flex justify-between'><span class='font-semibold text-gray-400'>Birthdate:</span> <span class='text-gray-200'>" . $birthDate . "</span></p>";
+
+if ($birthStateProvince == '') {
+    echo "<p class='flex justify-between'><span class='font-semibold text-gray-400'>Birthplace:</span> <span class='text-gray-200'>" . $birthCity . " (" . $birthCountry . ")</span></p>";
+} else {
+    echo "<p class='flex justify-between'><span class='font-semibold text-gray-400'>Birthplace:</span> <span class='text-gray-200'>" . $birthCity . ", " . $birthStateProvince . " (" . $birthCountry . ")</span></p>";
+}
+echo "</div>";
+echo "</div>";
+
+// Draft Info Section
+echo "<div class='bio-section'>";
+echo "<h5 class='bio-section-title text-lg font-semibold mb-2 border-b border-gray-700 pb-1'>Draft Information</h5>";
+echo "<div class='space-y-2'>";
+if ($draftYear == 'N/A') {
+    echo "<p class='flex justify-between'><span class='font-semibold text-gray-400'>Status:</span> <span class='text-gray-200'>Undrafted</span></p>";
+} else {
+    echo "<p class='flex justify-between'><span class='font-semibold text-gray-400'>Year:</span> <span class='text-gray-200'>" . $draftYear . "</span></p>";
+    echo "<p class='flex justify-between'><span class='font-semibold text-gray-400'>Team:</span> <span class='text-gray-200'>" . $draftTeam . "</span></p>";
+    echo "<p class='flex justify-between'><span class='font-semibold text-gray-400'>Round/Pick:</span> <span class='text-gray-200'>Round " . $draftRound . ", Pick " . $draftPickInRound . " (#" . $draftOverall . " Overall)</span></p>";
+}
+echo "</div>";
+echo "</div>";
+
+// Awards Section
+if (!empty($awardNames)) {
+    $awardNamesArray = json_decode(str_replace("'", '"', $awardNames), true);
+    $awardSeasonsArray = json_decode(str_replace("'", '"', $awardSeasons), true);
+
+    if (is_array($awardNamesArray) && is_array($awardSeasonsArray) && count($awardNamesArray) > 0) {
+        echo "<div class='bio-section'>";
+        echo "<h5 class='bio-section-title text-lg font-semibold mb-2 border-b border-gray-700 pb-1'>Awards & Achievements</h5>";
+        echo "<div class='awards space-y-2'>";
+        for ($i = 0; $i < count($awardNamesArray); $i++) {
+            $award = $awardNamesArray[$i];
+            $seasonsRaw = $awardSeasonsArray[$i];
+
+            $formattedSeasons = array_map(function($s) {
+                return substr($s, 0, 4) . "-" . substr($s, 4, 2);
+            }, $seasonsRaw);
+
+            $seasonString = implode(", ", $formattedSeasons);
+            echo "<p class='flex'><span class='text-[#45A29E] mr-2 flex-shrink-0'>•</span> <span class='text-gray-200'>" . $award . " <span class='text-gray-400'>(" . $seasonString . ")</span></span></p>";
+        }
+        echo "</div>";
+        echo "</div>";
+    }
+} else {
+    // If no awards, add an empty third column to maintain grid layout
+    echo "<div class='bio-section'>";
+    echo "<h5 class='bio-section-title text-lg font-semibold mb-2 border-b border-gray-700 pb-1'>Awards & Achievements</h5>";
+    echo "<p class='text-gray-400'>No awards or achievements recorded.</p>";
+    echo "</div>";
+}
+
+echo "</div>"; // close bio-body
+echo "</div>"; // close bio-box
+
+echo "</div>"; // close overall player-profile-container
 
       ########################################################################## Stat Tables ##################################################################
 
-      echo "<div class='stats-container'>";
-        // Start OUTER WRAPPER
-        echo "<div class='flex flex-col lg:flex-row gap-10'>";
 
-        // LEFT COLUMN (top 3 tables stacked)
-        echo "<div class='flex flex-col lg:basis-[45%]'>";
+// Main container
+echo "<div class='w-full max-w-7xl mx-auto mb-8'>";
 
-        ### Last 5 Games ###  
-        echo "<h3 class='stats-title'>Last 5 Games Statistics</h3>";
-          # Goalies
-        if (strtolower($position) == 'g') {
-          if (mysqli_num_rows($last5GameInfo) == 0) {
-            echo "<table class='goalie-stats-table default-zebra-table text-center'>";
-            echo "<colgroup>";
-            echo "<col class='last-5-games-id'>";
-            echo "<col class='last-5-games-team'>";
-            echo "<col class='last-5-games-opponent'>";
-            echo "<col class='last-5-games-home-road'>";
-            echo "<col class='last-5-games-shots-against'>";
-            echo "<col class='last-5-games-goals-against'>";
-            echo "<col class='last-5-games-saves'>";
-            echo "<col class='last-5-games-save-percentage'>";
-            echo "<col class='last-5-games-starter'>";
-            echo "</colgroup>";
-            echo "<thead>";
-            echo "<tr>";
-                echo "<th class='border border-slate-600 px-2 py-1'>ID</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Team</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Opp.</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>H/A</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>SA</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>GA</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Saves</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Save %</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Starter</th>";
-            echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
-            echo "<tr>";
-            echo "<td colspan='9' class='text-center border border-slate-600 px-2 py-1'>No data available.</td>";
-            echo "</tr>";
-            echo "</tbody>";
-            echo "</table><br><br>";
-          } else {
-          echo "<table class='player-stats-table default-zebra-table text-center'>";
-          echo "<colgroup>";
-          echo "<col class='last-5-games-id'>";
-          echo "<col class='last-5-games-team'>";
-          echo "<col class='last-5-games-opponent'>";
-          echo "<col class='last-5-games-home-road'>";
-          echo "<col class='last-5-games-goals'>";
-          echo "<col class='last-5-games-assists'>";
-          echo "<col class='last-5-games-points'>";
-          echo "<col class='last-5-games-plus-minus'>";
-          echo "<col class='last-5-games-pim'>";
-          echo "<col class='last-5-games-hits'>";
-          echo "<col class='last-5-games-ppg'>";
-          echo "<col class='last-5-games-sog'>";
-          echo "<col class='last-5-games-faceoff-winning-pctg'>";
-          echo "<col class='last-5-games-toi'>";
-          echo "</colgroup>";
-          echo "<thead>";
-          echo "<tr>";
-                echo "<th class='border border-slate-600 px-2 py-1'>ID</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Team</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Opp.</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>H / A</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>G</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>A</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>P</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>+/-</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>PIM</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Hits</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>PPG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>SOG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>FO %</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>TOI</th>";
-            echo "</tr>";
-          echo "</thead>";
+// Stats wrapper with bio-style container
+echo "<div class='rounded-lg overflow-hidden shadow-xl border border-[#45A29E]'>";
 
-          while ($row = mysqli_fetch_assoc($last5GameInfo)) {
+// Header matching bio box style
+echo "<div class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white px-4 py-3 flex justify-between items-center'>";
+echo "<span class='text-lg font-bold'>Player Statistics</span>";
+echo "</div>";
+
+// Tabs container with bio-style background
+echo "<div class='bg-[#202428] px-4 py-3 border-b border-gray-700'>";
+echo "<div class='flex flex-wrap gap-2'>";
+echo "<button class='bg-[#45A29E] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 hockey-tab-button active' data-tab='tab1'>Last 5 Games</button>";
+echo "<button class='bg-[#2c3237] hover:bg-[#343a40] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 hockey-tab-button' data-tab='tab2'>Featured Season</button>";
+echo "<button class='bg-[#2c3237] hover:bg-[#343a40] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 hockey-tab-button' data-tab='tab3'>Career Regular Season</button>";
+echo "<button class='bg-[#2c3237] hover:bg-[#343a40] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 hockey-tab-button' data-tab='tab4'>Career Playoffs</button>";
+echo "</div>";
+echo "</div>";
+
+// Tab content with bio-style background
+echo "<div class='bg-[#292e33] p-5 text-center'>";
+
+// Hidden tabs CSS
+echo "<style>
+.hockey-tab-pane {
+    display: none;
+}
+.hockey-tab-pane.active {
+    display: block;
+}
+.hockey-tab-button.active {
+    background-color: #45A29E !important;
+}
+</style>";
+
+// TAB 1: Last 5 Games Statistics
+echo "<div class='hockey-tab-pane active' id='tab1'>";
+if (strtolower($position) == 'g') {
+    if (mysqli_num_rows($last5GameInfo) == 0) {
+        echo "<div class='overflow-x-auto'>";
+        echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+        echo "<thead>";
+        echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>ID</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Team</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Opp.</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>H/A</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SA</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GA</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Saves</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Save %</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Starter</th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+        echo "<tr class='bg-[#2c3237] text-white'>";
+        echo "<td colspan='9' class='text-center border border-gray-600 px-3 py-3 text-gray-300'>No data available.</td>";
+        echo "</tr>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+    } else {
+        echo "<div class='overflow-x-auto'>";
+        echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+        echo "<thead>";
+        echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>ID</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Team</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Opp.</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>H/A</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SA</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GA</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Saves</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Save %</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Starter</th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+
+        while ($row = mysqli_fetch_assoc($last5GameInfo)) {
             $last5_games_id = isset($row['game_id']) ? $row['game_id'] : null;
-            $last5_games_date = isset($row['game_date']) ? $row['game_date'] : null;
             $last5_games_team = isset($row['team']) ? $row['team'] : null;
             $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
             $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
-            $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
             $last5_games_shotsAgainst = isset($row['goalie_shotsAgainst']) ? $row['goalie_shotsAgainst'] : null;
             $last5_games_goalsAgainst = isset($row['goalie_goalsAgainst']) ? $row['goalie_goalsAgainst'] : null;
             $last5_games_saves = isset($row['goalie_saves']) ? $row['goalie_saves'] : null;
             $last5_games_savePctg = isset($row['goalie_savePctg']) ? $row['goalie_savePctg'] : null;
             $last5_games_starter = isset($row['goalie_starter']) ? $row['goalie_starter'] : null;
-            echo "<tr>";
-            echo "<td class='border border-slate-600 px-2 py-1'><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
-            echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_team . "</td>";
-            echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_opponent . "</td>";
+            
+            echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+            echo "<td class='border border-gray-600 px-3 py-2'><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "' class='text-[#45A29E] hover:text-white transition-colors duration-200'>$last5_games_id</a></td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $last5_games_team . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $last5_games_opponent . "</td>";
+            
             if ($last5_games_homeRoad =='H') {
-              $last5_games_homeRoad = 'Home';
-            } else if ($last5_games_homeRoad == 'A') {
-              $last5_games_homeRoad = 'Away';
-            } else {
-              $last5_games_homeRoad = 'N/A';
-            }
-            echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_homeRoad . "</td>";
-
-
-            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_shotsAgainst)) . "</td>";
-            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_goalsAgainst)) . "</td>";
-            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_saves, 2)) . "</td>";
-            echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($last5_games_savePctg, 3)) . "</td>";
-            if ($last5_games_starter == 1) {
-              echo "<td class='border border-slate-600 px-2 py-1'>Yes</td>";
-            } else {
-              echo "<td class='border border-slate-600 px-2 py-1'>No</td>";
-            }
-
-
-            echo "</tr>";
-            }
-          }
-        }
-        } else {
-          if (mysqli_num_rows($last5GameInfo) == 0) {
-            # Skaters
-            echo "<table class='player-stats-table default-zebra-table text-center mt-10'>";
-            echo "<colgroup>";
-            echo "<col class='last-5-games-id'>";
-            echo "<col class='last-5-games-team'>";
-            echo "<col class='last-5-games-opponent'>";
-            echo "<col class='last-5-games-home-road'>";
-            echo "</colgroup>";
-            echo "<thead>";
-            echo "<tr>";
-              echo "<th class='border border-slate-600 px-2 py-1'>ID</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Team</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Opp.</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>H/A<th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>G</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>A</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>P</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>+/-</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>PIM</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Hits</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>PPG</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>SOG</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>FO %</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>TOI</th>";
-            echo "</tr>";
-            echo "</thead>";
-              echo "<tr>";
-              echo "<td colspan='15' class='text-center border border-slate-600 px-2 py-1'>No data available.</td>";
-              echo "</tr>";
-          } else {
-            echo "<table class='goalie-stats-table default-zebra-table text-center mt-10'>";
-            echo "<colgroup>";
-            echo "<col class='last-5-games-id'>";
-            echo "<col class='last-5-games-team'>";
-            echo "<col class='last-5-games-opponent'>";
-            echo "<col class='last-5-games-home-road'>";
-            echo "</colgroup>";
-            echo "<thead>";
-            echo "<tr>";
-              echo "<th class='border border-slate-600 px-2 py-1'>ID</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Team</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Opp.</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>H/A</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>G</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>A</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>P</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>+/-</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>PIM</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Hits</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>PPG</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>SOG</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>FO %</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>TOI</th>";
-            echo "</tr>";
-            echo "</thead>";
-            while ($row = mysqli_fetch_assoc($last5GameInfo)) {
-              $last5_games_id = isset($row['game_id']) ? $row['game_id'] : null;
-              $last5_games_date = isset($row['game_date']) ? $row['game_date'] : null;
-              $last5_games_team = isset($row['team']) ? $row['team'] : null;
-              $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
-              $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
-              $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
-              $last5_games_assists = isset($row['assists']) ? $row['assists'] : null;
-              $last5_games_points = isset($row['points']) ? $row['points'] : null;
-              $last5_games_plusMinus = isset($row['plusMinus']) ? $row['plusMinus'] : null;
-              $last5_games_pim = isset($row['pim']) ? $row['pim'] : null;
-              $last5_games_hits = isset($row['hits']) ? $row['hits'] : null;
-              $last5_games_ppg = isset($row['powerPlayGoals']) ? $row['powerPlayGoals'] : null;
-              $last5_games_sog = isset($row['sog']) ? $row['sog'] : null;
-              $last5_games_faceoffWinningPctg = isset($row['faceoffWinningPctg']) ? $row['faceoffWinningPctg'] : null;
-              $last5_games_toi = isset($row['toi']) ? $row['toi'] : null;
-              echo "<tr>";
-              echo "<td class='border border-slate-600 px-2 py-1'><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "'>$last5_games_id</a></td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_team . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_opponent . "</td>";
-              if ($last5_games_homeRoad =='H') {
                 $last5_games_homeRoad = 'Home';
-              } else if ($last5_games_homeRoad == 'A') {
+            } else if ($last5_games_homeRoad == 'A') {
                 $last5_games_homeRoad = 'Away';
-              } else {
+            } else {
                 $last5_games_homeRoad = 'N/A';
-              }
-              echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_homeRoad . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . $last5_games_goals . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_assists)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_points)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_plusMinus)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_pim)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_hits)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_ppg)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_sog)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_faceoffWinningPctg)) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($last5_games_toi)) . "</td>";
-              
-              echo "</tr>";
             }
-          }
-        }
-      echo "</tbody>";
-      echo "</table><br>";
-        
-      
-
-
-          ### Featured Season Stats ###
-          $formatted_featuredSeason_1 = substr($featuredSeason, 0, 4);
-          $formatted_featuredSeason_2 = substr($featuredSeason, 4);
-        echo "<h3 class='stats-title'>Featured Season Statistics (" .
-         $formatted_featuredSeason_1 . "-" . $formatted_featuredSeason_2 . ")</h3>";
-        
-        if (strtolower($position) == 'g') {
-            // GOALIE STATS BLOCK
-            echo "<table class='goalie-stats-table default-zebra-table text-center'>";
-            echo "<colgroup>";
-            echo "<col class='goalie-player-details-gp>";
-            echo "<col class='goalie-player-details-w'>";
-            echo "<col class='goalie-player-details-l'>";
-            echo "<col class='goalie-player-details-gaa'>";
-            echo "<col class='goalie-player-details-savepct'>";
-            echo "<col class='goalie-player-details-so'>";
-            echo "<col class='goalie-player-details-t'>";
-            echo "<col class='goalie-player-details-gs'>";
-            echo "<col class='goalie-player-details-ga'>";
-            echo "<col class='goalie-player-details-otl'>";
-            echo "<col class='goalie-player-details-sa'>";
-            echo "</colgroup>";
-            echo "<thead>";
-            echo "<tr>";
-                echo "<th class='border border-slate-600 px-2 py-1'>GP</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>W</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>L</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>GAA</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>Save %</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>SO</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>T</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>GS</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>GA</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>OT L</th>";
-                echo "<th class='border border-slate-600 px-2 py-1'>SA</th>";
-            echo "</tr>";
-            echo "</thead>";
-        
-            echo "<tbody>";
-            echo "<tr>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonGP</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonWins</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonLosses</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($featuredSeasonGAA,2) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($featuredSeasonSavePct,3) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonSO</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonTies</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonGS</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonGA</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonOTLosses</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>$featuredSeasonShotsAgainst</td>";
-            echo "</tr>";
-            echo "</tbody>";
-            echo "</table><br><br>";
-        
-
+            
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $last5_games_homeRoad . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_shotsAgainst)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_goalsAgainst)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(number_format($last5_games_saves, 2)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(number_format($last5_games_savePctg, 3)) . "</td>";
+            
+            if ($last5_games_starter == 1) {
+                echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>Yes</td>";
             } else {
-              // SKATER STATS BLOCK
-              echo "<table class='player-stats-table default-zebra-table text-center'>";
-                echo "<thead>";
-                echo "<tr>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GP</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 6%'>G</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 6%'>A</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>Pts</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>+/-</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PIM</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 9%'>Shots</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 8%'>Shot %</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PPG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PP Pts</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>SHG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 8%'>SH Pts</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GWG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>OTG</th>"; 
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                echo "<tr>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonGP . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonGoals . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonAssists . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonPts . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonPlusMinus . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonPIM . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonShots . "</td>";
-                  // echo "<td>" . $featuredSeasonShootingPct . "</td>";
-                  $formatted_featuredSeasonShootingPct = $featuredSeasonShootingPct * 100;
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . round(number_format($formatted_featuredSeasonShootingPct, 2), 1) . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonPPG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonPPPoints . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonSHG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonSHPts . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonGWG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $featuredSeasonOTGoals . "</td>";
-                echo "</tr>";
-                echo "</tbody>";
-              echo "</table><br><br>";
-             }
-
-        ### Career Regular Season Stats ###
-            echo "<h3 class='stats-title'>Career Regular Season Statistics</h3>";
-            if (strtolower($position) == 'g') {
-              // GOALIE STATS BLOCK
-              echo "<table class='goalie-stats-table default-zebra-table text-center'>";
-                echo "<thead>";
-                echo "<tr>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GP</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>W</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>L</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GAA</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>Save %</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>SO</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>T</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GS</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GA</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>OT L</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>SA</td>";
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                echo "<tr>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerGP</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerWins</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerLosses</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($regSeasonCareerGAA,2) . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format($regSeasonCareerSavePct,3) . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerSO</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerTies</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerGS</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerGA</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerOTLosses</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$regSeasonCareerShotsAgainst</td>";
-                echo "</tr>";
-                echo "</tbody>";
-              echo "</table><br><br>";
-            } else {
-              // SKATER STATS BLOCK
-              echo "<table class='player-stats-table default-zebra-table text-center'>";
-                echo "<thead>";
-                echo "<tr>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GP</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 6%'>G</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 6%'>A</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>Pts</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>+/-</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PIM</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 9%'>Shots</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 8%'>Shot %</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PPG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PP Pts</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>SHG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 8%'>SH Pts</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GWG</th>";
-                echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>OTG</th>"; 
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                echo "<tr>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerGP . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerGoals . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerAssists . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPts . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPlusMinus . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPIM . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerShots . "</td>";
-                  $formatted_regSeasonCareerShootingPct = round((float)$regSeasonCareerShootingPct * 100, 1);
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $formatted_regSeasonCareerShootingPct . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPPG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerPPPoints . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerSHG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerSHPts . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerGWG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $regSeasonCareerOTGoals . "</td>";
-                echo "</tr>";
-                echo "</tbody>";
-              echo "</table><br><br>";
+                echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>No</td>";
             }
-        ### Career Playoff Stats ###
-            echo "<h3 class='stats-title'>Career Playoff Statistics</h3>";
-            if (strtolower($position) == 'g') {
-              // GOALIE STATS BLOCK
-              echo "<table class='goalie-stats-table default-zebra-table text-center'>";
-              echo "<thead>";
-                echo "<tr>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GP</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>W</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>L</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GAA</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>Save %</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>SO</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>T</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GS</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>GA</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>OT L</td>";
-                  echo "<th class='border border-slate-600 px-2 py-1'>SA</td>";
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                echo "<tr>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerGP</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerWins</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerLosses</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format((float)$playoffsCareerGAA,2) . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . number_format((float)$playoffsCareerSavePct,3) . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerSO</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerTies</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerGS</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerGA</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerOTLosses</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>$playoffsCareerShotsAgainst</td>";
-                echo "</tr>";
-                echo "</tbody>";
-              echo "</table><br><br>";
-            } else {
-              // SKATER STATS BLOCK
-              echo "<table class='player-stats-table default-zebra-table text-center'>";
-                echo "<thead>";
-                echo "<tr>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GP</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 6%'>G</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 6%'>A</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>Pts</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>+/-</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PIM</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 9%'>Shots</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 8%'>Shot %</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PPG</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>PP Pts</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>SHG</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 8%'>SH Pts</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>GWG</th>";
-                  echo "<th class='border border-slate-600 px-2 py-1' style='width: 7%'>OTG</th>"; 
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                echo "<tr>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerGP . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerGoals . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerAssists . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPts . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPlusMinus . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPIM . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerShots . "</td>";
-                  $formatted_playoffsCareerShootingPct = round((float)$playoffsCareerShootingPct * 100, 1);
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $formatted_playoffsCareerShootingPct . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPPG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerPPPoints . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerSHG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerSHPts . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerGWG . "</td>";
-                  echo "<td class='border border-slate-600 px-2 py-1'>" . $playoffsCareerOTGoals . "</td>";
-                echo "</tr>";
-                echo "</tbody>";
-              echo "</table><br><br>";
-            }
-
-            echo "</div>"; // END LEFT COLUMN
-
-
-
-
-// RIGHT COLUMN (bottom season-by-season table)
-            echo "<div class='flex flex-col gap-8 lg:basis-[55%]'>";
-
-            // echo "<p>" . $seasonTotals . "</p>";
-        
-      ### Season-by-Season Stats ###
-          $seasonStatsSQL = "SELECT *
-                             FROM player_season_stats 
-                             WHERE playerID=$player_id 
-                             ORDER BY seasonSeason ASC";
-          $seasonStats = mysqli_query($conn, $seasonStatsSQL);
-
-          echo "<h3 class='stats-title'>Season-by-Season Statistics</h3>";
-          echo "<table class='player-season-by-season-stats-table default-zebra-table w-full text-center'>";
-          echo "<colgroup>";
-            echo "<col class='season-by-season-season'>";
-            echo "<col class='season-by-season-league'>";
-            echo "<col class='season-by-season-team'>";
-            echo "<col class='season-by-season-gametype'>";
-            echo "<col class='season-by-season-gp'>";
-            if (strtolower($position) == 'g') {
-              echo "<col class='season-by-season-wins'>";
-              echo "<col class='season-by-season-losses'>";
-              echo "<col class='season-by-season-gaa'>";
-              echo "<col class='season-by-season-savepct'>";
-            } else {
-              echo "<col class='season-by-season-goals'>";
-              echo "<col class='season-by-season-assists'>";
-              echo "<col class='season-by-season-pts'>";
-              echo "<col class='season-by-season-pim'>";
-            }
-          echo "<thead>";
-            echo "<tr>";
-            if (strtolower($position) == 'g') {
-              echo "<th class='border border-slate-600 px-2 py-1'>Season</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>League</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Team Name</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Season Type</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>GP</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>W</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>L</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>GAA</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Sv %</th>";
-            } else {
-              echo "<th class='border border-slate-600 px-2 py-1'>Season</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>League</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Team Name</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Season Type</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>GP</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>G</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>A</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>Pts</th>";
-              echo "<th class='border border-slate-600 px-2 py-1'>PIM</th>";
-            }
-            echo "</tr>";
-          echo "</thead>";
-          echo "<tbody>";
-
-          # initializing variables to store career totals
-          $totalGP = $totalG = $totalA = $totalPts = $totalPIM = $totalW = $totalL = $totalGAA = $totalSavePct = $count = 0;
-
-          while ($row = mysqli_fetch_assoc($seasonStats)) {
-              $count+=1;
-              echo "<tr>";
-              $formatted_season_1 = substr($row['seasonSeason'], 0, 4);
-              $formatted_season_2 = substr($row['seasonSeason'], 4);
-              echo "<td class='border border-slate-600 px-2 py-1 text-center'>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
-              echo "<td class='border border-slate-600 px-2 py-1 text-center'>" . htmlspecialchars($row['seasonLeagueAbbrev']) . "</td>";
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars($row['seasonTeamName']) . "</td>";
-              $gameType_num = $row['seasonGameTypeId'];
-                  if ($gameType_num == 1) {
-                      $gameType_text = "Pre.";
-                  } elseif ($gameType_num == 2) {
-                      $gameType_text = "Reg.";
-                  } elseif ($gameType_num == 3) {
-                      $gameType_text = "Post.";
-                  } else {
-                      $gameType_text = "Unknown";
-                  }
-                  echo "<td class='border border-slate-600 px-2 py-1'>".$gameType_text."</td>";
-
-              echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonGamesPlayed'])) . "</td>";
-
-              if (strtolower($position) == 'g') {
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonWins'])) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonLosses'])) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($row['seasonGAA'], 2)) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(number_format($row['seasonSavePct'], 3)) . "</td>";
-        
-                // Tally up goalie stats
-                $totalGP       += (int) $row['seasonGamesPlayed'];
-                $totalW        += (int) $row['seasonWins'];
-                $totalL        += (int) $row['seasonLosses'];
-                $totalGAA      += (float) $row['seasonGAA'];
-                $totalSavePct  += (float) $row['seasonSavePct'];
-                $count++;
-            } else {
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonGoals'])) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonAssists'])) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonPoints'])) . "</td>";
-                echo "<td class='border border-slate-600 px-2 py-1'>" . htmlspecialchars(fillEmptyStats($row['seasonPIM'])) . "</td>";
-        
-                // Tally up skater stats
-                $totalGP   += (int) $row['seasonGamesPlayed'];
-                $totalG    += (int) $row['seasonGoals'];
-                $totalA    += (int) $row['seasonAssists'];
-                $totalPts  += (int) $row['seasonPoints'];
-                $totalPIM  += (int) $row['seasonPIM'];
-            }
-        
-            echo "</tr>";
-          }
-              
-          if (strtolower($position) == 'g') {
-            $avgGAA = $count > 0 ? $totalGAA / $count : 0;
-            $avgSavePct = $count > 0 ? $totalSavePct / $count : 0;
-        
-            echo "<tr class='border-2 border-top border-slate-600'>";
-              echo "<td colspan='4' rowspan='2' class='career-header border-2 border-slate-600 px-2 py-1'>Career Totals</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>GP</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>W</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>L</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>GAA</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>Sv %</td>";
-            echo "</tr>";
-        
-            echo "<tr>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalGP</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalW</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalL</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>" . number_format($avgGAA, 2) . "</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>" . number_format($avgSavePct, 3) . "</td>";
-            echo "</tr>";
-        } else {
-            echo "<tr>";
-              echo "<td colspan='4' rowspan='2' class='career-header border-2 border-slate-600 px-2 py-1'>Career Totals</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>GP</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>G</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>A</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>Pts</td>";
-              echo "<td class='career-subheader border-2 border-slate-600 px-2 py-1'>PIM</td>";
-            echo "</tr>";
-        
-            echo "<tr>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalGP</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalG</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalA</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalPts</td>";
-              echo "<td class='career-data border-2 border-slate-600 px-2 py-1'>$totalPIM</td>";
+            
             echo "</tr>";
         }
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+    }
+} else {
+    // Skater Last 5 Games
+    if (mysqli_num_rows($last5GameInfo) == 0) {
+        echo "<div class='overflow-x-auto'>";
+        echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+        echo "<thead>";
+        echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>ID</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Team</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Opp.</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>H/A</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>G</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>A</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>P</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>+/-</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PIM</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Hits</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PPG</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SOG</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>FO %</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>TOI</th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+        echo "<tr class='bg-[#2c3237] text-white'>";
+        echo "<td colspan='14' class='text-center border border-gray-600 px-3 py-3 text-gray-300'>No data available.</td>";
+        echo "</tr>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+    } else {
+        echo "<div class='overflow-x-auto'>";
+        echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+        echo "<thead>";
+        echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>ID</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Team</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Opp.</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>H/A</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>G</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>A</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>P</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>+/-</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PIM</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Hits</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PPG</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SOG</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>FO %</th>";
+            echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>TOI</th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+        
+        while ($row = mysqli_fetch_assoc($last5GameInfo)) {
+            $last5_games_id = isset($row['game_id']) ? $row['game_id'] : null;
+            $last5_games_team = isset($row['team']) ? $row['team'] : null;
+            $last5_games_opponent = isset($row['opponent']) ? $row['opponent'] : null;
+            $last5_games_homeRoad = isset($row['homeRoad']) ? $row['homeRoad'] : null;  
+            $last5_games_goals = isset($row['skater_goals']) ? $row['skater_goals'] : null;
+            $last5_games_assists = isset($row['assists']) ? $row['assists'] : null;
+            $last5_games_points = isset($row['points']) ? $row['points'] : null;
+            $last5_games_plusMinus = isset($row['plusMinus']) ? $row['plusMinus'] : null;
+            $last5_games_pim = isset($row['pim']) ? $row['pim'] : null;
+            $last5_games_hits = isset($row['hits']) ? $row['hits'] : null;
+            $last5_games_ppg = isset($row['powerPlayGoals']) ? $row['powerPlayGoals'] : null;
+            $last5_games_sog = isset($row['sog']) ? $row['sog'] : null;
+            $last5_games_faceoffWinningPctg = isset($row['faceoffWinningPctg']) ? $row['faceoffWinningPctg'] : null;
+            $last5_games_toi = isset($row['toi']) ? $row['toi'] : null;
+            
+            echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+            echo "<td class='border border-gray-600 px-3 py-2'><a href='https://connoryoung.com/game_details.php?game_id=" . $last5_games_id . "' class='text-[#45A29E] hover:text-white transition-colors duration-200'>$last5_games_id</a></td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $last5_games_team . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $last5_games_opponent . "</td>";
+            
+            if ($last5_games_homeRoad =='H') {
+                $last5_games_homeRoad = 'Home';
+            } else if ($last5_games_homeRoad == 'A') {
+                $last5_games_homeRoad = 'Away';
+            } else {
+                $last5_games_homeRoad = 'N/A';
+            }
+            
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $last5_games_homeRoad . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $last5_games_goals . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_assists)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_points)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_plusMinus)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_pim)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_hits)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_ppg)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_sog)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_faceoffWinningPctg)) . "</td>";
+            echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($last5_games_toi)) . "</td>";
+            
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+    }
+}
+echo "</div>"; // End TAB 1
 
-              
-          echo "</tbody>";
-          echo "</table><br><br>";
+// TAB 2: Featured Season Statistics
+echo "<div class='hockey-tab-pane' id='tab2'>";
+$formatted_featuredSeason_1 = substr($featuredSeason, 0, 4);
+$formatted_featuredSeason_2 = substr($featuredSeason, 4);
+echo "<h3 class='text-xl font-semibold mb-4 text-white text-center border-b border-gray-700 pb-2'>" . $formatted_featuredSeason_1 . "-" . $formatted_featuredSeason_2 . "</h3>";
 
-          echo "</div>"; // END RIGHT COLUMN
-          echo "</div>"; // END OUTER WRAPPER
-          echo "</div>"; // END PLAYER STATS DIV
+if (strtolower($position) == 'g') {
+    // GOALIE STATS BLOCK
+    echo "<div class='overflow-x-auto'>";
+    echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+    echo "<thead>";
+    echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>W</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>L</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GAA</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Save %</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SO</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>T</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GS</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GA</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>OT L</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SA</th>";
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonGP</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonWins</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonLosses</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . number_format($featuredSeasonGAA,2) . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . number_format($featuredSeasonSavePct,3) . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonSO</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonTies</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonGS</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonGA</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonOTLosses</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$featuredSeasonShotsAgainst</td>";
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+} else {
+    // SKATER STATS BLOCK
+    echo "<div class='overflow-x-auto'>";
+    echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+    echo "<thead>";
+    echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>G</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>A</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>+/-</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PIM</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Shots</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Shot %</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PPG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PP Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SHG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SH Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GWG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>OTG</th>"; 
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonGP . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonGoals . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonAssists . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonPts . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonPlusMinus . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonPIM . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonShots . "</td>";
+        $formatted_featuredSeasonShootingPct = (float)$featuredSeasonShootingPct * 100;
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . round(number_format($formatted_featuredSeasonShootingPct, 2), 1) . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonPPG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonPPPoints . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonSHG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonSHPts . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonGWG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $featuredSeasonOTGoals . "</td>";
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+}
+echo "</div>"; // End TAB 2
 
+// TAB 3: Career Regular Season Statistics
+echo "<div class='hockey-tab-pane' id='tab3'>";
+echo "<h3 class='text-xl font-semibold mb-4 text-white text-center border-b border-gray-700 pb-2'>Career Regular Season</h3>";
 
-        ?>
-        <br><br>
+if (strtolower($position) == 'g') {
+    // GOALIE STATS BLOCK
+    echo "<div class='overflow-x-auto'>";
+    echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+    echo "<thead>";
+    echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>W</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>L</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GAA</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Save %</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SO</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>T</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GS</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GA</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>OT L</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SA</th>";
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerGP</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerWins</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerLosses</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . number_format($regSeasonCareerGAA,2) . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . number_format($regSeasonCareerSavePct,3) . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerSO</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerTies</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerGS</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerGA</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerOTLosses</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$regSeasonCareerShotsAgainst</td>";
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+} else {
+    // SKATER STATS BLOCK
+    echo "<div class='overflow-x-auto'>";
+    echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+    echo "<thead>";
+    echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>G</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>A</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>+/-</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PIM</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Shots</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Shot %</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PPG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PP Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SHG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SH Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GWG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>OTG</th>"; 
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerGP . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerGoals . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerAssists . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerPts . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerPlusMinus . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerPIM . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerShots . "</td>";
+        $formatted_regSeasonCareerShootingPct = round((float)$regSeasonCareerShootingPct * 100, 1);
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $formatted_regSeasonCareerShootingPct . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerPPG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerPPPoints . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerSHG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerSHPts . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerGWG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $regSeasonCareerOTGoals . "</td>";
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+}
+echo "</div>"; // End TAB 3
 
-      </div>
+// TAB 4: Career Playoff Statistics
+echo "<div class='hockey-tab-pane' id='tab4'>";
+echo "<h3 class='text-xl font-semibold mb-4 text-white text-center border-b border-gray-700 pb-2'>Career Playoffs</h3>";
 
-    </div>
+if (strtolower($position) == 'g') {
+    // GOALIE STATS BLOCK
+    echo "<div class='overflow-x-auto'>";
+    echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+    echo "<thead>";
+    echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>W</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>L</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GAA</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Save %</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SO</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>T</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GS</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GA</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>OT L</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SA</th>";
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerGP</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerWins</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerLosses</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . number_format((float)$playoffsCareerGAA,2) . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . number_format((float)$playoffsCareerSavePct,3) . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerSO</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerTies</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerGS</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerGA</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerOTLosses</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>$playoffsCareerShotsAgainst</td>";
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+} else {
+    // SKATER STATS BLOCK
+    echo "<div class='overflow-x-auto'>";
+    echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+    echo "<thead>";
+    echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>G</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>A</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>+/-</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PIM</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Shots</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Shot %</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PPG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PP Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SHG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>SH Pts</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GWG</th>";
+        echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>OTG</th>"; 
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerGP . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerGoals . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerAssists . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerPts . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerPlusMinus . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerPIM . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerShots . "</td>";
+        $formatted_playoffsCareerShootingPct = round((float)$playoffsCareerShootingPct * 100, 1);
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $formatted_playoffsCareerShootingPct . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerPPG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerPPPoints . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerSHG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerSHPts . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerGWG . "</td>";
+        echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . $playoffsCareerOTGoals . "</td>";
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+}
+echo "</div>"; // End TAB 4
 
+echo "</div>"; // End tab content container
+echo "</div>"; // End stats wrapper
+echo "</div>"; // End main container
+
+// Season-by-Season Stats with bio box styling
+echo "<div class='w-full max-w-7xl mx-auto mb-8'>";
+
+// Stats wrapper with bio-style container
+echo "<div class='rounded-lg overflow-hidden shadow-xl border border-[#45A29E]'>";
+
+// Header matching bio box style
+echo "<div class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white px-4 py-3'>";
+echo "<span class='text-lg font-bold'>Season-by-Season Statistics</span>";
+echo "</div>";
+
+// Table content with bio-style background
+echo "<div class='bg-[#292e33] p-5'>";
+echo "<div class='overflow-x-auto'>";
+
+$seasonStatsSQL = "SELECT *
+                   FROM player_season_stats 
+                   WHERE playerID=$player_id 
+                   ORDER BY seasonSeason ASC";
+$seasonStats = mysqli_query($conn, $seasonStatsSQL);
+
+echo "<table class='w-full border-collapse border-2 border-[#45A29E] rounded-lg overflow-hidden'>";
+echo "<thead>";
+echo "<tr class='bg-gradient-to-r from-[#1F2833] to-[#2C3E50] text-white'>";
+
+if (strtolower($position) == 'g') {
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Season</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>League</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Team Name</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Season Type</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>W</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>L</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GAA</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Sv %</th>";
+} else {
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Season</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>League</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Team Name</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Season Type</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>GP</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>G</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>A</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>Pts</th>";
+  echo "<th class='border border-gray-600 px-3 py-2 text-sm font-semibold'>PIM</th>";
+}
+echo "</tr>";
+echo "</thead>";
+echo "<tbody>";
+
+# initializing variables to store career totals
+$totalGP = $totalG = $totalA = $totalPts = $totalPIM = $totalW = $totalL = $totalGAA = $totalSavePct = $count = 0;
+
+while ($row = mysqli_fetch_assoc($seasonStats)) {
+    $count+=1;
+    echo "<tr class='bg-[#2c3237] hover:bg-[#343a40] text-white transition-colors duration-200'>";
+    $formatted_season_1 = substr($row['seasonSeason'], 0, 4);
+    $formatted_season_2 = substr($row['seasonSeason'], 4);
+    echo "<td class='border border-gray-600 px-3 py-2 text-center text-gray-200'>".htmlspecialchars($formatted_season_1)."-".htmlspecialchars($formatted_season_2)."</td>";
+    echo "<td class='border border-gray-600 px-3 py-2 text-center text-gray-200'>" . htmlspecialchars($row['seasonLeagueAbbrev']) . "</td>";
+    echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars($row['seasonTeamName']) . "</td>";
     
-    <?php include 'footer.php'; ?>
+    $gameType_num = $row['seasonGameTypeId'];
+    if ($gameType_num == 1) {
+        $gameType_text = "Pre.";
+    } elseif ($gameType_num == 2) {
+        $gameType_text = "Reg.";
+    } elseif ($gameType_num == 3) {
+        $gameType_text = "Post.";
+    } else {
+        $gameType_text = "Unknown";
+    }
+    echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>".$gameType_text."</td>";
 
+    echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($row['seasonGamesPlayed'])) . "</td>";
+
+    if (strtolower($position) == 'g') {
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($row['seasonWins'])) . "</td>";
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($row['seasonLosses'])) . "</td>";
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(number_format($row['seasonGAA'], 2)) . "</td>";
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(number_format($row['seasonSavePct'], 3)) . "</td>";
+
+      // Tally up goalie stats
+      $totalGP       += (int) $row['seasonGamesPlayed'];
+      $totalW        += (int) $row['seasonWins'];
+      $totalL        += (int) $row['seasonLosses'];
+      $totalGAA      += (float) $row['seasonGAA'];
+      $totalSavePct  += (float) $row['seasonSavePct'];
+  } else {
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($row['seasonGoals'])) . "</td>";
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($row['seasonAssists'])) . "</td>";
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($row['seasonPoints'])) . "</td>";
+      echo "<td class='border border-gray-600 px-3 py-2 text-gray-200'>" . htmlspecialchars(fillEmptyStats($row['seasonPIM'])) . "</td>";
+
+      // Tally up skater stats
+      $totalGP   += (int) $row['seasonGamesPlayed'];
+      $totalG    += (int) $row['seasonGoals'];
+      $totalA    += (int) $row['seasonAssists'];
+      $totalPts  += (int) $row['seasonPoints'];
+      $totalPIM  += (int) $row['seasonPIM'];
+  }
+
+  echo "</tr>";
+}
+
+// Career totals section with bio box styling
+if (strtolower($position) == 'g') {
+  $avgGAA = $count > 0 ? $totalGAA / $count : 0;
+  $avgSavePct = $count > 0 ? $totalSavePct / $count : 0;
+
+  // Career totals header row
+  echo "<tr class='bg-[#1F2833] text-white border-t-2 border-[#45A29E]'>";
+  echo "<td colspan='4' rowspan='2' class='border border-gray-600 px-3 py-3 text-center font-bold text-lg'>Career Totals</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>GP</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>W</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>L</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>GAA</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>Sv %</td>";
+  echo "</tr>";
+
+  // Career totals values row
+  echo "<tr class='bg-[#2c3237] text-white font-bold'>";
+//   echo "<td colspan='4' class='border border-gray-600 px-3 py-3'></td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalGP</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalW</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalL</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>" . number_format($avgGAA, 2) . "</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>" . number_format($avgSavePct, 3) . "</td>";
+  echo "</tr>";
+} else {
+  // Career totals header row for skaters
+  echo "<tr class='bg-[#1F2833] text-white border-t-2 border-[#45A29E]'>";
+  echo "<td colspan='4' rowspan='2' class='border border-gray-600 px-3 py-3 text-center font-bold text-lg'>Career Totals</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>GP</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>G</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>A</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>Pts</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center font-semibold'>PIM</td>";
+  echo "</tr>";
+
+  // Career totals values row for skaters
+  echo "<tr class='bg-[#2c3237] text-white font-bold'>";
+//   echo "<td colspan='4' class='border border-gray-600 px-3 py-3'></td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalGP</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalG</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalA</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalPts</td>";
+  echo "<td class='border border-gray-600 px-3 py-2 text-center'>$totalPIM</td>";
+  echo "</tr>";
+}
+
+echo "</tbody>";
+echo "</table>";
+echo "</div>"; // End overflow container
+echo "</div>"; // End content container
+echo "</div>"; // End stats wrapper
+echo "</div>"; // End main container
+
+} // End if(isset($_GET['player_id']))
+?>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    // Get all tab buttons
+    const tabButtons = document.querySelectorAll('.hockey-tab-button');
+    
+    // Add click event to each tab button
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the tab ID from data-tab attribute
+            const tabId = this.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and tab panes
+            document.querySelectorAll('.hockey-tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.hockey-tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // Add active class to clicked button and corresponding tab pane
+            this.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+});
+    </script>
+    
+</div>
+
+<?php include 'footer.php'; ?>
   </body>
+  
 </html>

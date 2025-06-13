@@ -1,3 +1,19 @@
+<?php
+/* --- turn on ALL error output before anything else ------------------- */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+/* --- try to include connection file and confirm it really loaded ----- */
+$included = @include __DIR__ . '/db_connection.php';   // absolute path is safer
+if ($included === false) {
+    die('Could not include db_connection.php – check the path.');
+}
+
+/* if we reach here the include succeeded, so any crash is **inside**
+   db_connection.php or in code that comes next.  */
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,103 +47,14 @@
             }
         }
     </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #131A24;
-            color: #FFFFFF;
-        }
-        
-        .bg-gradient-nhl {
-            background: linear-gradient(180deg, #1C2333 0%, #131A24 100%);
-        }
-        
-        .filter-input:focus {
-            border-color: #00E6FF;
-            box-shadow: 0 0 0 3px rgba(0, 230, 255, 0.3);
-            outline: none;
-        }
-        
-        .pagination-button {
-            transition: all 0.2s ease;
-        }
-        
-        .pagination-button:hover {
-            transform: translateY(-2px);
-        }
-        
-        .table-container {
-            scrollbar-width: thin;
-            scrollbar-color: #45CC8F #263044;
-        }
-        
-        .table-container::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        .table-container::-webkit-scrollbar-track {
-            background: #1C2333;
-            border-radius: 10px;
-        }
-        
-        .table-container::-webkit-scrollbar-thumb {
-            background: #45CC8F;
-            border-radius: 10px;
-        }
-        
-        .players-table th {
-            position: sticky;
-            top: 0;
-            background-color: #1C2333;
-            z-index: 10;
-        }
-        
-        .players-table tr:hover td {
-            background-color: rgba(0, 230, 255, 0.05);
-        }
-        
-        /* Animation for page loading */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .animate-fade-in {
-            animation: fadeIn 0.4s ease-in-out forwards;
-        }
-        
-        /* Table borders */
-        .border-cell {
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .filters-container {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Fix for alternating row colors */
-        .players-table tr:nth-child(odd) {
-            background-color: #1C2333 !important;
-        }
-        
-        .players-table tr:nth-child(even) {
-            background-color: rgba(38, 48, 68, 0.3) !important;
-        }
-    </style>
 </head>
 
 <?php include 'header.php'; ?>
 
 <body class="bg-nhl-dark">
+<div class='mx-auto'>
 
 <?php
-include('db_connection.php');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -241,10 +168,11 @@ $end = min($offset + $limit, $total_rows);
 ?>
 
 <!-- Main content -->
-<div class="bg-gradient-nhl py-8 px-4 animate-fade-in">
-    <div class="max-w-7xl mx-auto">
+<div class="py-8 px-4 animate-fade-in">
+    <div class="max-w-[1770px]">
         <!-- Header Section -->
-        <div class="text-center mb-8">
+         <div class='flex justify-between'>
+        <div class="mb-8">
             <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
                 NHL Players Database
             </h1>
@@ -254,8 +182,7 @@ $end = min($offset + $limit, $total_rows);
         </div>
         
         <!-- Search Form Section (like Season Selector in draft) -->
-        <div class="max-w-xs mx-auto mb-8">
-            <!-- <label for="search-term" class="block text-sm font-medium text-nhl-muted mb-2">Player Search</label> -->
+        <div class="max-w-xs mb-8">
             <form id="nhl-search" method="GET" action="nhl_players.php" class="relative">
                 <input type="hidden" name="search_column" value="player">
                 <input 
@@ -298,8 +225,12 @@ $end = min($offset + $limit, $total_rows);
                     <input type="hidden" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>">
                 <?php endif; ?>
             </form>
-            <a href="nhl_games.php" class="text-sm mb-4 text-center text-nhl-accent hover:text-nhl-accent/80">Search games instead</a>
+            <div class="text-right mt-1 mr-1">
+    <a href="nhl_games.php" class="text-sm text-nhl-accent hover:text-nhl-accent/80">Search games instead</a>
+</div>
+
         </div>
+        </div> <!-- End flex justify-between -->
 
 
 
@@ -377,9 +308,25 @@ $end = min($offset + $limit, $total_rows);
             </span>
         </div>
 
+        <!-- Function to convert country code to flag image -->
+        <?php
+        function getFlagSVG($countryCode) {
+            $filePath = __DIR__ . "/resources/images/countryflags/" . strtoupper($countryCode) . ".svg";
+
+            if (file_exists($filePath)) {
+                $svg = file_get_contents($filePath);
+                // Inject class into the SVG for styling
+                $svg = preg_replace('/<svg\b/', '<svg class="inline w-10 h-8 align-middle"', $svg);
+                return '<span title="' . htmlspecialchars($countryCode) . '">' . $svg . '</span>';
+            } else {
+                return htmlspecialchars($countryCode); // Fallback: just show the code
+            }
+        }
+        ?>
+
         <!-- Players Table -->
         <div class="bg-nhl-darkblue rounded-xl shadow-lg p-1 mb-6 table-container overflow-x-auto border border-nhl-medium/50">
-            <table id="playersTable" class="players-table w-full text-left">
+            <table id="playersTable" class="players-table w-full text-center">
                 <thead>
                     <tr class="text-nhl-accent text-sm uppercase border-b border-nhl-medium/50">
                         <th class="px-3 py-3 rounded-tl-lg">ID</th>
@@ -420,18 +367,25 @@ $end = min($offset + $limit, $total_rows);
                                 <td class="px-3 py-2.5"><?= $row['heightInInches'] ?? '-' ?> in / <?= $row['heightInCentimeters'] ?? '-' ?> cm</td>
                                 <td class="px-3 py-2.5"><?= $row['weightInPounds'] ?? '-' ?> lbs / <?= $row['weightInKilograms'] ?? '-' ?> kg</td>
                                 <td class="px-3 py-2.5"><?= $row['birthDate'] ? date('m/d/Y', strtotime($row['birthDate'])) : '-' ?></td>
-                                <td class="px-3 py-2.5"><?= $row['birthCountry'] ?? '-' ?></td>
-                                <td class="px-3 py-2.5"><?= $row['shootsCatches'] ?? '-' ?></td>
+                                <td class="px-3 py-2.5"><?= getFlagSVG($row['birthCountry']) ?? $row['birthCountry'] ?></td>
+                                <?php if ($row['shootsCatches'] == 'L') {
+                                  $shootsCatches = 'Left';
+                                } elseif ($row['shootsCatches'] == 'R') {
+                                  $shootsCatches = 'Right';
+                                } else {
+                                  $shootsCatches = 'Unknown';
+                                } ?>
+                                <td class="px-3 py-2.5"><?= $shootsCatches ?></td>
                                 <td class="px-3 py-2.5">
                                     <?= $row['isActive'] == 'True' ? 
-                                        '<span class="inline-block px-2 py-0.5 bg-nhl-accent2/20 text-nhl-accent2 rounded text-xs font-medium">Yes</span>' : 
-                                        '<span class="inline-block px-2 py-0.5 bg-nhl-muted/20 text-nhl-muted rounded text-xs font-medium">No</span>' 
+                                        '<span class="inline-block px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Yes</span>' : 
+                                        '<span class="inline-block px-2 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-semibold">No</span>' 
                                     ?>
                                 </td>
                                 <td class="px-3 py-2.5"><?= $row['sweaterNumber'] ?: '-' ?></td>
                                 <td class="px-3 py-2.5">
                                     <?php if (!empty($row['teamLogo'])): ?>
-                                        <a href="team_details.php?team_id=<?= $row['currentTeamID'] ?? '' ?>" class="block w-8 h-8 mx-auto transition-transform hover:scale-110">
+                                        <a href="team_details.php?team_id=<?= $row['currentTeamID'] ?? '' ?>" class="block w-12 h-12 mx-auto transition-transform hover:scale-110">
                                             <img src="<?= htmlspecialchars($row['teamLogo']) ?>" alt="<?= htmlspecialchars($row['currentTeamAbbrev'] ?? '') ?>" class="w-full h-full object-contain">
                                         </a>
                                     <?php else: ?>
@@ -557,6 +511,7 @@ $end = min($offset + $limit, $total_rows);
         <?php endif; ?>
     </div>
 </div>
+                </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

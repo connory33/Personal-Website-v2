@@ -11,10 +11,238 @@ rgb(182, 71, 71) - red line red
 */
 
 
+.text-nhl-muted {
+  color: rgb(138, 151, 177);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #131A24;
+            color: #FFFFFF;
+        }
+        
+        .bg-gradient-nhl {
+            background: linear-gradient(180deg, #1C2333 0%, #131A24 100%);
+        }
+        
+        .filter-input:focus {
+            border-color: #00E6FF;
+            box-shadow: 0 0 0 3px rgba(0, 230, 255, 0.3);
+            outline: none;
+        }
+        
+        .pagination-button {
+            transition: all 0.2s ease;
+        }
+        
+        .pagination-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .table-container {
+            scrollbar-width: thin;
+            scrollbar-color: #45CC8F #263044;
+        }
+        
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #1C2333;
+            border-radius: 10px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #45CC8F;
+            border-radius: 10px;
+        }
+        
+        .players-table th {
+            position: sticky;
+            top: 0;
+            background-color: #1C2333;
+            z-index: 10;
+        }
+        
+        .players-table tr:hover td {
+            background-color: rgba(0, 230, 255, 0.05);
+        }
+        
+        /* Animation for page loading */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        
+        /* Table borders */
+        .border-cell {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .filters-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Fix for alternating row colors */
+        .players-table tr:nth-child(odd) {
+            background-color: #1C2333 !important;
+        }
+        
+        .players-table tr:nth-child(even) {
+            background-color: rgba(38, 48, 68, 0.3) !important;
+        }
 
 
 
 
+/* PLAYER DETAILS */
+/* Main container for statistics section */
+.hockey-stats-section {
+  max-width: 95%;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+/* Tab Styles */
+.hockey-tabs {
+  display: flex;
+  border-bottom: 2px solid #45A29E;
+  margin-bottom: 1px;
+}
+
+.hockey-tab-button {
+  background: linear-gradient(to right, #1F2833, #2C3E50);
+  color: #fff;
+  border: 1px solid #45A29E;
+  border-bottom: none;
+  padding: 10px 20px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  outline: none;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.hockey-tab-button:hover {
+  opacity: 0.9;
+}
+
+.hockey-tab-button.active {
+  opacity: 1;
+  border-bottom: 2px solid #1F2833;
+  margin-bottom: -2px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.hockey-tab-content {
+  background: linear-gradient(to right, #1F2833, #2C3E50);
+  border: 1px solid #45A29E;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hockey-tab-pane {
+  display: none;
+}
+
+.hockey-tab-pane.active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+.hockey-tab-title {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hockey-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .hockey-tab-button {
+    flex-grow: 1;
+    font-size: 0.8rem;
+    padding: 8px 10px;
+    white-space: nowrap;
+  }
+
+}
+
+/* END PLAYER DETAILS */
+
+
+body {
+	width: 100%;
+	overflow-x: hidden;
+	line-height: 1.6;
+    background-color: #343a40;
+    color: #f8f9fa;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+  }
+
+
+/* GAMES/PLAYER SUMMARY TABLE */
+#nhl-games-players-summary-content-container {
+	color: #c5c6c7;}
+
+  
+  /* sort arrow styling */
+  .sort-arrows a {
+	margin-left: 4px;
+	font-size: 0.8rem;
+	text-decoration: none;
+  }
+	
+/* furthest outer div class that surrounds whole page content and allows for full page width */
+.full-page-content-container {
+	width: 100%;
+}
+
+
+/* Team link footer */
+.footer-teams {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 20px;
+	max-width: 72%;
+}
+.footer-teams a {
+	text-decoration: none;
+}
+.footer-teams a:hover {
+	text-decoration: underline;	
+}
 
 :root {
 	--jumbotron-padding-y: 3rem;
@@ -51,7 +279,6 @@ rgb(182, 71, 71) - red line red
 	width: 100%; /* Full-width footer */
   }
 
-  /* Footer container styling */
   .footer-container {
 	  display: flex;
 	  justify-content: space-between; /* Push left and right content to far edges */
@@ -59,8 +286,6 @@ rgb(182, 71, 71) - red line red
 	  width: 100%; /* Ensure it spans the full width of the screen */
   }
 
-
-  /* Links in the center */
   .footer-links {
 	  display: flex;
 	  justify-content: center;
@@ -93,13 +318,6 @@ rgb(182, 71, 71) - red line red
 
 
 /* ################################################## GLOBAL STYLES ################################################## */
-.index-bg-img {
-    background-image: url(../images/enchantedlake.jpg);
-	width: 100%;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
 
 .my-footer {
 	background-color: #171a1f;
@@ -108,28 +326,7 @@ rgb(182, 71, 71) - red line red
 	border-top: 2px solid #1F2833;
 }
 
-/* sets background color for Bootstrap's default footer class */
-/* .bg-body-tertiary {
-	background-color: #2f333b;
-	color: white;
-} */
 
-/* Prevent horizontal scrolling on mobile */
-body {
-	width: 100%;
-	overflow-x: hidden;
-	font-family: 'Inter', sans-serif;
-	line-height: 1.6;
-	background-color: #757c84;
-}
-
-html, body {
-	height: 100%;
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-	padding: 0;
-  }
 
 main {
 	flex: 1;
@@ -142,8 +339,6 @@ main {
 .min-w-max {
     min-width: max-content;
 }
-
-
 
 #navbarHeader {
     background-color: #343a40; /* Navbar background color */
@@ -165,65 +360,49 @@ main {
 }
 
 
-/* ################################################## INDEX PAGE STYLES ################################################## */
+/* ################################################## MAIN HOMEPAGE ################################################## */
 .containedImage {
 	overflow: hidden;
 	display: flex;
 	justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .containedImage img {
 	width: 100%;
 	height: 100%;
 	display: flex;
 	justify-content: center;
 }
+.index-bg-img {
+    background-image: url(../images/enchantedlake.jpg);
+	width: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
 
-/* ################################################### PROJECT PAGE STYLES ################################################### */
-/* Formatting images on project pages */
-
-
-/* Formatting text on project pages */
+/* ################################################### PAST PROJECT PAGES ################################################### */
 .sectionHeading {
 	color: #18314F;
 	padding: .6em;
 	font-size: 2.4em;
 	font-weight: bold;
-	text-align: center;
+  text-align: center;
 }
-
 .underline {
 	border-bottom-style: solid;
 	border-color: #18314F;
 	padding-bottom: .8em;
 }
-
 .headingContent {
 	color: #18314f;
 	font-size: 1.2em;
-	text-align: center;
 }
-
-
 .height-cap {
     height: 16em;
 }
 
-/* Formatting Spotify DB/search page */
-.spotifyTable {
-	border: 1px solid #18314F;
-}
-
-/* #################################################### NHL INDEX STYLES #################################################### */
-.nhlindex-bg-img {
-	background-image: url(../images/nhl_index_bg.jpg);
-	width: 100%;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	height: 100%;
-}
+/* #################################################### NHL DB HOMEPAGE #################################################### */
 
 #nhlindex-content {
 	background-color: rgba(76, 91, 100, 0.85); /* gray */
@@ -232,168 +411,389 @@ main {
 	padding-top: 20px; padding-right: 20px; padding-left: 20px;
 	width: 100%;
   }
+      
+        .hero-section {
+            background-image: url('../resources/images/nhl_index_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 70vh;
+        }
+        
+        .feature-card {
+            background-color: rgba(31, 41, 55, 0.8);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(75, 85, 99, 0.5);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        .team-links a {
+            display: inline-block;
+            padding: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .team-links a:hover {
+            transform: scale(1.2);
+            color: #3b82f6 !important;
+        }
+        
+        .search-form-container {
+            background-color: rgba(17, 24, 39, 0.8);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(75, 85, 99, 0.5);
+        }
+        
+        .main-cta {
+            background-color: #3b82f6;
+            transition: all 0.3s ease;
+        }
+        
+        .main-cta:hover {
+            background-color: #2563eb;
+        }
+        
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0), rgba(59, 130, 246, 0.5), rgba(59, 130, 246, 0));
+        }
 
-
-/* GAMES/PLAYER SUMMARY TABLE */
-#nhl-games-players-summary-content-container {
-	color: #c5c6c7;
-	text-align: center;
+        /* Fix header dropdown z-index issues with slideshow */
+header, 
+.navbar, 
+.navbar-nav,
+.dropdown-menu {
+    position: relative;
+    z-index: 1050 !important; /* Higher than any slideshow element */
 }
 
-  
-  #games-players-summary-table th,
-  #games-players-summary-table td {
-	padding: 12px 16px;
-	border-bottom: 1px solid #d2d8db;
-  }
-  #games-players-summary-table td {
-	font-size: 0.9rem;
-	text-align: center;
-  }
-  #games-players-summary-table th {
-	font-size: 0.95rem;
-	color: white;
-	background-color: #18314f;
-  }
-  #games-players-summary-table tr {
-	color: black;
+/* Ensure slideshow stays behind header elements */
+#slideshow-container {
+    z-index: 0 !important;
 }
 
-#games-players-summary-table {
-    zoom: .8;
-}
-  
-  /* sort arrow styling */
-  .sort-arrows a {
-	margin-left: 4px;
-	font-size: 0.8rem;
-	text-decoration: none;
-  }
-
-/* ############################################################# NHL PLAYER PAGE STYLES ########################################################## */
-/* Player Stats Table Styling */
-#player-goalie-stats-table-container {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-	border-radius: 8px;
-	overflow: hidden;
+.slideshow-container .absolute {
+    z-index: 5 !important;
 }
 
-.player-stats-table, .goalie-stats-table, .season-roster-table, .overall-team-stats-table, .player-season-by-season-stats-table {
-    width: 100%;
-    margin: 20px auto;
-    table-layout: fixed;
-    text-align: center;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-    border-radius: 8px;
-	zoom: .9;
+/* Fix the dark overlay to stay below header */
+#slideshow-container .bg-gradient-to-b {
+    z-index: 10 !important;
 }
 
-/* Apply border-radius to the thead to round the whole header */
-.player-stats-table thead, .goalie-stats-table thead, .season-roster-table thead, .player-season-by-season-stats-table thead {
-	font-weight: bold;
-    border-radius: 8px 8px 0 0;
-    overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
-	position: sticky;
-	top: 0;
-	z-index: 2;
-	color: white;
-	text-align: center;
-	font-weight: bold;
-	background-color: #18314F;
-	/* border: 2px solid #e3e7eb; */
-}
-
-.player-stats-table th, .goalie-stats-table th, .season-roster-table th, .overall-team-stats-table th, .player-season-by-season-stats-table th {
-    padding: 5px;
-    /* border-bottom: 2px solid #ddd; */
-	/* border: 1px solid #e3e7eb; */
-}
-
-/* Table Cell Styling */
-.player-stats-table td, .goalie-stats-table td, .season-roster-table td, .overall-team-stats-table td, .player-season-by-season-stats-table td {
-    padding: 10px 12px;
-    text-align: center;
-    color: #333; /* Ensure text is dark enough for readability */
-	/* border: 1px solid #e3e7eb; */
+/* Make sure dropdown menu appears above everything */
+.dropdown-menu.show {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important; 
+    z-index: 1055 !important;
 }
 
 
+/* ############################## REUSABLE COMPONENTS (TABLES, FILTERS, SEARCH, DROPDOWN, ETC.) ####################################### */
 
-/* Responsive flex container for hero + bio */
-.hero-bio-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 30px;
-	flex-wrap: wrap;
+/* Season selector dropdown */
+.season-selector {
+background: linear-gradient(to right, rgba(31, 41, 55, 0.8), rgba(31, 41, 55, 0.6));
+border: 1px solid rgba(75, 85, 99, 0.5);
+border-radius: 0.5rem;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+padding: 1.25rem; /* Increased padding */
 }
-.hero-bio-image {
-	width: 100%;     
-	max-width: 800px;  
-	border-radius: 8px;
-	flex-shrink: 0;
-  }
-  
-  .bio-box {
-	border: 1px solid #e3e7eb;
-	border-radius: 8px;
-	overflow: hidden;
-	width: 100%;
-	max-width: 400px;
-	background-color: #e3e7eb;
-  }
-  
-  .bio-header {
-	text-align: center;
-	background-color: #18314f;
-	color: white;
-	padding: 10px;
-	margin: 0;
-	font-size: 1.25rem;
-	font-weight: bold;
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
-	border-bottom: 1px solid #e3e7eb;
-  }
-  
-  .bio-body {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	height: 400px;
-	padding: 10px 5%;
-	color: black;
-  }
-  
-  
-
-.career-header {
-	background-color: #18314f;
-	color: white !important;
-	font-weight: bold;
-	/* border: 3px solid white; */
-  }
-  
-  .career-subheader {
-	background-color: #18314f;
-	color: white !important;
-	font-weight: bold;
-	/* border: 3px solid white; */
-	border-left: none;
-  }
-  
-  .career-data {
-	/* border: 3px solid white; */
-	font-weight: 600;
-  }
-  
+.season-selector option {
+color: black;
+}
+.season-selector label {
+color: #d1d5db;
+font-weight: 500;
+margin-bottom: 0.5rem;
+display: block;
+}
+.season-selector select {
+background: linear-gradient(to bottom, #4b5563, #374151);
+border: 1px solid rgba(107, 114, 128, 0.5);
+box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+color: white;
+width: 100%;
+padding: 0.5rem 1rem;
+}
+.season-selector select:hover {
+background: linear-gradient(to bottom, #6b7280, #4b5563);
+border-color: rgba(156, 163, 175, 0.5);
+}
 
 
+/* Modern Zebra Table */
+.default-zebra-table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(69, 162, 158, 0.2);
+  margin-bottom: 1rem;
+}
+.default-zebra-table thead {
+  background: linear-gradient(90deg, #18314f, #1c3b5e);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.default-zebra-table th {
+  color: white;
+  font-weight: 600;
+  padding: 0.9rem 0.75rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 3px solid #45A29E;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+.default-zebra-table th:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.default-zebra-table td {
+  color: #0B0C10;
+  padding: 0.8rem 0.75rem;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(197, 198, 199, 0.5);
+  transition: all 0.2s ease;
+  vertical-align: middle;
+}
+.default-zebra-table td:not(:last-child) {
+  border-right: 1px solid rgba(197, 198, 199, 0.2);
+}
+/* .default-zebra-table tbody tr:nth-child(even) {
+  background-color: #e9ecf0;
+}
+.default-zebra-table tbody tr:nth-child(odd) {
+  background-color: #f5f7f9; */
+/* } */
+.default-zebra-table tbody tr:hover {
+  background-color: rgb(133, 149, 168);
+  transform: translateY(-1px);
+  transition: all 0.2s ease-in-out;
+  color: #0B0C10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.default-zebra-table tbody tr:hover td {
+  color: #18314f;
+  font-weight: 500;
+}
+.default-selected-row {
+  background-color: rgba(69, 162, 158, 0.25) !important;
+  box-shadow: inset 0 0 0 1px rgba(69, 162, 158, 0.5) !important;
+}
+.default-zebra-table a {
+  color: #1F2833;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.default-zebra-table a:hover {
+  color: #0e71bc;
+}
+.default-zebra-table a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1.5px;
+  bottom: -2px;
+  left: 0;
+  background-color: #45A29E;
+  transition: width 0.3s ease;
+}
+.default-zebra-table a:hover::after {
+  width: 100%;
+}
+.default-zebra-table tbody tr:last-child td {
+  border-bottom: none;
+}
 
-  /* ############################################## NHL Game Page Style ############################################# */
+/* Modern Table Container */
+.default-horizontal-scroll-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 1.25rem;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(69, 162, 158, 0.6) rgba(31, 40, 51, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+}
+.default-horizontal-scroll-table-container::-webkit-scrollbar {
+  height: 6px;
+}
+.default-horizontal-scroll-table-container::-webkit-scrollbar-track {
+  background: rgba(31, 40, 51, 0.1);
+  border-radius: 10px;
+}
+.default-horizontal-scroll-table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(69, 162, 158, 0.6);
+  border-radius: 10px;
+}
+.default-horizontal-scroll-table-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(69, 162, 158, 0.8);
+}
+
+/* Search Bar for Games and Players */
+.search-container {
+background: linear-gradient(to bottom, rgba(44, 58, 78, 0.8), rgba(21, 31, 51, 0.9));
+border-radius: 0.75rem;
+padding: 1.5rem;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+border: 1px solid rgba(75, 85, 99, 0.4);
+margin-bottom: 2.5rem;
+}
+
+.search-form {
+display: flex;
+flex-wrap: wrap;
+gap: 1rem;
+justify-content: center;
+align-items: center;
+}
+
+.search-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.75rem 1rem;
+  padding-right: 2.5rem; /* Make room for the custom arrow */
+  border-radius: 0.5rem;
+  border: 1px solid rgba(156, 163, 175, 0.3);
+  background-color: rgba(255, 255, 255, 0.95);
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%2345A29E' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='18px' height='18px'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+      
+.search-form select,
+.search-form input[type="text"] {
+padding: 0.75rem 1rem;
+border-radius: 0.5rem;
+border: 1px solid rgba(156, 163, 175, 0.3);
+background-color: rgba(255, 255, 255, 0.95);
+font-size: 1rem;
+transition: all 0.3s ease;
+color: black;
+}
+
+.search-form select:focus,
+.search-form input[type="text"]:focus {
+outline: none;
+border-color: #45A29E;
+box-shadow: 0 0 0 2px rgba(69, 162, 158, 0.3);
+color: black;
+}
+
+.search-button {
+padding: 0.75rem 1.5rem;
+background: linear-gradient(to right, #3b82f6, #2563eb);
+color: white;
+font-weight: 600;
+border-radius: 0.5rem;
+border: none;
+transition: all 0.3s ease;
+cursor: pointer;
+}
+
+.search-button:hover {
+background: linear-gradient(to right, #2563eb, #1d4ed8);
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(37, 99, 235, 0.4);
+}
+
+/* Pagination styling */
+.pagination {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 0.5rem;
+margin-top: 1.5rem;
+flex-wrap: wrap;
+}
+
+.page-button {
+background: linear-gradient(to bottom, #4b5563, #374151);
+color: white;
+border: none;
+padding: 0.5rem 0.875rem;
+font-size: 0.95rem;
+border-radius: 0.375rem;
+min-width: 2.5rem;
+transition: all 0.3s ease;
+text-decoration: none;
+display: inline-block;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-button:hover {
+background: linear-gradient(to bottom, #6b7280, #4b5563);
+transform: translateY(-1px);
+}
+
+.page-button.active {
+background: linear-gradient(to right, #3b82f6, #2563eb);
+font-weight: 600;
+}
+
+.page-button.disabled {
+background: #6b7280;
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+.page-ellipsis {
+color: #9ca3af;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+    
+
+/* Section Divider */
+.section-divider {
+height: 2px;
+background: linear-gradient(90deg, transparent, rgba(69, 162, 158, 0.7), transparent);
+border: none;
+margin: 2.5rem auto;
+width: 80%;
+}
+
+
+
+h1.page-title {
+background: linear-gradient(90deg, #6390d8, #4372d6, #3b82f6);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+  
+
+/* ############################################## NHL GAME DETAILS PAGE ############################################# */
 
 #play-by-play-container {
     width: 100%;
@@ -408,7 +808,6 @@ main {
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
-    text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     border: none;
@@ -424,7 +823,6 @@ main {
 	background-color: #1F2833;
 	z-index: 2;
 	color: white;
-	text-align: center;
 	font-weight: 600;
 	border: 2px solid white;
 }
@@ -434,14 +832,11 @@ main {
     border-bottom: 2px solid #ddd;
 }
 
-/* Table Cell Styling */
 #play-by-play-table td {
     padding: 10px 12px;
     border: 1px solid #ddd;
-    text-align: center;
     color: #333; /* Ensure text is dark enough for readability */
 }
-
 
 .roster-container {
     display: grid;
@@ -463,24 +858,12 @@ main {
 	overflow-x: auto;
 }
 
-.roster-table-wrapper {
-    width: 100%;
-    overflow-x: auto; /* Ensure horizontal scrolling for tables */
-}
 
 .roster-table {
     min-width: 1200px; /* Set a minimum width for the table */
     width: auto; /* Allow the table to grow based on content */
 	overflow-x: auto;
 }
-
-.roster-title {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-
-
 
 
 .rink-key-wrapper {
@@ -492,14 +875,11 @@ main {
     flex-wrap: wrap; /* Optional: makes it responsive on small screens */
 }
 
-/* Individual column for title + element */
 .rink-key-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
 }
-
 
 .coordinate-dot {
 	width: 10px;
@@ -508,7 +888,7 @@ main {
 	position: absolute;
 	border-radius: 50%;
 	z-index: 10;
-  }
+}
 
 #rink-container {
     position: relative;
@@ -528,46 +908,698 @@ main {
 }
 
 
-/* ####################################################### NHL TEAM PAGE STYLES ########################################################## */
 
-/* Header box that contains the team name and logo */
+
+/* ############################# SHIFT DETAILS PAGE ################################# */
+.shift-table {
+	width: 100%
+}
+
+.shift-table thead {
+	background-color: #18314f;
+	color: white;
+	font-weight: 600;
+	zoom: 0.9;
+}
+
+
+
+
+/* ############################################ NHL PLAYOFF BRACKET PAGE ############################################ */
+
+.playoff-grid-container {
+  display: grid;
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  /* Replace the existing grid-template-rows with this more compact version */
+  grid-template-rows: auto auto repeat(9, auto); /* Changed from 21 rows to just 9 */
+  gap: 8px; /* Reduced from 10px */
+  padding: 12px; /* Reduced from 15px */
+  position: relative;
+  background: linear-gradient(to bottom, rgba(30, 41, 59, 0.4), rgba(30, 41, 59, 0.1));
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  overflow-y: hidden; /* Explicitly prevent vertical scrolling */
+}
+
+/* Round headers - reduce spacing */
+.round-header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.95rem; /* Slightly reduced */
+  padding: 6px 0; /* Reduced from 8px */
+  margin-bottom: 3px; /* Reduced from 5px */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #e2e8f0;
+}
+
+/* Reduce spacing for horizontal lines */
+hr.border-slate-500 {
+  margin: 1px auto; /* Reduced from 2px */
+}
+
+/* Conference labels - reduce spacing */
+.conference-label {
+  grid-row: 1;
+  text-align: center;
+  font-size: 1.4rem; /* Reduced from 1.5rem */
+  font-weight: bold;
+  margin-bottom: 10px; /* Reduced from 15px */
+  padding-bottom: 4px; /* Reduced from 5px */
+  position: relative;
+  letter-spacing: 1px;
+  color: #f8fafc;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Reduce spacing for horizontal lines */
+hr.border-slate-500 {
+  margin: 1px auto; /* Reduced from 2px */
+}
+
+      .conference-label::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 25%;
+        width: 50%;
+        height: 2px;
+        background: linear-gradient(to right, rgba(148, 163, 184, 0), rgba(148, 163, 184, 0.8), rgba(148, 163, 184, 0));
+        border-radius: 2px;
+      }
+
+      .west-label { grid-column: 1 / 4; }
+      .east-label { grid-column: 5 / 8; }
+      
+      /* Round header positioning */
+      .r1-west { grid-column: 1; grid-row: 2; }
+      .r2-west { grid-column: 2; grid-row: 2; }
+      .r3-west { grid-column: 3; grid-row: 2; }
+      .stanley-cup-header { 
+        grid-column: 4/6; 
+        grid-row: 3; 
+        color: #fcd34d; 
+        font-weight: 800;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-align: center;
+        z-index: 15;
+      }
+      .r3-east { grid-column: 6; grid-row: 2; }
+      .r2-east { grid-column: 7; grid-row: 2; }
+      .r1-east { grid-column: 8; grid-row: 2; }
+
+/* Series positioning - first round */
+.seriesA { grid-column: 1; grid-row: 3/5; }
+.seriesB { grid-column: 1; grid-row: 5/7; }
+.seriesC { grid-column: 1; grid-row: 7/9; }
+.seriesD { grid-column: 1; grid-row: 9/11; }
+
+.seriesE { grid-column: 8; grid-row: 3/5; }
+.seriesF { grid-column: 8; grid-row: 5/7; }
+.seriesG { grid-column: 8; grid-row: 7/9; }
+.seriesH { grid-column: 8; grid-row: 9/11; }
+
+/* Series positioning - second round */
+.seriesI { grid-column: 2; grid-row: 4/6; }
+.seriesJ { grid-column: 2; grid-row: 8/10; }
+.seriesK { grid-column: 7; grid-row: 4/6; }
+.seriesL { grid-column: 7; grid-row: 8/10; }
+
+/* Series positioning - third round */
+.seriesM { grid-column: 3; grid-row: 5/8; }
+.seriesN { grid-column: 6; grid-row: 5/8; }
+
+/* Final positioning */
+.seriesO { 
+  grid-column: 4/6; 
+  grid-row: 4; 
+  transform: scale(1.2);
+  z-index: 5;
+}
+
+.series-box {
+  width: 100%;
+  max-width: 180px;
+  margin: 0 auto;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  border-radius: 8px;
+  padding: 6px 8px; /* Reduced padding (top/bottom, left/right) */
+  background-color: rgba(30, 41, 59, 0.9);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  /* Add height constraint */
+  min-height: 0; /* Allow series box to shrink as needed */
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1px 0; /* Reduced from 3px to 1px */
+  min-height: 0; /* Allow the team row to shrink */
+  height: 26px; /* Set a specific height to constrain the team row */
+}
+
+.team-logo {
+  width: 22px; /* Reduced from 28px */
+  height: 22px; /* Reduced from 28px */
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2)); /* Reduced shadow */
+}
+
+.team-info {
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 6px; /* Reduced from 8px */
+  font-size: 0.85rem; /* Reduced from 0.9rem */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2; /* Add tighter line height */
+}
+
+.series-score {
+  font-weight: bold;
+  font-size: 1rem; /* Reduced from 1.1rem */
+  margin-left: 6px; /* Reduced from 8px */
+  min-width: 18px; /* Reduced from 20px */
+  text-align: center;
+}
+
+      .series-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: rgba(148, 163, 184, 0.8);
+        background-color: rgba(51, 65, 85, 0.95);
+      }
+      
+
+/* Champion display - adjust position and scale */
+.champion-container {
+  grid-column: 4/6;
+  grid-row: 5;
+  text-align: center;
+  margin-top: 15px; /* Reduced from 20px */
+  scale: 1; /* Reduced from 1.1 */
+  z-index: 10; /* Ensure it stays above other elements */
+}
+
+.champion-trophy {
+  width: 90px; /* Reduced from 100px */
+  height: auto;
+  margin: 0 auto 8px; /* Reduced from 10px */
+  z-index: 10; /* Ensure it stays above other elements */
+}
+      
+      .champion-trophy:hover {
+        transform: scale(1.05);
+      }
+
+.bracket-container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 5px 10px; /* Simplified padding */
+  min-height: 600px; /* Set a reasonable minimum height */
+  overflow-y: hidden; /* Ensure no vertical scrolling */
+}
+      
+      @media (max-width: 1200px) {
+        .playoff-grid-container {
+          min-width: 1000px; /* Ensure minimum width for smaller screens */
+          width: auto;
+        }
+        
+        .series-box {
+          max-width: 150px;
+        }
+      }
+
+
+
+
+
+/* Lines connecting series */
+.connector-line {
+    position: absolute;
+    background-color: #666;
+}
+
+.final-header {
+    grid-column: 3 / 4;
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin: 10px 0;
+    border-bottom: 2px solid #888;
+    padding-bottom: 5px;
+}
+
+
+
+
+/* ###################################################### PLAYER DETAILS PAGE ###################################################### */
+#player-goalie-stats-table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.season-roster-table, .overall-team-stats-table {
+    width: 100%;
+    margin: 20px auto;
+    table-layout: fixed;
+    border-radius: 8px;
+	zoom: .9;
+  color: white;
+}
+
+.season-roster-table thead {
+	font-weight: bold;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	color: white;
+	font-weight: bold;
+	background-color: #18314F;
+	/* border: 2px solid #e3e7eb; */
+}
+
+.season-roster-table th, .overall-team-stats-table th {
+    padding: 5px;
+}
+
+.season-roster-table td, .overall-team-stats-table td {
+    padding: 10px 12px;
+}
+
+.hero-bio-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.bio-box {
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+  
+.bio-header {
+    background: linear-gradient(to right, #1F2833, #2C3E50);
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 1rem;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bio-header .player-position {
+    background-color: #343a40;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.bio-highlights {
+    background-color: #202428;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    border-bottom: 1px solid #3a4046;
+}
+
+@media (min-width: 640px) {
+    .bio-highlights {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.bio-highlight-item {
+    background-color: #2c3237;
+    padding: 0.75rem;
+    border-radius: 6px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bio-highlight-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bio-highlight-label {
+    font-size: 0.8rem;
+    color: #8f9ba8;
+    margin-bottom: 0.3rem;
+}
+
+.bio-highlight-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #e3e7eb;
+}
+
+.bio-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 1rem;
+    color: #e3e7eb;
+    background-color: #292e33;
+}
+@media (min-width: 768px) {
+    .bio-body {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+.bio-section {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.bio-section-title {
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #3a4046;
+}
+
+.bio-body p {
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.bio-body p:not(:last-child) {
+    border-bottom: 1px solid #3a4046;
+}
+
+.bio-body p b {
+    color: #8f9ba8;
+    min-width: 120px;
+}
+
+.bio-body .awards p {
+    display: flex;
+    align-items: flex-start;
+}
+
+.bio-body .awards p:not(:last-child) {
+    border-bottom: none;
+}
+
+      /* Contract Card Styles */
+.contract-card {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.contract-header {
+    background-image: linear-gradient(to right, #1F2833, #2C3E50);
+}
+
+@media (max-width: 768px) {
+    .contract-card .grid-cols-3 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Add a subtle hover effect for the summary cards */
+.contract-card .bg-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+
+  
+.career-header {
+	background-color: #18314f;
+	color: white !important;
+	font-weight: bold;
+	/* border: 3px solid white; */
+  }
+
+.career-subheader {
+background-color: #18314f;
+color: white !important;
+font-weight: bold;
+/* border: 3px solid white; */
+border-left: none;
+}
+
+.career-data {
+/* border: 3px solid white; */
+font-weight: 600;
+}
+
+.player-header-container {
+  background: linear-gradient(to right, #1F2833, #2C3E50);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 70%;
+  margin: 0 auto;
+  border: 1px solid #45A29E;
+}
+
+.player-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.player-images {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.player-images img {
+  transition: transform 0.3s ease;
+}
+
+.hero-image-container {
+  flex: 1 1 60%;
+  min-width: 300px;
+}
+
+.hero-bio-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #45A29E;
+  max-width: 650px;  
+  flex-shrink: 0;
+}
+
+.bio-body b {
+  color: #18314f;
+  font-weight: 600;
+}
+
+.awards {
+  border-top: 1px solid #c5c6c7;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 92%;
+    margin: 0 auto;
+}
+
+.stats-section {
+  margin-bottom: 1.5rem;
+}
+
+.stats-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #45A29E;
+}
+
+/* ############################################################## NHL TEAM PAGE STYLES ########################################################## */
+/* Season Statistics Section */
+.season-stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.season-stats-title h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.season-stats-subtitle {
+    color: #8A97B1;
+    font-size: 0.9rem;
+}
+
+.season-dropdown select {
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6L8 10L12 6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.season-dropdown select:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.season-dropdown select:focus {
+    outline: none;
+    border-color: var(--team-color, #45CC8F);
+    box-shadow: 0 0 0 2px rgba(69, 204, 143, 0.3);
+}
+
+/* Tab content styling */
+.season-tabs-container {
+  border-radius: 8px;
+  overflow: hidden; /* Keeps child elements within the rounded corners */
+}
+
+.season-tab {
+  display: flex;
+  flex-wrap: wrap;
+  /* background-color: rgba(31, 41, 55, 0.8);*/
+  padding: 8px 8px 0 8px;
+  gap: 10px;
+}
+
+/* .season-tab-button {
+  flex: 1 0 auto;
+  padding: 12px 16px;
+  text-align: center;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: #d1d5db;
+} */
+/* 
+.season-tab-button:hover {
+  background-color: rgba(75, 85, 99, 0.6);
+} */
+
+/* .season-tab-button.active {
+  background-color: rgba(67, 118, 220, 0.3);
+  color: white;
+} */
+
+/* Tab content container - no padding or border */
+.season-tab-content {
+  padding: 0;
+  /* background-color: rgba(17, 24, 39, 0.7); */
+}
+
+.season-tab-pane {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.season-tab-pane table {
+  width: 100%;
+  max-width: 1200px; /* Adjust this value as needed */
+}
+
+/* If you have horizontal scrolling issues */
+.season-tab-pane {
+  overflow-x: auto;
+}
+
+/* Make sure the inner content of the table doesn't force the width */
+.team-stats-table {
+  table-layout: fixed;
+}
+
+/* Make the table rows and cells fill the entire space */
+.team-stats-table thead th,
+.team-stats-table tbody td {
+  padding: 10px 14px;
+}
+
+.overflow-x-auto {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+
+
 .team-header {
 	padding: 20px;
 	border-radius: 12px;
 	box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 	margin-bottom: 30px;
 	display: flex;
-	justify-content: center;
+	/* justify-content: center; */
 }
 
-/* filter container for season filter dropdown */
-.filter-container {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto 10px auto;
-    padding: 7px 10px;
-    border-radius: 5px;
-    color: rgb(233, 235, 236);
-    display: flex;
-    justify-content: space-between; /* Push label left, select right */
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    box-sizing: border-box; /* Ensures padding doesn't overflow */
-}
-.filter-container label {
-    margin: 0;
-    line-height: 1;
-}
-.filter-container select {
-    flex-shrink: 0;
-    padding: 5px;
-	padding: 5px 8px;
-    font-size: 16px;
-    line-height: 1;
-}
-
-/* Dropdown for selecting season */
 #seasonDropdown {
 	border-radius: 8px;
 	display: flex;
@@ -581,50 +1613,33 @@ main {
     transition: all 0.3s ease;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-#seasonDropdown select {
-	padding: 6px 12px;
-	border-radius: 8px;
-	border: 1px solid #ccc;
-}
-#seasonDropdown:hover {
-    background-color: #dddbdb; /* Slightly lighter red on hover */
-    border-color: #b5b4b4;
+
+.team-stats-table {
+  text-align: center;
+  /* min-width: 00px; */
+  zoom: .9;
+  width: 85%;
 }
 
-#seasonDropdown:focus {
-    outline: none;
-    box-shadow: 0 0 8px rgba(17, 17, 17, 0.5); /* Subtle focus effect */
-}
-
-#player-goalie-stats-table-container {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 1rem;
+.team-stats-table tr:hover td {
+background-color: rgba(69, 162, 158, 0.1);
+color: white;
 }
 
 .skaters-combined-table {
     width: 100%;
     margin: 20px auto;
     table-layout: fixed;
-    text-align: center;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-    /* border-radius: 8px; */
 	zoom: .9;
 }
 
-
-/* Apply border-radius to the thead to round the whole header */
 .skaters-combined-table thead {
 	font-weight: bold;
-    /* border-radius: 8px 8px 0 0; */
-    overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
+    overflow: hidden;
 	position: sticky;
 	top: 0;
 	z-index: 2;
 	color: white;
-	text-align: center;
-	font-weight: bold;
 }
 
 .skaters-combined-table th {
@@ -633,359 +1648,869 @@ main {
 	border: 1px solid #e3e7eb;
 }
 
-/* Table Cell Styling */
 .skaters-combined-table td {
     padding: 10px 12px;
-    text-align: center;
-    color: #333; /* Ensure text is dark enough for readability */
+    color: #333;
 	border: 1px solid #e3e7eb;
 }
 
-.goalies-combined-table {
-    width: 100%;
-    margin: 20px auto;
-    table-layout: fixed;
-    text-align: center;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-    /* border-radius: 8px; */
-	zoom: .9;
-	border-collapse: collapse;
+.team-header {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    border-radius: 12px !important;
+    overflow: hidden;
 }
 
-
-/* Apply border-radius to the thead to round the whole header */
-.goalies-combined-table thead {
-	font-weight: bold;
-    /* border-radius: 8px 8px 0 0; */
-    overflow: hidden; /* Prevent content from overflowing and disrupting rounded corners */
-	position: sticky;
-	top: 0;
-	z-index: 2;
-	color: white;
-	text-align: center;
-	font-weight: bold;
+.season-filter-container {
+    background-color: #e3e7eb;
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
-.goalies-combined-table th {
-    padding: 5px;
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 }
 
-/* Table Cell Styling */
-.goalies-combined-table td {
-    padding: 10px 12px;
-    text-align: center;
-    color: #333; /* Ensure text is dark enough for readability */
+th {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 12px 8px;
 }
 
-
-
-/* ############################################################## */
-.shift-table {
-	width: 100%
+td {
+    padding: 10px 8px;
+    transition: background-color 0.2s ease;
 }
 
-.shift-table thead {
-	background-color: #18314f;
-	color: white;
-	text-align: center;
-	font-weight: 600;
-	zoom: 0.9;
-}
-
-
-/* .playoff-grid-container {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(12, auto);
-    grid-gap: 10px;
-    align-items: center;
-    justify-items: center;
-
-    grid-template-areas:
-        "seriesE . . . . . . seriesA"
-        "seriesE seriesK seriesK seriesK seriesI seriesI seriesI seriesA"
-        "seriesF seriesK seriesK seriesK seriesI seriesI seriesI seriesB"
-        "seriesF . . . . . . seriesB"
-        ". . . seriesO seriesO . . ."
-        "seriesN seriesN seriesN seriesO seriesO seriesM seriesM seriesM"
-        "seriesN seriesN seriesN seriesO seriesO seriesM seriesM seriesM"
-        ". . . seriesO seriesO . . ."
-        "seriesG . . . . . . seriesC"
-        "seriesG seriesL seriesL seriesL seriesJ seriesJ seriesJ seriesC"
-        "seriesH seriesL seriesL seriesL seriesJ seriesJ seriesJ seriesD"
-        "seriesH . . . . . . seriesD";
-}
-
-.seriesA { grid-area: seriesA; }
-.seriesB { grid-area: seriesB; }
-.seriesC { grid-area: seriesC; }
-.seriesD { grid-area: seriesD; }
-.seriesE { grid-area: seriesE; }
-.seriesF { grid-area: seriesF; }
-.seriesG { grid-area: seriesG; }
-.seriesH { grid-area: seriesH; }
-.seriesI { grid-area: seriesI; }
-.seriesJ { grid-area: seriesJ; }
-.seriesK { grid-area: seriesK; }
-.seriesL { grid-area: seriesL; }
-.seriesM { grid-area: seriesM; }
-.seriesN { grid-area: seriesN; }
-.seriesO { grid-area: seriesO; } */
-
-.playoff-grid-container {
-    display: grid;
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: auto;
-    gap: 15px;
-}
-
-/* Region headers */
-.region-header {
-    grid-column: span 1;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin: 15px 0;
-}
-
-.west-header {
-    grid-column: 1 / 2;
-}
-
-.east-header {
-    grid-column: 5 / 6;
-}
-
-/* Round headers */
-.round-header {
-    grid-row: 1;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
-
-.r1-west { grid-column: 1 / 2; }
-.r2-west { grid-column: 2 / 3; }
-.r3-west { grid-column: 3 / 4; grid-row: 2; }
-.final { grid-column: 3 / 4; grid-row: 4; }
-.r3-east { grid-column: 3 / 4; grid-row: 6; }
-.r2-east { grid-column: 4 / 5; }
-.r1-east { grid-column: 5 / 6; }
-
-/* Series positioning */
-.seriesA, .seriesB, .seriesC, .seriesD,
-.seriesE, .seriesF, .seriesG, .seriesH {
-    margin-bottom: 30px;
-}
-
-/* First round (West) */
-.seriesA { grid-column: 1 / 2; grid-row: 2; }
-.seriesB { grid-column: 1 / 2; grid-row: 3; }
-.seriesC { grid-column: 1 / 2; grid-row: 5; }
-.seriesD { grid-column: 1 / 2; grid-row: 6; }
-
-/* Second round (West) */
-.seriesI { grid-column: 2 / 3; grid-row: 2 / 4; }
-.seriesJ { grid-column: 2 / 3; grid-row: 5 / 7; }
-
-/* Third round (West) */
-.seriesM { grid-column: 3 / 4; grid-row: 3 / 5; }
-
-/* First round (East) */
-.seriesE { grid-column: 5 / 6; grid-row: 2; }
-.seriesF { grid-column: 5 / 6; grid-row: 3; }
-.seriesG { grid-column: 5 / 6; grid-row: 5; }
-.seriesH { grid-column: 5 / 6; grid-row: 6; }
-
-/* Second round (East) */
-.seriesK { grid-column: 4 / 5; grid-row: 2 / 4; }
-.seriesL { grid-column: 4 / 5; grid-row: 5 / 7; }
-
-/* Third round (East) */
-.seriesN { grid-column: 3 / 4; grid-row: 5 / 7; }
-
-/* Final */
-.seriesO { 
-    grid-column: 3 / 4; 
-    grid-row: 4; 
-    margin: 10px auto;
-}
-
-/* Series boxes styling */
-.series-box {
+select {
+    background-color: #e3e7eb;
+    border: 1px solid rgba(148, 163, 184, 0.3);
     border-radius: 6px;
-    padding: 12px;
-    width: 100%;
-    max-width: 250px;
-    min-height: 120px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    padding: 8px 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 30px;
+}
+
+.section-title {
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(to right, rgba(148, 163, 184, 0), rgba(148, 163, 184, 0.8), rgba(148, 163, 184, 0));
+    border-radius: 2px;
 }
 
 
-/* Format for teams in a series */
-.team {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 5px 0;
+
+/* Custom scroll bar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(30, 41, 59, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.5);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.7);
+}
+
+.team-logo-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.team-logo-container img {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    transition: all 0.3s ease;
+}
+
+.divider {
+    position: relative;
+    height: 4px;
+    background: linear-gradient(to right, rgba(148, 163, 184, 0), rgba(148, 163, 184, 0.5), rgba(148, 163, 184, 0));
+    border-radius: 2px;
+    margin: 2rem auto;
+}
+
+
+      
+/* ##################################################### GAME AND PLAYER SEARCH RESULT PAGES ##################################################### */
+
+.page-title {
+font-size: 2.5rem;
+font-weight: 700;
+background: linear-gradient(90deg, #4b9cd3, #45A29E);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+margin-bottom: 0.5rem;
+}
+
+.results-container {
+background: linear-gradient(to bottom, rgba(31, 41, 55, 0.6), rgba(17, 24, 39, 0.8));
+border-radius: 0.75rem;
+padding: 2rem 4rem;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+border: 1px solid rgba(75, 85, 99, 0.4);
+margin-bottom: 2rem;
+}
+
+.results-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+flex-wrap: wrap;
+}
+
+.results-title {
+font-size: 1.5rem;
+font-weight: 600;
+color: white;
+margin: 0;
+}
+
+.results-count {
+color: #9ca3af;
+font-size: 0.95rem;
+}
+
+.table-container {
+overflow-x: auto;
+border-radius: 0.75rem;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.players-table {
+width: 100%;
+border-collapse: separate;
+border-spacing: 0;
+overflow: hidden;
+}
+
+.players-table th {
+background: linear-gradient(to bottom, #18314f, #0b253e);
+color: white;
+font-weight: 600;
+text-transform: uppercase;
+font-size: 0.85rem;
+padding: 1rem 0.75rem;
+letter-spacing: 0.03em;
+border-bottom: 2px solid #45A29E;
+position: sticky;
+top: 0;
+z-index: 10;
+}
+
+.players-table th:first-child {
+border-top-left-radius: 0.5rem;
+}
+
+.players-table th:last-child {
+border-top-right-radius: 0.5rem;
+}
+
+.players-table td, .team-stats-table td {
+padding: 0.9rem 0.75rem;
+background-color: rgba(255, 255, 255, 0.8);
+color: #1F2833;
+border-bottom: 1px solid rgba(203, 213, 225, 0.5);
+}
+
+.players-table tr:nth-child(even) td, .team-stats-table tr:nth-child(even) td {
+background-color: rgba(241, 245, 249, 0.8);
+}
+
+.players-table tr:hover td, .team-stats-table tr:hover td {
+background-color: rgba(69, 162, 158, 0.1);
+color: white;
+}
+
+.players-table tr:last-child td:first-child {
+border-bottom-left-radius: 0.5rem;
+}
+
+.players-table tr:last-child td:last-child {
+border-bottom-right-radius: 0.5rem;
+}
+
+.player-link {
+color: #1F2833;
+font-weight: 500;
+text-decoration: none;
+position: relative;
+display: inline-block;
+transition: all 0.2s ease;
+}
+
+.player-link:hover {
+color: #45A29E;
+}
+
+.player-link::after {
+content: '';
+position: absolute;
+width: 0;
+height: 2px;
+bottom: -2px;
+left: 0;
+background-color: #45A29E;
+transition: width 0.3s ease;
+}
+
+.player-link:hover::after {
+width: 100%;
+}
+
+
+
+
+/* ############################################################ NHL SHIFT CHARTS PAGE ############################################################ */
+
+/* .shift-charts-link {
+    display: inline-block;
+    background: linear-gradient(to right, rgba(69, 162, 158, 0.2), rgba(102, 252, 241, 0.1));
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(69, 162, 158, 0.4);
+    font-weight: 600;
+    text-decoration: none;
+    color: #66FCF1;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 1rem auto;
+}
+
+.shift-charts-link:hover {
+    background: linear-gradient(to right, rgba(69, 162, 158, 0.3), rgba(102, 252, 241, 0.2));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+} */
+
+/* ############################################################# NHL GAME DETAILS PAGE ############################################################ */
+
+.game-header {
+    background: linear-gradient(to bottom, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9));
+    border: 1px solid rgba(69, 162, 158, 0.4);
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #45A29E, #66FCF1);
+    z-index: 1;
 }
 
 .team-logo {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    height: 125px;
 }
 
-.team-info {
-    flex-grow: 1;
-    text-align: left;
-    margin-left: 10px;
+.team-logo:hover {
+    transform: scale(1.05);
 }
 
-.series-score {
-    font-weight: bold;
-    font-size: 1.2rem;
+.team-name {
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: color 0.3s ease;
 }
 
-/* Lines connecting series */
-.connector-line {
+.team-name:hover {
+    color: #66FCF1;
+}
+
+.score-display {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-outcome {
+    color: #66FCF1;
+    font-style: italic;
+}
+
+.venue-info {
+    font-size: 1.125rem;
+    opacity: 0.9;
+}
+
+.section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(69, 162, 158, 0.7), transparent);
+    border: none;
+    margin: 2.5rem auto;
+    width: 80%;
+}
+
+.section-header {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+.section-header::after {
+    content: '';
     position: absolute;
-    background-color: #666;
+    bottom: 0;
+    left: 25%;
+    right: 25%;
+    height: 2px;
+    background: #45A29E;
 }
 
-/* Final styling */
-.final-header {
-    grid-column: 3 / 4;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.4rem;
-    margin: 10px 0;
-    border-bottom: 2px solid #888;
-    padding-bottom: 5px;
+.roster-container {
+    gap: 2rem;
 }
 
-.champion-trophy {
-    max-width: 100px;
-    margin: 0 auto 15px auto;
-    display: block;
+.team-column {
+    background: linear-gradient(to bottom, rgba(31, 41, 55, 0.5), rgba(17, 24, 39, 0.7));
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(75, 85, 99, 0.4);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-    .playoff-grid-container {
-        width: 98%;
-        grid-gap: 8px;
-    }
-    
-    .series-box {
-        padding: 8px;
-        min-height: 100px;
-    }
+.roster-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: white;
+    background: linear-gradient(90deg, #1F2833, #0B0C10);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-    .playoff-grid-container {
-        grid-template-columns: 1fr;
-        overflow-x: auto;
-    }
-    
-    .region-header, .round-header {
-        grid-column: 1;
-    }
-    
-    .seriesA, .seriesB, .seriesC, .seriesD,
-    .seriesE, .seriesF, .seriesG, .seriesH,
-    .seriesI, .seriesJ, .seriesK, .seriesL,
-    .seriesM, .seriesN, .seriesO {
-        grid-column: 1;
-        margin-bottom: 15px;
-    }
-}
-
-
-
-
-/* ADDING GENERAL CLASSES HERE TO AVOID DUPLICATION OF CLASSES ON MULTIPLE DIFFERENT TABLES */
-/* ####################################################################### RE-USABLE TABLE STYLES ######################################################################### */
-
-/* outer container for horizontal scrolling tables */
-.default-horizontal-scroll-table-container {
-    width: 100%;
-    max-width: 100%;
+.roster-table-wrapper {
     overflow-x: auto;
-    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
 }
 
-/* classes for alternating row colors and hover effects */
-.default-zebra-table td {
-	color: black;
+.play-by-play-key {
+    background: linear-gradient(to bottom, rgba(31, 41, 55, 0.7), rgba(17, 24, 39, 0.8));
+    border: 1px solid rgba(69, 162, 158, 0.3);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.default-zebra-table th {
-	/* background-color: #18314f; */
-	color: white;
-	text-align: center;
-	font-weight: 600;
+.rink-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-.default-zebra-table tbody tr:nth-child(even) {
-	background-color: #e3e7eb;
-}
-.default-zebra-table tbody tr:nth-child(odd) {
-	background-color: #c5c6c7;
-}
-.default-zebra-table tbody tr:hover {
-	background-color: rgb(133, 149, 168);
-	transition: 0.2s ease-in-out;
-	color: white;
+.rink-image {
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    border: 2px solid rgba(69, 162, 158, 0.5);
 }
 
-.default-zebra-table thead {
-	overflow: hidden;
-	border-top-right-radius: 8px;
-	border-top-left-radius: 8px;
+.filter-controls {
+    margin: 1rem auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.default-selected-row {
-	background-color: rgb(133, 149, 168) !important;
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
 }
 
-.default-zebra-table {
-	width: 100%;
-	border-radius: 8px;
-	overflow: hidden;
-	border-collapse: collapse;
+.filter-label:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-	
-/* furthest outer div class that surrounds whole page content and allows for full page width */
-.full-page-content-container {
-	width: 100%;
+.filter-checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #45A29E;
+}
+
+#play-by-play-table {
+    font-size: 0.9rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+#play-by-play-table th {
+    background: linear-gradient(to bottom, #1F2833, #0B0C10);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 0.8rem 0.5rem;
+    border: 1px solid #45A29E;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#play-by-play-table td {
+    padding: 0.7rem 0.5rem;
+    border: 1px solid rgba(75, 85, 99, 0.4);
+    transition: all 0.2s ease;
+}
+
+.play-row:hover {
+    background-color: rgba(69, 162, 158, 0.2) !important;
+    cursor: pointer;
+}
+
+.play-row:hover td {
+    color: white;
+    box-shadow: inset 0 0 0 1px rgba(69, 162, 158, 0.5);
+}
+
+/* ############################################################## SEASON OVERVIEW ############################################################## */
+      
+.tab-container {
+position: relative;
+background: linear-gradient(to bottom, rgba(31, 41, 55, 0.6), rgba(17, 24, 39, 0.8));
+border-radius: 0.75rem;
+padding: 1.25rem; /* Increased padding all around */
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
+margin-bottom: 2rem;
+border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.tabs-outer {
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 1rem; /* Added space below tabs */
+}
+
+.tabs-inner {
+display: flex;
+flex-wrap: wrap;
+width: 100%;
+max-width: 90%; /* Keeps tabs from extending too close to edges */
+margin: 0 auto;
+}
+
+.tab-button {
+padding: 0.75rem 1.5rem;
+color: #e5e7eb;
+font-weight: 500;
+border-radius: 0.5rem;
+transition: all 0.3s ease;
+position: relative;
+z-index: 1;
+flex-grow: 1;
+}
+
+.tab-button:hover {
+background: linear-gradient(to bottom, rgba(55, 65, 81, 0.8), rgba(55, 65, 81, 0.6));
+color: #f3f4f6;
+}
+
+.tab-button.active {
+background: linear-gradient(135deg, #3b82f6, #2563eb);
+color: white;
+font-weight: 600;
+box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.tab-button.active:hover {
+background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+.tab-divider {
+width: 1px;
+height: 1.5rem;
+background: linear-gradient(to bottom, rgba(156, 163, 175, 0.1), rgba(156, 163, 175, 0.3), rgba(156, 163, 175, 0.1));
+margin: 0 0.25rem;
+}
+
+.nested-tab-container {
+display: flex;
+justify-content: center;
+margin-top: 0.75rem;
+margin-bottom: 0.5rem; /* Added space below nested tabs */
+gap: 0.75rem;
+max-width: 80%;
+margin-left: auto;
+margin-right: auto;
+}
+
+.nested-tab-button {
+padding: 0.5rem 1.25rem;
+font-size: 0.9rem;
+border-radius: 0.375rem;
+background: linear-gradient(to bottom, rgba(55, 65, 81, 0.7), rgba(45, 55, 72, 0.8));
+color: #e5e7eb;
+transition: all 0.3s ease;
+border: 1px solid rgba(75, 85, 99, 0.4);
+}
+
+.nested-tab-button:hover {
+background: linear-gradient(to bottom, rgba(75, 85, 99, 0.8), rgba(55, 65, 81, 0.9));
+border-color: rgba(107, 114, 128, 0.5);
+}
+
+.nested-tab-button.active {
+background: linear-gradient(135deg, rgba(79, 70, 229, 0.8), rgba(67, 56, 202, 0.9));
+color: white;
+border-color: rgba(99, 102, 241, 0.6);
+box-shadow: 0 2px 4px rgba(67, 56, 202, 0.3);
+}
+
+.player-content {
+padding: 1rem; /* Added padding around grid */
+}
+
+.stat-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 1.25rem; /* Increased gap between cards */
+width: 98%;
+max-width: 1500px;
+margin: 0 auto; /* Center the grid */
+}
+
+.stat-card {
+background: linear-gradient(to bottom, #1f2937, #111827);
+border-radius: 0.5rem;
+overflow: hidden;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
+transition: all 0.3s ease;
+position: relative;
+height: 100%; /* Make all cards same height */
+display: flex;
+flex-direction: column;
+}
+
+.stat-card:hover {
+transform: translateY(-3px);
+box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.stat-card:nth-child(odd) .stat-card-header {
+background: linear-gradient(90deg, #3b82f6, #2563eb);
+border-bottom: 1px solid rgba(59, 130, 246, 0.5);
+}
+
+.stat-card:nth-child(even) .stat-card-header {
+background: linear-gradient(90deg, #475569, #334155);
+border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+}
+
+.stat-card-header {
+padding: 0.75rem 1rem;
+position: relative;
+}
+
+.stat-card-header h3 {
+text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card-body {
+padding: 1rem;
+border-top: 1px solid rgba(255, 255, 255, 0.05);
+flex-grow: 1; /* Make card body fill available space */
+}
+
+.stat-card table {
+width: 100%;
+}
+
+.stat-card thead {
+border-bottom: 1px solid rgba(75, 85, 99, 0.6);
+}
+
+.stat-card th {
+color: rgba(209, 213, 219, 0.9);
+font-weight: 600;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+font-size: 0.85rem;
+}
+
+.stat-card tbody tr {
+border-bottom: 1px solid rgba(55, 65, 81, 0.6);
+transition: background-color 0.2s ease;
+}
+
+.stat-card tbody tr:hover {
+background-color: rgba(55, 65, 81, 0.5);
+}
+
+.stat-card tbody tr:last-child {
+border-bottom: none;
+}
+
+.stat-card td a {
+color: #93c5fd;
+transition: color 0.2s ease;
+}
+
+.stat-card td a:hover {
+color: #bfdbfe;
+text-decoration: underline;
+}
+      
+.season-summary {
+  background: linear-gradient(to right, rgba(30, 41, 59, 0.9), rgba(30, 41, 59, 0.7));
+  border: 1px solid rgba(71, 85, 105, 0.6);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.season-summary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #60a5fa, #3b82f6);
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.season-summary h2 {
+  font-size: 2rem;
+  background: linear-gradient(to right, #f8fafc, #cbd5e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  position: relative;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.season-summary h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  right: 25%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .summary-container {
+    flex-direction: row;
+  }
+}
+
+.champions-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .champions-column {
+    max-width: 40%;
+  }
+}
+
+.awards-column {
+  flex: 1;
+}
+
+.trophy-container {
+  background-color: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+}
+
+.stanley-cup {
+  margin-bottom: 1rem;
+}
+
+.presidents-trophy {
+  margin-bottom: 1rem;
+  /* Less emphasized styling */
+  background-color: rgba(15, 23, 42, 0.2);
+  border-color: rgba(71, 85, 105, 0.2);
+  padding: 1rem;
+}
+
+.trophy-title {
+  color: #e2e8f0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stanley-cup .trophy-title {
+  font-size: 1.25rem;
+}
+
+.presidents-trophy .trophy-title {
+  font-size: 1.125rem;
+}
+
+.playoff-link {
+  display: block;
+  width: fit-content;
+  margin: 0.5rem auto;
+  padding: 0.5rem 1.25rem;
+  background-color: rgba(3, 105, 161, 0.4);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  border-radius: 0.375rem;
+  color: #38bdf8;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.playoff-link:hover {
+  background-color: rgba(3, 105, 161, 0.6);
+  color: #7dd3fc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.awards-section {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  height: 100%;
+}
+
+.awards-heading {
+  position: relative;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  color: #e2e8f0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.award-grid {
+  display: grid;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.award-item {
+  padding: 0.4rem 0.75rem;
+  border-left: 2px solid rgba(203, 213, 225, 0.2);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.award-item:hover {
+  border-left-color: #00E6FF;
+  background-color: rgba(15, 23, 42, 0.2);
+  border-radius: 0 0.25rem 0.25rem 0;
 }
 
 
-/* Team link footer */
-.footer-teams {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 10px;
-	margin-top: 20px;
-	max-width: 72%;
+
+.highlight-value {
+font-weight: 600;
+color: #fbbf24;
 }
-.footer-teams a {
-	text-decoration: none;
+
+.empty-stats {
+color: #9ca3af;
+font-style: italic;
 }
-.footer-teams a:hover {
-	text-decoration: underline;	
+
+.page-container {
+max-width: 1800px;
+margin: 0 auto;
+padding: 2rem 1.5rem; /* Increased page padding */
 }
+
+
+
+
+
+
 
 
 /* ######################################################################### TABLE WIDTHS ######################################################################### */
@@ -1029,9 +2554,10 @@ main {
 
 
 /* Skater Combined Table Width */
-.skaters-combined-season { width: 13%;}
-.skaters-combined-name { width: 18%;}
+.skaters-combined-season { width: 9%;}
+.skaters-combined-name { width: 16%;}
 .skaters-combined-position { width: 6%;}
+.skaters-combined-cap-hit { width: 6%;}
 .skaters-combined-gp { width: 6%;}
 .skaters-combined-g { width: 6%;}
 .skaters-combined-a { width: 6%;}
@@ -1186,14 +2712,50 @@ main {
 
 /* ################################################################ MOBILE RESPONSIVENESS ################################################################# */
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .roster-container {
-        grid-template-columns: 1fr; /* Stack tables vertically on small screens */
-    }
-}
 
 @media (max-width: 768px) {
+
+    .playoff-grid-container {
+        grid-template-columns: 1fr;
+        overflow-x: auto;
+    }
+    
+    .region-header, .round-header {
+        grid-column: 1;
+    }
+    
+    .seriesA, .seriesB, .seriesC, .seriesD,
+    .seriesE, .seriesF, .seriesG, .seriesH,
+    .seriesI, .seriesJ, .seriesK, .seriesL,
+    .seriesM, .seriesN, .seriesO {
+        grid-column: 1;
+        margin-bottom: 15px;
+    }
+
+    .search-form {
+          flex-direction: column;
+        }
+        
+        .search-form select,
+        .search-form input[type="text"] {
+          width: 100%;
+        }
+        
+        .search-button {
+          width: 100%;
+        }
+        
+        .players-table th,
+        .players-table td {
+          padding: 0.75rem 0.5rem;
+          font-size: 0.9rem;
+        }
+
+    .default-zebra-table th,
+    .default-zebra-table td {
+        font-size: 0.9rem;
+        padding: 0.7rem 0.5rem;
+    }
 	.player-stats-table, .goalie-stats-table {
 		width: 100%;
 		margin: 0;
@@ -1208,7 +2770,6 @@ main {
 	.hero-bio-container {
 		flex-direction: column;
 		align-items: center;
-		text-align: center;
 		width: 100%;
 	}
 	
@@ -1222,9 +2783,10 @@ main {
 		width: 90%;
 	}
 	
-	  .bio-box p, .bio-box h4 {
-		text-align: center;
-	}
+
+    .roster-container {
+        grid-template-columns: 1fr; /* Stack tables vertically on small screens */
+    }
 }
 
 @media (max-width: 480px) {
@@ -1238,4 +2800,30 @@ main {
 	.filter-container select {
 		width: 100%;
 	}
+}
+
+@media (max-width: 1024px) {
+  .player-header-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+
+  
+  .hero-bio-container {
+    flex-direction: column;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .playoff-grid-container {
+        width: 98%;
+        grid-gap: 8px;
+    }
+    
+    .series-box {
+        padding: 8px;
+        min-height: 100px;
+    }
 }

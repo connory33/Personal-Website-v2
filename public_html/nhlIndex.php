@@ -42,8 +42,64 @@
             <h1 class="text-5xl font-bold mb-6 text-white drop-shadow-lg">NHL Historical Database</h1>
             <p class="text-xl mb-8 text-white drop-shadow-md">Explore comprehensive NHL statistics, game details, player profiles, and historical records dating back decades.</p>
             
+<script>
+async function sendMessage() {
+  const input = document.getElementById("user-input");
+  const message = input.value.trim();
+  if (!message) return;
+
+  const chat = document.getElementById("chat-window");
+  chat.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+
+  input.value = "";
+  chat.scrollTop = chat.scrollHeight;
+
+  // Show loading indicator
+  const loadingId = `loading-${Date.now()}`;
+  chat.innerHTML += `<div id="${loadingId}"><strong>Bot:</strong> <em>Thinking...</em></div>`;
+
+  try {
+    const response = await fetch("http://localhost:8000/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: message })
+    });
+
+    const data = await response.json();
+    console.log("Response from API:", data);
+
+    // Remove loading indicator
+    document.getElementById(loadingId).remove();
+
+    // Use the HTML version of the answer if available, otherwise fall back to plain text
+    const answerHtml = data.answer_html || data.answer || data.error || 'Error: No response received.';
+    
+    // Add the bot response with HTML rendering enabled
+    chat.innerHTML += `<div><strong>Bot:</strong> ${answerHtml}</div>`;
+  } catch (error) {
+    console.error("Error:", error);
+    document.getElementById(loadingId).remove();
+    chat.innerHTML += `<div><strong>Bot:</strong> Sorry, there was an error processing your request.</div>`;
+  }
+  
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// Add event listener for Enter key
+document.getElementById("user-input").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    sendMessage();
+  }
+});
+console.log("Response from API:", data);
+
+</script>
+
+
+
             <!-- Search Form -->
-            <div class="bg-gray-900/80 p-6 mb-10 rounded-lg border border-gray-700">
+            <div class="bg-gray-900/80 p-6 mb-10 rounded-lg border border-gray-700 max-w-3xl mx-auto">
                 <h2 class="text-xl font-semibold mb-4">Search the Database</h2>
                 <form id="nhl-search" method="GET" action="nhl_games.php" class="flex flex-col md:flex-row gap-4 items-center">
                     <div class="relative w-full md:w-1/3">
@@ -73,6 +129,35 @@
                     </button>
                 </form>
             </div>
+
+
+            
+            <div class="bg-gray-900/80 p-6 mb-10 rounded-lg border border-gray-700 max-w-3xl mx-auto">
+  <h2 class="text-xl font-semibold mb-4 text-white">Ask NHL Stats Bot (in development)</h2>
+
+  <div id="chat-window" class="bg-gray-800 text-white p-4 rounded-md h-36 overflow-y-auto border border-gray-700 mb-4 text-sm space-y-3"></div>
+
+  <div class="flex flex-col md:flex-row gap-4 items-stretch">
+    <input
+      type="text"
+      id="user-input"
+      placeholder="Enter your question here..."
+      class="flex-1 bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <button
+      onclick="sendMessage()"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md transition-colors duration-200"
+    >
+      <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      </svg>
+      Ask
+    </button>
+  </div>
+</div>
+
             
             <!-- Slideshow indicators -->
             <div class="flex justify-center gap-2">
