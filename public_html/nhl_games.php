@@ -194,11 +194,9 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
         }
     </script>
   </head>
-  <body class='bg-nhl-dark'>
+  <body class='bg-gray-900 text-gray-100 font-sans antialiased'>
 <!-- Header -->
 <?php include 'header.php'; ?>
-
-
 
         <?php
         ini_set('display_errors', 1); error_reporting(E_ALL);
@@ -231,7 +229,6 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
             $sortOrder = (isset($_GET['sort_order']) && strtolower($_GET['sort_order']) === 'asc') ? 'ASC' : 'DESC';
     
 
-
             if (!empty($_GET['search_column']) && !empty($_GET['search_term'])) {
 
                 $searchColumn = mysqli_real_escape_string($conn, $_GET['search_column']);
@@ -261,7 +258,6 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                         $searchTerm = $gameType_duration_map[$lowerTerm];
                     }
 
-
                 // Convert date search term to DB format (YYYY-MM-DD)s
                 if ($searchColumn == 'gameDate') { # assuming MM/DD/YY input - BUILD OUT TO MAKE ROBUST TO OTHER INPUTS
                     $year = substr($searchTerm, 6);
@@ -269,7 +265,6 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                     $day = substr($searchTerm, 3, 2);
                     $searchTerm = $year."-".$month."-".$day;
                 }
-
 
                 // Convert search term to numeric ID values for different teams
                 $teamMap = [
@@ -311,7 +306,6 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                     $searchTerm = $teamMap[$lowerTerm];
                 }
 
-
                 # base query
                 $sql = "SELECT
                         nhl_games.*,
@@ -335,7 +329,6 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                     $sql .= " WHERE $searchColumn LIKE '%$searchTerm%'";
                 }
                 
-
                 // Date range filter
                 if (!empty($_GET['startDate']) && !empty($_GET['endDate'])) {
                     $startDate = $_GET['startDate'];
@@ -343,7 +336,6 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                     $sql .= (strpos($sql, 'WHERE') !== false ? " AND" : " WHERE") . " gameDate BETWEEN '$startDate' AND '$endDate'";
                 }
                 
-
                 // Add "counting" query to get total number of result rows independent of pagination limit
                 // Do this BEFORE adding ORDER BY and LIMIT clauses to the main query
                 $count_query = "SELECT COUNT(*) as total
@@ -383,58 +375,61 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                 }
                 
                 ?>
-<div class='mx-auto'>
-<div class="py-8 px-4 animate-fade-in">
-    <div class="max-w-[1770px]">
-        <!-- Header Section -->
-         <div class='flex justify-between'>
-        <div class="mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
-                NHL Games Database
-            </h1>
-            <p class="text-nhl-muted text-lg">
-                Search and browse future and past NHL games
-            </p>
-        </div>
 
-                <div class="w-full max-w-md"> <!-- wider and responsive -->
+<!-- Main content -->
+<div class="py-12 px-4 animate-fade-in bg-gray-900">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Page Header Section - matching homepage style -->
+        <div class="bg-gray-900/80 p-6 mb-10 rounded-lg border border-gray-700 max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-4xl font-bold text-white tracking-tight mb-2">
+                        NHL Games Database
+                    </h1>
+                    <p class="text-gray-300 text-lg">
+                        Search and browse future and past NHL games
+                    </p>
+                </div>
+                
+                <!-- Search Form Section - matching homepage search style -->
+                <div class="w-full md:w-auto md:max-w-md">
                     <form id="nhl-search" method="GET" action="nhl_games.php" class="relative">
-                    <div class="flex space-x-4">
-                        <!-- Dropdown -->
-                        <select name="search_column" id="nhl-search-column"
-                        class="w-40 rounded-lg border-0 py-3 pl-4 pr-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent text-lg font-medium appearance-none">
-                        <option value="season">Season</option>
-                        <option value="gameDate">Game Date</option>
-                        <option value="easternStartTime">Start Time</option>
-                        <option value="gameType">Game Type</option>
-                        <option value="team" selected>Team</option>
-                        <option value="homeTeamId">Home Team</option>
-                        <option value="awayTeamId">Away Team</option>
-                        </select>
+                        <div class="flex gap-2">
+                            <!-- Dropdown -->
+                            <select name="search_column" id="nhl-search-column"
+                            class="bg-gray-800 text-white rounded-md border border-gray-700 px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option value="season">Season</option>
+                                <option value="gameDate">Game Date</option>
+                                <option value="easternStartTime">Start Time</option>
+                                <option value="gameType">Game Type</option>
+                                <option value="team" selected>Team</option>
+                                <option value="homeTeamId">Home Team</option>
+                                <option value="awayTeamId">Away Team</option>
+                            </select>
 
-                        <!-- Input and Search Button -->
-                        <div class="relative flex-1"> <!-- flex-1 lets it fill remaining space -->
-                        <input type="text" name="search_term" id="search-term" placeholder="Search for game"
-                            class="w-full rounded-lg border-0 py-3 pl-4 pr-10 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent text-lg font-medium"
-                            required>
-                        <button type="submit" class="absolute inset-y-0 right-0 flex items-center px-3 text-nhl-accent">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clip-rule="evenodd" />
-                            </svg>
-                        </button>
+                            <!-- Input and Search Button -->
+                            <div class="relative flex-1">
+                                <input type="text" name="search_term" id="search-term" placeholder="Search for game"
+                                    class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required>
+                                <button type="submit" class="absolute inset-y-0 right-0 flex items-center px-3 text-blue-400 hover:text-blue-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
                     </form>
-                <div class='text-right'>
-                    <a href="nhl_players.php"
-                    class="text-sm mt-2 inline-block text-nhl-accent hover:text-nhl-accent/80 ml-2">Search players instead</a>
+                    <div class='text-right mt-2'>
+                        <a href="nhl_players.php"
+                        class="text-sm text-blue-400 hover:text-blue-300 transition-colors">Search players instead</a>
+                    </div>
+                </div>
             </div>
-                </div>
-                </div>
-
-
+        </div>
 
                     <?php
                     while ($row = $result->fetch_assoc()){
@@ -463,7 +458,6 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                             $gameType_text = "Unknown";
                         }
 
-
                         $all_games[] = [
                             'season' => $formatted_season,
                             'gameNumber' => $row['gameNumber'],
@@ -487,61 +481,53 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                     echo "<script>const currentPage = " . $page . ";</script>";
                     echo "<script>const recordsPerPage = " . $recordsPerPage . ";</script>";
                     
-                
         }
+        ?>
 
-
-        ?><br>
-
-                    
-
-
-                    <!-- Filters Section (matching draft page) -->
-                    <div class="mb-8 bg-nhl-darkblue rounded-xl p-6 shadow-lg shadow-inner-highlight border border-nhl-medium/50">
-                        <h2 class="text-xl font-semibold text-white mb-4">Filter Players</h2>
-                        
-                        <form id="filter-form" method="GET" action="nhl_players.php">
-                            <!-- Keep search term if it exists -->
-                            <?php if (!empty($search_term)): ?>
-                                <input type="hidden" name="search_term" value="<?= htmlspecialchars($search_term) ?>">
-                            <?php endif; ?>
-                            
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 filters-container">
-                                <div>
-                    <label for="searchBySeason" class="block text-sm font-medium text-nhl-muted mb-1">Season</label>
-                    <input type="text" id="searchBySeason" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 20222023">
+        <!-- Filters Section - enhanced with homepage styling -->
+        <div class="bg-gray-800/80 rounded-lg p-6 mb-8 border border-gray-700 shadow-xl">
+            <h2 class="text-xl font-bold text-white mb-4">Filter Games</h2>
+            
+            <form id="filter-form" method="GET" action="nhl_games.php">
+                <!-- Keep search term if it exists -->
+                <?php if (!empty($search_term)): ?>
+                    <input type="hidden" name="search_term" value="<?= htmlspecialchars($search_term) ?>">
+                <?php endif; ?>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label for="searchBySeason" class="block text-sm font-medium text-gray-400 mb-2">Season</label>
+                        <input type="text" id="searchBySeason" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. 20222023">
                     </div>
                     <div>
-                    <label for="searchByDate" class="block text-sm font-medium text-nhl-muted mb-1">Date</label>
-                    <input type="text" id="searchByDate" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 4/22/2024">
+                        <label for="searchByDate" class="block text-sm font-medium text-gray-400 mb-2">Date</label>
+                        <input type="text" id="searchByDate" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. 4/22/2024">
                     </div>
                     <div>
-                    <label for="searchByStartTime" class="block text-sm font-medium text-nhl-muted mb-1">Start Time (EST)</label>
-                    <input type="text" id="searchByStartTime" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 21:30">
+                        <label for="searchByStartTime" class="block text-sm font-medium text-gray-400 mb-2">Start Time (EST)</label>
+                        <input type="text" id="searchByStartTime" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. 21:30">
                     </div>
                     <div>
-                    <label for="searchByGameType" class="block text-sm font-medium text-nhl-muted mb-1">Game Type</label>
-                    <input type="text" id="searchByGameType" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. Reg, Post">
+                        <label for="searchByGameType" class="block text-sm font-medium text-gray-400 mb-2">Game Type</label>
+                        <input type="text" id="searchByGameType" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. Reg, Post">
                     </div>
                     <div>
-                    <label for="searchByHomeTeam" class="block text-sm font-medium text-nhl-muted mb-1">Home Team</label>
-                    <input type="text" id="searchByHomeTeam" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. San Jose Sharks, SJS">
+                        <label for="searchByHomeTeam" class="block text-sm font-medium text-gray-400 mb-2">Home Team</label>
+                        <input type="text" id="searchByHomeTeam" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. San Jose Sharks, SJS">
                     </div>
                     <div>
-                    <label for="searchByAwayTeam" class="block text-sm font-medium text-nhl-muted mb-1">Away Team</label>
-                    <input type="text" id="searchByAwayTeam" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-black shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. Chicago Blackhawks, CHI">
+                        <label for="searchByAwayTeam" class="block text-sm font-medium text-gray-400 mb-2">Away Team</label>
+                        <input type="text" id="searchByAwayTeam" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. Chicago Blackhawks, CHI">
                     </div>
-                            </div>
-                        </form>
-                    </div>
-                    <br>
+                </div>
+            </form>
+        </div>
 
-                    <!-- Table -->
-
-                             <div class="bg-nhl-darkblue rounded-xl shadow-lg p-1 mb-6 table-container overflow-x-auto border border-nhl-medium/50">
-
-                    <table id='games-players-summary-table' class="players-table">
-                        <colgroup>
+        <!-- Games Table - enhanced with homepage styling -->
+        <div class="bg-gray-800/80 rounded-lg overflow-hidden border border-gray-700 shadow-xl mb-8">
+            <div class="overflow-x-auto">
+                <table id='games-players-summary-table' class="w-full">
+                    <colgroup>
                         <col class="games-players-summary-col-season">
                         <col class="games-players-summary-col-gameNumber">
                         <col class="games-players-summary-col-date">
@@ -552,65 +538,64 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                         <col class="games-players-summary-col-awayTeam">
                         <col class="games-players-summary-col-awayScore">
                         <col class="games-players-summary-col-id">
-                        </colgroup>
+                    </colgroup>
 
-                        <thead>
-                            <tr>
-                                <?php foreach ([
-                                    'season' => 'Season',
-                                    'gameNumber' => 'Game #',
-                                    'gameDate' => 'Date',
-                                    'easternStartTime' => 'Start (EST)',
-                                    'gameType' => 'Game Type',
-                                    'home_team_name' => 'Home Team',
-                                    'homeScore' => 'Home Score',
-                                    'away_team_name' => 'Away Team',
-                                    'awayScore' => 'Away Score',
-                                    'game_id' => 'Game ID'
-                                ] as $columnName => $displayName): ?>
-                                    <?php
-                                    $isActive = ($requestedSortColumn == $columnName);
-                                    $isAscending = ($sortOrder == 'ASC');
-                                    $nextSortOrder = ($isActive && $isAscending) ? 'desc' : 'asc';
-                                    
-                                    // Use inline styles to ensure they take effect
-                                    $style = '';
-                                    if ($isActive) {
-                                        if ($isAscending) {
-                                            $style = 'border-top: 2px solid #2563eb;'; // blue-600 equivalent
-                                        } else {
-                                            $style = 'border-bottom: 2px solid #2563eb;'; // blue-600 equivalent
-                                        }
+                    <thead>
+                        <tr class="bg-gradient-to-r from-gray-700 to-gray-800 text-white">
+                            <?php foreach ([
+                                'season' => 'Season',
+                                'gameNumber' => 'Game #',
+                                'gameDate' => 'Date',
+                                'easternStartTime' => 'Start (EST)',
+                                'gameType' => 'Game Type',
+                                'home_team_name' => 'Home Team',
+                                'homeScore' => 'Home Score',
+                                'away_team_name' => 'Away Team',
+                                'awayScore' => 'Away Score',
+                                'game_id' => 'Game ID'
+                            ] as $columnName => $displayName): ?>
+                                <?php
+                                $isActive = ($requestedSortColumn == $columnName);
+                                $isAscending = ($sortOrder == 'ASC');
+                                $nextSortOrder = ($isActive && $isAscending) ? 'desc' : 'asc';
+                                
+                                // Use inline styles to ensure they take effect
+                                $style = '';
+                                if ($isActive) {
+                                    if ($isAscending) {
+                                        $style = 'border-top: 2px solid #2563eb;'; // blue-600 equivalent
+                                    } else {
+                                        $style = 'border-bottom: 2px solid #2563eb;'; // blue-600 equivalent
                                     }
-                                    ?>
-                                    
-                                    <th style="<?= $style ?>" class="relative">
-                                        <a href="#" onclick="updateSort('<?= $columnName ?>', '<?= $nextSortOrder ?>'); return false;" class="block w-full h-full p-2">
-                                            <?= $displayName ?>
-                                        </a>
-                                    </th>
-                                <?php endforeach; ?>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Rows will be dynamically generated by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-                </div>
-                
-    <br>
-        <!-- Pagination Controls -->
-        <div id="pagination" class="flex justify-center flex-wrap gap-2 mt-6 text-white w-3/5 mx-auto">
+                                }
+                                ?>
+                                
+                                <th style="<?= $style ?>" class="relative px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">
+                                    <a href="#" onclick="updateSort('<?= $columnName ?>', '<?= $nextSortOrder ?>'); return false;" class="block w-full h-full hover:text-blue-300 transition-colors">
+                                        <?= $displayName ?>
+                                    </a>
+                                </th>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically generated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Enhanced Pagination Controls - homepage style -->
+        <div id="pagination" class="flex justify-center flex-wrap gap-2 mb-8">
             <!-- Pagination buttons will be dynamically generated by JavaScript -->
         </div>
-    <br>
-                               </div>
+
+        <!-- Section Divider -->
+        <div class="section-divider mx-auto mb-8"></div>
+    </div>
 </div>
 
-
     <?php include 'footer.php'; ?>
-
 
     <!-- JS for filtering and pagination -->
     <script>
@@ -697,7 +682,7 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
         // Function to load games with filters
         function loadFilteredGames(page = 1) {
             // Show loading indicator
-            tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4">Loading games...</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4 text-gray-300">Loading games...</td></tr>';
             
             // Get current search parameters
             const params = new URLSearchParams(window.location.search);
@@ -765,7 +750,7 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
-                    tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4">Error loading games. Please try again.</td></tr>';
+                    tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4 text-red-400">Error loading games. Please try again.</td></tr>';
                 });
         }
         
@@ -774,53 +759,55 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
             tableBody.innerHTML = "";
             
             if (!games || games.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4">No games found matching your filters.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4 text-gray-400">No games found matching your filters.</td></tr>';
                 return;
             }
             
-            games.forEach(row => {
+            games.forEach((row, index) => {
                 const tr = document.createElement("tr");
+                const rowClass = index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-700/30";
+                tr.className = `${rowClass} hover:bg-gray-700/50 transition-colors duration-200 border-b border-gray-700/50`;
                 
                 // Build the static part of the row
                 tr.innerHTML = `
-                    <td class='text-center'>${row.season}</td>
-                    <td class='text-center'>${row.gameNumber}</td>
-                    <td>${row.gameDate}</td>
-                    <td class='text-center'>${row.easternStartTime}</td>
-                    <td class='text-center'>${row.gameType}</td>
+                    <td class='px-4 py-3 text-center text-gray-200'>${row.season}</td>
+                    <td class='px-4 py-3 text-center text-gray-200'>${row.gameNumber}</td>
+                    <td class='px-4 py-3 text-gray-200'>${row.gameDate}</td>
+                    <td class='px-4 py-3 text-center text-gray-200'>${row.easternStartTime}</td>
+                    <td class='px-4 py-3 text-center text-gray-200'>${row.gameType}</td>
                 `;
                 
                 let homeScoreCell, awayScoreCell, homeTeamCell, awayTeamCell;
                 
                 // Conditional logic to populate the score and team cells
                 if (row.homeScore > row.awayScore) {
-                    homeTeamCell = `<td class='font-bold'><a href='team_details.php?team_id=${row.home_team_id}'>${row.home_team_name}</a></td>`;
-                    homeScoreCell = `<td class='font-bold'>${row.homeScore}</td>`;
-                    awayTeamCell = `<td><a href='team_details.php?team_id=${row.away_team_id}'>${row.away_team_name}</a></td>`;
-                    awayScoreCell = `<td>${row.awayScore}</td>`;
+                    homeTeamCell = `<td class='px-4 py-3 font-bold text-gray-200'><a href='team_details.php?team_id=${row.home_team_id}' class='text-blue-400 hover:text-blue-300 transition-colors'>${row.home_team_name}</a></td>`;
+                    homeScoreCell = `<td class='px-4 py-3 font-bold text-gray-200'>${row.homeScore}</td>`;
+                    awayTeamCell = `<td class='px-4 py-3 text-gray-200'><a href='team_details.php?team_id=${row.away_team_id}' class='text-blue-400 hover:text-blue-300 transition-colors'>${row.away_team_name}</a></td>`;
+                    awayScoreCell = `<td class='px-4 py-3 text-gray-200'>${row.awayScore}</td>`;
                 } else if (row.homeScore < row.awayScore) {
-                    homeTeamCell = `<td><a href='team_details.php?team_id=${row.home_team_id}'>${row.home_team_name}</a></td>`;
-                    homeScoreCell = `<td>${row.homeScore}</td>`;
-                    awayTeamCell = `<td class='font-bold'><a href='team_details.php?team_id=${row.away_team_id}'>${row.away_team_name}</a></td>`;
-                    awayScoreCell = `<td class='font-bold'>${row.awayScore}</td>`;
+                    homeTeamCell = `<td class='px-4 py-3 text-gray-200'><a href='team_details.php?team_id=${row.home_team_id}' class='text-blue-400 hover:text-blue-300 transition-colors'>${row.home_team_name}</a></td>`;
+                    homeScoreCell = `<td class='px-4 py-3 text-gray-200'>${row.homeScore}</td>`;
+                    awayTeamCell = `<td class='px-4 py-3 font-bold text-gray-200'><a href='team_details.php?team_id=${row.away_team_id}' class='text-blue-400 hover:text-blue-300 transition-colors'>${row.away_team_name}</a></td>`;
+                    awayScoreCell = `<td class='px-4 py-3 font-bold text-gray-200'>${row.awayScore}</td>`;
                 } else {
-                    homeTeamCell = `<td><a href='team_details.php?team_id=${row.home_team_id}'>${row.home_team_name}</a></td>`;
-                    homeScoreCell = `<td>${row.homeScore}</td>`;
-                    awayTeamCell = `<td><a href='team_details.php?team_id=${row.away_team_id}'>${row.away_team_name}</a></td>`;
-                    awayScoreCell = `<td>${row.awayScore}</td>`;
+                    homeTeamCell = `<td class='px-4 py-3 text-gray-200'><a href='team_details.php?team_id=${row.home_team_id}' class='text-blue-400 hover:text-blue-300 transition-colors'>${row.home_team_name}</a></td>`;
+                    homeScoreCell = `<td class='px-4 py-3 text-gray-200'>${row.homeScore}</td>`;
+                    awayTeamCell = `<td class='px-4 py-3 text-gray-200'><a href='team_details.php?team_id=${row.away_team_id}' class='text-blue-400 hover:text-blue-300 transition-colors'>${row.away_team_name}</a></td>`;
+                    awayScoreCell = `<td class='px-4 py-3 text-gray-200'>${row.awayScore}</td>`;
                 }
                 
                 // Add the team and score cells to the row
                 tr.innerHTML += homeTeamCell + homeScoreCell + awayTeamCell + awayScoreCell;
                 
                 // Add the last column for the game ID link
-                tr.innerHTML += `<td class='text-center'><a href='game_details.php?game_id=${row.id}'>${row.id}</a></td>`;
+                tr.innerHTML += `<td class='px-4 py-3 text-center'><a href='game_details.php?game_id=${row.id}' class='text-blue-400 hover:text-blue-300 transition-colors'>${row.id}</a></td>`;
                 
                 tableBody.appendChild(tr);
             });
         }
         
-        // Function to render pagination controls
+        // Function to render pagination controls - enhanced homepage style
         function renderPagination(total, currentPage, totalPages) {
             paginationContainer.innerHTML = "";
             
@@ -830,7 +817,7 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
             if (currentPage > 1) {
                 const prevBtn = document.createElement('button');
                 prevBtn.textContent = 'Previous';
-                prevBtn.className = 'px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-all mx-1';
+                prevBtn.className = 'px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md border border-gray-600 transition-colors duration-200';
                 prevBtn.addEventListener('click', () => loadFilteredGames(currentPage - 1));
                 paginationContainer.appendChild(prevBtn);
             }
@@ -842,7 +829,7 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
             if (currentPage > 3) {
                 const ellipsis = document.createElement('span');
                 ellipsis.textContent = '...';
-                ellipsis.className = 'px-2 py-2';
+                ellipsis.className = 'px-2 py-2 text-gray-500';
                 paginationContainer.appendChild(ellipsis);
             }
             
@@ -857,7 +844,7 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
             if (currentPage < totalPages - 2) {
                 const ellipsis = document.createElement('span');
                 ellipsis.textContent = '...';
-                ellipsis.className = 'px-2 py-2';
+                ellipsis.className = 'px-2 py-2 text-gray-500';
                 paginationContainer.appendChild(ellipsis);
             }
             
@@ -870,21 +857,24 @@ if (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] === 'true') {
             if (currentPage < totalPages) {
                 const nextBtn = document.createElement('button');
                 nextBtn.textContent = 'Next';
-                nextBtn.className = 'px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-all mx-1';
+                nextBtn.className = 'px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md border border-gray-600 transition-colors duration-200';
                 nextBtn.addEventListener('click', () => loadFilteredGames(currentPage + 1));
                 paginationContainer.appendChild(nextBtn);
             }
             
             // Stats
             const stats = document.createElement('div');
-            stats.className = 'mt-4 text-sm text-gray-300';
+            stats.className = 'w-full text-center mt-4 text-sm text-gray-300';
             stats.textContent = `Showing ${total > 0 ? (currentPage - 1) * 50 + 1 : 0} - ${Math.min(currentPage * 50, total)} of ${total} games`;
             paginationContainer.appendChild(stats);
             
             function addPageButton(pageNum) {
                 const btn = document.createElement('button');
                 btn.textContent = pageNum;
-                btn.className = 'px-4 py-2 mx-1 ' + (pageNum === currentPage ? 'bg-blue-600' : 'bg-gray-600') + ' text-white rounded hover:bg-gray-500 transition-all';
+                btn.className = 'px-4 py-2 mx-1 rounded-md border transition-colors duration-200 ' + 
+                    (pageNum === currentPage ? 
+                        'bg-blue-600 text-white border-blue-500' : 
+                        'bg-gray-800 hover:bg-gray-700 text-white border-gray-600');
                 if (pageNum !== currentPage) {
                     btn.addEventListener('click', () => loadFilteredGames(pageNum));
                 }

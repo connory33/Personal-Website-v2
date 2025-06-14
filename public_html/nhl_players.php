@@ -51,7 +51,7 @@ if ($included === false) {
 
 <?php include 'header.php'; ?>
 
-<body class="bg-nhl-dark">
+<body class="bg-gray-900 text-gray-100 font-sans antialiased">
 <div class='mx-auto'>
 
 <?php
@@ -168,75 +168,75 @@ $end = min($offset + $limit, $total_rows);
 ?>
 
 <!-- Main content -->
-<div class="py-8 px-4 animate-fade-in">
-    <div class="max-w-[1770px]">
-        <!-- Header Section -->
-         <div class='flex justify-between'>
-        <div class="mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
-                NHL Players Database
-            </h1>
-            <p class="text-nhl-muted text-lg">
-                Search and browse current and former NHL players
-            </p>
-        </div>
+<div class="py-12 px-4 animate-fade-in bg-gray-900">
+    <div class="max-w-7xl mx-auto">
         
-        <!-- Search Form Section (like Season Selector in draft) -->
-        <div class="max-w-xs mb-8">
-            <form id="nhl-search" method="GET" action="nhl_players.php" class="relative">
-                <input type="hidden" name="search_column" value="player">
-                <input 
-                    id="search-term" 
-                    name="search_term" 
-                    type="text" 
-                    placeholder="Enter player name" 
-                    value="<?= htmlspecialchars($search_term) ?>"
-                    class="block w-full rounded-lg border-0 py-3 pl-4 pr-10 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent text-lg font-medium"
-                >
-                <button type="submit" class="absolute inset-y-0 right-0 flex items-center px-3 text-nhl-accent">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                    </svg>
-                </button>
+        <!-- Page Header Section - matching homepage style -->
+        <div class="bg-gray-900/80 p-6 mb-10 rounded-lg border border-gray-700 max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-4xl font-bold text-white tracking-tight mb-2">
+                        NHL Players Database
+                    </h1>
+                    <p class="text-gray-300 text-lg">
+                        Search and browse current and former NHL players
+                    </p>
+                </div>
                 
-                <!-- Keep any existing filter parameters when searching -->
-                <?php if (!empty($filter_name)): ?>
-                    <input type="hidden" name="filter_name" value="<?= htmlspecialchars($filter_name) ?>">
-                <?php endif; ?>
-                <?php if (!empty($filter_team)): ?>
-                    <input type="hidden" name="filter_team" value="<?= htmlspecialchars($filter_team) ?>">
-                <?php endif; ?>
-                <?php if (!empty($filter_hand)): ?>
-                    <input type="hidden" name="filter_hand" value="<?= htmlspecialchars($filter_hand) ?>">
-                <?php endif; ?>
-                <?php if (!empty($filter_country)): ?>
-                    <input type="hidden" name="filter_country" value="<?= htmlspecialchars($filter_country) ?>">
-                <?php endif; ?>
-                <?php if (!empty($filter_status)): ?>
-                    <input type="hidden" name="filter_status" value="<?= htmlspecialchars($filter_status) ?>">
-                <?php endif; ?>
-                <?php if (!empty($filter_number)): ?>
-                    <input type="hidden" name="filter_number" value="<?= htmlspecialchars($filter_number) ?>">
-                <?php endif; ?>
-                <?php if (!empty($filter_weight_min)): ?>
-                    <input type="hidden" name="filter_weight_min" value="<?= htmlspecialchars($filter_weight_min) ?>">
-                <?php endif; ?>
-                <?php if (!empty($filter_weight_max)): ?>
-                    <input type="hidden" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>">
-                <?php endif; ?>
-            </form>
-            <div class="text-right mt-1 mr-1">
-    <a href="nhl_games.php" class="text-sm text-nhl-accent hover:text-nhl-accent/80">Search games instead</a>
-</div>
-
+                <!-- Search Form Section - matching homepage search style -->
+                <div class="w-full md:w-auto md:max-w-xs">
+                    <form id="nhl-search" method="GET" action="nhl_players.php" class="relative">
+                        <input type="hidden" name="search_column" value="player">
+                        <input 
+                            id="search-term" 
+                            name="search_term" 
+                            type="text" 
+                            placeholder="Enter player name" 
+                            value="<?= htmlspecialchars($search_term) ?>"
+                            class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                        <button type="submit" class="absolute inset-y-0 right-0 flex items-center px-3 text-blue-400 hover:text-blue-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        
+                        <!-- Keep any existing filter parameters when searching -->
+                        <?php if (!empty($filter_name)): ?>
+                            <input type="hidden" name="filter_name" value="<?= htmlspecialchars($filter_name) ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($filter_team)): ?>
+                            <input type="hidden" name="filter_team" value="<?= htmlspecialchars($filter_team) ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($filter_hand)): ?>
+                            <input type="hidden" name="filter_hand" value="<?= htmlspecialchars($filter_hand) ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($filter_country)): ?>
+                            <input type="hidden" name="filter_country" value="<?= htmlspecialchars($filter_country) ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($filter_status)): ?>
+                            <input type="hidden" name="filter_status" value="<?= htmlspecialchars($filter_status) ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($filter_number)): ?>
+                            <input type="hidden" name="filter_number" value="<?= htmlspecialchars($filter_number) ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($filter_weight_min)): ?>
+                            <input type="hidden" name="filter_weight_min" value="<?= htmlspecialchars($filter_weight_min) ?>">
+                        <?php endif; ?>
+                        <?php if (!empty($filter_weight_max)): ?>
+                            <input type="hidden" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>">
+                        <?php endif; ?>
+                    </form>
+                    <div class="text-right mt-2">
+                        <a href="nhl_games.php" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">Search games instead</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        </div> <!-- End flex justify-between -->
 
-
-
-        <!-- Filters Section (matching draft page) -->
-        <div class="mb-8 bg-nhl-darkblue rounded-xl p-6 shadow-lg shadow-inner-highlight border border-nhl-medium/50">
-            <h2 class="text-xl font-semibold text-white mb-4">Filter Players</h2>
+        <!-- Filters Section - enhanced with homepage styling -->
+        <div class="bg-gray-800/80 rounded-lg p-6 mb-8 border border-gray-700 shadow-xl">
+            <h2 class="text-xl font-bold text-white mb-4">Filter Players</h2>
             
             <form id="filter-form" method="GET" action="nhl_players.php">
                 <!-- Keep search term if it exists -->
@@ -244,47 +244,47 @@ $end = min($offset + $limit, $total_rows);
                     <input type="hidden" name="search_term" value="<?= htmlspecialchars($search_term) ?>">
                 <?php endif; ?>
                 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 filters-container">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
-                        <label for="filter_name" class="block text-sm font-medium text-nhl-muted mb-1">Player Name</label>
-                        <input type="text" id="filter_name" name="filter_name" value="<?= htmlspecialchars($filter_name) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. Connor">
+                        <label for="filter_name" class="block text-sm font-medium text-gray-400 mb-2">Player Name</label>
+                        <input type="text" id="filter_name" name="filter_name" value="<?= htmlspecialchars($filter_name) ?>" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. Connor">
                     </div>
                     <div>
-                        <label for="filter_team" class="block text-sm font-medium text-nhl-muted mb-1">Team</label>
-                        <input type="text" id="filter_team" name="filter_team" value="<?= htmlspecialchars($filter_team) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. NYR">
+                        <label for="filter_team" class="block text-sm font-medium text-gray-400 mb-2">Team</label>
+                        <input type="text" id="filter_team" name="filter_team" value="<?= htmlspecialchars($filter_team) ?>" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. NYR">
                     </div>
                     <div>
-                        <label for="filter_hand" class="block text-sm font-medium text-nhl-muted mb-1">Shoots/Catches</label>
-                        <input type="text" id="filter_hand" name="filter_hand" value="<?= htmlspecialchars($filter_hand) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. L">
+                        <label for="filter_hand" class="block text-sm font-medium text-gray-400 mb-2">Shoots/Catches</label>
+                        <input type="text" id="filter_hand" name="filter_hand" value="<?= htmlspecialchars($filter_hand) ?>" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. L">
                     </div>
                     <div>
-                        <label for="filter_country" class="block text-sm font-medium text-nhl-muted mb-1">Country</label>
-                        <input type="text" id="filter_country" name="filter_country" value="<?= htmlspecialchars($filter_country) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. CAN">
+                        <label for="filter_country" class="block text-sm font-medium text-gray-400 mb-2">Country</label>
+                        <input type="text" id="filter_country" name="filter_country" value="<?= htmlspecialchars($filter_country) ?>" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. CAN">
                     </div>
                     <div>
-                        <label for="filter_status" class="block text-sm font-medium text-nhl-muted mb-1">Status</label>
-                        <select id="filter_status" name="filter_status" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200">
+                        <label for="filter_status" class="block text-sm font-medium text-gray-400 mb-2">Status</label>
+                        <select id="filter_status" name="filter_status" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="" <?= $filter_status === '' ? 'selected' : '' ?>>All Players</option>
                             <option value="active" <?= $filter_status === 'active' ? 'selected' : '' ?>>Active</option>
                             <option value="inactive" <?= $filter_status === 'inactive' ? 'selected' : '' ?>>Inactive</option>
                         </select>
                     </div>
                     <div>
-                        <label for="filter_number" class="block text-sm font-medium text-nhl-muted mb-1">Jersey Number</label>
-                        <input type="text" id="filter_number" name="filter_number" value="<?= htmlspecialchars($filter_number) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="e.g. 99">
+                        <label for="filter_number" class="block text-sm font-medium text-gray-400 mb-2">Jersey Number</label>
+                        <input type="text" id="filter_number" name="filter_number" value="<?= htmlspecialchars($filter_number) ?>" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. 99">
                     </div>
                     <div>
-                        <label for="filter_weight" class="block text-sm font-medium text-nhl-muted mb-1">Weight (lbs)</label>
+                        <label for="filter_weight" class="block text-sm font-medium text-gray-400 mb-2">Weight (lbs)</label>
                         <div class="flex gap-2">
-                            <input type="text" id="filter_weight_min" name="filter_weight_min" value="<?= htmlspecialchars($filter_weight_min) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="Min">
-                            <input type="text" id="filter_weight_max" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>" class="filter-input w-full rounded-lg border-0 py-2 px-3 bg-nhl-medium text-white shadow-sm ring-1 ring-inset ring-nhl-accent/30 focus:ring-2 focus:ring-nhl-accent transition-all duration-200" placeholder="Max">
+                            <input type="text" id="filter_weight_min" name="filter_weight_min" value="<?= htmlspecialchars($filter_weight_min) ?>" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Min">
+                            <input type="text" id="filter_weight_max" name="filter_weight_max" value="<?= htmlspecialchars($filter_weight_max) ?>" class="w-full bg-gray-800 text-white rounded-md border border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Max">
                         </div>
                     </div>
                     <div class="flex items-end gap-2">
-                        <button type="submit" id="applyFilters" class="w-full rounded-lg bg-nhl-accent text-nhl-dark py-2 px-4 font-medium transition-all duration-200 border border-nhl-accent hover:bg-nhl-accent/90">
+                        <button type="submit" id="applyFilters" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md transition-colors duration-200">
                             Apply Filters
                         </button>
-                        <a href="nhl_players.php" class="w-full text-center rounded-lg bg-nhl-medium hover:bg-nhl-accent/20 py-2 px-4 text-white font-medium transition-all duration-200 border border-nhl-accent/30">
+                        <a href="nhl_players.php" class="w-full text-center bg-gray-700 hover:bg-gray-600 text-white font-semibold px-6 py-3 rounded-md transition-colors duration-200">
                             Clear All
                         </a>
                     </div>
@@ -293,19 +293,21 @@ $end = min($offset + $limit, $total_rows);
         </div>
 
         <!-- Results Information -->
-        <div class="text-white text-sm mb-3 flex justify-between items-center">
-            <span id="resultsInfo">
-                <?php if ($total_rows > 0): ?>
-                    Showing players <?= $start ?> to <?= $end ?> of <?= $total_rows ?>
-                <?php else: ?>
-                    No players match your search criteria
-                <?php endif; ?>
-            </span>
-            <span id="pageInfo">
-                <?php if ($total_pages > 0): ?>
-                    Page <?= $page ?> of <?= $total_pages ?>
-                <?php endif; ?>
-            </span>
+        <div class="bg-gray-800/50 rounded-lg p-4 mb-6 border border-gray-700">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <span class="text-gray-300">
+                    <?php if ($total_rows > 0): ?>
+                        Showing players <?= $start ?> to <?= $end ?> of <?= number_format($total_rows) ?>
+                    <?php else: ?>
+                        No players match your search criteria
+                    <?php endif; ?>
+                </span>
+                <span class="text-gray-400">
+                    <?php if ($total_pages > 0): ?>
+                        Page <?= $page ?> of <?= number_format($total_pages) ?>
+                    <?php endif; ?>
+                </span>
+            </div>
         </div>
 
         <!-- Function to convert country code to flag image -->
@@ -324,94 +326,96 @@ $end = min($offset + $limit, $total_rows);
         }
         ?>
 
-        <!-- Players Table -->
-        <div class="bg-nhl-darkblue rounded-xl shadow-lg p-1 mb-6 table-container overflow-x-auto border border-nhl-medium/50">
-            <table id="playersTable" class="players-table w-full text-center">
-                <thead>
-                    <tr class="text-nhl-accent text-sm uppercase border-b border-nhl-medium/50">
-                        <th class="px-3 py-3 rounded-tl-lg">ID</th>
-                        <th class="px-3 py-3">Name</th>
-                        <th class="px-3 py-3">Height</th>
-                        <th class="px-3 py-3">Weight</th>
-                        <th class="px-3 py-3">Birthdate</th>
-                        <th class="px-3 py-3">Country</th>
-                        <th class="px-3 py-3">Shoots/Catches</th>
-                        <th class="px-3 py-3">Active</th>
-                        <th class="px-3 py-3">Number</th>
-                        <th class="px-3 py-3 rounded-tr-lg">Team</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($total_rows === 0): ?>
-                        <tr class="bg-nhl-darkblue">
-                            <td colspan="10" class="px-6 py-8 text-center text-nhl-muted italic">No players match your filter criteria.</td>
+        <!-- Players Table - enhanced with homepage styling -->
+        <div class="bg-gray-800/80 rounded-lg overflow-hidden border border-gray-700 shadow-xl mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-gray-700 to-gray-800 text-white">
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">ID</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Name</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Height</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Weight</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Birthdate</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Country</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Shoots/Catches</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Active</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Number</th>
+                            <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Team</th>
                         </tr>
-                    <?php else: ?>
-                        <?php 
-                        $row_index = 0;
-                        while ($row = mysqli_fetch_assoc($result)): 
-                            $row_class = $row_index % 2 === 0 ? "bg-nhl-darkblue" : "bg-nhl-medium/30";
-                            $row_index++;
-                        ?>
-                            <tr class="<?= $row_class ?> border-b border-nhl-medium/20 <?= $row['isActive'] ? 'border-l-4 border-nhl-accent2' : '' ?>">
-                                <td class="px-3 py-2.5 font-semibold">
-                                    <a href="player_details.php?player_id=<?= $row['playerId'] ?>" class="hover:text-nhl-accent transition-colors">
-                                        <?= $row['playerId'] ?>
-                                    </a>
-                                </td>
-                                <td class="px-3 py-2.5 font-medium">
-                                    <a href="player_details.php?player_id=<?= $row['playerId'] ?>" class="hover:text-nhl-accent transition-colors">
-                                        <?= $row['firstName'] . ' ' . $row['lastName'] ?>
-                                    </a>
-                                </td>
-                                <td class="px-3 py-2.5"><?= $row['heightInInches'] ?? '-' ?> in / <?= $row['heightInCentimeters'] ?? '-' ?> cm</td>
-                                <td class="px-3 py-2.5"><?= $row['weightInPounds'] ?? '-' ?> lbs / <?= $row['weightInKilograms'] ?? '-' ?> kg</td>
-                                <td class="px-3 py-2.5"><?= $row['birthDate'] ? date('m/d/Y', strtotime($row['birthDate'])) : '-' ?></td>
-                                <td class="px-3 py-2.5"><?= getFlagSVG($row['birthCountry']) ?? $row['birthCountry'] ?></td>
-                                <?php if ($row['shootsCatches'] == 'L') {
-                                  $shootsCatches = 'Left';
-                                } elseif ($row['shootsCatches'] == 'R') {
-                                  $shootsCatches = 'Right';
-                                } else {
-                                  $shootsCatches = 'Unknown';
-                                } ?>
-                                <td class="px-3 py-2.5"><?= $shootsCatches ?></td>
-                                <td class="px-3 py-2.5">
-                                    <?= $row['isActive'] == 'True' ? 
-                                        '<span class="inline-block px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Yes</span>' : 
-                                        '<span class="inline-block px-2 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-semibold">No</span>' 
-                                    ?>
-                                </td>
-                                <td class="px-3 py-2.5"><?= $row['sweaterNumber'] ?: '-' ?></td>
-                                <td class="px-3 py-2.5">
-                                    <?php if (!empty($row['teamLogo'])): ?>
-                                        <a href="team_details.php?team_id=<?= $row['currentTeamID'] ?? '' ?>" class="block w-12 h-12 mx-auto transition-transform hover:scale-110">
-                                            <img src="<?= htmlspecialchars($row['teamLogo']) ?>" alt="<?= htmlspecialchars($row['currentTeamAbbrev'] ?? '') ?>" class="w-full h-full object-contain">
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="text-nhl-muted">-</span>
-                                    <?php endif; ?>
-                                </td>
+                    </thead>
+                    <tbody>
+                        <?php if ($total_rows === 0): ?>
+                            <tr class="bg-gray-800/50">
+                                <td colspan="10" class="px-6 py-8 text-center text-gray-400 italic">No players match your filter criteria.</td>
                             </tr>
-                        <?php endwhile; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                        <?php else: ?>
+                            <?php 
+                            $row_index = 0;
+                            while ($row = mysqli_fetch_assoc($result)): 
+                                $row_class = $row_index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-700/30";
+                                $row_index++;
+                            ?>
+                                <tr class="<?= $row_class ?> hover:bg-gray-700/50 transition-colors duration-200 border-b border-gray-700/50">
+                                    <td class="px-4 py-3 font-semibold text-gray-200">
+                                        <a href="player_details.php?player_id=<?= $row['playerId'] ?>" class="text-blue-400 hover:text-blue-300 transition-colors">
+                                            <?= $row['playerId'] ?>
+                                        </a>
+                                    </td>
+                                    <td class="px-4 py-3 font-medium text-gray-200">
+                                        <a href="player_details.php?player_id=<?= $row['playerId'] ?>" class="text-blue-400 hover:text-blue-300 transition-colors">
+                                            <?= $row['firstName'] . ' ' . $row['lastName'] ?>
+                                        </a>
+                                    </td>
+                                    <td class="px-4 py-3 text-gray-300"><?= $row['heightInInches'] ?? '-' ?> in / <?= $row['heightInCentimeters'] ?? '-' ?> cm</td>
+                                    <td class="px-4 py-3 text-gray-300"><?= $row['weightInPounds'] ?? '-' ?> lbs / <?= $row['weightInKilograms'] ?? '-' ?> kg</td>
+                                    <td class="px-4 py-3 text-gray-300"><?= $row['birthDate'] ? date('m/d/Y', strtotime($row['birthDate'])) : '-' ?></td>
+                                    <td class="px-4 py-3"><?= getFlagSVG($row['birthCountry']) ?? $row['birthCountry'] ?></td>
+                                    <?php if ($row['shootsCatches'] == 'L') {
+                                      $shootsCatches = 'Left';
+                                    } elseif ($row['shootsCatches'] == 'R') {
+                                      $shootsCatches = 'Right';
+                                    } else {
+                                      $shootsCatches = 'Unknown';
+                                    } ?>
+                                    <td class="px-4 py-3 text-gray-300"><?= $shootsCatches ?></td>
+                                    <td class="px-4 py-3">
+                                        <?= $row['isActive'] == 'True' ? 
+                                            '<span class="inline-flex items-center px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-full text-xs font-medium text-emerald-400">Active</span>' : 
+                                            '<span class="inline-flex items-center px-2 py-1 bg-red-500/20 border border-red-500/30 rounded-full text-xs font-medium text-red-400">Inactive</span>' 
+                                        ?>
+                                    </td>
+                                    <td class="px-4 py-3 text-gray-300"><?= $row['sweaterNumber'] ?: '-' ?></td>
+                                    <td class="px-4 py-3">
+                                        <?php if (!empty($row['teamLogo'])): ?>
+                                            <a href="team_details.php?team_id=<?= $row['currentTeamID'] ?? '' ?>" class="block w-12 h-12 mx-auto transition-transform hover:scale-110">
+                                                <img src="<?= htmlspecialchars($row['teamLogo']) ?>" alt="<?= htmlspecialchars($row['currentTeamAbbrev'] ?? '') ?>" class="w-full h-full object-contain">
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="text-gray-500">-</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <!-- Server-side Pagination Controls -->
+        <!-- Enhanced Pagination Controls - homepage style -->
         <?php if ($total_pages > 1): ?>
-            <div class="flex flex-wrap justify-center gap-2 mt-6 pb-8">
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
                 <!-- First page button -->
                 <?php if ($page > 1): ?>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 transition-colors duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
                             <path fill-rule="evenodd" d="M9.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
                         </svg>
                     </a>
                 <?php else: ?>
-                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800/50 text-gray-500 border border-gray-600/50 cursor-not-allowed">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
                             <path fill-rule="evenodd" d="M9.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -421,13 +425,13 @@ $end = min($offset + $limit, $total_rows);
 
                 <!-- Previous page button -->
                 <?php if ($page > 1): ?>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page - 1])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page - 1])) ?>" class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 transition-colors duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                         </svg>
                     </a>
                 <?php else: ?>
-                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800/50 text-gray-500 border border-gray-600/50 cursor-not-allowed">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                         </svg>
@@ -447,11 +451,11 @@ $end = min($offset + $limit, $total_rows);
                 if ($start_page > 1): 
                 ?>
                     <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" 
-                    class="pagination-button flex items-center justify-center w-10 h-10 rounded <?= 1 === $page ? 'bg-nhl-accent text-nhl-darkblue font-bold' : 'bg-nhl-medium text-white shadow hover:bg-nhl-accent/20' ?>">
+                    class="flex items-center justify-center w-10 h-10 rounded-md <?= 1 === $page ? 'bg-blue-600 text-white border-blue-500' : 'bg-gray-800 hover:bg-gray-700 text-white border-gray-600' ?> border transition-colors duration-200">
                         1
                     </a>
                     <?php if ($start_page > 2): ?>
-                        <span class="flex items-center justify-center w-10 h-10 text-nhl-muted">...</span>
+                        <span class="flex items-center justify-center w-10 h-10 text-gray-500">...</span>
                     <?php endif; ?>
                 <?php endif; ?>
                 
@@ -459,7 +463,7 @@ $end = min($offset + $limit, $total_rows);
                 <?php for ($i = $start_page; $i <= $end_page; $i++): ?>
                     <?php if ($i !== 1 && $i !== $total_pages): ?>
                         <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>" 
-                        class="pagination-button flex items-center justify-center w-10 h-10 rounded <?= $i === $page ? 'bg-nhl-accent text-nhl-darkblue font-bold' : 'bg-nhl-medium text-white shadow hover:bg-nhl-accent/20' ?>">
+                        class="flex items-center justify-center w-10 h-10 rounded-md <?= $i === $page ? 'bg-blue-600 text-white border-blue-500' : 'bg-gray-800 hover:bg-gray-700 text-white border-gray-600' ?> border transition-colors duration-200">
                             <?= $i ?>
                         </a>
                     <?php endif; ?>
@@ -468,23 +472,23 @@ $end = min($offset + $limit, $total_rows);
                 <!-- Show ellipsis after page numbers if needed -->
                 <?php if ($end_page < $total_pages): ?>
                     <?php if ($end_page < $total_pages - 1): ?>
-                        <span class="flex items-center justify-center w-10 h-10 text-nhl-muted">...</span>
+                        <span class="flex items-center justify-center w-10 h-10 text-gray-500">...</span>
                     <?php endif; ?>
                     <a href="?<?= http_build_query(array_merge($_GET, ['page' => $total_pages])) ?>" 
-                    class="pagination-button flex items-center justify-center w-10 h-10 rounded <?= $total_pages === $page ? 'bg-nhl-accent text-nhl-darkblue font-bold' : 'bg-nhl-medium text-white shadow hover:bg-nhl-accent/20' ?>">
+                    class="flex items-center justify-center w-10 h-10 rounded-md <?= $total_pages === $page ? 'bg-blue-600 text-white border-blue-500' : 'bg-gray-800 hover:bg-gray-700 text-white border-gray-600' ?> border transition-colors duration-200">
                         <?= $total_pages ?>
                     </a>
                 <?php endif; ?>
 
                 <!-- Next page button -->
                 <?php if ($page < $total_pages): ?>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page + 1])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $page + 1])) ?>" class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 transition-colors duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                         </svg>
                     </a>
                 <?php else: ?>
-                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800/50 text-gray-500 border border-gray-600/50 cursor-not-allowed">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                         </svg>
@@ -493,14 +497,14 @@ $end = min($offset + $limit, $total_rows);
 
                 <!-- Last page button -->
                 <?php if ($page < $total_pages): ?>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $total_pages])) ?>" class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium text-white shadow hover:bg-nhl-accent/20">
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $total_pages])) ?>" class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 transition-colors duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 6.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                             <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-3.293a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                         </svg>
                     </a>
                 <?php else: ?>
-                    <div class="pagination-button flex items-center justify-center w-10 h-10 rounded bg-nhl-medium/30 text-nhl-muted cursor-not-allowed">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-md bg-gray-800/50 text-gray-500 border border-gray-600/50 cursor-not-allowed">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 6.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                             <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-3.293a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -509,34 +513,37 @@ $end = min($offset + $limit, $total_rows);
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        
+        <!-- Section Divider -->
+        <div class="section-divider mx-auto mb-8"></div>
     </div>
 </div>
-                </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Visual feedback when user clicks Apply Filters button
+        // Enhanced visual feedback when user clicks Apply Filters button
         const filterForm = document.getElementById('filter-form');
         const applyFilters = document.getElementById('applyFilters');
         
         if (filterForm && applyFilters) {
             applyFilters.addEventListener('click', function() {
-                applyFilters.classList.add('bg-nhl-accent2');
-                applyFilters.classList.add('border-nhl-accent2');
+                applyFilters.classList.remove('bg-blue-600');
+                applyFilters.classList.add('bg-blue-700');
+                applyFilters.innerHTML = 'Applying...';
                 setTimeout(() => {
                     filterForm.submit();
                 }, 200);
             });
         }
         
-        // Visual feedback for search submission
+        // Enhanced visual feedback for search submission
         const searchForm = document.getElementById('nhl-search');
         if (searchForm) {
             searchForm.addEventListener('submit', function() {
                 const searchInput = document.getElementById('search-term');
-                searchInput.classList.add('ring-nhl-accent2');
+                searchInput.classList.add('ring-2', 'ring-blue-500');
                 setTimeout(() => {
-                    searchInput.classList.remove('ring-nhl-accent2');
+                    searchInput.classList.remove('ring-2', 'ring-blue-500');
                 }, 200);
             });
         }
