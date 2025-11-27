@@ -96,7 +96,7 @@ if (isset($data['ref']) && $data['ref'] === 'refs/heads/main') {
     putenv('GIT_DIR=' . $gitDir);
     putenv('GIT_WORK_TREE=' . $deployDir);
     
-    // Execute git pull with full path and proper environment
+    // Execute git fetch and reset (better for deployments - discards local changes)
     $output = [];
     $returnCode = 0;
     
@@ -105,13 +105,23 @@ if (isset($data['ref']) && $data['ref'] === 'refs/heads/main') {
     exec($fetchCmd, $fetchOutput, $fetchReturnCode);
     file_put_contents($logFile, "Fetch output: " . implode("\n", $fetchOutput) . "\n", FILE_APPEND);
     
-    // Then pull
-    $pullCmd = "cd " . escapeshellarg($deployDir) . " && $gitPath pull origin main 2>&1";
-    exec($pullCmd, $output, $returnCode);
+    // Reset hard to match remote exactly (discards any local changes/divergence)
+    // This is safer for deployments - we want the server to match GitHub exactly
+    $resetCmd = "cd " . escapeshellarg($deployDir) . " && $gitPath reset --hard origin/main 2>&1";
+    exec($resetCmd, $output, $returnCode);
+    
+    // If reset worked, also clean up any untracked files (optional but recommended)
+    if ($returnCode === 0) {
+        $cleanCmd = "cd " . escapeshellarg($deployDir) . " && $gitPath clean -fd 2>&1";
+        exec($cleanCmd, $cleanOutput, $cleanReturnCode);
+        if (!empty($cleanOutput)) {
+            file_put_contents($logFile, "Clean output: " . implode("\n", $cleanOutput) . "\n", FILE_APPEND);
+        }
+    }
     
     // Log the result
-    $logEntry = "Pull command: $pullCmd\n";
-    $logEntry .= "Pull output: " . implode("\n", $output) . "\n";
+    $logEntry = "Reset command: $resetCmd\n";
+    $logEntry .= "Reset output: " . implode("\n", $output) . "\n";
     $logEntry .= "Return code: $returnCode\n";
     
     // Check current commit after pull
