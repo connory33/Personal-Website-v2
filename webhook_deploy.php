@@ -40,44 +40,107 @@ if (isset($data['ref']) && $data['ref'] === 'refs/heads/main') {
     // Log the deployment
     $logFile = __DIR__ . '/deploy.log';
     $commitHash = isset($data['head_commit']['id']) ? substr($data['head_commit']['id'], 0, 7) : 'unknown';
-    $logEntry = date('Y-m-d H:i:s') . " - Deploying commit: " . $commitHash . "\n";
+    $logEntry = "\n" . str_repeat("=", 60) . "\n";
+    $logEntry .= date('Y-m-d H:i:s') . " - Deploying commit: " . $commitHash . "\n";
+    $logEntry .= "Current directory: " . __DIR__ . "\n";
     file_put_contents($logFile, $logEntry, FILE_APPEND);
     
     // Change to public_html directory (this file should be in public_html)
-    chdir(__DIR__);
+    $deployDir = __DIR__;
+    chdir($deployDir);
     
-    // Execute git pull
-    $output = [];
-    $returnCode = 0;
+    // Check if .git directory exists
+    $gitDir = $deployDir . '/.git';
+    if (!is_dir($gitDir)) {
+        $errorMsg = "ERROR: .git directory not found in $deployDir\n";
+        $errorMsg .= "Git repository may not be initialized. Run: git init && git remote add origin https://github.com/connory33/Personal-Website-v2.git\n";
+        file_put_contents($logFile, $errorMsg, FILE_APPEND);
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Git repository not initialized',
+            'error' => $errorMsg
+        ]);
+        exit;
+    }
     
-    // Use full path to git if needed, or ensure git is in PATH
-    // Try git pull, if it fails, try with full path
-    exec('git pull origin main 2>&1', $output, $returnCode);
+    // Find git executable
+    $gitPath = null;
+    $gitPaths = ['git', '/usr/bin/git', '/usr/local/bin/git', '/opt/cpanel/ea-git/bin/git', '/usr/local/cpanel/3rdparty/bin/git'];
     
-    // If that failed, try with explicit git path (common cPanel locations)
-    if ($returnCode !== 0) {
-        $gitPaths = ['/usr/bin/git', '/usr/local/bin/git', '/opt/cpanel/ea-git/bin/git'];
-        foreach ($gitPaths as $gitPath) {
-            if (file_exists($gitPath)) {
-                exec("$gitPath pull origin main 2>&1", $output, $returnCode);
-                break;
-            }
+    foreach ($gitPaths as $path) {
+        $output = [];
+        $returnCode = 0;
+        exec("$path --version 2>&1", $output, $returnCode);
+        if ($returnCode === 0) {
+            $gitPath = $path;
+            file_put_contents($logFile, "Found git at: $path\n", FILE_APPEND);
+            break;
         }
     }
     
+    if (!$gitPath) {
+        $errorMsg = "ERROR: Git executable not found. Tried: " . implode(", ", $gitPaths) . "\n";
+        file_put_contents($logFile, $errorMsg, FILE_APPEND);
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Git executable not found',
+            'error' => $errorMsg
+        ]);
+        exit;
+    }
+    
+    // Set environment variables that git might need
+    putenv('HOME=' . dirname($deployDir));
+    putenv('GIT_DIR=' . $gitDir);
+    putenv('GIT_WORK_TREE=' . $deployDir);
+    
+    // Execute git pull with full path and proper environment
+    $output = [];
+    $returnCode = 0;
+    
+    // First, fetch to make sure we have latest refs
+    $fetchCmd = "cd " . escapeshellarg($deployDir) . " && $gitPath fetch origin main 2>&1";
+    exec($fetchCmd, $fetchOutput, $fetchReturnCode);
+    file_put_contents($logFile, "Fetch output: " . implode("\n", $fetchOutput) . "\n", FILE_APPEND);
+    
+    // Then pull
+    $pullCmd = "cd " . escapeshellarg($deployDir) . " && $gitPath pull origin main 2>&1";
+    exec($pullCmd, $output, $returnCode);
+    
     // Log the result
-    $logEntry = "Output: " . implode("\n", $output) . "\n";
-    $logEntry .= "Return code: $returnCode\n\n";
+    $logEntry = "Pull command: $pullCmd\n";
+    $logEntry .= "Pull output: " . implode("\n", $output) . "\n";
+    $logEntry .= "Return code: $returnCode\n";
+    
+    // Check current commit after pull
+    $currentCommit = [];
+    exec("cd " . escapeshellarg($deployDir) . " && $gitPath log -1 --oneline 2>&1", $currentCommit, $commitReturnCode);
+    $logEntry .= "Current commit after pull: " . implode("\n", $currentCommit) . "\n";
+    
     file_put_contents($logFile, $logEntry, FILE_APPEND);
     
-    // Return success
-    http_response_code(200);
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Deployment triggered',
-        'commit' => $commitHash,
-        'output' => implode("\n", $output)
-    ]);
+    // Return response
+    if ($returnCode === 0) {
+        http_response_code(200);
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Deployment completed',
+            'commit' => $commitHash,
+            'output' => implode("\n", $output),
+            'current_commit' => implode("\n", $currentCommit)
+        ]);
+    } else {
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Git pull failed',
+            'commit' => $commitHash,
+            'output' => implode("\n", $output),
+            'return_code' => $returnCode
+        ]);
+    }
 } else {
     // Not a push to main, ignore
     $ref = isset($data['ref']) ? $data['ref'] : 'unknown';
