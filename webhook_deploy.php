@@ -96,6 +96,24 @@ if (isset($data['ref']) && $data['ref'] === 'refs/heads/main') {
     putenv('GIT_DIR=' . $gitDir);
     putenv('GIT_WORK_TREE=' . $deployDir);
     
+    // Check for and remove git lock file if it exists (from interrupted git operations)
+    $lockFile = $gitDir . '/index.lock';
+    if (file_exists($lockFile)) {
+        $lockAge = time() - filemtime($lockFile);
+        // Only remove if lock is older than 5 minutes (likely stale)
+        if ($lockAge > 300) {
+            unlink($lockFile);
+            file_put_contents($logFile, "Removed stale git lock file (age: {$lockAge}s)\n", FILE_APPEND);
+        } else {
+            // Lock is recent, wait a bit and try again
+            sleep(2);
+            if (file_exists($lockFile)) {
+                unlink($lockFile);
+                file_put_contents($logFile, "Removed git lock file after wait\n", FILE_APPEND);
+            }
+        }
+    }
+    
     // Execute git fetch and reset (better for deployments - discards local changes)
     $output = [];
     $returnCode = 0;
