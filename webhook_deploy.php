@@ -107,17 +107,10 @@ if (isset($data['ref']) && $data['ref'] === 'refs/heads/main') {
     
     // Reset hard to match remote exactly (discards any local changes/divergence)
     // This is safer for deployments - we want the server to match GitHub exactly
+    // NOTE: We do NOT run git clean -fd as it permanently deletes untracked files
+    // If you need to clean untracked files, do it manually after verifying backups
     $resetCmd = "cd " . escapeshellarg($deployDir) . " && $gitPath reset --hard origin/main 2>&1";
     exec($resetCmd, $output, $returnCode);
-    
-    // If reset worked, also clean up any untracked files (optional but recommended)
-    if ($returnCode === 0) {
-        $cleanCmd = "cd " . escapeshellarg($deployDir) . " && $gitPath clean -fd 2>&1";
-        exec($cleanCmd, $cleanOutput, $cleanReturnCode);
-        if (!empty($cleanOutput)) {
-            file_put_contents($logFile, "Clean output: " . implode("\n", $cleanOutput) . "\n", FILE_APPEND);
-        }
-    }
     
     // Log the result
     $logEntry = "Reset command: $resetCmd\n";
