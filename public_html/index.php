@@ -44,10 +44,10 @@
           </div>
         
 
-        <div class="bg-white border shadow rounded-lg p-6 text-left">
-              <h3 class="text-xl font-bold mb-2">NHL Database</h3>
-              <p class="text-sm text-gray-600 mb-4">More mature project, description TBD</p>
-              <a href="nhlIndex.php" class="text-blue-600 hover:underline">View Active Project →</a>
+        <div class="bg-white border shadow rounded-lg p-6 text-left hover:shadow-lg hover:bg-gray-100 transition duration-300">
+              <h3 class="text-xl font-bold mb-2">NHL Database (React)</h3>
+              <p class="text-sm text-gray-600 mb-4">Modern React-based NHL database application</p>
+              <a href="nhl-react-frontend/index.html" class="text-blue-600 hover:underline">View Active Project →</a>
               <br>
               <a href="nhlDBProject.php" class="text-blue-600 hover:underline">Learn More →</a>
         </div>
@@ -60,6 +60,14 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           
+          <div class="bg-white border shadow rounded-lg p-6 text-left">
+            <h3 class="text-xl font-bold mb-2">NHL Database (Archived)</h3>
+            <p class="text-sm text-gray-600 mb-4">Original PHP-based NHL database project. More mature project, description TBD</p>
+            <a href="nhlIndex.php" class="text-blue-600 hover:underline">View Archived Project →</a>
+            <br>
+            <a href="nhlDBProject.php" class="text-blue-600 hover:underline">Learn More →</a>
+          </div>
+
           <div class="bg-white border shadow rounded-lg p-6 text-left">
             <h3 class="text-xl font-bold mb-2">NHL Line Analysis</h3>
             <p class="text-sm text-gray-600 mb-4">This was an analysis and investigation into the usage and dependency of different NHL teams on their various "lines" of forwards.</p>

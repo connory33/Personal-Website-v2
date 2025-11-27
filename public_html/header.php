@@ -31,25 +31,29 @@
 
 
 
-      <!-- NHL DB dropdown -->
-      <div class="relative group">
+      <!-- NHL DB React -->
+      <p><a href="nhl-react-frontend/index.html" class="hover:text-blue-400 hidden md:inline">NHL DB (React)</a></p>
+
+        <!-- Past Projects dropdown -->
+        <div class="relative group">
         <a href="#" class="hover:text-blue-400 flex items-center space-x-1">
-          <span>NHL DB</span>
+          <span>Past Projects</span>
           <svg class="w-3 h-3 text-white group-hover:text-blue-400 transition" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.084l3.71-3.854a.75.75 0 011.08 1.04l-4.25 4.417a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
           </svg>
         </a>
-
-        <!-- Nested team Dropdown -->
         <ul class="absolute hidden group-hover:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-20 flex flex-col">
-          <li><a href="nhlIndex.php" class="block px-4 py-2 hover:bg-slate-700">Home</a></li>
-          <li><a href=nhl_players.php class="block px-4 py-2 hover:bg-slate-700">Players</a></li>
-          <li><a href="nhl_games.php" class="block px-4 py-2 hover:bg-slate-700">Games</a></li>
-          <li class="relative group/teams">
-            <a href="#" class="block px-4 py-2 hover:bg-slate-700">Teams ▸</a>
-            <ul class="absolute left-full top-0 hidden group-hover/teams:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-30 max-h-96 overflow-y-auto flex flex-col">
-              <!-- Paste all your team links here as-is -->
-              <li><a class="block px-4 py-2 hover:bg-slate-700" href="https://connoryoung.com/team_details.php?team_id=24">Anaheim Ducks</a></li>
+          <li class="relative group/nhl">
+            <a href="#" class="block px-4 py-2 hover:bg-slate-700">NHL DB (Archived) ▸</a>
+            <ul class="absolute left-full top-0 hidden group-hover/nhl:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-30 max-h-96 overflow-y-auto flex flex-col">
+              <li><a href="nhlIndex.php" class="block px-4 py-2 hover:bg-slate-700">Home</a></li>
+              <li><a href="nhl_players.php" class="block px-4 py-2 hover:bg-slate-700">Players</a></li>
+              <li><a href="nhl_games.php" class="block px-4 py-2 hover:bg-slate-700">Games</a></li>
+              <li class="relative group/teams">
+                <a href="#" class="block px-4 py-2 hover:bg-slate-700">Teams ▸</a>
+                <ul class="absolute left-full top-0 hidden group-hover/teams:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-30 max-h-96 overflow-y-auto flex flex-col">
+                  <!-- Paste all your team links here as-is -->
+                  <li><a class="block px-4 py-2 hover:bg-slate-700" href="https://connoryoung.com/team_details.php?team_id=24">Anaheim Ducks</a></li>
         <li><a class="block px-4 py-2 hover:bg-slate-700" href="https://connoryoung.com/team_details.php?team_id=53">Arizona Coyotes</a></li>
         <li><a class="block px-4 py-2 hover:bg-slate-700" href="https://connoryoung.com/team_details.php?team_id=6">Boston Bruins</a></li>
         <li><a class="block px-4 py-2 hover:bg-slate-700" href="https://connoryoung.com/team_details.php?team_id=7">Buffalo Sabres</a></li>
@@ -365,19 +369,8 @@
               <li><a class="block px-4 py-2 hover:bg-slate-700" href="https://connoryoung.com/draft_history.php?draft_id=52">1979</a></li>
             </ul>
           </li>
-        </ul>
-
-        </div>
-
-        <!-- Past Projects dropdown -->
-        <div class="relative group">
-        <a href="#" class="hover:text-blue-400 flex items-center space-x-1">
-          <span>Past Projects</span>
-          <svg class="w-3 h-3 text-white group-hover:text-blue-400 transition" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.084l3.71-3.854a.75.75 0 011.08 1.04l-4.25 4.417a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-          </svg>
-        </a>
-        <ul class="absolute hidden group-hover:block bg-slate-800 text-white rounded-md shadow-lg min-w-[180px] z-20 flex flex-col">
+            </ul>
+          </li>
           <a href="nhlLinesProject.php" class="block px-4 py-2 hover:bg-slate-700">NHL Lines</a>
           <a href="nbaFantasyProjections.php" class="block px-4 py-2 hover:bg-slate-700">NBA Fantasy</a>
           <a href="maddenOptimizer.php" class="block px-4 py-2 hover:bg-slate-700">NFL Roster</a>
