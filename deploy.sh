@@ -51,3 +51,4 @@ echo -e "${GREEN}Deployment complete!${NC}"
 echo -e "${GREEN}Latest commit: $(git log -1 --oneline)${NC}"
 
 
+
